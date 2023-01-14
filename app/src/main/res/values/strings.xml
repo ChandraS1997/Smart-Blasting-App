@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Smart Blasting Drilling</string>
+    <string name="install">Install</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="retry">Retry</string>
+    <string name="something_wrong">The connection to the server was lost. Please try again</string>
+    <string name="no">No</string>
+    <string name="ok">Ok</string>
+    <string name="do_you_want_to_logout">Do You Want To Logout</string>
+    <string name="log_in_to_continue">Log In To Continue</string>
+    <string name="password">Password</string>
+    <string name="enter_user_name">Enter User Name</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="login">login</string>
+    <string name="home">home</string>
+    <string name="enter_email">Please Enter Email</string>
+    <string name="enter_email_valid">Please Enter Valid Email</string>
+    <string name="please_enter_password">Please Enter Your Password</string>
+    <string name="pass_six_greater">Password must be greater 8 character</string>
+    <string name="enteremail">Enter Email</string>
+    <string name="design">Design</string>
+    <string name="drilling">Drilling</string>
+    <string name="blasting">Blasting</string>
+    <string name="search">Search</string>
+</resources>

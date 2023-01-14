@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rootView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@drawable/search_bg"
+            android:drawablePadding="@dimen/_10sdp"
+            android:drawableTint="@color/_ADADAD"
+            android:elevation="1dp"
+            android:gravity="center_vertical"
+            android:focusable="true"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:hint="@string/search"
+            android:maxLines="1"
+            android:paddingStart="@dimen/_15sdp"
+            android:paddingEnd="@dimen/_35sdp"
+            android:textColor="@color/_152F50"
+            android:textColorHint="@color/_ADADAD"
+            android:textCursorDrawable="@drawable/search_cursor"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/searchbtn"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/ic_search"
+            android:elevation="@dimen/_1sdp"
+            android:padding="@dimen/_6sdp"
+            android:src="@drawable/icn_next_arrow"
+            app:layout_constraintBottom_toBottomOf="@+id/search"
+            app:layout_constraintStart_toStartOf="@+id/search"
+            app:layout_constraintTop_toTopOf="@+id/search" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
