@@ -22,4 +22,19 @@
     <string name="drilling">Drilling</string>
     <string name="blasting">Blasting</string>
     <string name="search">Search</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="go">GO</string>
+    <string name="hole_details">Hole Details</string>
+    <string name="project_list">Project List</string>
+    <string name="hole_id">Hole id</string>
+    <string name="raw_id">Raw ID</string>
+    <string name="hole_no">Hole No.</string>
+    <string name="burden">Burden</string>
+    <string name="spacing">Spacing</string>
+    <string name="hole_dia">Hole Dia</string>
+    <string name="hole_angle">Hole Angle</string>
+    <string name="hole_depth">Hole depth</string>
+    <string name="sub_grade">Sub grade</string>
+    <string name="more">More</string>
 </resources>

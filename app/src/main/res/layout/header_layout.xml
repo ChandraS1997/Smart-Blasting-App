@@ -6,16 +6,15 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/_FFA722">
+        android:background="@color/AppBackGroundColor">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/_15sdp"
+            android:elevation="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
-            android:paddingTop="@dimen/_15sdp"
-            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -89,17 +88,27 @@
 
             <TextView
                 android:id="@+id/pageTitle"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_20sdp"
-                android:textColor="@color/white"
+                android:textSize="@dimen/_16ssp"
+                android:textColor="@color/_80000000"
                 android:gravity="center"
-                android:fontFamily="@font/poppins_semi_bold"
+                android:text="@string/project_list"
+                android:fontFamily="@font/oxygen_bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginEnd="@dimen/_10sdp"
                 app:layout_constraintStart_toEndOf="@id/backBtn"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toStartOf="@id/icn_download"/>
+            <ImageView
+                android:id="@+id/icn_download"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+               app:layout_constraintBottom_toBottomOf="@id/pageTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/pageTitle"
+                android:src="@drawable/icn_download"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
