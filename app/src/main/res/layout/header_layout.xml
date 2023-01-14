@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/_FFA722">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/_15sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_15sdp"
+            android:paddingStart="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!--            <ImageView-->
+            <!--                android:id="@+id/bucketBtn"-->
+            <!--                android:layout_width="@dimen/_20sdp"-->
+            <!--                android:layout_height="@dimen/_20sdp"-->
+            <!--                android:layout_marginEnd="@dimen/_15sdp"-->
+            <!--                android:src="@drawable/icn_bucet"-->
+            <!--                app:layout_constraintBottom_toBottomOf="@+id/txtLogo"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="@+id/txtLogo"-->
+            <!--                app:layout_constraintVertical_bias="0.555" />-->
+
+            <!--            <TextView-->
+            <!--                android:id="@+id/orderCount"-->
+            <!--                android:layout_width="@dimen/_13sdp"-->
+            <!--                android:layout_height="@dimen/_13sdp"-->
+            <!--                android:layout_marginStart="@dimen/_10sdp"-->
+            <!--                android:background="@drawable/badge_bg"-->
+            <!--                android:fontFamily="@font/poppins_bold"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="0"-->
+            <!--                android:textColor="@color/_192d4d"-->
+            <!--                android:textSize="@dimen/_6sdp"-->
+            <!--                app:layout_constraintBottom_toTopOf="@+id/bucketBtn"-->
+            <!--                app:layout_constraintStart_toStartOf="@+id/bucketBtn"-->
+            <!--                app:layout_constraintTop_toTopOf="@+id/bucketBtn" />-->
+
+            <!--            <androidx.constraintlayout.widget.Group-->
+            <!--                android:visibility="gone"-->
+            <!--                android:id="@+id/cartGroup"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                app:constraint_referenced_ids="orderCount, bucketBtn"/>-->
+
+
+        <!--    <ImageView
+                android:visibility="visible"
+                android:id="@+id/menuBtn"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/icn_category"
+                app:layout_constraintBottom_toBottomOf="@+id/txtLogo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txtLogo" />-->
+
+            <ImageView
+                android:id="@+id/backBtn"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@drawable/ic_back"
+                android:visibility="visible"
+                android:padding="@dimen/_3sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+           <!-- <ImageView
+                android:visibility="gone"
+                android:id="@+id/txtLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/app_logo_icon"
+                android:padding="@dimen/_3sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+-->
+
+            <TextView
+                android:id="@+id/pageTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_20sdp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:fontFamily="@font/poppins_semi_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintStart_toEndOf="@id/backBtn"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+</layout>

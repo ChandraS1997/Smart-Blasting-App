@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/_FFA722">
+
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/mainDrawerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <include
+                android:id="@+id/appLayout"
+                layout="@layout/app_bar_main" />
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/drawerNav"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="@drawable/drawer_white_bg"
+                android:theme="@style/NavigationItemNoRipple">
+
+                <include
+                    android:id="@+id/drawer_layout"
+                    layout="@layout/drawer_layout" />
+
+            </com.google.android.material.navigation.NavigationView>
+
+
+        </androidx.drawerlayout.widget.DrawerLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

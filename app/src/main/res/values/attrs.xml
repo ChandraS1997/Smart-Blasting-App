@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SwipeLayout">
+        <attr name="swipeDirection" format="integer">
+            <flag name="left" value="1"/>
+            <flag name="right" value="2"/>
+        </attr>
+        <attr name="isEnabledSwipe" format="boolean"/>
+        <attr name="isFreeDragAfterOpen" format="boolean"/>
+        <attr name="isFreeHorizontalDrag" format="boolean"/>
+        <attr name="isContinuousSwipe" format="boolean"/>
+        <attr name="isTogether" format="boolean"/>
+        <attr name="rightItem" format="reference"/>
+        <attr name="leftItem" format="reference"/>
+        <attr name="draggedItem" format="reference"/>
+        <attr name="autoMovingSensitivity" format="integer"/>
+        <attr name="rightDragViewPadding" format="dimension"/>
+        <attr name="leftDragViewPadding" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomImageView">
+        <attr format="dimension" name="civ_border_width"/>
+        <attr format="color" name="civ_border_color"/>
+        <attr format="boolean" name="civ_border_overlay"/>
+        <attr format="color" name="civ_circle_background_color"/>
+        <attr format="boolean" name="civ_circle"/>
+        <attr format="dimension" name="civ_shape_radius"/>
+        <attr format="dimension" name="civ_shape_top_left_radius"/>
+        <attr format="dimension" name="civ_shape_bottom_left_radius"/>
+        <attr format="dimension" name="civ_shape_top_right_radius"/>
+        <attr format="dimension" name="civ_shape_bottom_right_radius"/>
+        <attr name="civ_shape_type">
+            <enum name="normal" value="0"/>
+            <enum name="circle" value="1"/>
+            <enum name="rounded" value="2"/>
+        </attr>
+    </declare-styleable>
+
+
+    <attr name="fontPath" format="string" />
+</resources>
