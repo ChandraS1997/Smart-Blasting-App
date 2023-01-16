@@ -89,7 +89,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@+id/pit_lay"
             app:layout_constraintStart_toStartOf="@+id/titleNameTv"
-            app:layout_constraintTop_toBottomOf="@+id/titleNameTv">
+            app:layout_constraintTop_toBottomOf="@+id/titleNameTv"
+            android:layout_marginTop="@dimen/_5sdp">
 
             <TextView
                 android:id="@+id/titleMineTv"
