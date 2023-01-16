@@ -20,7 +20,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:configChanges="locale|orientation"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
@@ -31,14 +31,14 @@
         <activity
             android:name=".activity.AuthActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="locale|orientation"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activity.HomeActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="locale|orientation"
             tools:ignore="LockedOrientationActivity" />

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.app_utils.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.AdapterHomeBinding;
+import com.smart_blasting_drilling.android.databinding.AdapterHomenewBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
 
     @Override
     public RecyclerView.ViewHolder getViewHolder(LayoutInflater inflater, ViewGroup group) {
-        AdapterHomeBinding binding = DataBindingUtil.inflate(inflater,R.layout.adapter_home,group,false);
+        AdapterHomenewBinding binding = DataBindingUtil.inflate(inflater,R.layout.adapter_homenew,group,false);
         return new ProjectLIstAdapter.ViewHolder(binding);
     }
 
@@ -52,8 +53,8 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        AdapterHomeBinding binding;
-        public ViewHolder(@NonNull AdapterHomeBinding itemView) {
+        AdapterHomenewBinding binding;
+        public ViewHolder(@NonNull AdapterHomenewBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
         }

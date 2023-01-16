@@ -7,9 +7,9 @@
         android:id="@+id/rootView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/_FFA722">
 
-
+<!--
             <ImageView
                 android:id="@+id/searchbtn"
                 android:layout_width="@dimen/_20sdp"
@@ -48,17 +48,21 @@
                 android:textCursorDrawable="@drawable/search_cursor"
                 android:textSize="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--<androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/search">-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/search">
+            android:layout_height="match_parent">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedId"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:fillViewport="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +75,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/projectListRv"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_margin="@dimen/_10sdp"
                         android:nestedScrollingEnabled="false"
                         android:orientation="vertical"
@@ -80,7 +84,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:itemCount="5"
-                        tools:listitem="@layout/adapter_home" />
+                        tools:listitem="@layout/adapter_homenew" />
 
                  <!--   <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/bottomView"

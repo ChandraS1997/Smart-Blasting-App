@@ -34,9 +34,9 @@ public class HomeActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         StatusBarUtils.statusBarColor(this, R.color.white);
-        setPageTitle("Dashboard");
+        setPageTitle("Project List");
         navController = Navigation.findNavController(this, R.id.nav_host_main);
-        binding.appLayout.headerLayout.backBtn.setOnClickListener(new View.OnClickListener() {
+      /*  binding.appLayout.headerLayout.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -49,7 +49,7 @@ public class HomeActivity extends BaseActivity
                       finish();
                 // }
             }
-        });
+        });*/
     /*    binding.appLayout.headerLayout.backBtn.setOnClickListener(view -> {
            // if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.homeFragment)
             //{
