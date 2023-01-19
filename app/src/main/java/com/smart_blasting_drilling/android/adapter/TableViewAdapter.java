@@ -16,24 +16,25 @@ import com.smart_blasting_drilling.android.activity.HomeActivity;
 import com.smart_blasting_drilling.android.app_utils.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.AdapterHomeBinding;
 import com.smart_blasting_drilling.android.databinding.AdapterHomenewBinding;
+import com.smart_blasting_drilling.android.databinding.TableViewBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectLIstAdapter extends BaseRecyclerAdapter {
+public class TableViewAdapter extends BaseRecyclerAdapter {
 
     Context ctx;
-    List<String> projectList = new ArrayList<>();
+    List<String> tableList;
 
-    public ProjectLIstAdapter(Context ctx, List<String> projectList) {
+    public TableViewAdapter(Context ctx, List<String> tableList) {
         this.ctx = ctx;
-        this.projectList = projectList;
+        this.tableList = tableList;
     }
 
     @Override
     public RecyclerView.ViewHolder getViewHolder(LayoutInflater inflater, ViewGroup group) {
-        AdapterHomenewBinding binding = DataBindingUtil.inflate(inflater,R.layout.adapter_homenew,group,false);
-        return new ProjectLIstAdapter.ViewHolder(binding);
+        TableViewBinding binding = DataBindingUtil.inflate(inflater,R.layout.table_view,group,false);
+        return new TableViewAdapter.ViewHolder(binding);
     }
 
     @NonNull
@@ -45,9 +46,21 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder vholder = (ViewHolder) holder;
+
+        if(position==0)
+        {
+            vholder.binding.tableHeadingRow.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            vholder.binding.tableHeadingRow.setVisibility(View.GONE);
+        }
+
+
         vholder.itemView.setOnClickListener(v ->{
-          //  Navigation.findNavController(v).navigate(R.id.HoleDetailsTableViewFragment);
-         //   Navigation.findNavController(v)
+            //  Navigation.findNavController(v).navigate(R.id.HoleDetailsTableViewFragment);
+            //   Navigation.findNavController(v)
+
             Intent i = new Intent(ctx, HoleDetailActivity.class);
             ctx.startActivity(i);
 
@@ -60,8 +73,8 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        AdapterHomenewBinding binding;
-        public ViewHolder(@NonNull AdapterHomenewBinding itemView) {
+        TableViewBinding binding;
+        public ViewHolder(@NonNull TableViewBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
         }

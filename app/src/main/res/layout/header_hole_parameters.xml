@@ -23,18 +23,8 @@
 
 
 
-          <ImageView
-                android:id="@+id/homeBtn"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:src="@drawable/icn_home"
-                android:visibility="visible"
-                android:padding="@dimen/_1sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <TextView
-                android:id="@+id/pageTitle"
+                android:id="@+id/holeTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_18sdp"
@@ -44,18 +34,11 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginEnd="@dimen/_10sdp"
-                app:layout_constraintStart_toEndOf="@id/homeBtn"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <ImageView
-                android:id="@+id/downBtn"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:src="@drawable/icn_downlodeh"
-                android:visibility="visible"
-                android:padding="@dimen/_1sdp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Hole Parameters"/>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

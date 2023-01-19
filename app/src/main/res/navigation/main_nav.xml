@@ -11,4 +11,10 @@
         android:label="home Fragment"
         tools:layout="@layout/fragment_home_fragment" />
 
+<!--    <fragment
+        android:id="@+id/HoleDetailsTableViewFragment"
+        android:name="com.smart_blasting_drilling.android.fragments.HoleDetailsTableFragment"
+        android:label="HoleDetailsTableView Fragment"
+        tools:layout="@layout/fragment_hole_details_table" />-->
+
 </navigation>

@@ -35,7 +35,21 @@
             <enum name="rounded" value="2"/>
         </attr>
     </declare-styleable>
-
+    <declare-styleable name="EditSpinner">
+        <attr name="dropDownDrawable" format="reference" />
+        <attr name="dropDownDrawableWidth" format="dimension" />
+        <attr name="dropDownDrawableHeight" format="dimension" />
+        <attr name="dropDownDrawableSpacing" format="dimension" />
+        <attr name="dropDownAnimStyle" format="reference" />
+        <attr name="dropDownAnchor" format="integer" />
+        <attr name="dropDownWidth" format="dimension" />
+        <attr name="dropDownHeight" format="dimension" />
+        <attr name="dropDownSelector" format="reference" />
+        <attr name="dropDownTextColor" format="color"/>
+        <attr name="dropDownItemList" format="reference"/>
+        <attr name="dropDownTextFontFamily" format="string"/>
+        <attr name="dropDownTextSize" format="dimension"/>
+    </declare-styleable>
 
     <attr name="fontPath" format="string" />
 </resources>

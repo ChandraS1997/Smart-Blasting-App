@@ -11,7 +11,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_50sdp"
             android:elevation="@dimen/_3sdp"
             android:paddingBottom="@dimen/_1sdp"
             android:paddingTop="@dimen/_1sdp"
@@ -22,8 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
 
-
-          <ImageView
+            <ImageView
                 android:id="@+id/homeBtn"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
@@ -31,7 +30,8 @@
                 android:visibility="visible"
                 android:padding="@dimen/_1sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
                 android:id="@+id/pageTitle"
@@ -45,8 +45,24 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginEnd="@dimen/_10sdp"
                 app:layout_constraintStart_toEndOf="@id/homeBtn"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+              />
 
+
+            <TextView
+                android:id="@+id/project_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_18sdp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:fontFamily="@font/inter_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/_10sdp"
+                />
+<!--
             <ImageView
                 android:id="@+id/downBtn"
                 android:layout_width="@dimen/_15sdp"
@@ -55,7 +71,7 @@
                 android:visibility="visible"
                 android:padding="@dimen/_1sdp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

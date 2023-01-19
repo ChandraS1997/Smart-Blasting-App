@@ -12,153 +12,231 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="10dp"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TableRow
-                    android:layout_marginTop="@dimen/_5sdp"
+                    android:id="@+id/table_heading_row"
                     android:background="@color/_E1E2E6"
-                    android:padding="@dimen/_2sdp">
+                    android:padding="@dimen/_2sdp"
+                    android:layout_width="match_parent"
+                    android:weightSum="10">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="@string/hole_id" />
+                        android:text="@string/hole_id"
+                      android:gravity="center"
+                        />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="@string/raw_id" />
+                        android:text="@string/raw_id"
+                        android:gravity="center"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="@string/hole_no" />
+                        android:text="@string/hole_no"
+                        android:gravity="center"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="@string/burden" />
+                        android:text="@string/burden"
+                        android:gravity="center"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="@string/spacing" />
+                        android:text="@string/spacing"
+                        android:gravity="center"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="@string/hole_dia" />
+                        android:text="@string/hole_dia"
+                        android:gravity="center"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="@string/hole_angle" />
+                        android:text="@string/hole_angle"
+                        android:gravity="center"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="@string/hole_depth" />
+                        android:text="@string/hole_depth"
+                        android:gravity="center"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="@string/sub_grade" />
+                        android:text="@string/sub_grade"
+                        android:gravity="center"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black"
-                        android:text="@string/more" />
+                        android:text="@string/more"
+                        android:gravity="center"/>
 
 
                 </TableRow>
 
                 <TableRow
-                    android:background="#F0F7F7">
+                    android:id="@+id/table_row_data"
+                    android:background="#F0F7F7"
+                    android:weightSum="10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1"
+                    android:baselineAligned="false">
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:text="1"
-                        android:background="@drawable/table_cell_border" />
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@drawable/table_cell_border"
+                        android:gravity="center"
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:hint=""
+                        android:text=""
+                        android:editable="false"
+                        />
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_30sdp"
                         android:layout_weight="1"
-                      android:background="@drawable/table_cell_border" />
+                      android:background="@drawable/table_cell_border"
+                        android:gravity="center"
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:hint=""
+                        android:text=""
+                        android:editable="false"/>
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                      android:background="@drawable/table_cell_border" />
+                      android:background="@drawable/table_cell_border"
+                        android:gravity="center"
+                        android:imeOptions="flagNoExtractUi"
+                        android:layout_height="@dimen/_30sdp"
+                        android:singleLine="true"
+                        android:hint=""
+                        android:text=""
+                        android:editable="false"/>
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                      android:background="@drawable/table_cell_border" />
+                      android:background="@drawable/table_cell_border"
+                        android:gravity="center"
+                        android:imeOptions="flagNoExtractUi"
+                        android:layout_height="@dimen/_30sdp"
+                        android:singleLine="true"
+                        android:hint=""
+                        android:text=""
+                        android:editable="false"/>
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                      android:background="@drawable/table_cell_border" />
+                      android:background="@drawable/table_cell_border"
+                        android:gravity="center"
+                        android:imeOptions="flagNoExtractUi"
+                        android:layout_height="@dimen/_30sdp"
+                        android:singleLine="true"
+                        android:hint=""
+                        android:text=""
+                        android:editable="false"/>
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                      android:background="@drawable/table_cell_border" />
+                      android:background="@drawable/table_cell_border"
+                        android:gravity="center"
+                        android:imeOptions="flagNoExtractUi"
+                        android:layout_height="@dimen/_30sdp"
+                        android:singleLine="true"
+                        android:hint=""
+                        android:text=""
+                        android:editable="false"/>
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                      android:background="@drawable/table_cell_border" />
+                      android:background="@drawable/table_cell_border"
+                        android:gravity="center"
+                        android:imeOptions="flagNoExtractUi"
+                        android:layout_height="@dimen/_30sdp"
+                        android:singleLine="true"
+                        android:hint=""
+                        android:text=""
+                        android:editable="false"/>
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                      android:background="@drawable/table_cell_border" />
+                      android:background="@drawable/table_cell_border"
+                        android:gravity="center"
+                        android:imeOptions="flagNoExtractUi"
+                        android:layout_height="@dimen/_30sdp"
+                        android:singleLine="true"
+                        android:hint=""
+                        android:text=""
+                        android:editable="false"/>
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                      android:background="@drawable/table_cell_border" />
+                      android:background="@drawable/table_cell_border"
+                        android:gravity="center"
+                        android:imeOptions="flagNoExtractUi"
+                        android:layout_height="@dimen/_30sdp"
+                        android:singleLine="true"
+                        android:hint=""
+                        android:text=""
+                        android:editable="false"/>
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                      android:background="@drawable/table_cell_border" />
+                      android:background="@drawable/table_cell_border"
+                        android:gravity="center"
+                        android:imeOptions="flagNoExtractUi"
+                        android:layout_height="@dimen/_30sdp"
+                        android:singleLine="true"
+                        android:hint=""
+                        android:text=""
+                        android:editable="false"/>
 
 
                 </TableRow>

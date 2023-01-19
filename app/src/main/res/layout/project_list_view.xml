@@ -26,9 +26,9 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:text="Project"
-                android:fontFamily="@font/oxygen_regular"
+                android:fontFamily="@font/inter_regular"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

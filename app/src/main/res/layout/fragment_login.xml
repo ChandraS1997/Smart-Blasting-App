@@ -14,11 +14,15 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/_340sdp"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/_20sdp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:background="@drawable/login_centre_bg"
+            android:elevation="@dimen/_2sdp">
 
     <!--    <ImageView
             android:layout_width="match_parent"
@@ -32,13 +36,13 @@
 
         <ImageView
             android:id="@+id/user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_user"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:src="@drawable/ic_logo"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-          />
+            app:tint="@color/black" />
 
        <!-- <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/login_Txt"
@@ -55,8 +59,8 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:text="@string/log_in_to_continue"
-                android:textColor="@color/_FCFCFC"
-                android:textSize="@dimen/_15sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_19sdp"
                 android:fontFamily="@font/oxygen_regular"
                 app:layout_constraintTop_toBottomOf="@+id/user"
                 android:layout_marginTop="@dimen/_20sdp"
@@ -75,10 +79,10 @@
             android:hint="@string/enteremail"
             android:background="@drawable/login_edittext_bg"
             android:fontFamily="@font/oxygen_regular"
-            android:inputType="textEmailAddress"
+            android:inputType="text"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_10sdp"
-            android:textSize="@dimen/_11ssp"
+            android:textSize="@dimen/_14ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login_Txt"
@@ -87,6 +91,9 @@
             tools:ignore="TextFields"
             android:textColorHint="@color/black"
             android:layout_marginTop="@dimen/_20sdp"
+            android:elevation="@dimen/_2sdp"
+            android:imeOptions="flagNoExtractUi"
+
             />
 
 
@@ -99,7 +106,7 @@
             android:inputType="textPassword"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_10sdp"
-            android:textSize="@dimen/_11ssp"
+            android:textSize="@dimen/_14ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/emailEdt"
@@ -109,6 +116,8 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp"
             android:layout_marginLeft="@dimen/_20sdp"
+            android:elevation="@dimen/_2sdp"
+            android:imeOptions="flagNoExtractUi"
             />
 
         <Button
@@ -118,7 +127,7 @@
             android:background="@drawable/login_btn_bg"
             android:text="@string/login"
             android:textColor="@color/_C8C7CC"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_17ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/passwordEdt"

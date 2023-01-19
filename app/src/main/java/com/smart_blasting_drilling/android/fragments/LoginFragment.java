@@ -67,14 +67,18 @@ FragmentLoginBinding binding;
     }
 
   public boolean checkValidation() {
-    if (TextUtils.isEmpty(binding.emailEdt.getText().toString())) {
+    /*if (TextUtils.isEmpty(binding.emailEdt.getText().toString())) {
         showSnackBar(binding.getRoot(), mContext.getString(R.string.enter_email));
         return false;
-    }
-    if (!ValidationUtils.validateEmail(binding.emailEdt.getText().toString())) {
+    }*/
+    /*if (!ValidationUtils.validateEmail(binding.emailEdt.getText().toString())) {
         showSnackBar(binding.getRoot(), mContext.getString(R.string.enter_email_valid));
         return false;
-    }
+    }*/
+      if (TextUtils.isEmpty(binding.emailEdt.getText().toString())) {
+          showSnackBar(binding.getRoot(), mContext.getString(R.string.enter_email));
+          return false;
+      }
     if (TextUtils.isEmpty(binding.passwordEdt.getText().toString())) {
         showSnackBar(binding.getRoot(), mContext.getString(R.string.please_enter_password));
         return false;
