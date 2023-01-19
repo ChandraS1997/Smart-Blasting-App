@@ -27,7 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/poppins_semi_bold"
+            android:fontFamily="@font/inter_semi_bold"
             android:gravity="center"
             android:text="@string/no_internet_connection"
             android:textColor="@color/_A8A8A8"
