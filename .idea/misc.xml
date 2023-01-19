@@ -15,9 +15,11 @@
         <entry key="app/src/main/res/drawable/ic_baseline_wifi_off_24.xml" value="0.1815" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.181" />
         <entry key="app/src/main/res/drawable/icn_next_arrow.xml" value="0.181" />
+        <entry key="app/src/main/res/drawable/login_centre_bg.xml" value="0.136" />
         <entry key="app/src/main/res/drawable/login_edittext_bg.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/search_bg.xml" value="0.181" />
         <entry key="app/src/main/res/drawable/search_cursor.xml" value="0.181" />
+        <entry key="app/src/main/res/drawable/table_cell_border.xml" value="0.136" />
         <entry key="app/src/main/res/drawable/white_10r_bg.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/white_20r_bg.xml" value="0.181" />
         <entry key="app/src/main/res/layout-sw600dp/activity_home.xml" value="0.1" />
@@ -28,27 +30,30 @@
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.12317708333333334" />
-        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.22" />
         <entry key="app/src/main/res/layout/adapter_home.xml" value="0.4359464627151052" />
-        <entry key="app/src/main/res/layout/adapter_homenew.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/adapter_homenew.xml" value="0.15" />
         <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/bottom_nav_layout.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/bottom_hole_navigation.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/bottom_nav_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.17" />
         <entry key="app/src/main/res/layout/custom_loader.xml" value="0.24635416666666668" />
-        <entry key="app/src/main/res/layout/downlodelist_dialog.xml" value="0.15" />
+        <entry key="app/src/main/res/layout/downlodelist_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/drawer_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/drilling_lay.xml" value="0.20222317229585293" />
-        <entry key="app/src/main/res/layout/fragment_hole_details_table.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/fragment_home_fragment.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_hole_details_table.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_home_fragment.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_project_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/header_layout.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/hole_detail_activity.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/login_centre_bg.xml" value="0.20222317229585293" />
         <entry key="app/src/main/res/layout/login_edittext_bg.xml" value="0.11614583333333334" />
         <entry key="app/src/main/res/layout/no_internet.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/layout/project_info_layout.xml" value="0.18" />
         <entry key="app/src/main/res/layout/project_list_view.xml" value="0.22" />
         <entry key="app/src/main/res/layout/search_bg.xml" value="0.20222317229585293" />
-        <entry key="app/src/main/res/layout/table_view.xml" value="0.18257645968489342" />
+        <entry key="app/src/main/res/layout/table_view.xml" value="0.22" />
       </map>
     </option>
   </component>
@@ -57,12 +62,5 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="VisualizationToolProject">
-    <option name="state">
-      <ProjectState>
-        <option name="scale" value="0.22" />
-      </ProjectState>
-    </option>
   </component>
 </project>

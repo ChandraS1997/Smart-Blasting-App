@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/headerLayout"
+            layout="@layout/header_layout" />
+
+        <fragment
+            android:id="@+id/nav_host_hole"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/headerLayout"
+            app:layout_constraintVertical_bias="0.0"
+            app:navGraph="@navigation/hole_nav"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_hole_navigation"/>
+
+
+        <include
+            android:id="@+id/bottom_hole_navigation"
+            layout="@layout/bottom_hole_navigation" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -102,7 +102,7 @@
                 android:id="@+id/pageTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_15sdp"
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:fontFamily="@font/oxygen_bold"

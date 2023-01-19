@@ -74,7 +74,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:fontFamily="@font/oxygen_bold"
-                    android:textSize="@dimen/_8sdp"
+                    android:textSize="@dimen/_11sdp"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -124,7 +124,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:fontFamily="@font/oxygen_bold"
-                    android:textSize="@dimen/_8sdp"
+                    android:textSize="@dimen/_11sdp"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -175,7 +175,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:fontFamily="@font/oxygen_bold"
-                    android:textSize="@dimen/_8sdp"
+                    android:textSize="@dimen/_11sdp"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

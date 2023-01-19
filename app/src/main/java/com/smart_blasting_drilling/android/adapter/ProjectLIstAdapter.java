@@ -1,6 +1,7 @@
 package com.smart_blasting_drilling.android.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.activity.HoleDetailActivity;
+import com.smart_blasting_drilling.android.activity.HomeActivity;
 import com.smart_blasting_drilling.android.app_utils.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.AdapterHomeBinding;
 import com.smart_blasting_drilling.android.databinding.AdapterHomenewBinding;
@@ -41,10 +44,14 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-       /* ViewHolder vholder = (ViewHolder) holder;
+        ViewHolder vholder = (ViewHolder) holder;
         vholder.itemView.setOnClickListener(v ->{
-            Navigation.findNavController(v).navigate(R.id.patientInfoFragment);
-        });*/
+          //  Navigation.findNavController(v).navigate(R.id.HoleDetailsTableViewFragment);
+         //   Navigation.findNavController(v)
+            Intent i = new Intent(ctx, HoleDetailActivity.class);
+            ctx.startActivity(i);
+
+        });
     }
 
     @Override
