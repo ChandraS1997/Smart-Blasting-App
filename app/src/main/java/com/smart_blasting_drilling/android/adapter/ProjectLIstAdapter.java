@@ -1,4 +1,4 @@
-package com.bdapp.hospital_erp.ui.home.Patient.Adapters;
+package com.smart_blasting_drilling.android.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,11 +20,11 @@ import java.util.List;
 public class ProjectLIstAdapter extends BaseRecyclerAdapter {
 
     Context ctx;
-    List<String> patintList = new ArrayList<>();
+    List<String> projectList = new ArrayList<>();
 
-    public ProjectLIstAdapter(Context ctx, List<String> patintList) {
+    public ProjectLIstAdapter(Context ctx, List<String> projectList) {
         this.ctx = ctx;
-        this.patintList = patintList;
+        this.projectList = projectList;
     }
 
     @Override

@@ -18,6 +18,11 @@
         <item name="android:windowMinWidthMajor">60%</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
+    <style name="Theme_Dialog" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowMinWidthMinor">80%</item>
+        <item name="android:windowMinWidthMajor">80%</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
     <style name="Theme.App" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/transparent</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>

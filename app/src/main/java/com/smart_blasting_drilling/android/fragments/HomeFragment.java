@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.activity.BaseActivity;
+import com.smart_blasting_drilling.android.adapter.ProjectLIstAdapter;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.FragmentHomeFragmentBinding;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
@@ -23,7 +24,7 @@ public class HomeFragment extends BaseFragment
 {
 FragmentHomeFragmentBinding binding;
     List<String> projectList = new ArrayList<>();
-    com.bdapp.hospital_erp.ui.home.Patient.Adapters.ProjectLIstAdapter projectLIstAdapter;
+ProjectLIstAdapter projectLIstAdapter;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,7 @@ FragmentHomeFragmentBinding binding;
         if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_fragment, container, false);
         }
-        projectLIstAdapter = new com.bdapp.hospital_erp.ui.home.Patient.Adapters.ProjectLIstAdapter(mContext, projectList);
+        projectLIstAdapter = new ProjectLIstAdapter(mContext, projectList);
         binding.projectListRv.setAdapter(projectLIstAdapter);
         return binding.getRoot();
     }

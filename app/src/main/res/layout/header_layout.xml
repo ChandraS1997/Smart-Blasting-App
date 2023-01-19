@@ -12,10 +12,11 @@
             android:id="@+id/headerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="@dimen/_15sdp"
-            android:paddingBottom="@dimen/_5sdp"
-            android:paddingTop="@dimen/_15sdp"
+            android:elevation="@dimen/_3sdp"
+            android:paddingBottom="@dimen/_1sdp"
+            android:paddingTop="@dimen/_1sdp"
             android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -89,11 +90,11 @@
 
           <ImageView
                 android:id="@+id/homeBtn"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:src="@drawable/icn_home"
                 android:visibility="visible"
-                android:padding="@dimen/_3sdp"
+                android:padding="@dimen/_1sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -101,7 +102,7 @@
                 android:id="@+id/pageTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="@dimen/_10sdp"
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:fontFamily="@font/oxygen_bold"
@@ -113,11 +114,11 @@
 
             <ImageView
                 android:id="@+id/downBtn"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:src="@drawable/icn_downlodeh"
                 android:visibility="visible"
-                android:padding="@dimen/_3sdp"
+                android:padding="@dimen/_1sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

@@ -5,14 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.databinding.ActivityHomeBinding;
+import com.smart_blasting_drilling.android.dialogs.DowblodeListDialog;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 import com.smart_blasting_drilling.android.utils.TextUtil;
 import com.smart_blasting_drilling.android.utils.ViewUtil;
@@ -50,6 +54,37 @@ public class HomeActivity extends BaseActivity
                 // }
             }
         });*/
+
+        binding.appLayout.headerLayout.downBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.homeFragment)
+                    {
+                    // navController.navigate(R.id.groceryListFragment);
+                  //  finish();
+
+                        //Add this before showing dialog.
+
+
+                        showDownlodeListDialog(new DowblodeListDialog.DownlodeLIstDialogListener() {
+                            @Override
+                            public void onOk(DowblodeListDialog dialogFragment) {
+                                dialogFragment.dismiss();
+                                //servicelist.add(obj);
+                              //  serviceListAdapters.notifyDataSetChanged();
+                               // dialogFragment.dismiss();
+                            }
+
+                            @Override
+                            public void onCancel(DowblodeListDialog dialogFragment) {
+                                //AddServiceDialog.ServiceDialogListener.super.onCancel(dialogFragment);
+                                dialogFragment.dismiss();
+                            }
+                        });
+                 }
+
+            }
+        });
     /*    binding.appLayout.headerLayout.backBtn.setOnClickListener(view -> {
            // if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.homeFragment)
             //{
@@ -122,10 +157,29 @@ public class HomeActivity extends BaseActivity
 
 
     }
+
+    private void showDownlodeListDialog(DowblodeListDialog.DownlodeLIstDialogListener downlodeLIstDialogListener)
+    {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        DowblodeListDialog infoDialogFragment = DowblodeListDialog.getInstance(downlodeLIstDialogListener);
+        infoDialogFragment.setupListener(downlodeLIstDialogListener);
+        ft.add(infoDialogFragment, DowblodeListDialog.TAG);
+        ft.commitAllowingStateLoss();
+    }
+
     public void setPageTitle(String title) {
         if (!TextUtil.isEmpty(title)) {
             binding.appLayout.headerLayout.pageTitle.setText(TextUtil.getString(title));
         }
     }
+   /* public void showDownlodeListDialog(DownlodeLIstDIalog.DownlodeLIstDialogListener listener) {
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        DownlodeLIstDIalog infoDialogFragment = DowblodeListDialog.getInstance(listener);
+        infoDialogFragment.setupListener(listener);
+        ft.add(infoDialogFragment, DowblodeListDialog.TAG);
+        ft.commitAllowingStateLoss();
+    }*/
 
 }
