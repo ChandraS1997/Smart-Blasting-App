@@ -5,12 +5,12 @@
     android:id="@+id/hole_nav"
     app:startDestination="@id/HoleDetailsTableViewFragment">
 
-
     <fragment
         android:id="@+id/HoleDetailsTableViewFragment"
         android:name="com.smart_blasting_drilling.android.fragments.HoleDetailsTableFragment"
         android:label="HoleDetailsTableViewFragment"
         tools:layout="@layout/fragment_hole_details_table" />
+
     <fragment
         android:id="@+id/MapViewFrament"
         android:name="com.smart_blasting_drilling.android.fragments.MapViewFrament"

@@ -19,224 +19,222 @@
 
                 <TableRow
                     android:id="@+id/table_heading_row"
+                    android:layout_width="match_parent"
                     android:background="@color/_E1E2E6"
                     android:padding="@dimen/_2sdp"
-                    android:layout_width="match_parent"
                     android:weightSum="10">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:text="@string/hole_id"
-                      android:gravity="center"
-                        />
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:text="@string/raw_id"
-                        android:gravity="center"/>
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:text="@string/hole_no"
-                        android:gravity="center"/>
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:text="@string/burden"
-                        android:gravity="center"/>
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:text="@string/spacing"
-                        android:gravity="center"/>
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:text="@string/hole_dia"
-                        android:gravity="center"/>
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:text="@string/hole_angle"
-                        android:gravity="center"/>
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:text="@string/hole_depth"
-                        android:gravity="center"/>
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:text="@string/sub_grade"
-                        android:gravity="center"/>
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="@color/black"
+                        android:gravity="center"
                         android:text="@string/more"
-                        android:gravity="center"/>
+                        android:textColor="@color/black" />
 
 
                 </TableRow>
 
                 <TableRow
                     android:id="@+id/table_row_data"
-                    android:background="#F0F7F7"
-                    android:weightSum="10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#F0F7F7"
+                    android:baselineAligned="false"
                     android:stretchColumns="1"
-                    android:baselineAligned="false">
+                    android:weightSum="10">
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="@dimen/_30sdp"
+                        android:layout_weight="1"
                         android:background="@drawable/table_cell_border"
-                        android:gravity="center"
-                        android:imeOptions="flagNoExtractUi"
-                        android:singleLine="true"
-                        android:hint=""
-                        android:text=""
                         android:editable="false"
-                        />
+                        android:gravity="center"
+                        android:hint=""
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
 
                     <EditText
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_weight="1"
-                      android:background="@drawable/table_cell_border"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
                         android:gravity="center"
+                        android:hint=""
                         android:imeOptions="flagNoExtractUi"
                         android:singleLine="true"
-                        android:hint=""
-                        android:text=""
-                        android:editable="false"/>
+                        android:text="" />
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                      android:background="@drawable/table_cell_border"
-                        android:gravity="center"
-                        android:imeOptions="flagNoExtractUi"
                         android:layout_height="@dimen/_30sdp"
-                        android:singleLine="true"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
                         android:hint=""
-                        android:text=""
-                        android:editable="false"/>
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                      android:background="@drawable/table_cell_border"
-                        android:gravity="center"
-                        android:imeOptions="flagNoExtractUi"
                         android:layout_height="@dimen/_30sdp"
-                        android:singleLine="true"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
                         android:hint=""
-                        android:text=""
-                        android:editable="false"/>
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                      android:background="@drawable/table_cell_border"
-                        android:gravity="center"
-                        android:imeOptions="flagNoExtractUi"
                         android:layout_height="@dimen/_30sdp"
-                        android:singleLine="true"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
                         android:hint=""
-                        android:text=""
-                        android:editable="false"/>
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                      android:background="@drawable/table_cell_border"
-                        android:gravity="center"
-                        android:imeOptions="flagNoExtractUi"
                         android:layout_height="@dimen/_30sdp"
-                        android:singleLine="true"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
                         android:hint=""
-                        android:text=""
-                        android:editable="false"/>
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                      android:background="@drawable/table_cell_border"
-                        android:gravity="center"
-                        android:imeOptions="flagNoExtractUi"
                         android:layout_height="@dimen/_30sdp"
-                        android:singleLine="true"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
                         android:hint=""
-                        android:text=""
-                        android:editable="false"/>
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                      android:background="@drawable/table_cell_border"
-                        android:gravity="center"
-                        android:imeOptions="flagNoExtractUi"
                         android:layout_height="@dimen/_30sdp"
-                        android:singleLine="true"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
                         android:hint=""
-                        android:text=""
-                        android:editable="false"/>
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                      android:background="@drawable/table_cell_border"
-                        android:gravity="center"
-                        android:imeOptions="flagNoExtractUi"
                         android:layout_height="@dimen/_30sdp"
-                        android:singleLine="true"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
                         android:hint=""
-                        android:text=""
-                        android:editable="false"/>
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
 
                     <EditText
                         android:layout_width="0dp"
-                        android:layout_weight="1"
-                      android:background="@drawable/table_cell_border"
-                        android:gravity="center"
-                        android:imeOptions="flagNoExtractUi"
                         android:layout_height="@dimen/_30sdp"
-                        android:singleLine="true"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
                         android:hint=""
-                        android:text=""
-                        android:editable="false"/>
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
 
 
                 </TableRow>

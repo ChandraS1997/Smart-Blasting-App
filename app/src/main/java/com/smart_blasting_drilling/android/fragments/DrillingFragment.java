@@ -1,5 +1,6 @@
 package com.smart_blasting_drilling.android.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +15,18 @@ import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.activity.BaseActivity;
 import com.smart_blasting_drilling.android.adapter.ProjectLIstAdapter;
 import com.smart_blasting_drilling.android.app.BaseFragment;
-import com.smart_blasting_drilling.android.databinding.FragmentHomeFragmentBinding;
+import com.smart_blasting_drilling.android.databinding.FragmentDrillingFragmentBinding;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends BaseFragment
-{
-FragmentHomeFragmentBinding binding;
+public class DrillingFragment extends BaseFragment {
+
+    FragmentDrillingFragmentBinding binding;
     List<String> projectList = new ArrayList<>();
-ProjectLIstAdapter projectLIstAdapter;
+    ProjectLIstAdapter projectLIstAdapter;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,13 +41,15 @@ ProjectLIstAdapter projectLIstAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        StatusBarUtils.statusBarColor(requireActivity(), R.color.white);
-        ((BaseActivity) mContext).hideKeyboard((BaseActivity) mContext);
         if (binding == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_fragment, container, false);
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_drilling_fragment, container, false);
+
+            ((BaseActivity) mContext).hideKeyboard((BaseActivity) mContext);
+
+            projectLIstAdapter = new ProjectLIstAdapter(mContext, projectList);
+            binding.projectListRv.setAdapter(projectLIstAdapter);
+
         }
-        projectLIstAdapter = new ProjectLIstAdapter(mContext, projectList);
-        binding.projectListRv.setAdapter(projectLIstAdapter);
         return binding.getRoot();
     }
 

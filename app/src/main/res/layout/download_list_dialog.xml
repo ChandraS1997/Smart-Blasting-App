@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/mainCardContainerView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="10dp"
+            app:cardUseCompatPadding="true"
+            android:background="@color/white"
+            android:layout_marginVertical="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_10sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/headerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/showStartDateTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:text="2022/01/04"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14ssp"
+                        android:gravity="center"
+                        app:layout_constraintEnd_toStartOf="@id/viewLine"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <View
+                        android:id="@+id/viewLine"
+                        android:layout_width="1dp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/black"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toStartOf="@id/showEndDateTxt"
+                        app:layout_constraintStart_toEndOf="@id/showStartDateTxt"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/showEndDateTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:text="2022/01/04"
+                        android:fontFamily="@font/inter_regular"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintEnd_toStartOf="@id/viewLineEndDate"
+                        app:layout_constraintStart_toEndOf="@id/viewLine"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <View
+                        android:id="@+id/viewLineEndDate"
+                        android:layout_width="1dp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/black"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toStartOf="@id/goBtnLayout"
+                        app:layout_constraintStart_toEndOf="@id/showEndDateTxt"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <LinearLayout
+                        android:id="@+id/goBtnLayout"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/showEndDateTxt"
+                        app:layout_constraintStart_toEndOf="@id/viewLineEndDate"
+                        app:layout_constraintTop_toTopOf="@id/showEndDateTxt">
+
+                        <Button
+                            android:id="@+id/goBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:background="@drawable/btn_shape"
+                            android:text="@string/go"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="@dimen/_25sdp"
+                            android:fontFamily="@font/oxygen_regular"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_16sdp"
+                            />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/viewLineBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@color/black"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/projectListRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_200sdp"
+                    android:orientation="vertical"
+                    tools:itemCount="4"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    tools:listitem="@layout/project_list_view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/viewLineBottom"
+                    android:layout_marginBottom="@dimen/_10sdp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

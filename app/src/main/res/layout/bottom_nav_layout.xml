@@ -5,77 +5,49 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="@dimen/_50sdp"
         android:background="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!--<androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/designBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-            <ImageView
-                android:id="@+id/designImg"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:padding="@dimen/_2sdp"
-                android:src="@drawable/icn_design"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/design"
-                android:textColor="@color/_FFA722"
-                android:layout_gravity="center"
-               app:layout_constraintTop_toBottomOf="@+id/designImg"
-                app:layout_constraintLeft_toLeftOf="parent"
-                />
-
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-       <LinearLayout
+        <LinearLayout
+            android:visibility="gone"
             android:id="@+id/designBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:background="@color/_FFA722"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/drillingBtn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-           android:background="@color/_FFA722">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/designImg"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
                     android:padding="@dimen/_1sdp"
                     android:src="@drawable/icn_design"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/designTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/oxygen_bold"
                     android:text="@string/design"
                     android:textColor="@color/white"
-                    android:layout_gravity="center"
-             app:layout_constraintTop_toBottomOf="@+id/designImg"
+                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:fontFamily="@font/oxygen_bold"
-                    android:textSize="@dimen/_11sdp"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/designImg" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -87,18 +59,11 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
+            android:background="@color/_FFA722"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/blasstingBtn"
+            app:layout_constraintEnd_toStartOf="@id/blastingBtn"
             app:layout_constraintStart_toEndOf="@id/designBtn"
             app:layout_constraintTop_toTopOf="parent">
-
-           <!-- <ImageView
-                android:id="@+id/historyImg"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_gravity="center"
-                android:padding="@dimen/_2sdp"
-                android:src="@drawable/icn_drilling" />-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -106,49 +71,40 @@
 
                 <ImageView
                     android:id="@+id/drillingImg"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
                     android:padding="@dimen/_1sdp"
                     android:src="@drawable/icn_drilling"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/drillingTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/oxygen_bold"
                     android:text="@string/drilling"
                     android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    app:layout_constraintTop_toBottomOf="@+id/drillingImg"
+                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:fontFamily="@font/oxygen_bold"
-                    android:textSize="@dimen/_11sdp"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/drillingImg" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
-<!--  <Space
-            android:id="@+id/space"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/drillingBtn"
-            app:layout_constraintEnd_toStartOf="@id/blasstingBtn"
-            app:layout_constraintTop_toTopOf="parent" />-->
-
         <LinearLayout
-            android:id="@+id/blasstingBtn"
+            android:id="@+id/blastingBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/drillingBtn"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/drillingBtn"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -157,40 +113,40 @@
 
                 <ImageView
                     android:id="@+id/blasstingImg"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
                     android:padding="@dimen/_1sdp"
                     android:src="@drawable/icn_blasting"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/blastingTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/oxygen_bold"
                     android:text="@string/blasting"
                     android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    app:layout_constraintTop_toBottomOf="@+id/blasstingImg"
+                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:fontFamily="@font/oxygen_bold"
-                    android:textSize="@dimen/_11sdp"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/blasstingImg" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-          <!--  <ImageView
-                android:id="@+id/blastImg"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_gravity="center"
-                android:padding="@dimen/_2sdp"
-                android:src="@drawable/icn_blasting" />-->
+            <!--  <ImageView
+                  android:id="@+id/blastImg"
+                  android:layout_width="@dimen/_50sdp"
+                  android:layout_height="@dimen/_50sdp"
+                  android:layout_gravity="center"
+                  android:padding="@dimen/_2sdp"
+                  android:src="@drawable/icn_blasting" />-->
 
         </LinearLayout>
--->
+        -->
         <!--<LinearLayout
             android:id="@+id/notificationBtn"
             android:layout_width="0dp"

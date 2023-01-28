@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -11,68 +11,36 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:orientation="horizontal">
-
-
-<!--
-        <androidx.cardview.widget.CardView
-            android:id="@+id/alertView"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_width="@dimen/_350sdp"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp"
-            app:cardUseCompatPadding="true"
-            android:background="@color/white"
-            android:layout_margin="@dimen/_10sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">-->
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/head_lay"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:background="@color/_FFA722"
-            android:elevation="@dimen/_3sdp"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingTop="@dimen/_1sdp"
-            android:paddingEnd="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_1sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/homeBtn"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:src="@drawable/icn_home"
-                android:visibility="visible"
-                android:padding="@dimen/_1sdp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-<!--
-            <TextView
-                android:id="@+id/holeTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:fontFamily="@font/inter_bold"
-                android:gravity="center"
-                android:text="Hole Parameters"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_18sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/head_lay"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:background="@color/_FFA722"
+                android:elevation="@dimen/_3sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingTop="@dimen/_1sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_1sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />-->
+                app:layout_constraintTop_toTopOf="parent">
 
+                <ImageView
+                    android:id="@+id/homeBtn"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
+                    android:src="@drawable/icn_home"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -80,915 +48,593 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/head_lay">
 
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingEnd="@dimen/_5sdp"
-                    android:paddingStart="@dimen/_5sdp">
+                    android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_5sdp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/middlelay"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        app:layout_constraintTop_toTopOf="parent"
+                        android:paddingHorizontal="@dimen/_8sdp"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent">
-
-
-                        <TextView
-                            android:id="@+id/starTxtProName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="@color/_CC252C"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toTopOf="@+id/projectNameTitle"
-                            android:text="@string/star"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            />
-
-                        <TextView
-                            android:id="@+id/projectNameTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="@string/project_name"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            app:layout_constraintStart_toEndOf="@+id/starTxtProName"
-                            />
-
-
-                        <TextView
-                            android:id="@+id/projectName"
-                            android:layout_width="@dimen/_150sdp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/grey"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:text="@string/project_name"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_regular"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:layout_marginStart="@dimen/_10sdp"
-
-                            />
-
-                        <View
-                            android:id="@+id/viewLinePName"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@color/black"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/projectNameTitle"
-                            />
-
-
-                        <TextView
-                            android:id="@+id/starSiteName"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="@color/_CC252C"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLinePName"
-                            android:text="@string/star"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                           app:layout_constraintTop_toTopOf="@+id/siteNameTitle"
-                            android:layout_marginLeft="@dimen/_10sdp"
-
-                            />
-
-                        <TextView
-                            android:id="@+id/siteNameTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLinePName"
-                            android:text="@string/site_name"
-                            app:layout_constraintTop_toTopOf="@+id/spinnerSiteName"
-                            app:layout_constraintBottom_toBottomOf="@+id/spinnerSiteName"
-                            app:layout_constraintStart_toEndOf="@+id/starSiteName"
-
-
-                            />
-
-                        <!--  <TextView
-                              android:id="@+id/siteName"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:textSize="@dimen/_18sdp"
-                              android:textColor="@color/grey"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLinePName"
-                              android:text="@string/site_name"
-                              app:layout_constraintRight_toRightOf="parent"
-                              android:layout_marginTop="@dimen/_10sdp"
-                              android:fontFamily="@font/inter_regular"
-                              android:layout_marginRight="@dimen/_10sdp"
-                              />
-      -->
-
-
-
-                        <com.smart_blasting_drilling.android.utils.EditSpinner
-                            android:id="@+id/spinnerSiteName"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_50sdp"
-                            app:layout_constraintStart_toStartOf="@+id/projectName"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@drawable/spinner_site_name"
-                            android:editable="false"
-                            android:textColorHint="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            android:hint="@string/site_name"
-                            android:textColor="@color/_414346"
-                            android:textSize="@dimen/_18ssp"
-                            app:dropDownDrawable="@drawable/downarro"
-                            app:dropDownDrawableHeight="@dimen/_8sdp"
-                            app:dropDownDrawableSpacing="15dp"
-                            app:dropDownDrawableWidth="@dimen/_14ssp"
-                            app:dropDownHeight="@dimen/_150sdp"
-                            android:paddingEnd="@dimen/_15sdp"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            app:layout_constraintStart_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLinePName" />
-
-                        <View
-                            android:id="@+id/viewLineSite"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@color/black"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/siteNameTitle" />
-
-
-                        <TextView
-                            android:id="@+id/starSelectTeam"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="@color/_CC252C"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineSite"
-                            android:text="@string/star"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                           app:layout_constraintTop_toTopOf="@+id/selectTeamTitle"
-                            android:layout_marginLeft="@dimen/_10sdp"
-
-                            />
-
-                        <TextView
-                            android:id="@+id/selectTeamTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineSite"
-                            android:text="@string/select_team"
-                            app:layout_constraintTop_toTopOf="@+id/spinnerSelectTeam"
-                            app:layout_constraintBottom_toBottomOf="@+id/spinnerSelectTeam"
-                            app:layout_constraintStart_toEndOf="@+id/starSiteName"
-
-                            />
-
-                        <!-- <TextView
-                             android:id="@+id/selectTeam"
-                             android:layout_width="0dp"
-                             android:layout_height="wrap_content"
-                             android:textSize="@dimen/_18sdp"
-                             android:textColor="@color/grey"
-                             app:layout_constraintTop_toBottomOf="@+id/viewLineSite"
-                             android:text="@string/select_team"
-                             app:layout_constraintRight_toRightOf="parent"
-                             android:layout_marginTop="@dimen/_10sdp"
-                             android:fontFamily="@font/inter_regular"
-                             android:layout_marginRight="@dimen/_10sdp"
-                             />-->
-
-
-                        <com.smart_blasting_drilling.android.utils.EditSpinner
-                            android:id="@+id/spinnerSelectTeam"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_50sdp"
-                            app:layout_constraintStart_toStartOf="@+id/spinnerSiteName"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@drawable/spinner_site_name"
-                            android:editable="false"
-                            android:hint="@string/select_team"
-                            android:textColor="@color/_414346"
-                            android:textColorHint="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            android:textSize="@dimen/_18ssp"
-                            android:paddingEnd="@dimen/_15sdp"
-                            app:dropDownDrawable="@drawable/downarro"
-                            app:dropDownDrawableHeight="@dimen/_8sdp"
-                            app:dropDownDrawableSpacing="15dp"
-                            app:dropDownDrawableWidth="@dimen/_14ssp"
-                            app:dropDownHeight="@dimen/_150sdp"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineSite" />
-
-
-
-                        <View
-                            android:id="@+id/viewLineSelectTeam"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@color/black"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/selectTeamTitle" />
-
-
-
-                        <TextView
-                            android:id="@+id/starRig"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="@color/_CC252C"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineSelectTeam"
-                            android:text="@string/star"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/RigTitle"
-                            android:layout_marginStart="@dimen/_10sdp"
-
-                            />
-
-                        <TextView
-                            android:id="@+id/RigTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineSelectTeam"
-                            android:text="@string/rig"
-                            app:layout_constraintStart_toEndOf="@+id/starSiteName"
-                            app:layout_constraintTop_toTopOf="@+id/spinnerRig"
-                            app:layout_constraintBottom_toBottomOf="@+id/spinnerRig"
-
-                            />
-
-                        <!--  <TextView
-                              android:id="@+id/rig"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:textSize="@dimen/_18sdp"
-                              android:textColor="@color/grey"
-                              app:layout_constraintTop_toBottomOf="@+id/viewLineSelectTeam"
-                              android:text="@string/rig"
-                              app:layout_constraintRight_toRightOf="parent"
-                              android:layout_marginTop="@dimen/_10sdp"
-                              android:fontFamily="@font/inter_regular"
-                              android:layout_marginRight="@dimen/_10sdp"
-                              />-->
-
-
-                        <com.smart_blasting_drilling.android.utils.EditSpinner
-                            android:id="@+id/spinnerRig"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_30sdp"
-                            app:layout_constraintStart_toStartOf="@+id/spinnerSelectTeam"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@drawable/spinner_site_name"
-                            android:editable="false"
-                            android:hint="@string/rig"
-                            android:textColor="@color/_414346"
-                            android:textSize="@dimen/_18ssp"
-                            android:textColorHint="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            app:dropDownDrawable="@drawable/downarro"
-                            app:dropDownDrawableHeight="@dimen/_8sdp"
-                            app:dropDownDrawableSpacing="15dp"
-                            app:dropDownDrawableWidth="@dimen/_14ssp"
-                            app:dropDownHeight="@dimen/_150sdp"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineSelectTeam"
-                            android:paddingEnd="@dimen/_15sdp"
-                            android:layout_marginStart="@dimen/_10sdp"/>
-
-
-                        <View
-                            android:id="@+id/viewLineRig"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@color/black"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/RigTitle" />
-
-
-                        <TextView
-                            android:id="@+id/starDrillingPattern"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="@color/_CC252C"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineRig"
-                            android:text="@string/star"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                         app:layout_constraintTop_toTopOf="@+id/drillingPatternTitle"
-                            android:layout_marginLeft="@dimen/_10sdp"
-
-                            />
-
-                        <TextView
-                            android:id="@+id/drillingPatternTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/grey"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineRig"
-                            android:text="@string/drilling_pattern"
-                         app:layout_constraintTop_toTopOf="@+id/spinnerDrillingPattern"
-                            app:layout_constraintBottom_toBottomOf="@+id/spinnerDrillingPattern"
-                            app:layout_constraintStart_toEndOf="@+id/starSiteName"
-
-                            />
-
-                        <!--   <TextView
-                               android:id="@+id/drillingPattern"
-                               android:layout_width="0dp"
-                               android:layout_height="wrap_content"
-                               android:textSize="@dimen/_18sdp"
-                               android:textColor="@color/grey"
-                               app:layout_constraintTop_toBottomOf="@+id/viewLineRig"
-                               android:text="@string/drilling_pattern"
-                               app:layout_constraintRight_toRightOf="parent"
-                               android:layout_marginTop="@dimen/_10sdp"
-                               android:fontFamily="@font/inter_regular"
-                               android:layout_marginRight="@dimen/_10sdp"
-                               />-->
-
-
-
-
-                        <com.smart_blasting_drilling.android.utils.EditSpinner
-                            android:id="@+id/spinnerDrillingPattern"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_50sdp"
-                            app:layout_constraintStart_toStartOf="@+id/spinnerRig"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@drawable/spinner_site_name"
-                            android:editable="false"
-                            android:hint="@string/drilling_pattern"
-                            android:paddingEnd="@dimen/_15sdp"
-                            android:textColor="@color/_414346"
-                            android:textSize="@dimen/_18ssp"
-                            app:dropDownDrawable="@drawable/downarro"
-                            app:dropDownDrawableHeight="@dimen/_8sdp"
-                            app:dropDownDrawableSpacing="15dp"
-                            app:dropDownDrawableWidth="@dimen/_14ssp"
-                            app:dropDownHeight="@dimen/_150sdp"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineRig" />
-
-
-
-                        <View
-                            android:id="@+id/viewLineDrillingPattern"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@color/black"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/drillingPatternTitle" />
-
-                        ///////////
-                        <TextView
-                            android:id="@+id/starDrillingTYpe"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="@color/_CC252C"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineDrillingPattern"
-                            android:text="@string/star"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                           app:layout_constraintTop_toTopOf="@+id/drillingTypeTitle"
-                            android:layout_marginLeft="@dimen/_10sdp"
-
-                            />
-
-                        <TextView
-                            android:id="@+id/drillingTypeTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/grey"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineDrillingPattern"
-                            android:text="@string/drilling_type"
-                         app:layout_constraintTop_toTopOf="@+id/spinnerDrillingType"
-                            app:layout_constraintBottom_toBottomOf="@+id/spinnerDrillingType"
-                            app:layout_constraintStart_toEndOf="@+id/starSiteName"
-
-                            />
-
-                        <!--  <TextView
-                              android:id="@+id/drillingType"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:textSize="@dimen/_18sdp"
-                              android:textColor="@color/grey"
-                              app:layout_constraintTop_toBottomOf="@+id/viewLineDrillingPattern"
-                              android:text="@string/drilling_type"
-                              app:layout_constraintRight_toRightOf="parent"
-                              android:layout_marginTop="@dimen/_10sdp"
-                              android:fontFamily="@font/inter_regular"
-                              android:layout_marginRight="@dimen/_10sdp"
-                              />
-      -->
-
-                        <com.smart_blasting_drilling.android.utils.EditSpinner
-                            android:id="@+id/spinnerDrillingType"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_50sdp"
-                            app:layout_constraintStart_toStartOf="@+id/spinnerDrillingPattern"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@drawable/spinner_site_name"
-                            android:editable="false"
-                            android:hint="@string/drilling_type"
-                            android:textColor="@color/_414346"
-                            android:textSize="@dimen/_15ssp"
-                            app:dropDownDrawable="@drawable/downarro"
-                            app:dropDownDrawableHeight="@dimen/_8sdp"
-                            app:dropDownDrawableSpacing="15dp"
-                            app:dropDownDrawableWidth="@dimen/_14ssp"
-                            app:dropDownHeight="@dimen/_150sdp"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineDrillingPattern"
-                            android:paddingEnd="@dimen/_15sdp"
-                            android:layout_marginStart="@dimen/_5sdp"/>
-
-
-
-                        <View
-                            android:id="@+id/viewLineDrillingType"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@color/black"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/drillingTypeTitle" />
-
-                        <TextView
-                            android:id="@+id/starmaterialDrilled"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="@color/_CC252C"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineDrillingType"
-                            android:text="@string/star"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/materialDrilledTitle"
-                            android:layout_marginLeft="@dimen/_10sdp"
-
-                            />
-
-                        <TextView
-                            android:id="@+id/materialDrilledTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/grey"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineDrillingType"
-                            android:text="@string/matterial_drilled"
-                        app:layout_constraintTop_toTopOf="@+id/spinnerMaterialDrilled"
-                            app:layout_constraintBottom_toBottomOf="@+id/spinnerMaterialDrilled"
-                            app:layout_constraintStart_toEndOf="@+id/starSiteName"
-                              app:layout_constraintRight_toLeftOf="@+id/spinnerMaterialDrilled"
-                            />
-
-                        <!--   <TextView
-                               android:id="@+id/materialDrilled"
-                               android:layout_width="0dp"
-                               android:layout_height="wrap_content"
-                               android:textSize="@dimen/_18sdp"
-                               android:textColor="@color/grey"
-                               app:layout_constraintTop_toBottomOf="@+id/viewLineDrillingType"
-                               android:text="@string/matterial_drilled"
-                               app:layout_constraintRight_toRightOf="parent"
-                               android:layout_marginTop="@dimen/_10sdp"
-                               android:fontFamily="@font/inter_regular"
-                               android:layout_marginRight="@dimen/_10sdp"
-                               />-->
-
-
-                        <com.smart_blasting_drilling.android.utils.EditSpinner
-                            android:id="@+id/spinnerMaterialDrilled"
-                            android:layout_width="@dimen/_150sdp"
-                            android:layout_height="@dimen/_50sdp"
-                            app:layout_constraintStart_toStartOf="@+id/spinnerDrillingType"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@drawable/spinner_site_name"
-                            android:editable="false"
-                            android:hint="@string/matterial_drilled"
-                            android:textColor="@color/_414346"
-                            android:textSize="@dimen/_18ssp"
-                            app:dropDownDrawable="@drawable/downarro"
-                            app:dropDownDrawableHeight="@dimen/_8sdp"
-                            app:dropDownDrawableSpacing="15dp"
-                            app:dropDownDrawableWidth="@dimen/_14ssp"
-                            app:dropDownHeight="@dimen/_150sdp"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineDrillingType"
-                            android:paddingEnd="@dimen/_15sdp"
-                            android:layout_marginStart="@dimen/_5sdp"/>
-
-
-
-
-                        <View
-                            android:id="@+id/viewLineMaterialDrilled"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@color/black"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/materialDrilledTitle" />
-
-                        <!--
-                                            <TextView
-                                                android:id="@+id/starClientName"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:textSize="@dimen/_18sdp"
-                                                android:textColor="@color/_CC252C"
-                                                android:fontFamily="@font/inter_bold"
-                                                app:layout_constraintTop_toBottomOf="@+id/viewLineMaterialDrilled"
-                                                android:text="@string/star"
-                                                app:layout_constraintLeft_toLeftOf="parent"
-                                                android:layout_marginTop="@dimen/_10sdp"
-                                                android:layout_marginLeft="@dimen/_10sdp"
-
-                                                />-->
-
-                        <TextView
-                            android:id="@+id/clientNameTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineMaterialDrilled"
-                            android:text="@string/client_name"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            app:layout_constraintStart_toStartOf="@+id/starmaterialDrilled"
-                            app:layout_constraintTop_toTopOf="@+id/clientName"
-                            app:layout_constraintBottom_toBottomOf="@+id/clientName"
-                            />
-
-                        <TextView
-                            android:id="@+id/clientName"
-                            android:layout_width="@dimen/_150sdp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/grey"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineMaterialDrilled"
-                            android:text="@string/client_name"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/inter_regular"
-                            app:layout_constraintStart_toStartOf="@+id/spinnerMaterialDrilled"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            />
-
-
-                        <View
-                            android:id="@+id/viewLineClientName"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@color/black"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/clientNameTitle" />
-
-
-                        <TextView
-                            android:id="@+id/starProjectNUmber"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="@color/_CC252C"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineClientName"
-                            android:text="@string/star"
-                            app:layout_constraintStart_toStartOf="parent"
-                          app:layout_constraintTop_toTopOf="@+id/projectNumberTitle"
-                            android:layout_marginStart="@dimen/_10sdp"
-
-                            />
-
-                        <TextView
-                            android:id="@+id/projectNumberTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineClientName"
-                            android:text="@string/project_number"
-                     app:layout_constraintTop_toTopOf="@+id/projectNumber"
-                            app:layout_constraintBottom_toBottomOf="@+id/projectNumber"
-                            app:layout_constraintStart_toEndOf="@+id/starSiteName"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            />
-
-                        <TextView
-                            android:id="@+id/projectNumber"
-                            android:layout_width="@dimen/_150sdp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/grey"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineClientName"
-                            android:text="@string/project_number"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_regular"
-                            app:layout_constraintStart_toStartOf="@+id/clientName"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            />
-
-
-                        <View
-                            android:id="@+id/viewLineProjectNumber"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@color/black"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/projectNumberTitle" />
-
-
-                        <TextView
-                            android:id="@+id/starProjectStatus"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:textColor="@color/_CC252C"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineProjectNumber"
-                            android:text="@string/star"
-                            app:layout_constraintStart_toStartOf="parent"
-                          app:layout_constraintTop_toTopOf="@+id/ProjectStatusTitle"
-                            android:layout_marginStart="@dimen/_10sdp"
-
-                            />
-
-                        <TextView
-                            android:id="@+id/ProjectStatusTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_18sdp"
-                            android:textColor="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineProjectNumber"
-                            android:text="@string/project_status"
-                      app:layout_constraintTop_toTopOf="@+id/spinnerProjectStatus"
-                            app:layout_constraintBottom_toBottomOf="@+id/spinnerProjectStatus"
-                            app:layout_constraintStart_toEndOf="@+id/starSiteName"
-
-                            />
-
-                        <!-- <TextView
-                             android:id="@+id/projectStatus"
-                             android:layout_width="0dp"
-                             android:layout_height="wrap_content"
-                             android:textSize="@dimen/_18sdp"
-                             android:textColor="@color/grey"
-                             app:layout_constraintTop_toBottomOf="@+id/viewLineProjectNumber"
-                             android:text="@string/project_status"
-                             app:layout_constraintRight_toRightOf="parent"
-                             android:layout_marginTop="@dimen/_10sdp"
-                             android:fontFamily="@font/inter_regular"
-                             android:layout_marginRight="@dimen/_10sdp"
-                             />
-     -->
-
-                        <com.smart_blasting_drilling.android.utils.EditSpinner
-                            android:id="@+id/spinnerProjectStatus"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_50sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:background="@drawable/spinner_site_name"
-                            android:editable="false"
-                            android:hint="Open"
-                            android:textColor="@color/_414346"
-                            android:textSize="@dimen/_18ssp"
-                            android:textColorHint="@color/black"
-                            android:fontFamily="@font/inter_bold"
-                            app:dropDownDrawable="@drawable/downarro"
-                            app:dropDownDrawableHeight="@dimen/_8sdp"
-                            app:dropDownDrawableSpacing="15dp"
-                            app:dropDownDrawableWidth="@dimen/_14ssp"
-                            app:dropDownHeight="@dimen/_150sdp"
-                            app:layout_constraintStart_toStartOf="@+id/projectNumber"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineProjectNumber"
-                            android:paddingEnd="@dimen/_15sdp"
-                            android:layout_marginStart="@dimen/_10sdp"/>
-
-
-
-                        <View
-                            android:id="@+id/viewLineProjectStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="2dp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:background="@color/black"
-                            android:orientation="horizontal"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/ProjectStatusTitle" />
-                        ///////////////////
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/startDate_Lay"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineProjectStatus"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/start_Time_Lay"
-                            >
-
+                            android:id="@+id/projectNameContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/starDate"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/_10sdp"
-                                android:textColor="@color/_CC252C"
-                                android:fontFamily="@font/inter_bold"
-                                android:text="@string/star"
+                                android:id="@+id/projectNameTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/project_name_with_star"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
                                 app:layout_constraintStart_toStartOf="parent"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                app:layout_constraintTop_toTopOf="@id/startDateTitle"
-
-                                />
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                android:id="@+id/startDateTitle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/_15sdp"
-                                android:textColor="@color/black"
-                                android:fontFamily="@font/inter_bold"
-                                android:text="Start Date"
-                                android:layout_marginTop="@dimen/_20sdp"
-                                app:layout_constraintStart_toEndOf="@+id/starDate"
-                                app:layout_constraintTop_toTopOf="parent"
-                                />
-
-
-                            <TextView
-                                android:id="@+id/startDate"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/_18sdp"
-                                android:textColor="@color/black"
-                                android:fontFamily="@font/inter_regular"
-                                app:layout_constraintTop_toBottomOf="@+id/startDateTitle"
-                                android:text="08/11/2022"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                app:layout_constraintStart_toEndOf="@+id/starDate"
-
-                                />
-
+                                android:id="@+id/projectName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="Tata"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/_15ssp"
+                                android:paddingEnd="@dimen/_12sdp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <View
-                                android:id="@+id/viewLineStartDate"
+                                android:id="@+id/viewLinePName"
                                 android:layout_width="match_parent"
-                                android:layout_height="2dp"
+                                android:layout_height="@dimen/_1sdp"
                                 android:layout_marginTop="@dimen/_20sdp"
-                                android:background="@color/black"
+                                android:background="@color/grey"
                                 android:orientation="horizontal"
-                                app:layout_constraintStart_toStartOf="@+id/startDateTitle"
-                                app:layout_constraintTop_toBottomOf="@id/startDate"
-                                android:layout_marginStart="@dimen/_2sdp"
-                                android:layout_marginEnd="@dimen/_2sdp"/>
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                        ///////////////////////////////
-
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/start_Time_Lay"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineProjectStatus"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/startDate_Lay">
-
+                            android:id="@+id/siteDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/projectNameContainer">
 
                             <TextView
-                                android:id="@+id/starTime"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/_10sdp"
-                                android:textColor="@color/_CC252C"
-                                android:fontFamily="@font/inter_bold"
-                                android:text="@string/star"
+                                android:id="@+id/siteNameTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/site_name"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:layout_constraintBottom_toBottomOf="@+id/spinnerSiteName"
                                 app:layout_constraintStart_toStartOf="parent"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                app:layout_constraintTop_toTopOf="@+id/startTimeTitle"
+                                app:layout_constraintTop_toTopOf="@id/spinnerSiteName" />
 
-                                />
-
-                            <TextView
-                                android:id="@+id/startTimeTitle"
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerSiteName"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/_15sdp"
-                                android:textColor="@color/black"
-                                android:fontFamily="@font/inter_bold"
-                                android:text="Start TIme"
-                                android:layout_marginTop="@dimen/_20sdp"
-                                app:layout_constraintStart_toEndOf="@+id/starTime"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:hint="Apple"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                />
-
-
-                            <TextView
-                                android:id="@+id/startTime"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/_18sdp"
-                                android:textColor="@color/black"
-                                android:fontFamily="@font/inter_regular"
-                                app:layout_constraintTop_toBottomOf="@+id/startTimeTitle"
-                                android:text="22:32:00"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                app:layout_constraintStart_toEndOf="@+id/starTime"
-
-                                />
-
+                                app:layout_constraintBottom_toBottomOf="parent"/>
 
                             <View
-                                android:id="@+id/viewLineStartTime"
+                                android:id="@+id/viewLineSite"
                                 android:layout_width="match_parent"
-                                android:layout_height="2dp"
+                                android:layout_height="@dimen/_1sdp"
                                 android:layout_marginTop="@dimen/_20sdp"
-                                android:background="@color/black"
+                                android:background="@color/grey"
                                 android:orientation="horizontal"
-                                app:layout_constraintStart_toStartOf="@+id/startTimeTitle"
-                                app:layout_constraintTop_toBottomOf="@id/startTime"
-                                android:layout_marginStart="@dimen/_2sdp"
-                                android:layout_marginEnd="@dimen/_2sdp"/>
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/teamDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/siteDataContainer">
+
+                            <TextView
+                                android:id="@+id/selectTeamTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/select_team"
+                                android:gravity="center_vertical"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerSelectTeam"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:hint="Microsoft"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
+
+                            <View
+                                android:id="@+id/viewLineSelectTeam"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/rigDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/teamDataContainer">
+
+                            <TextView
+                                android:id="@+id/RigTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/rig"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerRig"
+                                android:layout_width="164dp"
+                                android:layout_height="90dp"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:hint="Google"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineRig"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/drillingPatternDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/rigDataContainer">
+
+                            <TextView
+                                android:id="@+id/drillingPatternTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/drilling_pattern"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerDrillingPattern"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:hint="BlackRock"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineDrillingPattern"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/drillingTypeDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/drillingPatternDataContainer">
+
+                            <TextView
+                                android:id="@+id/drillingTypeTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/drilling_type"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerDrillingType"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:hint="Aramaco"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineDrillingType"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/materialDrilledDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/drillingTypeDataContainer">
+
+                            <TextView
+                                android:id="@+id/materialDrilledTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/matterial_drilled"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerMaterialDrilled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:hint="Infosys"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineMaterialDrilled"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/clientNameDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/materialDrilledDataContainer">
+
+                            <TextView
+                                android:id="@+id/clientNameTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/client_name"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <TextView
+                                android:id="@+id/clientName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="TCS"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/_15ssp"
+                                android:paddingEnd="@dimen/_12sdp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineClientName"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/projectNumberDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/clientNameDataContainer">
+
+                            <TextView
+                                android:id="@+id/projectNumberTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/project_number"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <TextView
+                                android:id="@+id/projectNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="Abc"
+                                android:textColor="@color/grey"
+                                android:gravity="center_vertical"
+                                android:paddingEnd="@dimen/_12sdp"
+                                android:textSize="@dimen/_15ssp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineProjectNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/projectStatusDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/projectNumberDataContainer">
+
+                            <TextView
+                                android:id="@+id/ProjectStatusTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/project_status"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerProjectStatus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:hint="@string/open"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineProjectStatus"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/startDateTimeDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/projectStatusDataContainer">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/startDateContainer"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                app:layout_constraintEnd_toStartOf="@id/startTimeContainer"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:id="@+id/startDateTitle"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:fontFamily="@font/inter_semi_bold"
+                                    android:text="@string/start_date"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_15ssp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
 
+                                <TextView
+                                    android:id="@+id/startDate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:text="08/11/2022"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_15ssp"
+                                    android:gravity="center"
+                                    app:layout_constraintTop_toBottomOf="@+id/startDateTitle" />
 
+
+                                <View
+                                    android:id="@+id/viewLineStartDate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_1sdp"
+                                    android:layout_marginStart="@dimen/_2sdp"
+                                    android:layout_marginTop="@dimen/_11sdp"
+                                    android:layout_marginEnd="@dimen/_2sdp"
+                                    android:background="@color/grey"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintTop_toBottomOf="@id/startDate" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/startTimeContainer"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/startDateContainer"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:id="@+id/startTimeTitle"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:fontFamily="@font/inter_semi_bold"
+                                    android:text="@string/start_time"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_15ssp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                                <TextView
+                                    android:id="@+id/startTime"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:fontFamily="@font/inter_regular"
+                                    android:text="22:32:00"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_15ssp"
+                                    android:gravity="center"
+                                    app:layout_constraintTop_toBottomOf="@+id/startTimeTitle" />
+
+                                <View
+                                    android:id="@+id/viewLineStartTime"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_1sdp"
+                                    android:layout_marginStart="@dimen/_2sdp"
+                                    android:layout_marginTop="@dimen/_11sdp"
+                                    android:layout_marginEnd="@dimen/_2sdp"
+                                    android:background="@color/grey"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintTop_toBottomOf="@id/startTime" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </androidx.core.widget.NestedScrollView>
-<!--        </androidx.cardview.widget.CardView>-->
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

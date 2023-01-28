@@ -19,7 +19,6 @@ import androidx.databinding.DataBindingUtil;
 
 import com.smart_blasting_drilling.android.adapter.ProjectDialogListAdapter;
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.databinding.DownlodelistDialogBinding;
 import com.smart_blasting_drilling.android.databinding.ProjectInfoDialogBinding;
 
 import java.util.ArrayList;

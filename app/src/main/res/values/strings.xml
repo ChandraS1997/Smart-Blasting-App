@@ -23,6 +23,7 @@
     <string name="blasting">Blasting</string>
     <string name="search">Search</string>
     <string name="abc">abc</string>
+    <string name="project_name_with_star"><font color='#CC252C'>*</font>Project Name</string>
     <string name="project_name">Project Name</string>
     <string name="mine">Mine :</string>
     <string name="mine_1">Mine 1</string>
@@ -41,31 +42,34 @@
     <string name="go">GO</string>
     <string name="hole_details">Hole Details</string>
     <string name="project_list">Project List</string>
-    <string name="hole_id">Hole id</string>
-    <string name="raw_id">Row id</string>
-    <string name="hole_no">Hole no.</string>
+    <string name="hole_id">Hole Id</string>
+    <string name="raw_id">Row Id</string>
+    <string name="hole_no">Hole No.</string>
     <string name="burden">Burden</string>
     <string name="spacing">Spacing</string>
-    <string name="hole_dia">Hole dia</string>
-    <string name="hole_angle">Hole angle</string>
-    <string name="hole_depth">Hole depth</string>
+    <string name="hole_dia">Hole Dia</string>
+    <string name="hole_angle">Hole Angle</string>
+    <string name="hole_depth">Hole Depth</string>
     <string name="sub_grade">Subgrade</string>
     <string name="more">More</string>
     <string name="pro_title_list">Project List</string>
     <string name="hole_detail">Hole Detail </string>
     <string name="project_info">Project Info</string>
     <string name="star">\u2605</string>
-    <string name="site_name">Site Name</string>
-    <string name="select_team">Select Team</string>
-    <string name="rig">Rig</string>
-    <string name="drilling_pattern">Drilling Pattern</string>
-    <string name="drilling_type">Drilling Type</string>
-    <string name="matterial_drilled">Material Drilled</string>
+    <string name="site_name"><font color='#CC252C'>*</font>Site Name</string>
+    <string name="select_team"><font color='#CC252C'>*</font>Select Team</string>
+    <string name="rig"><font color='#CC252C'>*</font>Rig</string>
+    <string name="drilling_pattern"><font color='#CC252C'>*</font>Drilling Pattern</string>
+    <string name="drilling_type"><font color='#CC252C'>*</font>Drilling Type</string>
+    <string name="matterial_drilled"><font color='#CC252C'>*</font>Material Drilled</string>
     <string name="client_name">Client Name</string>
     <string name="project_number">Project Number</string>
-    <string name="project_status">Project Status</string>
+    <string name="project_status"><font color='#CC252C'>*</font>Project Status</string>
     <string name="hole_status">Hole Status</string>
     <string name="name">Name</string>
     <string name="deviation">Deviation</string>
     <string name="save_and_proceed">Save &amp; Proceed</string>
+    <string name="start_time"><font color='#CC252C'>*</font>Start Time</string>
+    <string name="start_date"><font color='#CC252C'>*</font>Start Date</string>
+    <string name="open">Open</string>
 </resources>

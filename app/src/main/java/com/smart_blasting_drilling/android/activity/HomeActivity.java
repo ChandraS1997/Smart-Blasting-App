@@ -5,31 +5,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 
-import androidx.core.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.databinding.ActivityHomeBinding;
-import com.smart_blasting_drilling.android.dialogs.DowblodeListDialog;
-import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 import com.smart_blasting_drilling.android.utils.TextUtil;
 import com.smart_blasting_drilling.android.utils.ViewUtil;
 
 import java.util.Objects;
 
-public class HomeActivity extends BaseActivity
-{
+public class HomeActivity extends BaseActivity {
     public NavController navController;
     public ActivityHomeBinding binding;
-    public static void openHomeActivity(Context context)
-    {
+
+    public static void openHomeActivity(Context context) {
         context.startActivity(new Intent(context, HomeActivity.class));
         ((Activity) context).finishAffinity();
     }
@@ -39,135 +38,80 @@ public class HomeActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 
-        StatusBarUtils.statusBarColor(this, R.color.white);
+        StatusBarUtils.statusBarColor(this, R.color._FFA722);
         setPageTitle(getString(R.string.pro_title_list));
         navController = Navigation.findNavController(this, R.id.nav_host_main);
 
-      /*  binding.appLayout.headerLayout.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        setBottomUiNavigation(binding.appLayout.bottomNavigation.blastingBtn.getRootView());
+        binding.appLayout.headerLayout.homeBtn.setVisibility(View.GONE);
 
-                System.out.println("inside back");
-               // navController.navigateUp();
+        binding.appLayout.headerLayout.downBtn.setOnClickListener(view -> {
+            /*if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.drillingFragment) {
 
-                if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.homeFragment)
-                    //{
-                    // navController.navigate(R.id.groceryListFragment);
-                      finish();
-                // }
-            }
-        });*/
+            }*/
+            showDownloadListDialog(new DownloadListDialog.DownloadLIstDialogListener() {
+                @Override
+                public void onOk(DownloadListDialog dialogFragment) {
+                    dialogFragment.dismiss();
+                }
 
-        binding.appLayout.headerLayout.downBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.homeFragment)
-                    {
-                    // navController.navigate(R.id.groceryListFragment);
-                  //  finish();
-
-                        //Add this before showing dialog.
-
-
-                        showDownlodeListDialog(new DowblodeListDialog.DownlodeLIstDialogListener() {
-                            @Override
-                            public void onOk(DowblodeListDialog dialogFragment) {
-                                dialogFragment.dismiss();
-                                //servicelist.add(obj);
-                              //  serviceListAdapters.notifyDataSetChanged();
-                               // dialogFragment.dismiss();
-                            }
-
-                            @Override
-                            public void onCancel(DowblodeListDialog dialogFragment) {
-                                //AddServiceDialog.ServiceDialogListener.super.onCancel(dialogFragment);
-                                dialogFragment.dismiss();
-                            }
-                        });
-                 }
-
-            }
-        });
-    /*    binding.appLayout.headerLayout.backBtn.setOnClickListener(view -> {
-           // if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.homeFragment)
-            //{
-               // navController.navigate(R.id.groceryListFragment);
-                navController.navigateUp();
-           // }
-           *//* else
-                if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.groceryListFragment) {
-                navController.navigate(R.id.homeFragment);
-            } else {
-                navController.navigateUp();
-            }*//*
-        });*/
-        binding.appLayout.bottomNavigation.designBtn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-
-                binding.appLayout.bottomNavigation.designBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color._FFA722));
-               // binding.appLayout.bottomNavigation.designBtn.setBackgroundResource(R.color.white);
-                binding.appLayout.bottomNavigation.designTxt.setTextColor(getColor(R.color.white));
-                binding.appLayout.bottomNavigation.drillingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
-              //  binding.appLayout.bottomNavigation.drillingTxt.setBackgroundResource(R.color.black);
-                binding.appLayout.bottomNavigation.drillingTxt.setTextColor(getColor(R.color.black));
-                binding.appLayout.bottomNavigation.blasstingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
-               // binding.appLayout.bottomNavigation.blastingTxt.setBackgroundResource(R.color.black);
-                binding.appLayout.bottomNavigation.blastingTxt.setTextColor(getColor(R.color.black));
-
-
-
-            }
-        });
-        binding.appLayout.bottomNavigation.drillingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                binding.appLayout.bottomNavigation.drillingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color._FFA722));
-               // binding.appLayout.bottomNavigation.designTxt.setBackgroundResource(R.color.white);
-                binding.appLayout.bottomNavigation.drillingTxt.setTextColor(getColor(R.color.white));
-                binding.appLayout.bottomNavigation.designBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
-               // binding.appLayout.bottomNavigation.designTxt.setBackgroundResource(R.color.black);
-                binding.appLayout.bottomNavigation.designTxt.setTextColor(getColor(R.color.black));
-
-                binding.appLayout.bottomNavigation.blasstingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
-              //  binding.appLayout.bottomNavigation.blastingTxt.setBackgroundResource(R.color.black);
-                binding.appLayout.bottomNavigation.blastingTxt.setTextColor(getColor(R.color.black));
-
-            }
+                @Override
+                public void onCancel(DownloadListDialog dialogFragment) {
+                    dialogFragment.dismiss();
+                }
+            });
         });
 
-        binding.appLayout.bottomNavigation.blasstingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        binding.appLayout.bottomNavigation.designBtn.setOnClickListener(this::setBottomUiNavigation);
+        binding.appLayout.bottomNavigation.drillingBtn.setOnClickListener(this::setBottomUiNavigation);
+        binding.appLayout.bottomNavigation.blastingBtn.setOnClickListener(this::setBottomUiNavigation);
 
-                binding.appLayout.bottomNavigation.blasstingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color._FFA722));
-               // binding.appLayout.bottomNavigation.blastingTxt.setBackgroundResource(R.color.white);
-                binding.appLayout.bottomNavigation.blastingTxt.setTextColor(getColor(R.color.white));
-               // binding.appLayout.bottomNavigation.blastingTxt.setBackgroundColor(getColor(R.color.white));
-                binding.appLayout.bottomNavigation.designBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
-                binding.appLayout.bottomNavigation.designTxt.setTextColor(getColor(R.color.black));
-               // binding.appLayout.bottomNavigation.designTxt.setBackgroundResource(R.color.black);
-                binding.appLayout.bottomNavigation.drillingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
-              //  binding.appLayout.bottomNavigation.drillingTxt.setBackgroundResource(R.color.black);
-                binding.appLayout.bottomNavigation.drillingTxt.setTextColor(getColor(R.color.black));
-
-            }
-        });
-
-
-
+        setNavigationView();
     }
 
-    private void showDownlodeListDialog(DowblodeListDialog.DownlodeLIstDialogListener downlodeLIstDialogListener)
-    {
+    private void setNavigationView() {
+        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+
+        });
+    }
+
+    private void setBottomUiNavigation(View view) {
+        switch (view.getId()) {
+            case R.id.designBtn:
+                binding.appLayout.bottomNavigation.designBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color._FFA722));
+                binding.appLayout.bottomNavigation.designTxt.setTextColor(getColor(R.color.white));
+                binding.appLayout.bottomNavigation.drillingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
+                binding.appLayout.bottomNavigation.drillingTxt.setTextColor(getColor(R.color.black));
+                binding.appLayout.bottomNavigation.blastingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
+                binding.appLayout.bottomNavigation.blastingTxt.setTextColor(getColor(R.color.black));
+                break;
+            case R.id.drillingBtn:
+                binding.appLayout.bottomNavigation.drillingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color._FFA722));
+                binding.appLayout.bottomNavigation.drillingTxt.setTextColor(getColor(R.color.white));
+                binding.appLayout.bottomNavigation.designBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
+                binding.appLayout.bottomNavigation.designTxt.setTextColor(getColor(R.color.black));
+                binding.appLayout.bottomNavigation.blastingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
+                binding.appLayout.bottomNavigation.blastingTxt.setTextColor(getColor(R.color.black));
+                navController.navigate(R.id.drillingFragment);
+                break;
+            case R.id.blastingBtn:
+                binding.appLayout.bottomNavigation.blastingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color._FFA722));
+                binding.appLayout.bottomNavigation.blastingTxt.setTextColor(getColor(R.color.white));
+                binding.appLayout.bottomNavigation.designBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
+                binding.appLayout.bottomNavigation.designTxt.setTextColor(getColor(R.color.black));
+                binding.appLayout.bottomNavigation.drillingBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color.white));
+                binding.appLayout.bottomNavigation.drillingTxt.setTextColor(getColor(R.color.black));
+                navController.navigate(R.id.blastingFragment);
+                break;
+        }
+    }
+
+    private void showDownloadListDialog(DownloadListDialog.DownloadLIstDialogListener downlodeLIstDialogListener) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        DowblodeListDialog infoDialogFragment = DowblodeListDialog.getInstance(downlodeLIstDialogListener);
+        DownloadListDialog infoDialogFragment = DownloadListDialog.getInstance(downlodeLIstDialogListener);
         infoDialogFragment.setupListener(downlodeLIstDialogListener);
-        ft.add(infoDialogFragment, DowblodeListDialog.TAG);
+        ft.add(infoDialogFragment, DownloadListDialog.TAG);
         ft.commitAllowingStateLoss();
     }
 
@@ -176,13 +120,5 @@ public class HomeActivity extends BaseActivity
             binding.appLayout.headerLayout.pageTitle.setText(TextUtil.getString(title));
         }
     }
-   /* public void showDownlodeListDialog(DownlodeLIstDIalog.DownlodeLIstDialogListener listener) {
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        DownlodeLIstDIalog infoDialogFragment = DowblodeListDialog.getInstance(listener);
-        infoDialogFragment.setupListener(listener);
-        ft.add(infoDialogFragment, DowblodeListDialog.TAG);
-        ft.commitAllowingStateLoss();
-    }*/
 
 }

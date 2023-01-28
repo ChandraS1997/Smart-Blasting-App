@@ -17,10 +17,10 @@ import com.smart_blasting_drilling.android.databinding.FragmentMapviewBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.onHoleClickListener;
 
-public class MapViewFrament extends Fragment
-{
+public class MapViewFrament extends Fragment {
     FragmentMapviewBinding binding;
-   // private com.smart_blasting_drilling.android.interfaces.onHoleClickListener onHoleClickListener;
+
+    // private com.smart_blasting_drilling.android.interfaces.onHoleClickListener onHoleClickListener;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,24 +28,20 @@ public class MapViewFrament extends Fragment
             @Override
             public void handleOnBackPressed() {
                 if (getView() != null)
-                   // Navigation.findNavController(getView()).navigateUp();
+                    // Navigation.findNavController(getView()).navigateUp();
                     Navigation.findNavController(getView()).navigate(R.id.HoleDetailsTableViewFragment);
             }
         });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (binding == null) {
 
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mapview, container, false);
-            binding.linlay.setOnClickListener(new View.OnClickListener()
-            {
+            binding.linlay.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view)
-                {
-
+                public void onClick(View view) {
                     Constants.onHoleClickListener.onHoleClicik("mapviewFragment");
                 }
             });

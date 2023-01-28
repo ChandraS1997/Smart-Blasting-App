@@ -18,11 +18,10 @@ import com.smart_blasting_drilling.android.databinding.ProjectListViewBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectDialogListAdapter extends BaseRecyclerAdapter
-{
+public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
     ProjectListViewBinding binding;
     Context context;
-    List<String> projectList = new ArrayList<>();
+    List<String> projectList;
 
     public ProjectDialogListAdapter(Context context, List<String> projectList) {
         this.context = context;
@@ -31,30 +30,37 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter
 
     @Override
     public RecyclerView.ViewHolder getViewHolder(LayoutInflater inflater, ViewGroup group) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.project_list_view,group,false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.project_list_view, group, false);
         return new ViewHolder(binding);
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return getViewHolder(LayoutInflater.from(context),parent);
+        return getViewHolder(LayoutInflater.from(context), parent);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-    ViewHolder viewHolder = (ViewHolder) holder;
+        ViewHolder viewHolder = (ViewHolder) holder;
     }
 
     @Override
     public int getItemCount() {
         return 8;
     }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ProjectListViewBinding binding;
+
         public ViewHolder(@NonNull ProjectListViewBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
         }
+
+        void setDataBind() {
+
+        }
+
     }
 }
