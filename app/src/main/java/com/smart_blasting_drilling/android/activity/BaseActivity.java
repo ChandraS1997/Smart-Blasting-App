@@ -46,6 +46,12 @@ public class BaseActivity extends AppCompatActivity {
     ConnectivityReceiver receiver;
 
     public PreferenceManger manger;
+    public static final String SOMETHING_WENT_WRONG = "Something went wrong!";
+    public static final String ERROR = "Error!";
+    public static final String API_RESPONSE = "api response";
+    public static final String APILOADINGTEXT = "Please wait...";
+    public static final String NODATAFOUND = "Nothing to show here yet!";
+    public static final String SESSION_EXPIRED_TEXT = "Session expired,Please Login Again.";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +105,10 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showLoader() {
         AppProgressBar.showLoaderDialog(this);
+    }
+
+    public void showAlertDialog(String title, String msg, String positiveBtn, String negativeBtn) {
+        showAlertDialog(title, msg, positiveBtn, negativeBtn, null);
     }
 
     public void showAlertDialog(String title, String msg, String positiveBtn, String negativeBtn, AppAlertDialogFragment.AppAlertDialogListener listener) {

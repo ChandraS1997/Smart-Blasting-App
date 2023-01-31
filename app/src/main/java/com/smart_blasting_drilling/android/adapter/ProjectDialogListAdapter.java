@@ -12,8 +12,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.ProjectListViewBinding;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +23,9 @@ import java.util.List;
 public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
     ProjectListViewBinding binding;
     Context context;
-    List<String> projectList;
+    List<ResponseBladesRetrieveData> projectList;
 
-    public ProjectDialogListAdapter(Context context, List<String> projectList) {
+    public ProjectDialogListAdapter(Context context, List<ResponseBladesRetrieveData> projectList) {
         this.context = context;
         this.projectList = projectList;
     }
@@ -43,11 +45,12 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setDataBind(projectList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 8;
+        return projectList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,8 +61,11 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
             binding = itemView;
         }
 
-        void setDataBind() {
-
+        void setDataBind(ResponseBladesRetrieveData data) {
+            binding.projectListTitle.setText(StringUtill.getString(data.getDesignName()));
+            if (getAdapterPosition() == projectList.size() - 1) {
+                binding.viewLineBottom.setVisibility(View.GONE);
+            }
         }
 
     }

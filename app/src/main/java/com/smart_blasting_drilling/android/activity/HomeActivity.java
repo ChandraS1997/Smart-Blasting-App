@@ -16,12 +16,15 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.databinding.ActivityHomeBinding;
 import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
+import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 import com.smart_blasting_drilling.android.utils.TextUtil;
 import com.smart_blasting_drilling.android.utils.ViewUtil;
 
+import java.util.List;
 import java.util.Objects;
 
 public class HomeActivity extends BaseActivity {
@@ -46,19 +49,8 @@ public class HomeActivity extends BaseActivity {
         binding.appLayout.headerLayout.homeBtn.setVisibility(View.GONE);
 
         binding.appLayout.headerLayout.downBtn.setOnClickListener(view -> {
-            /*if (Objects.requireNonNull(navController.getCurrentDestination()).getId() == R.id.drillingFragment) {
-
-            }*/
-            showDownloadListDialog(new DownloadListDialog.DownloadLIstDialogListener() {
-                @Override
-                public void onOk(DownloadListDialog dialogFragment) {
-                    dialogFragment.dismiss();
-                }
-
-                @Override
-                public void onCancel(DownloadListDialog dialogFragment) {
-                    dialogFragment.dismiss();
-                }
+            showDownloadListDialog((bladesRetrieveDataList, dialogFragment) -> {
+                dialogFragment.dismiss();
             });
         });
 

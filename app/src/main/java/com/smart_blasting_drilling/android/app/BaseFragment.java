@@ -29,10 +29,16 @@ import okhttp3.RequestBody;
 
 
 public class BaseFragment extends Fragment {
+
     public Context mContext;
-    public boolean isfavUpdated = false;
-    Toast toast;
     public PreferenceManger manger;
+
+    public static final String SOMETHING_WENT_WRONG = "Something went wrong!";
+    public static final String ERROR = "Error!";
+    public static final String API_RESPONSE = "api response";
+    public static final String APILOADINGTEXT = "Please wait...";
+    public static final String NODATAFOUND = "Nothing to show here yet!";
+    public static final String SESSION_EXPIRED_TEXT = "Session expired,Please Login Again.";
 
     @Override
     public void onAttach(@NonNull Context context) {

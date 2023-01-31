@@ -68,27 +68,56 @@
                     app:layout_constraintTop_toBottomOf="@+id/login_Txt"
                     tools:ignore="TextFields" />
 
-                <EditText
-                    android:id="@+id/passwordEdt"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/passwordContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_35sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
+                    android:elevation="@dimen/_3sdp"
                     android:background="@drawable/login_edittext_bg"
-                    android:elevation="@dimen/_2sdp"
-                    android:fontFamily="@font/oxygen_regular"
-                    android:hint="@string/enter_password"
-                    android:imeOptions="flagNoExtractUi"
-                    android:inputType="textPassword"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:paddingRight="@dimen/_10sdp"
-                    android:textColorHint="@color/black"
-                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/emailEdt"
-                    tools:ignore="TextFields" />
+                    app:layout_constraintTop_toBottomOf="@id/emailEdt"
+                    android:layout_height="@dimen/_35sdp">
+
+                    <EditText
+                        android:id="@+id/passwordEdt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:fontFamily="@font/oxygen_regular"
+                        android:hint="@string/enter_password"
+                        android:background="@null"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="textPassword"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColorHint="@color/black"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="TextFields" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/passwordHideShowContainer"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        app:layout_constraintTop_toTopOf="@id/passwordEdt"
+                        app:layout_constraintBottom_toBottomOf="@id/passwordEdt"
+                        app:layout_constraintEnd_toEndOf="@id/passwordEdt">
+
+                        <ImageView
+                            android:id="@+id/show_pass_btn"
+                            android:padding="@dimen/_10sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/icn_password_hide"
+                            app:tint="@color/_A8A8A8" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
                     android:id="@+id/loginbtn"
@@ -104,7 +133,7 @@
                     android:textSize="@dimen/_17ssp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/passwordEdt" />
+                    app:layout_constraintTop_toBottomOf="@id/passwordContainer" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

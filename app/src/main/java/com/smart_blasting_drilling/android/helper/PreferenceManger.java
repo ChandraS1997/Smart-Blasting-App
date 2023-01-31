@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +16,7 @@ public class PreferenceManger {
     public static final String PREF_KEY = "waiter_preference";
     public static final String AUTH_TOKEN = "auth_token";
     public static final String USER_DETAILS = "user_details";
-    public static final String CART_ITEM = "cart_item";
-    public static final String RECENT_REVIEW = "recent_review";
-    public static final String SEARCH_LIST = "search_list";
-    public static final String GROCERY_LIST = "grocery_list";
     public final String CHECK_USER_IS_LOGGED_IN = "user_logged_in";
-    public final static String ADDRESS_MASTER = "address_master";
-    public static final String LANGUAGE_TYPE = "language_type";
     private final SharedPreferences mSharedPreferences;
 
     public PreferenceManger(SharedPreferences mSharedPreferences) {
@@ -30,7 +26,6 @@ public class PreferenceManger {
     private SharedPreferences.Editor getEditor() {
         return mSharedPreferences.edit();
     }
-
 
     public void remove(String key) {
         SharedPreferences.Editor editor = getEditor();
@@ -85,22 +80,17 @@ public class PreferenceManger {
         putBoolean(CHECK_USER_IS_LOGGED_IN, true);
     }
 
-/*
-    public void putUserDetails(LoginResponse userDetails) {
+    public void putUserDetails(ResponseLoginData userDetails) {
         Gson gson = new Gson();
         String json = gson.toJson(userDetails);
         putString(USER_DETAILS, json);
     }
 
-    public LoginResponse getUserDetails() {
+    public ResponseLoginData getUserDetails() {
         Gson gson = new Gson();
         String json = getStringValue(USER_DETAILS);
-        return gson.fromJson(json, LoginResponse.class);
+        return gson.fromJson(json, ResponseLoginData.class);
     }
-*/
-
-
-
 
     public void logoutUser() {
         SharedPreferences.Editor editor = getEditor();
@@ -114,13 +104,7 @@ public class PreferenceManger {
         putString(key, json);
     }
 
-
-
-
-
-
-
-    public void putAuthTocken(String token) {
+    public void putAuthToken(String token) {
         putString(AUTH_TOKEN, token);
     }
 

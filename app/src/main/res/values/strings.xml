@@ -16,7 +16,7 @@
     <string name="enter_email">Please Enter Username</string>
     <string name="enter_email_valid">Please Enter Valid Email</string>
     <string name="please_enter_password">Please Enter Your Password</string>
-    <string name="pass_six_greater">Password must be greater 8 character</string>
+    <string name="pass_six_greater">Password must be greater 6 character</string>
     <string name="enteremail">Enter Username</string>
     <string name="design">Design</string>
     <string name="drilling">Drilling</string>
@@ -72,4 +72,8 @@
     <string name="start_time"><font color='#CC252C'>*</font>Start Time</string>
     <string name="start_date"><font color='#CC252C'>*</font>Start Date</string>
     <string name="open">Open</string>
+
+    <string name="enable_gps">Enable GPS</string>
+    <string name="required_for_this_app">Require for this app</string>
+    <string name="enable_now">Enable now</string>
 </resources>

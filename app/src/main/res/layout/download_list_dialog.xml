@@ -30,7 +30,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/headerLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
@@ -119,7 +119,7 @@
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:background="@color/black"
+                    android:background="@color/_C8C7CC"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -128,7 +128,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/projectListRv"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_200sdp"
+                    android:layout_height="@dimen/_230sdp"
                     android:orientation="vertical"
                     tools:itemCount="4"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
