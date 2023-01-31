@@ -30,14 +30,12 @@ public class SplashActivity extends BaseActivity {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                /*if (BaseApplication.getPreferenceManger().getUserDetails() == null) {
+                if (manger.getUserDetails() == null) {
                     startActivity(new Intent(SplashActivity.this, AuthActivity.class));
-                    finishAffinity();
-                } else {*/
-                    //HomeActivity.openHomeActivity(SplashActivity.this);
-                startActivity(new Intent(SplashActivity.this, AuthActivity.class));
-                    finishAffinity();
-                /*}*/
+                } else {
+                    startActivity(new Intent(SplashActivity.this, AuthActivity.class));
+                }
+                finishAffinity();
             }
         }, 1000);
 

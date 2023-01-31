@@ -49,7 +49,7 @@
                     android:layout_height="1dp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:background="@color/_ADADAD"
+                    android:background="@color/_C8C7CC"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -1,5 +1,6 @@
 package com.smart_blasting_drilling.android.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,10 +16,10 @@ import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding
 import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectInfoDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
-import com.smart_blasting_drilling.android.interfaces.onHoleClickListener;
+import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 
-public class HoleDetailActivity extends BaseActivity implements View.OnClickListener, onHoleClickListener {
+public class HoleDetailActivity extends BaseActivity implements View.OnClickListener, OnHoleClickListener {
     HoleDetailActivityBinding binding;
     public NavController navController;
 
@@ -33,6 +34,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
         binding.headerLayHole.pageTitle.setText(getString(R.string.hole_detail));
         binding.headerLayHole.projectInfo.setText(getString(R.string.project_info));
+        binding.headerLayHole.camIcon.setOnClickListener(this);
         binding.bottomHoleNavigation.mapBtn.setOnClickListener(this);
         binding.bottomHoleNavigation.listBtn.setOnClickListener(this);
         binding.headerLayHole.homeBtn.setOnClickListener(this);
@@ -46,15 +48,6 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         });
     }
 
-    private void showProjectInfoDialog(ProjectInfoDialog.ProjectInfoDialogListener projectInfoDialogListener) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ProjectInfoDialog infoDialogFragment = ProjectInfoDialog.getInstance(projectInfoDialogListener);
-        infoDialogFragment.setupListener(projectInfoDialogListener);
-        ft.add(infoDialogFragment, DownloadListDialog.TAG);
-        ft.commitAllowingStateLoss();
-    }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -65,13 +58,17 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 binding.headerLayHole.projectInfo.setVisibility(View.GONE);
                 binding.projectInfoContainer.setVisibility(View.GONE);
                 binding.holeParaLay.setVisibility(View.GONE);
-                navController.navigate(R.id.MapViewFrament);
+                navController.navigate(R.id.mapViewFrament);
+                break;
+            case R.id.camIcon:
+                startActivity(new Intent(this, MediaActivity.class));
+                //finishAffinity();
                 break;
             case R.id.listBtn:
                 binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
                 binding.projectInfoContainer.setVisibility(View.GONE);
                 binding.holeParaLay.setVisibility(View.GONE);
-                navController.navigate(R.id.HoleDetailsTableViewFragment);
+                navController.navigate(R.id.holeDetailsTableViewFragment);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + view.getId());
@@ -80,30 +77,22 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     @Override
-    public void onHoleClicik(String frommapview) {
+    public void onHoleClick(String frommapview) {
         if (frommapview.equals("mapviewFragment")) {
             binding.holeParaLay.setVisibility(View.VISIBLE);
             binding.projectInfoContainer.setVisibility(View.GONE);
         } else {
             binding.holeParaLay.setVisibility(View.GONE);
         }
-
-        // v.setVisibility(View.VISIBLE);
-        // holeParaLay
-
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        // if (binding.holeParaLay.getVisibility() == View.VISIBLE) {
-        binding.holeParaLay.setVisibility(View.GONE);
+        if (binding.holeParaLay.getVisibility() == View.VISIBLE)
+            binding.holeParaLay.setVisibility(View.GONE);
+        if (binding.projectInfoContainer.getVisibility() == View.VISIBLE)
+            binding.projectInfoContainer.setVisibility(View.GONE);
         binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
-        //}
-        /*else if (binding.holeParaLay.getVisibility() == View.GONE) {
-            binding.holeParaLay.setVisibility(View.VISIBLE);
-        }*/
-        //finish();
     }
 }

@@ -128,7 +128,7 @@
 
                             <com.smart_blasting_drilling.android.utils.EditSpinner
                                 android:id="@+id/spinnerSiteName"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:background="@drawable/spinner_site_name"
                                 android:editable="false"
@@ -179,7 +179,7 @@
 
                             <com.smart_blasting_drilling.android.utils.EditSpinner
                                 android:id="@+id/spinnerSelectTeam"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:background="@drawable/spinner_site_name"
                                 android:editable="false"
@@ -230,8 +230,8 @@
 
                             <com.smart_blasting_drilling.android.utils.EditSpinner
                                 android:id="@+id/spinnerRig"
-                                android:layout_width="164dp"
-                                android:layout_height="90dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
                                 android:background="@drawable/spinner_site_name"
                                 android:editable="false"
                                 android:fontFamily="@font/inter_semi_bold"
@@ -324,7 +324,7 @@
 
                             <com.smart_blasting_drilling.android.utils.EditSpinner
                                 android:id="@+id/spinnerDrillingType"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:background="@drawable/spinner_site_name"
                                 android:editable="false"

@@ -9,6 +9,11 @@
         android:name="com.smart_blasting_drilling.android.fragments.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login"/>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.smart_blasting_drilling.android.fragments.SignUpFragment"
+        android:label="SignUp"
+        tools:layout="@layout/signup_fragment"/>
 
 
 

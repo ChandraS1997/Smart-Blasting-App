@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/hole_nav"
-    app:startDestination="@id/HoleDetailsTableViewFragment">
+    app:startDestination="@id/holeDetailsTableViewFragment">
 
     <fragment
-        android:id="@+id/HoleDetailsTableViewFragment"
+        android:id="@+id/holeDetailsTableViewFragment"
         android:name="com.smart_blasting_drilling.android.fragments.HoleDetailsTableFragment"
         android:label="HoleDetailsTableViewFragment"
         tools:layout="@layout/fragment_hole_details_table" />
 
     <fragment
-        android:id="@+id/MapViewFrament"
-        android:name="com.smart_blasting_drilling.android.fragments.MapViewFrament"
+        android:id="@+id/mapViewFrament"
+        android:name="com.smart_blasting_drilling.android.fragments.MapViewFragment"
         android:label="MapViewFrament"
         tools:layout="@layout/fragment_mapview" />
 

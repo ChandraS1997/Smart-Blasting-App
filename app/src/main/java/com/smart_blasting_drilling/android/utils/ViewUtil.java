@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.util.DisplayMetrics;
+
 import com.smart_blasting_drilling.android.app.BaseApplication;
 
 public class ViewUtil {

@@ -45,7 +45,7 @@ public class HoleDetailsTableFragment extends BaseFragment {
         if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hole_details_table, container, false);
 
-            tableViewAdapter = new TableViewAdapter(getContext(), tabList);
+            tableViewAdapter = new TableViewAdapter(mContext, tabList);
             binding.tableRv.setAdapter(tableViewAdapter);
         }
         return binding.getRoot();
