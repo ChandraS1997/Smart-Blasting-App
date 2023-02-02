@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -64,10 +65,17 @@ public class DownloadListDialog extends BaseDialogFragment {
         return frag;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        retrieveByDateApiCaller(startDate, endDate);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.download_list_dialog, container, false);
+
         return binding.getRoot();
     }
 
@@ -84,6 +92,7 @@ public class DownloadListDialog extends BaseDialogFragment {
     @Override
     public void loadData() {
         projectDialogListAdapter = new ProjectDialogListAdapter(mContext, projectList);
+        binding.projectListRv.setLayoutManager(new LinearLayoutManager(mContext));
         binding.projectListRv.setAdapter(projectDialogListAdapter);
 
         endDate = DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd");
@@ -101,7 +110,11 @@ public class DownloadListDialog extends BaseDialogFragment {
         });
 
         binding.goBtn.setOnClickListener(view -> {
-            retrieveByDateApiCaller(startDate, endDate);
+            if (binding.switchBtn3d.isChecked()){
+                api3DDesignBlade(startDate,endDate);
+            }else{
+                retrieveByDateApiCaller(startDate, endDate);
+            }
         });
     }
 
@@ -189,7 +202,9 @@ public class DownloadListDialog extends BaseDialogFragment {
                                 projectList.clear();
                                 if (!Constants.isListEmpty(bladesRetrieveDataList)) {
                                     projectList.addAll(bladesRetrieveDataList);
-                                    projectDialogListAdapter.notifyDataSetChanged();
+                                    projectDialogListAdapter = new ProjectDialogListAdapter(mContext,projectList);
+                                    binding.projectListRv.setLayoutManager(new LinearLayoutManager(mContext));
+                                    binding.projectListRv.setAdapter(projectDialogListAdapter);
                                 }
                             } catch (Exception e) {
                                 Log.e(NODATAFOUND, e.getMessage());
@@ -200,7 +215,41 @@ public class DownloadListDialog extends BaseDialogFragment {
                     } catch (Exception e) {
                         Log.e(NODATAFOUND, e.getMessage());
                     }
-                    hideLoader();
+                }
+            }
+            hideLoader();
+        });
+    }
+    public void api3DDesignBlade(String startDate, String endDate){
+        showLoader();
+        MainService.retrieve3DDegignByDateApiCaller(mContext,startDate,endDate).observe((LifecycleOwner) mContext,response ->{
+            if (response == null){
+                showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+            }else{
+                if (!(response.isJsonNull())){
+                    try {
+                        JsonObject jsonObject = response.getAsJsonObject();
+                        if (jsonObject != null) {
+                            try {
+                                String data = jsonObject.get("Retrieve3DDesignByDateResult").getAsString();
+                                Type itemList = new TypeToken<List<ResponseBladesRetrieveData>>(){}.getType();
+                                List<ResponseBladesRetrieveData> bladesRetrieveDataList = new Gson().fromJson(data, itemList);
+                                projectList.clear();
+                                if (!Constants.isListEmpty(bladesRetrieveDataList)) {
+                                    projectList.addAll(bladesRetrieveDataList);
+                                    projectDialogListAdapter = new ProjectDialogListAdapter(mContext,projectList);
+                                    binding.projectListRv.setLayoutManager(new LinearLayoutManager(mContext));
+                                    binding.projectListRv.setAdapter(projectDialogListAdapter);
+                                }
+                            } catch (Exception e) {
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }
+                        } else {
+                            ((BaseActivity) requireActivity()).showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                        }
+                    } catch (Exception e) {
+                        Log.e(NODATAFOUND, e.getMessage());
+                    }
                 }
             }
             hideLoader();
