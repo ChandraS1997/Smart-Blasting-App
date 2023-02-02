@@ -8,6 +8,8 @@ import java.util.List;
 public class Constants {
     public static OnHoleClickListener onHoleClickListener;
 
+    public static final String DATABASE_NAME = "drilling_blasting_db";
+
     public static String API_DEFAULT_URL = "login";
     public static String API_BLADES_URL = "blades";
     public static final String LOGIN_BASE_URL = "https://www.mineexcellence.com/smartdrilling/";

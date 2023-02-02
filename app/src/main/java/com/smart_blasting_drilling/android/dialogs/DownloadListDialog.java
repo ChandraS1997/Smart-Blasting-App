@@ -6,6 +6,7 @@ import static com.smart_blasting_drilling.android.app.BaseFragment.SOMETHING_WEN
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -68,7 +69,6 @@ public class DownloadListDialog extends BaseDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        retrieveByDateApiCaller(startDate, endDate);
     }
 
     @Nullable
@@ -91,9 +91,11 @@ public class DownloadListDialog extends BaseDialogFragment {
 
     @Override
     public void loadData() {
-        projectDialogListAdapter = new ProjectDialogListAdapter(mContext, projectList);
+        projectDialogListAdapter = new ProjectDialogListAdapter(mContext, projectList, false);
         binding.projectListRv.setLayoutManager(new LinearLayoutManager(mContext));
         binding.projectListRv.setAdapter(projectDialogListAdapter);
+
+        retrieveByDateApiCaller(startDate, endDate);
 
         endDate = DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd");
         startDate = DateUtils.getLastMonthDateFromCurDate("yyyy-MM-dd");
@@ -179,9 +181,17 @@ public class DownloadListDialog extends BaseDialogFragment {
     }
 
     public interface DownloadLIstDialogListener {
-        void onOk(List<ResponseBladesRetrieveData> bladesRetrieveDataList, DownloadListDialog dialogFragment);
+        void onOk(boolean is3DBlades, DownloadListDialog dialogFragment);
 
         default void onCancel(DownloadListDialog dialogFragment) {
+        }
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (mListener != null) {
+            mListener.onOk(binding.switchBtn3d.isChecked(), _self);
         }
     }
 
@@ -202,7 +212,7 @@ public class DownloadListDialog extends BaseDialogFragment {
                                 projectList.clear();
                                 if (!Constants.isListEmpty(bladesRetrieveDataList)) {
                                     projectList.addAll(bladesRetrieveDataList);
-                                    projectDialogListAdapter = new ProjectDialogListAdapter(mContext,projectList);
+                                    projectDialogListAdapter = new ProjectDialogListAdapter(mContext, projectList, false);
                                     binding.projectListRv.setLayoutManager(new LinearLayoutManager(mContext));
                                     binding.projectListRv.setAdapter(projectDialogListAdapter);
                                 }
@@ -237,7 +247,7 @@ public class DownloadListDialog extends BaseDialogFragment {
                                 projectList.clear();
                                 if (!Constants.isListEmpty(bladesRetrieveDataList)) {
                                     projectList.addAll(bladesRetrieveDataList);
-                                    projectDialogListAdapter = new ProjectDialogListAdapter(mContext,projectList);
+                                    projectDialogListAdapter = new ProjectDialogListAdapter(mContext,projectList, true);
                                     binding.projectListRv.setLayoutManager(new LinearLayoutManager(mContext));
                                     binding.projectListRv.setAdapter(projectDialogListAdapter);
                                 }
