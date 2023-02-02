@@ -76,4 +76,6 @@
     <string name="enable_gps">Enable GPS</string>
     <string name="required_for_this_app">Require for this app</string>
     <string name="enable_now">Enable now</string>
+    <string name="_3d_blades">3D Blades</string>
+    <string name="_2022_01_04">2022/01/04</string>
 </resources>

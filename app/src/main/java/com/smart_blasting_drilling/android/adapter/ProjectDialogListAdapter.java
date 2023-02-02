@@ -1,6 +1,7 @@
 package com.smart_blasting_drilling.android.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -63,6 +64,8 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
 
         void setDataBind(ResponseBladesRetrieveData data) {
             binding.projectListTitle.setText(StringUtill.getString(data.getDesignName()));
+            Log.e("51456454564", StringUtill.getString(data.getDesignName()));
+
             if (getAdapterPosition() == projectList.size() - 1) {
                 binding.viewLineBottom.setVisibility(View.GONE);
             }
