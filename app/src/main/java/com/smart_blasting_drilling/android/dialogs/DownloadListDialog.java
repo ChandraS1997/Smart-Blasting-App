@@ -95,12 +95,12 @@ public class DownloadListDialog extends BaseDialogFragment {
         binding.projectListRv.setLayoutManager(new LinearLayoutManager(mContext));
         binding.projectListRv.setAdapter(projectDialogListAdapter);
 
-        retrieveByDateApiCaller(startDate, endDate);
-
         endDate = DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd");
         startDate = DateUtils.getLastMonthDateFromCurDate("yyyy-MM-dd");
         binding.showEndDateTxt.setText(DateUtils.getDate(System.currentTimeMillis(), "yyyy/MM/dd"));
         binding.showStartDateTxt.setText(DateUtils.getLastMonthDateFromCurDate("yyyy/MM/dd"));
+
+        retrieveByDateApiCaller(startDate, endDate);
 
         binding.showStartDateTxt.setOnClickListener(view -> {
             calendar = Calendar.getInstance();

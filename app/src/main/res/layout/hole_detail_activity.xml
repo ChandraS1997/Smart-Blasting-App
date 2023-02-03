@@ -31,7 +31,7 @@
             android:id="@+id/project_info_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/bottom_hole_navigation"
             app:layout_constraintEnd_toStartOf="@+id/nav_host_hole"
             app:layout_constraintHorizontal_weight="0.3"

@@ -22,7 +22,7 @@ public interface Project3DBladesDao {
     Boolean isExistProject(String designId);
 
     @Query("SELECT * FROM Project3DBladesEntity")
-    List<ResponseBladesRetrieveData> getAllBladesProject();
+    List<Project3DBladesEntity> getAllBladesProject();
 
     @Query("DELETE FROM Project3DBladesEntity WHERE designId = :designId")
     void deleteProjectById(String designId);

@@ -62,7 +62,7 @@ public class Project3DBladesEntity {
 
     @SerializedName("BI")
     @ColumnInfo(name = "BI")
-    private String bI;
+    private String b_i;
 
     @SerializedName("PcntOverSize")
     @ColumnInfo(name = "PcntOverSize")
@@ -212,12 +212,12 @@ public class Project3DBladesEntity {
         this.airVibration = airVibration;
     }
 
-    public String getbI() {
-        return bI;
+    public String getB_i() {
+        return b_i;
     }
 
-    public void setbI(String bI) {
-        this.bI = bI;
+    public void setB_i(String b_i) {
+        this.b_i = b_i;
     }
 
     public String getPcntOverSize() {

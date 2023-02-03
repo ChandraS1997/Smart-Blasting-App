@@ -60,9 +60,17 @@ public class Project2DBladesEntity {
     @ColumnInfo(name = "AirVibration")
     private String airVibration;
 
+    public String getB_i() {
+        return b_i;
+    }
+
+    public void setB_i(String b_i) {
+        this.b_i = b_i;
+    }
+
     @SerializedName("BI")
     @ColumnInfo(name = "BI")
-    private String bI;
+    private String b_i;
 
     @SerializedName("PcntOverSize")
     @ColumnInfo(name = "PcntOverSize")
@@ -210,14 +218,6 @@ public class Project2DBladesEntity {
 
     public void setAirVibration(String airVibration) {
         this.airVibration = airVibration;
-    }
-
-    public String getbI() {
-        return bI;
-    }
-
-    public void setbI(String bI) {
-        this.bI = bI;
     }
 
     public String getPcntOverSize() {

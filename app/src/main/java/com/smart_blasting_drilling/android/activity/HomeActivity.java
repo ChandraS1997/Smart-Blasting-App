@@ -17,7 +17,9 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.adapter.ProjectLIstAdapter;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.ActivityHomeBinding;
@@ -28,6 +30,8 @@ import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 import com.smart_blasting_drilling.android.utils.TextUtil;
 import com.smart_blasting_drilling.android.utils.ViewUtil;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,6 +40,8 @@ public class HomeActivity extends BaseActivity {
     public ActivityHomeBinding binding;
     int projectFragType = 0;
     AppDatabase appDatabase;
+    List<ResponseBladesRetrieveData> projectList = new ArrayList<>();
+    ProjectLIstAdapter projectLIstAdapter;
 
     public static void openHomeActivity(Context context) {
         context.startActivity(new Intent(context, HomeActivity.class));
@@ -49,20 +55,31 @@ public class HomeActivity extends BaseActivity {
 
         appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
 
+        hideKeyboard(this);
+
+        projectList.clear();
+        Type projectListType = new TypeToken<List<ResponseBladesRetrieveData>>(){}.getType();
+        projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project2DBladesDao().getAllBladesProject()), projectListType));
+
+        projectLIstAdapter = new ProjectLIstAdapter(this, projectList);
+        binding.appLayout.projectListRv.setAdapter(projectLIstAdapter);
+
         StatusBarUtils.statusBarColor(this, R.color._FFA722);
         setPageTitle(getString(R.string.pro_title_list));
-        navController = Navigation.findNavController(this, R.id.nav_host_main);
+//        navController = Navigation.findNavController(this, R.id.nav_host_main);
 
-        setBottomUiNavigation(binding.appLayout.bottomNavigation.blastingBtn.getRootView());
+//        setBottomUiNavigation(binding.appLayout.bottomNavigation.blastingBtn.getRootView());
         binding.appLayout.headerLayout.homeBtn.setVisibility(View.GONE);
 
         binding.appLayout.headerLayout.downBtn.setOnClickListener(view -> {
             showDownloadListDialog((is3DBlades, dialogFragment) -> {
+                projectList.clear();
                 if (is3DBlades) {
-                    Log.e("3D Blades : ", new Gson().toJson(appDatabase.project3DBladesDao().getAllBladesProject()));
+                    projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project3DBladesDao().getAllBladesProject()), projectListType));
                 } else {
-                    Log.e("2D Blades : ", new Gson().toJson(appDatabase.project2DBladesDao().getAllBladesProject()));
+                    projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project2DBladesDao().getAllBladesProject()), projectListType));
                 }
+                projectLIstAdapter.notifyDataSetChanged();
                 dialogFragment.dismiss();
             });
         });
@@ -71,7 +88,7 @@ public class HomeActivity extends BaseActivity {
         binding.appLayout.bottomNavigation.drillingBtn.setOnClickListener(this::setBottomUiNavigation);
         binding.appLayout.bottomNavigation.blastingBtn.setOnClickListener(this::setBottomUiNavigation);
 
-        setNavigationView();
+//        setNavigationView();
     }
 
     private void setNavigationView() {

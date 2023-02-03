@@ -50,7 +50,7 @@ public class BaseApplication extends MultiDexApplication {
 
     public static AppDatabase getAppDatabase(Context context, String dbName) {
         if (appDatabase == null && getInstance() != null) {
-            appDatabase = Room.databaseBuilder(context, AppDatabase.class, dbName).allowMainThreadQueries().build();
+            appDatabase = Room.databaseBuilder(context, AppDatabase.class, dbName).fallbackToDestructiveMigration().allowMainThreadQueries().build();
         }
         return appDatabase;
     }
