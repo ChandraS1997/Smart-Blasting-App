@@ -77,9 +77,9 @@
     <string name="required_for_this_app">Require for this app</string>
     <string name="enable_now">Enable now</string>
 
-    <string name="enable_gps">Enable GPS</string>
+ <!--   <string name="enable_gps">Enable GPS</string>
     <string name="required_for_this_app">Require for this app</string>
-    <string name="enable_now">Enable now</string>
+    <string name="enable_now">Enable now</string>-->
     <string name="signup_here">Register Here</string>
     <string name="enter_name">Enter Name</string>
     <string name="enter_emailr">Enter Email</string>
@@ -109,4 +109,19 @@
     <string name="please_select_2mb_size">Please select file less than 2 mb!</string>
     <string name="no_image_found">No Image Available</string>
     <string name="click_here">click here to select image</string>
+    <string name="flyrocks">Flyrocks</string>
+    <string name="performance">Performance</string>
+    <string name="displacement">Displacement</string>
+    <string name="blasting_fumes">Blasting Fumes</string>
+    <string name="not">NO</string>
+    <string name="muck_profile">Muck Profile</string>
+    <string name="scattered">Scattered</string>
+    <string name="heave_swell">Heave/Swell</string>
+    <string name="good">Good</string>
+    <string name="stemming_ejection">Stemming Ejection</string>
+    <string name="backbreak_overbreak">BackBreak/OverBreak</string>
+    <string name="backbreak">BackBreak</string>
+    <string name="bounder_count">Bounder Count</string>
+    <string name="save">Save</string>
+
 </resources>
