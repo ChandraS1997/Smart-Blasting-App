@@ -90,6 +90,7 @@ dependencies {
     implementation 'io.github.inflationx:calligraphy3:3.1.1'
     // Apache Lang
     implementation 'org.apache.commons:commons-lang3:3.4'
+    implementation 'com.github.HBiSoft:PickiT:0.1.14'
 
 
     // Room Integration
@@ -97,5 +98,9 @@ dependencies {
 
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+    // Round Corner ImageView
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    //Permission
+    implementation 'com.nabinbhandari.android:permissions:3.8'
 
 }

@@ -1,5 +1,6 @@
 package com.smart_blasting_drilling.android.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -33,6 +34,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
         binding.headerLayHole.pageTitle.setText(getString(R.string.hole_detail));
         binding.headerLayHole.projectInfo.setText(getString(R.string.project_info));
+        binding.headerLayHole.camIcon.setOnClickListener(this);
         binding.bottomHoleNavigation.mapBtn.setOnClickListener(this);
         binding.bottomHoleNavigation.listBtn.setOnClickListener(this);
         binding.headerLayHole.homeBtn.setOnClickListener(this);
@@ -57,6 +59,10 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 binding.projectInfoContainer.setVisibility(View.GONE);
                 binding.holeParaLay.setVisibility(View.GONE);
                 navController.navigate(R.id.mapViewFrament);
+                break;
+            case R.id.camIcon:
+                startActivity(new Intent(this, MediaActivity.class));
+                //finishAffinity();
                 break;
             case R.id.listBtn:
                 binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);

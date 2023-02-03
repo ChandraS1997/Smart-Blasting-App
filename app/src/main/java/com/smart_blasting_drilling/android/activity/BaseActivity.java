@@ -1,15 +1,10 @@
 package com.smart_blasting_drilling.android.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -71,6 +66,7 @@ public class BaseActivity extends AppCompatActivity {
         }
         toast.show();
     }
+
 
     public void showLog(String tag, String msg) {
         Log.e(tag, msg);

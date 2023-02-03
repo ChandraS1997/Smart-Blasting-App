@@ -48,6 +48,18 @@
               />
 
 
+            <ImageView
+                android:id="@+id/camIcon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:src="@drawable/camera"
+                android:visibility="visible"
+                android:padding="@dimen/_1sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/project_info"
+                android:layout_marginEnd="@dimen/_10sdp"/>
+
             <TextView
                 android:id="@+id/project_info"
                 android:layout_width="wrap_content"

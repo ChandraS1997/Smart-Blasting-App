@@ -20,6 +20,10 @@ public interface APiInterface {
     @POST("v2/index.php")
     Call<JsonObject> loginApiCaller(@QueryMap Map<String, Object> queryMap, @PartMap Map<String, RequestBody> map);
 
+    @Multipart
+    @POST("v1/index.php")
+    Call<JsonObject> registerApiCaller(@QueryMap Map<String, Object> queryMap, @PartMap Map<String, RequestBody> map);
+
     @GET("Retrieve3DDesignByDate/{start_time}/{end_time}/c3VzaGls/1/c3VzaGls/centralmineinfo")
     Call<JsonObject> retrieve3DDegignByDateApiCaller(@Path(value = "start_time", encoded = true) String startDate, @Path(value = "end_time", encoded = true) String endDate);
 

@@ -85,6 +85,7 @@ public class BaseFragment extends Fragment {
         return File.createTempFile(imageFileName, ".png", storageDir);
     }
 
+
     public boolean haveWritePermission(Context context) {
         int result = context.checkCallingOrSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         return result == PackageManager.PERMISSION_GRANTED;

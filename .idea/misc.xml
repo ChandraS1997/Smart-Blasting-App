@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/drawable-xxxhdpi/login_btn_bg.xml" value="0.181" />
         <entry key="app/src/main/res/drawable/btn_shape.xml" value="0.116" />
         <entry key="app/src/main/res/drawable/business_type_bg.xml" value="0.1885" />
+        <entry key="app/src/main/res/drawable/cursor_color.xml" value="0.147" />
         <entry key="app/src/main/res/drawable/custom_bordered_ripple.xml" value="0.1635" />
         <entry key="app/src/main/res/drawable/dark_blue_28r_bg.xml" value="0.1815" />
         <entry key="app/src/main/res/drawable/dark_grey_10r_bg.xml" value="0.1885" />
@@ -33,6 +34,7 @@
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.12317708333333334" />
+        <entry key="app/src/main/res/layout/activity_media.xml" value="0.12317708333333334" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.22" />
         <entry key="app/src/main/res/layout/adapter_home.xml" value="0.4359464627151052" />
         <entry key="app/src/main/res/layout/adapter_homenew.xml" value="0.15" />
@@ -46,22 +48,26 @@
         <entry key="app/src/main/res/layout/drilling_lay.xml" value="0.20222317229585293" />
         <entry key="app/src/main/res/layout/fragment_hole_details_table.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home_fragment.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.16" />
         <entry key="app/src/main/res/layout/fragment_mapview.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_project_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/header_hole_parameters.xml" value="0.1" />
         <entry key="app/src/main/res/layout/header_lay_hole_activity.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/header_lay_media_activity.xml" value="0.11614583333333334" />
         <entry key="app/src/main/res/layout/header_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/hole_detail_activity.xml" value="0.1" />
         <entry key="app/src/main/res/layout/hole_parameteres.xml" value="0.12317708333333334" />
         <entry key="app/src/main/res/layout/hole_parameteres_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/login_centre_bg.xml" value="0.20222317229585293" />
         <entry key="app/src/main/res/layout/login_edittext_bg.xml" value="0.11614583333333334" />
+        <entry key="app/src/main/res/layout/media_fragment.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/media_item.xml" value="0.12317708333333334" />
         <entry key="app/src/main/res/layout/no_internet.xml" value="0.24635416666666668" />
         <entry key="app/src/main/res/layout/project_info_dialog.xml" value="0.12" />
-        <entry key="app/src/main/res/layout/project_info_layout.xml" value="0.13" />
+        <entry key="app/src/main/res/layout/project_info_layout.xml" value="0.1" />
         <entry key="app/src/main/res/layout/project_list_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/search_bg.xml" value="0.20222317229585293" />
+        <entry key="app/src/main/res/layout/signup_fragment.xml" value="0.13" />
         <entry key="app/src/main/res/layout/table_view.xml" value="0.22" />
       </map>
     </option>
@@ -75,7 +81,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.15" />
+        <option name="scale" value="0.13" />
       </ProjectState>
     </option>
   </component>

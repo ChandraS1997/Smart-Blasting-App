@@ -16,6 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -52,6 +54,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
 
             binding.loginbtn.setOnClickListener(this);
             binding.showPassBtn.setOnClickListener(this);
+            binding.requestaccess.setOnClickListener(this);
 
         }
         return binding.getRoot();
@@ -64,6 +67,9 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                 if (checkValidation()) {
                     loginApiCaller();
                 }
+                break;
+            case R.id.requestaccess:
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.signUpFragment);
                 break;
             case R.id.show_pass_btn:
                 if (binding.passwordEdt.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
