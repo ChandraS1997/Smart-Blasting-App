@@ -68,8 +68,10 @@ public class MainService {
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
+
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("Login", true);
+
         Call<JsonObject> call = loginApiService.loginApiCaller(queryMap, map);
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -84,6 +86,7 @@ public class MainService {
                     }
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                 Log.e(" API FAILED ", t.getLocalizedMessage());

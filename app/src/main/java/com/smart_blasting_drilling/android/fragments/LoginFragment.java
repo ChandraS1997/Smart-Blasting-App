@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
@@ -67,11 +68,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                     loginApiCaller();
                 }
                 break;
-
             case R.id.requestaccess:
-           /*     if (checkValidation()) {
-                    loginApiCaller();
-                }*/
                 Navigation.findNavController(binding.getRoot()).navigate(R.id.signUpFragment);
                 break;
             case R.id.show_pass_btn:
