@@ -5,6 +5,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <include
             android:id="@+id/header_media"
             layout="@layout/header_lay_media_activity" />
@@ -15,9 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:defaultNavHost="true"
-           app:layout_constraintTop_toBottomOf="@+id/header_media"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header_media"
             app:navGraph="@navigation/media_nav" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

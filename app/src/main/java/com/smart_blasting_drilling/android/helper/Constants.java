@@ -1,12 +1,16 @@
 package com.smart_blasting_drilling.android.helper;
 
+import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class Constants {
     public static OnHoleClickListener onHoleClickListener;
+
+    public static final String DATABASE_NAME = "drilling_blasting_db";
 
     public static String API_DEFAULT_URL = "login";
     public static String API_BLADES_URL = "blades";

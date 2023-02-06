@@ -77,9 +77,6 @@
     <string name="required_for_this_app">Require for this app</string>
     <string name="enable_now">Enable now</string>
 
- <!--   <string name="enable_gps">Enable GPS</string>
-    <string name="required_for_this_app">Require for this app</string>
-    <string name="enable_now">Enable now</string>-->
     <string name="signup_here">Register Here</string>
     <string name="enter_name">Enter Name</string>
     <string name="enter_emailr">Enter Email</string>
@@ -124,4 +121,6 @@
     <string name="bounder_count">Bounder Count</string>
     <string name="save">Save</string>
 
+    <string name="_3d_blades">3D Blades</string>
+    <string name="_2022_01_04">2022/01/04</string>
 </resources>

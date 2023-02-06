@@ -7,30 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-       <!-- <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/userProfile"
-            android:layout_width="@dimen/_95sdp"
-            android:layout_height="@dimen/_95sdp"
-            android:background="@drawable/ic_launcher_background"
-            android:elevation="@dimen/_10sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-        />
-
-        <ImageView
-            android:id="@+id/cameraBtn"
-            android:layout_width="@dimen/_29sdp"
-            android:layout_height="@dimen/_29sdp"
-            android:elevation="@dimen/_10sdp"
-            android:padding="@dimen/_6sdp"
-            android:src="@drawable/camera"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/userProfile"
-            app:layout_constraintEnd_toEndOf="@+id/userProfile"
-            app:layout_constraintStart_toStartOf="@+id/userProfile"
-            app:layout_constraintTop_toBottomOf="@+id/userProfile" />-->
-
         <TextView
             android:id="@+id/noimageTV"
             android:layout_width="0dp"
@@ -68,20 +44,35 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mediaRecycler"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:nestedScrollingEnabled="false"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:itemCount="3"
+            tools:itemCount="6"
+            app:spanCount="3"
             tools:listitem="@layout/media_item"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_camera_fab"
+            android:visibility="gone"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            app:fabSize="auto"
+            app:maxImageSize="@dimen/_25sdp"
+            android:tint="@color/white"
+            app:borderWidth="0dp"
+            android:backgroundTint="@color/_FFA722"
+            app:fabCustomSize="@dimen/_50sdp"
+            android:layout_margin="@dimen/_15sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:srcCompat="@drawable/camera" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

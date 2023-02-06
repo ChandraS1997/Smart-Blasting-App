@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.multidex.MultiDexApplication;
+import androidx.room.Room;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.activity.BaseActivity;
@@ -13,6 +14,7 @@ import com.smart_blasting_drilling.android.helper.CheckInternetConnection;
 import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
 import com.smart_blasting_drilling.android.helper.InAppInstallUtil;
 import com.smart_blasting_drilling.android.helper.PreferenceManger;
+import com.smart_blasting_drilling.android.room_database.AppDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import java.util.HashMap;
@@ -33,6 +35,7 @@ public class BaseApplication extends MultiDexApplication {
     private static PreferenceManger preferenceManger;
     private static InAppInstallUtil inAppInstallUtil;
     private ConnectivityReceiver receiver;
+    private static AppDatabase appDatabase;
 
     public static BaseApplication getInstance() {
         return instance;
@@ -45,18 +48,12 @@ public class BaseApplication extends MultiDexApplication {
         return preferenceManger;
     }
 
-//    public static InAppInstallUtil getInAppInstallUtil() {
-//        if (inAppInstallUtil == null && getInstance() != null) {
-//            inAppInstallUtil = new PreferenceManger(getInstance().getSharedPreferences(PreferenceManger.PREF_KEY, Context.MODE_PRIVATE));
-//        }
-//        return preferenceManger;
-//    }
-
-    /*@Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        Glide.get(this).clearMemory();
-    }*/
+    public static AppDatabase getAppDatabase(Context context, String dbName) {
+        if (appDatabase == null && getInstance() != null) {
+            appDatabase = Room.databaseBuilder(context, AppDatabase.class, dbName).fallbackToDestructiveMigration().allowMainThreadQueries().build();
+        }
+        return appDatabase;
+    }
 
     public static HashMap<String, Object> getDefaultHeaders() {
         HashMap<String, Object> hashMap = new HashMap<>();

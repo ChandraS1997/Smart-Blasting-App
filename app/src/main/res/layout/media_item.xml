@@ -4,47 +4,20 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainLayout"
-        android:layout_width="@dimen/_120sdp"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_marginTop="@dimen/_2sdp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_13sdp"
-            app:cardElevation="1dp"
-            app:cardUseCompatPadding="true"
+        <ImageView
+            android:id="@+id/Image"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_4sdp">
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/Image"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_85sdp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icn_blasting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:riv_border_color="#333333"
-                    app:riv_corner_radius="@dimen/_13sdp"
-                    app:riv_mutate_background="true" />
-
-            <!--    <View
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_85sdp"
-                    android:background="@drawable/black_shadow_bg"
-                    app:layout_constraintBottom_toBottomOf="@+id/productImage"
-                    app:layout_constraintStart_toStartOf="@+id/productImage" />-->
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

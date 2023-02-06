@@ -33,7 +33,7 @@ public class SplashActivity extends BaseActivity {
                 if (manger.getUserDetails() == null) {
                     startActivity(new Intent(SplashActivity.this, AuthActivity.class));
                 } else {
-                    startActivity(new Intent(SplashActivity.this, AuthActivity.class));
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                 }
                 finishAffinity();
             }
