@@ -23,6 +23,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -39,7 +41,7 @@ public class BaseFragment extends Fragment {
     public static final String APILOADINGTEXT = "Please wait...";
     public static final String NODATAFOUND = "Nothing to show here yet!";
     public static final String SESSION_EXPIRED_TEXT = "Session expired,Please Login Again.";
-
+String currentPhotoPath;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -80,9 +82,24 @@ public class BaseFragment extends Fragment {
     }
 
     public File createImageFile() throws IOException {
-        String imageFileName = "Wayrem_Image-" + System.currentTimeMillis() + "_";
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+       // String imageFileName = "smartBLastingDrilling_Image-" + System.currentTimeMillis() + "_";
         File storageDir = mContext.getFilesDir();
-        return File.createTempFile(imageFileName, ".png", storageDir);
+      //  return File.createTempFile(imageFileName, ".png", storageDir);
+
+
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+
     }
 
 

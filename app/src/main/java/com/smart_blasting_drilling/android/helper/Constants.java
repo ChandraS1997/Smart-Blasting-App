@@ -14,8 +14,13 @@ public class Constants {
 
     public static String API_DEFAULT_URL = "login";
     public static String API_BLADES_URL = "blades";
+    public static String API_IMAGE_VIDEO_BASE_URL = "imagevideo";
+    public static String API_UPLOAD_BASE_URL = "upload";
     public static final String LOGIN_BASE_URL = "https://www.mineexcellence.com/smartdrilling/";
     public static final String BLADES_BASE_URL = "http://testblades.mineexcellence.com/BLADES_API/Service1.svc/";
+    public static final String IMAGE_VIDEO_BASE_URL = "http://devsblastapi.mineexcellence.com/api/sblast/";
+    public static final String UPLOAD_BASE_URL = " https://centralbims.mineexcellence.com/";
+
 
     public static String getUserAuthToken() {
         String token = "";
