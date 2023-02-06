@@ -1,4 +1,4 @@
-package com.smart_blasting_drilling.android.fragments;
+package com.smart_blasting_drilling.android.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,15 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.smart_blasting_drilling.android.BuildConfig;
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.activity.AuthActivity;
-import com.smart_blasting_drilling.android.activity.BaseActivity;
-import com.smart_blasting_drilling.android.activity.HomeActivity;
+import com.smart_blasting_drilling.android.ui.activity.AuthActivity;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.app.BaseFragment;

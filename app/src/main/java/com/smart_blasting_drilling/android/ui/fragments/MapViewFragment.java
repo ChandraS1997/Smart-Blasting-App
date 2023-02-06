@@ -1,7 +1,5 @@
-package com.smart_blasting_drilling.android.fragments;
+package com.smart_blasting_drilling.android.ui.fragments;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,21 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.activity.HoleDetailActivity;
-import com.smart_blasting_drilling.android.adapter.TableViewAdapter;
 import com.smart_blasting_drilling.android.app.BaseFragment;
-import com.smart_blasting_drilling.android.databinding.FragmentHoleDetailsTableBinding;
+import com.smart_blasting_drilling.android.databinding.FragmentMapviewBinding;
+import com.smart_blasting_drilling.android.helper.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class HoleDetailsTableFragment extends BaseFragment {
-
-    FragmentHoleDetailsTableBinding binding;
-    List<String> tabList = new ArrayList<>();
-    TableViewAdapter tableViewAdapter;
+public class MapViewFragment extends BaseFragment {
+    FragmentMapviewBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +27,7 @@ public class HoleDetailsTableFragment extends BaseFragment {
             @Override
             public void handleOnBackPressed() {
                 if (getView() != null)
-                    ((HoleDetailActivity) mContext).finish();
+                    Navigation.findNavController(getView()).navigate(R.id.HoleDetailsTableViewFragment);
             }
         });
     }
@@ -43,11 +35,15 @@ public class HoleDetailsTableFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (binding == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hole_details_table, container, false);
 
-            tableViewAdapter = new TableViewAdapter(mContext, tabList);
-            binding.tableRv.setAdapter(tableViewAdapter);
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mapview, container, false);
+            binding.linlay.setOnClickListener(view -> {
+                if (Constants.onHoleClickListener != null)
+                    Constants.onHoleClickListener.onHoleClick("mapviewFragment");
+            });
+
         }
+
         return binding.getRoot();
     }
 }

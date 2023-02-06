@@ -1,28 +1,21 @@
 package com.smart_blasting_drilling.android.dialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
-import com.smart_blasting_drilling.android.adapter.ProjectDialogListAdapter;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.databinding.ProjectInfoDialogBinding;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProjectInfoDialog extends BaseDialogFragment
 {

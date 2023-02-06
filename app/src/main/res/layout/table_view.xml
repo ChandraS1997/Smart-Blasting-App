@@ -24,6 +24,7 @@
                     android:padding="@dimen/_2sdp">
 
                     <TextView
+                        android:id="@+id/rowNoTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -32,6 +33,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/holeNoTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -40,6 +42,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/holeIdTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -48,6 +51,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/holeDepthTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -56,6 +60,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/holeStatusTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -64,6 +69,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/holeAngleTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -72,6 +78,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/dimeterTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -80,6 +87,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/burdenTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -88,6 +96,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/spacingTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -96,6 +105,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/xTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -104,6 +114,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/yTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -112,6 +123,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/zTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -120,6 +132,7 @@
                         android:textColor="@color/black" />
 
                     <TextView
+                        android:id="@+id/chargingTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

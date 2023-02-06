@@ -1,6 +1,5 @@
-package com.smart_blasting_drilling.android.fragments;
+package com.smart_blasting_drilling.android.ui.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +11,15 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.activity.BaseActivity;
-import com.smart_blasting_drilling.android.adapter.ProjectLIstAdapter;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.adapter.ProjectLIstAdapter;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.FragmentDrillingFragmentBinding;
-import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlastingFragment extends BaseFragment {
+public class DrillingFragment extends BaseFragment {
 
     FragmentDrillingFragmentBinding binding;
     List<String> projectList = new ArrayList<>();

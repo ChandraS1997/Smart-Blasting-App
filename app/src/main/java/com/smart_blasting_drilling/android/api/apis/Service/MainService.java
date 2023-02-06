@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.smart_blasting_drilling.android.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.api.APIError;
 import com.smart_blasting_drilling.android.api.APiInterface;
 import com.smart_blasting_drilling.android.app.BaseApplication;

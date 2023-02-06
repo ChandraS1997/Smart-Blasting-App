@@ -1,4 +1,4 @@
-package com.smart_blasting_drilling.android.adapter;
+package com.smart_blasting_drilling.android.ui.adapter;
 
 import static com.smart_blasting_drilling.android.helper.Constants.DATABASE_NAME;
 

@@ -9,7 +9,7 @@ import androidx.multidex.MultiDexApplication;
 import androidx.room.Room;
 
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.helper.CheckInternetConnection;
 import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
 import com.smart_blasting_drilling.android.helper.InAppInstallUtil;

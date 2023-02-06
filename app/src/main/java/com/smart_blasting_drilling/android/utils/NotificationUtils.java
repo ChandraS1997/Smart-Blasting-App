@@ -21,8 +21,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.activity.AuthActivity;
-import com.smart_blasting_drilling.android.activity.HomeActivity;
+import com.smart_blasting_drilling.android.ui.activity.AuthActivity;
+import com.smart_blasting_drilling.android.ui.activity.HomeActivity;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 
 import java.io.IOException;

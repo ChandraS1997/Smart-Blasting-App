@@ -1,4 +1,4 @@
-package com.smart_blasting_drilling.android.adapter;
+package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
