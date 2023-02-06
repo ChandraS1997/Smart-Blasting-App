@@ -6,12 +6,12 @@
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.smart_blasting_drilling.android.fragments.LoginFragment"
+        android:name="com.smart_blasting_drilling.android.ui.fragments.LoginFragment"
         android:label="Login"
         tools:layout="@layout/fragment_login"/>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.smart_blasting_drilling.android.fragments.SignUpFragment"
+        android:name="com.smart_blasting_drilling.android.ui.fragments.SignUpFragment"
         android:label="SignUp"
         tools:layout="@layout/signup_fragment"/>
 

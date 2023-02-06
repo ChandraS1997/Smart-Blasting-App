@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/holeDetailsTableViewFragment"
-        android:name="com.smart_blasting_drilling.android.fragments.HoleDetailsTableFragment"
+        android:name="com.smart_blasting_drilling.android.ui.fragments.HoleDetailsTableFragment"
         android:label="HoleDetailsTableViewFragment"
         tools:layout="@layout/fragment_hole_details_table" />
 
     <fragment
         android:id="@+id/mapViewFrament"
-        android:name="com.smart_blasting_drilling.android.fragments.MapViewFragment"
+        android:name="com.smart_blasting_drilling.android.ui.fragments.MapViewFragment"
         android:label="MapViewFrament"
         tools:layout="@layout/fragment_mapview" />
 

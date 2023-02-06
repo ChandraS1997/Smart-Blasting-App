@@ -1,4 +1,4 @@
-package com.smart_blasting_drilling.android.activity;
+package com.smart_blasting_drilling.android.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.WindowManager;
 import androidx.core.content.ContextCompat;
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.app.AppDelegate;
-import com.smart_blasting_drilling.android.helper.StringHelper;
 
 import java.util.Timer;
 import java.util.TimerTask;

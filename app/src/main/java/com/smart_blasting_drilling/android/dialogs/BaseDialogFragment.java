@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.DialogFragment;
-import com.smart_blasting_drilling.android.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 
 public abstract class BaseDialogFragment extends DialogFragment {
 

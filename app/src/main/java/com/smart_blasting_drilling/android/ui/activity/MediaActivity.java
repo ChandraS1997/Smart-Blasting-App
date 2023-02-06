@@ -1,4 +1,4 @@
-package com.smart_blasting_drilling.android.activity;
+package com.smart_blasting_drilling.android.ui.activity;
 
 import android.os.Bundle;
 

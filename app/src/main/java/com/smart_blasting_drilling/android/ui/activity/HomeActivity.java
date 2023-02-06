@@ -1,25 +1,20 @@
-package com.smart_blasting_drilling.android.activity;
+package com.smart_blasting_drilling.android.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.adapter.ProjectLIstAdapter;
+import com.smart_blasting_drilling.android.ui.adapter.ProjectLIstAdapter;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.ActivityHomeBinding;
@@ -33,7 +28,6 @@ import com.smart_blasting_drilling.android.utils.ViewUtil;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class HomeActivity extends BaseActivity {
     public NavController navController;
@@ -60,6 +54,7 @@ public class HomeActivity extends BaseActivity {
         projectList.clear();
         Type projectListType = new TypeToken<List<ResponseBladesRetrieveData>>(){}.getType();
         projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project2DBladesDao().getAllBladesProject()), projectListType));
+        projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project3DBladesDao().getAllBladesProject()), projectListType));
 
         projectLIstAdapter = new ProjectLIstAdapter(this, projectList);
         binding.appLayout.projectListRv.setAdapter(projectLIstAdapter);
@@ -74,11 +69,11 @@ public class HomeActivity extends BaseActivity {
         binding.appLayout.headerLayout.downBtn.setOnClickListener(view -> {
             showDownloadListDialog((is3DBlades, dialogFragment) -> {
                 projectList.clear();
-                if (is3DBlades) {
+//                if (is3DBlades) {
                     projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project3DBladesDao().getAllBladesProject()), projectListType));
-                } else {
+//                } else {
                     projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project2DBladesDao().getAllBladesProject()), projectListType));
-                }
+//                }
                 projectLIstAdapter.notifyDataSetChanged();
                 dialogFragment.dismiss();
             });

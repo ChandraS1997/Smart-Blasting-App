@@ -1,4 +1,4 @@
-package com.smart_blasting_drilling.android.fragments;
+package com.smart_blasting_drilling.android.ui.fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,7 @@ import com.hbisoft.pickit.PickiTCallbacks;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.adapter.MediaAdapter;
+import com.smart_blasting_drilling.android.ui.adapter.MediaAdapter;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.MediaFragmentBinding;

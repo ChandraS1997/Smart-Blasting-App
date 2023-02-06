@@ -1,4 +1,4 @@
-package com.smart_blasting_drilling.android.adapter;
+package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,15 +10,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.activity.HoleDetailActivity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.app_utils.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.AdapterDrillingBlastingItemBinding;
 import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ProjectLIstAdapter extends BaseRecyclerAdapter {
