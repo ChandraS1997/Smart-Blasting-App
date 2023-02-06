@@ -240,10 +240,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_regular"
+                        android:paddingStart="@dimen/_2sdp"
                         android:text="@string/bench_1"
                         android:textColor="@color/black"
-                        android:paddingStart="@dimen/_2sdp"
                         android:textSize="@dimen/_13ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/titleBenchTv"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

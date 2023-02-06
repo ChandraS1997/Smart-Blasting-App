@@ -46,8 +46,8 @@ public class BlastingFragment extends BaseFragment {
 
             ((BaseActivity) mContext).hideKeyboard((BaseActivity) mContext);
 
-            projectLIstAdapter = new ProjectLIstAdapter(mContext, projectList);
-            binding.projectListRv.setAdapter(projectLIstAdapter);
+//            projectLIstAdapter = new ProjectLIstAdapter(mContext, projectList);
+//            binding.projectListRv.setAdapter(projectLIstAdapter);
 
         }
         return binding.getRoot();

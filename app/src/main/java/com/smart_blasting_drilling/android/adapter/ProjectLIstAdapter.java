@@ -11,18 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.activity.HoleDetailActivity;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.app_utils.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.AdapterDrillingBlastingItemBinding;
+import com.smart_blasting_drilling.android.utils.DateUtils;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ProjectLIstAdapter extends BaseRecyclerAdapter {
 
     Context ctx;
-    List<String> projectList;
+    List<ResponseBladesRetrieveData> projectList;
 
-    public ProjectLIstAdapter(Context ctx, List<String> projectList) {
+    public ProjectLIstAdapter(Context ctx, List<ResponseBladesRetrieveData> projectList) {
         this.ctx = ctx;
         this.projectList = projectList;
     }
@@ -41,24 +45,37 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ViewHolder vholder = (ViewHolder) holder;
-        vholder.itemView.setOnClickListener(v -> {
-            Intent i = new Intent(ctx, HoleDetailActivity.class);
-            ctx.startActivity(i);
-        });
+        ViewHolder viewHolder = (ViewHolder) holder;
+        viewHolder.setDataBind(projectList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 6;
+        return projectList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         AdapterDrillingBlastingItemBinding binding;
 
         public ViewHolder(@NonNull AdapterDrillingBlastingItemBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
+        }
+
+        public void setDataBind(ResponseBladesRetrieveData data) {
+            itemView.setOnClickListener(v -> {
+                Intent i = new Intent(ctx, HoleDetailActivity.class);
+                ctx.startActivity(i);
+            });
+
+            binding.titleNameTv.setText(StringUtill.getString(data.getDesignName()));
+            binding.MinevalTv.setText(StringUtill.getString(data.getMineName()));
+            binding.pit.setText(StringUtill.getString(data.getPitName()));
+            binding.zone.setText(StringUtill.getString(data.getZoneName()));
+//            binding.StatusTv.setText(StringUtill.getString(data.get()));
+            binding.Bench.setText(StringUtill.getString(data.getBenchName()));
+            binding.CreatedDateval.setText(StringUtill.getString(DateUtils.getFormattedTime(data.getDesignDateTime(), "dd/MM/yyyy HH:mm:ss a", "dd/MM/yyyy")));
+
         }
     }
 }

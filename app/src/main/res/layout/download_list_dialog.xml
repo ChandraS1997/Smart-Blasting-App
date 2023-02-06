@@ -23,29 +23,50 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mainContainerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="@dimen/_10sdp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/headerLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:layout_height="wrap_content">
 
+                    <TextView
+                        android:id="@+id/text3dBlades"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14ssp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        app:layout_constraintEnd_toStartOf="@id/switchBtn3d"
+                        app:layout_constraintTop_toTopOf="@id/switchBtn3d"
+                        app:layout_constraintBottom_toBottomOf="@id/switchBtn3d"
+                        android:text="@string/_3d_blades"/>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchBtn3d"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="TouchTargetSizeCheck" />
                     <TextView
                         android:id="@+id/showStartDateTxt"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:text="2022/01/04"
+                        android:text="@string/_2022_01_04"
+                        android:layout_marginTop="@dimen/_15sdp"
                         android:fontFamily="@font/inter_regular"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14ssp"
                         android:gravity="center"
                         app:layout_constraintEnd_toStartOf="@id/viewLine"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/switchBtn3d"
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <View
@@ -57,8 +78,8 @@
                         android:orientation="vertical"
                         app:layout_constraintEnd_toStartOf="@id/showEndDateTxt"
                         app:layout_constraintStart_toEndOf="@id/showStartDateTxt"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="@id/showStartDateTxt"
+                       />
 
                     <TextView
                         android:id="@+id/showEndDateTxt"
@@ -71,7 +92,7 @@
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintEnd_toStartOf="@id/viewLineEndDate"
                         app:layout_constraintStart_toEndOf="@id/viewLine"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/showStartDateTxt"
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <View
@@ -83,7 +104,7 @@
                         android:orientation="vertical"
                         app:layout_constraintEnd_toStartOf="@id/goBtnLayout"
                         app:layout_constraintStart_toEndOf="@id/showEndDateTxt"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/showStartDateTxt"
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <LinearLayout
@@ -99,14 +120,14 @@
                             android:id="@+id/goBtn"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_35sdp"
-                            android:background="@drawable/btn_shape"
-                            android:text="@string/go"
                             android:layout_gravity="center"
                             android:layout_marginHorizontal="@dimen/_25sdp"
+                            android:background="@drawable/btn_shape"
                             android:fontFamily="@font/oxygen_regular"
+                            android:text="@string/go"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/_16sdp"
-                            />
+                            android:textSize="@dimen/_16ssp"
+                            tools:ignore="TouchTargetSizeCheck" />
 
                     </LinearLayout>
 

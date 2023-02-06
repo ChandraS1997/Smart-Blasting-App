@@ -21,15 +21,14 @@
                     android:id="@+id/table_heading_row"
                     android:layout_width="match_parent"
                     android:background="@color/_E1E2E6"
-                    android:padding="@dimen/_2sdp"
-                    android:weightSum="10">
+                    android:padding="@dimen/_2sdp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/hole_id"
+                        android:text="Row No."
                         android:textColor="@color/black" />
 
                     <TextView
@@ -37,7 +36,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/raw_id"
+                        android:text="Hole No."
                         android:textColor="@color/black" />
 
                     <TextView
@@ -45,7 +44,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/hole_no"
+                        android:text="Hole Id"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -53,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/burden"
+                        android:text="Hole Depth"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -61,7 +60,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/spacing"
+                        android:text="Hole Status"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -69,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/hole_dia"
+                        android:text="Hole Angle"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -77,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/hole_angle"
+                        android:text="Diameter"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -85,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/hole_depth"
+                        android:text="Burden"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -93,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/sub_grade"
+                        android:text="Spacing"
                         android:textColor="@color/black" />
 
                     <TextView
@@ -101,9 +100,32 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/more"
+                        android:text="X"
                         android:textColor="@color/black" />
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Y"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Z"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Charging"
+                        android:textColor="@color/black" />
 
                 </TableRow>
 
@@ -113,8 +135,7 @@
                     android:layout_height="wrap_content"
                     android:background="#F0F7F7"
                     android:baselineAligned="false"
-                    android:stretchColumns="1"
-                    android:weightSum="10">
+                    android:stretchColumns="1">
 
                     <EditText
                         android:layout_width="0dp"
@@ -236,6 +257,41 @@
                         android:singleLine="true"
                         android:text="" />
 
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
+                        android:hint=""
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
+                        android:hint=""
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/table_cell_border"
+                        android:editable="false"
+                        android:gravity="center"
+                        android:hint=""
+                        android:imeOptions="flagNoExtractUi"
+                        android:singleLine="true"
+                        android:text="" />
 
                 </TableRow>
             </TableLayout>

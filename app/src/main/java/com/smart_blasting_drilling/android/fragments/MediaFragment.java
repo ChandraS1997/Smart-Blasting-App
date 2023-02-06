@@ -24,7 +24,6 @@ import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.hbisoft.pickit.PickiT;
 import com.hbisoft.pickit.PickiTCallbacks;
@@ -32,16 +31,17 @@ import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.adapter.MediaAdapter;
+import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.MediaFragmentBinding;
+import com.smart_blasting_drilling.android.helper.Constants;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MediaFragment extends BaseFragment implements PickiTCallbacks
-{
+public class MediaFragment extends BaseFragment implements PickiTCallbacks {
 
     private final int PICK_IMAGE_CAMERA = 1;
     MediaFragmentBinding binding;
@@ -51,29 +51,21 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks
     PickiT pickiT;
     ActivityResultLauncher<String> activityResultLauncher;
     List<String> imageList = new ArrayList<>();
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
-        if (binding == null)
-        {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.media_fragment, container, false);
             binding.clickhereTv.setOnClickListener(view -> selectImage());
             pickiT = new PickiT(mContext, this, getActivity());
-/*            binding.mediaRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
-            mediaAdapter = new MediaAdapter(mContext);
-            // binding.homeLayout.featuredRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-            binding.mediaRecycler.setAdapter(mediaAdapter);
-            mediaAdapter.notifyDataSetChanged();*/
-            System.out.println("inside "+imageList);
-            ImagelistBlank();
 
+            imageListBlank();
 
             activityResultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
@@ -81,23 +73,21 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks
                 }
             });
 
+            binding.addCameraFab.setOnClickListener(view -> selectImage());
+
         }
         return binding.getRoot();
     }
 
-    private void ImagelistBlank() {
-        if(imageList.isEmpty())
-        {
-            System.out.println("inside if");
-            //if(binding.noimageTV.)
+    private void imageListBlank() {
+        if (!Constants.isListEmpty(AppDelegate.getInstance().getImgList())) {
+            imageList.addAll(AppDelegate.getInstance().getImgList());
+        }
+        if (imageList.isEmpty()) {
             binding.noimageTV.setVisibility(View.VISIBLE);
             binding.clickhereTv.setVisibility(View.VISIBLE);
             binding.mediaRecycler.setVisibility(View.GONE);
-
-        }
-        else
-        {
-            System.out.println("inside else");
+        } else {
             binding.noimageTV.setVisibility(View.GONE);
             binding.clickhereTv.setVisibility(View.GONE);
             binding.mediaRecycler.setVisibility(View.VISIBLE);
@@ -187,44 +177,35 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks
     @Override
     public void PickiTonCompleteListener(String path, boolean wasDriveFile, boolean wasUnknownProvider, boolean wasSuccessful, String Reason) {
         if (wasSuccessful) {
-            if (new File(path).length() <= (2 * 1024 * 1024)) {
-                Log.e("PATHTH", path);
+            /*if (new File(path).length() <= (2 * 1024 * 1024)) {
                 if (path.endsWith(".jpg") || path.endsWith(".png") || path.endsWith(".jpeg")) {
-                    imgPath = path;
-                    file = new File(path);
-                    AddImageRecycler();
-                  /*  imageList.add(path);
-                    binding.mediaRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
-                    mediaAdapter = new MediaAdapter(mContext,imageList);
-                    // binding.homeLayout.featuredRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-                    binding.mediaRecycler.setAdapter(mediaAdapter);
-                    mediaAdapter.notifyDataSetChanged();*/
-                    ImagelistBlank();
-                    //Glide.with(mContext).load(new File(path)).placeholder(R.drawable.ic_launcher_background).into(binding.userProfile);
+
                 }
             } else {
                 showToast(mContext.getString(R.string.please_select_2mb_size));
-            }
+            }*/
+            imgPath = path;
+            file = new File(path);
+            AddImageRecycler();
+            imageListBlank();
         }
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == PICK_IMAGE_CAMERA)
-        {
-          //  Glide.with(mContext).load(imgPath).placeholder(R.drawable.ic_launcher_background).into(binding.userProfile);
+        if (requestCode == PICK_IMAGE_CAMERA) {
             AddImageRecycler();
-           ImagelistBlank();
+            imageListBlank();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void AddImageRecycler() {
         imageList.add(imgPath);
+        AppDelegate.getInstance().setImgList(imageList);
         binding.mediaRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
-        mediaAdapter = new MediaAdapter(mContext,imageList);
-        // binding.homeLayout.featuredRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        mediaAdapter = new MediaAdapter(mContext, imageList);
         binding.mediaRecycler.setAdapter(mediaAdapter);
         mediaAdapter.notifyDataSetChanged();
     }

@@ -15,29 +15,24 @@ import com.smart_blasting_drilling.android.databinding.MediaItemBinding;
 import java.io.File;
 import java.util.List;
 
-public class MediaAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
-
     List<String> imageList;
-    public MediaAdapter(Context context,List<String> imageList) {
+
+    public MediaAdapter(Context context, List<String> imageList) {
         this.context = context;
-          this.imageList = imageList;
+        this.imageList = imageList;
     }
-    //List<mediaimg> mediaimg;
-/*    public MediaAdapter(Context context, List<mediaimg> mediaimg) {
-        this.context = context;
-      //  this.mediaimg = mediaimg;
-    }*/
 
     private RecyclerView.ViewHolder getViewHolder(LayoutInflater inflater, ViewGroup group) {
         MediaItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.media_item, group, false);
         return new MediaHolder(binding);
     }
+
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return getViewHolder(LayoutInflater.from(context), parent);
     }
 
@@ -45,7 +40,6 @@ public class MediaAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         MediaHolder vHolder = (MediaHolder) holder;
         vHolder.setDataBind(imageList.get(position));
-
     }
 
     @Override
@@ -62,9 +56,8 @@ public class MediaAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             binding = itemView;
         }
 
-        public void setDataBind(String path)
-        {
-            Glide.with(context).load(new File(path)).placeholder(R.drawable.ic_launcher_background).into(binding.Image);
+        public void setDataBind(String path) {
+            Glide.with(context).load(new File(path)).placeholder(R.drawable.ic_logo).into(binding.Image);
         }
     }
 }
