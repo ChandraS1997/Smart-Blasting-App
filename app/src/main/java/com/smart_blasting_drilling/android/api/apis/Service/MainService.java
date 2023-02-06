@@ -191,4 +191,35 @@ public class MainService {
         return data;
     }
 
+    public static LiveData<JsonObject> getMinePitZoneBenchApiCaller(final Context context, String userId, String blastId) {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+
+        Call<JsonObject> call = bladesApiService.getMinePitZoneBenchApiCaller(userId, blastId);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    if (response.errorBody() != null) {
+                        data.setValue(getError(response));
+                    } else {
+                        data.setValue(null);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                ((BaseActivity) context).hideLoader();
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+
+        return data;
+    }
+
 }

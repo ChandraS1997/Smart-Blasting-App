@@ -30,4 +30,7 @@ public interface APiInterface {
     @GET("RetrieveByDate/{start_time}/{end_time}/c3VzaGls/1/c3VzaGls/centralmineinfo")
     Call<JsonObject> retrieveByDateApiCaller(@Path(value = "start_time", encoded = true) String startDate, @Path(value = "end_time", encoded = true) String endDate);
 
+    @GET("/get-mine-pit-zone-bench/{user_id}/{user_id}/{blast_id}")
+    Call<JsonObject> getMinePitZoneBenchApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "blast_id", encoded = true) String blastId);
+
 }
