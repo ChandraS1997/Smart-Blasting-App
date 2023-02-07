@@ -15,11 +15,24 @@
             android:elevation="@dimen/_3sdp"
             android:paddingBottom="@dimen/_1sdp"
             android:paddingTop="@dimen/_1sdp"
-            android:paddingStart="@dimen/_10sdp"
             android:paddingEnd="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+
+            <ImageView
+                android:id="@+id/menuBtn"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginVertical="@dimen/_4sdp"
+                android:scaleType="fitXY"
+                android:src="@drawable/menu"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/primery" />
 
             <ImageView
                 android:id="@+id/homeBtn"
@@ -28,9 +41,10 @@
                 android:src="@drawable/icn_home"
                 android:visibility="visible"
                 android:padding="@dimen/_1sdp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/menuBtn"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="@dimen/_10sdp"/>
 
             <TextView
                 android:id="@+id/pageTitle"

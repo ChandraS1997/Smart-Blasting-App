@@ -63,6 +63,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import id.zelory.compressor.Compressor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class MediaFragment extends BaseFragment implements PickiTCallbacks {
@@ -74,9 +77,9 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
     String imgPath;
     PickiT pickiT;
     ActivityResultLauncher<String> activityResultLauncher;
-    List<String> imageList = new ArrayList<>();
     String filename;
     Bitmap bitmap;
+     String extension;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,19 +90,14 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (binding == null) {
-            System.out.println("inside onCreateView");
             binding = DataBindingUtil.inflate(inflater, R.layout.media_fragment, container, false);
             binding.clickhereTv.setOnClickListener(view -> selectImage());
             pickiT = new PickiT(mContext, this, getActivity());
 
             imageListBlank();
 
-            mediaAdapter = new MediaAdapter(mContext, imageList);
-            binding.mediaRecycler.setAdapter(mediaAdapter);
-
             activityResultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
-                    System.out.println("inside registerForActivityResult");
                     pickiT.getPath(uri, Build.VERSION.SDK_INT);
                 }
             });
@@ -111,22 +109,25 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
     }
 
     private void imageListBlank() {
-        System.out.println("inside imageListBlank");
+        System.out.println("inside imageListBlank"+AppDelegate.getInstance().getImgList());
 
-        if (!Constants.isListEmpty(AppDelegate.getInstance().getImgList())) {
-            imageList.addAll(AppDelegate.getInstance().getImgList());
+        if (!Constants.isListEmpty(AppDelegate.getInstance().getImgList()))
+        {
 
+           // imageList.addAll(AppDelegate.getInstance().getImgList());
             mediaAdapter = new MediaAdapter(mContext, AppDelegate.getInstance().getImgList());
             binding.mediaRecycler.setAdapter(mediaAdapter);
         }
-        if (Constants.isListEmpty(imageList)) {
+        if (Constants.isListEmpty(AppDelegate.getInstance().getImgList())) {
             binding.noimageTV.setVisibility(View.VISIBLE);
             binding.clickhereTv.setVisibility(View.VISIBLE);
             binding.mediaRecycler.setVisibility(View.GONE);
+            binding.addCameraFab.setVisibility(View.GONE);
         } else {
             binding.noimageTV.setVisibility(View.GONE);
             binding.clickhereTv.setVisibility(View.GONE);
             binding.mediaRecycler.setVisibility(View.VISIBLE);
+            binding.addCameraFab.setVisibility(View.VISIBLE);
         }
     }
 
@@ -149,7 +150,8 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
                 Permissions.check(mContext, permission, null, null, new PermissionHandler() {
                     @Override
                     public void onGranted() {
-                        activityResultLauncher.launch("image/*");
+                        String input = "image/*;video/*";
+                        activityResultLauncher.launch(input);
                     }
                 });
             } else if (options[item].equals(mContext.getString(R.string.cancel))) {
@@ -227,13 +229,14 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
             }*/
             imgPath = path;
             file = new File(path);
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        //    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+           /* Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             System.out.println("inside insertImageList file"+file);
             Uri contentUri = Uri.fromFile(file);
             mediaScanIntent.setData(contentUri);
             requireActivity().sendBroadcast(mediaScanIntent);
             // saveImage();
-            System.out.println("inside PickiTonCompleteListener");
+            System.out.println("inside PickiTonCompleteListener");*/
             filename=file.getName();
             AddImageRecycler();
            // imageListBlank();
@@ -265,7 +268,6 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
 
     private void InsertMediaApiCALLER(String imgPath)
     {
-        System.out.println("inside InsertMediaApiCALLER"+imgPath);
         showLoader();
         Map<String, Object> map=new HashMap<>();
         map.put("BlastCode","114239");
@@ -279,10 +281,8 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
         map.put("media_type","image");
         MainService.ImageVideoApiCaller(mContext, map).observe((LifecycleOwner) mContext, responsemedia -> {
             if (responsemedia == null) {
-                System.out.println("inside if ");
                 showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
             } else {
-                System.out.println("inside else");
                 if (responsemedia != null) {
 
                     try {
@@ -293,16 +293,18 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
                             try {
                                 if (responsemedia.getAsJsonObject().get("Response").getAsString().equals("Success"))
                                 {
-                                    Toast.makeText(mContext,
-                                                    responsemedia.getAsJsonObject().get("ReturnObject").getAsString(),
-                                                    Toast.LENGTH_LONG)
-                                            .show();
-
-
+                                    Toast.makeText(mContext,responsemedia.getAsJsonObject().get("ReturnObject").getAsString(), Toast.LENGTH_LONG).show();
                                     insertImageList();
+                                     extension = imgPath.substring(imgPath.lastIndexOf("."));
+                                    if(extension.equals(".mp4"))
+                                    {
+                                        uploadeVideo();
+                                    }
+                                    else
+                                    {
+                                        uploadeImage();
+                                    }
 
-
-                                    uploade();
                                        /*  imageList.add(imgPath);
                                          AppDelegate.getInstance().setImgList(imageList);
                                       binding.mediaRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
@@ -312,12 +314,7 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
                                 }
                                 else
                                 {
-                                    Toast.makeText(mContext,
-                                                    "Error In Insertion",
-                                                    Toast.LENGTH_LONG)
-                                            .show();
-
-
+                                    Toast.makeText(mContext, "Error In Insertion", Toast.LENGTH_LONG).show();
                                 }
                             }
                             catch (Exception e)
@@ -339,20 +336,101 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
         });
     }
 
-    private void uploade()
-    {
-        System.out.println("inside InsertMediaApiCALLER"+imgPath);
+    private void uploadeVideo() {
         showLoader();
-        Map<String, Object> map=new HashMap<>();
-        map.put("options.mimeType","image/jpeg");
-        map.put("mediaPath",imgPath);
+        Map<String, RequestBody> map=new HashMap<>();
+/*        map.put("options.mimeType","video/jpeg");
+        map.put("mediaPath",imgPath);*/
+        map.put("mediatype",toRequestBody("Video"));
+      //  map.put("Media",toRequestBody(imgPath));
 
-        MainService.uploadApiCaller(mContext, map).observe((LifecycleOwner) mContext, responseupload -> {
+
+        MultipartBody.Part fileData = null;
+
+        if (imgPath != null) {
+            File compressedImgFile = Compressor.getDefault(mContext).compressToFile(file);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), compressedImgFile);
+            fileData = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        }
+
+
+
+        MainService.uploadApiCallerVideo(mContext, map,fileData).observe((LifecycleOwner) mContext, responseupload -> {
             if (responseupload == null) {
-                System.out.println("inside if ");
                 showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
             } else {
-                System.out.println("inside else");
+                if (responseupload != null) {
+
+                    try {
+
+                        JsonObject jsonObject = responseupload.getAsJsonObject();
+                        if (jsonObject != null) {
+
+                          /*  try
+                            {
+                                System.out.println("inside try");
+                                   if (responseupload.getAsJsonObject().get("status").getAsBoolean())
+                                    {
+                                    Toast.makeText(mContext, responseupload.getAsJsonObject().get("Message").getAsString(), Toast.LENGTH_LONG).show();
+                                  }
+                                else
+                                {
+                                    Toast.makeText(mContext, R.string.error_insertion, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                System.out.println("inside catch"+e);
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }*/
+
+                            try {
+                                System.out.println("inside try");
+                                if (responseupload.getAsJsonObject().has("Message")) {
+                                    Toast.makeText(mContext,
+                                                    responseupload.getAsJsonObject().get("Message").getAsString(),
+                                                    Toast.LENGTH_LONG)
+                                            .show();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                System.out.println("inside catch"+e);
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }
+
+                        }
+                        else {
+                            ((BaseActivity) requireActivity()).showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                        }
+                    } catch (Exception e) {
+                        Log.e(NODATAFOUND, e.getMessage());
+                    }
+                    hideLoader();
+                }
+            }
+            hideLoader();
+        });
+
+
+    }
+
+    private void uploadeImage()
+    {
+        showLoader();
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("mediatype",toRequestBody("Image"));
+        MultipartBody.Part fileData = null;
+        if (imgPath != null) {
+            File compressedImgFile = Compressor.getDefault(mContext).compressToFile(file);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), compressedImgFile);
+            fileData = MultipartBody.Part.createFormData("Media", file.getName(), requestFile);
+        }
+
+        MainService.uploadApiCallerImage(mContext, map, fileData).observe((LifecycleOwner) mContext, responseupload -> {
+            if (responseupload == null) {
+                showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+            } else {
                 if (responseupload != null) {
 
                     try {
@@ -361,17 +439,9 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
                         if (jsonObject != null) {
 
                             try {
-                                if (responseupload.getAsJsonObject().get("response").getAsString().equals("Success"))
-                                {
+                                if (responseupload.getAsJsonObject().has("Message")) {
                                     Toast.makeText(mContext,
                                                     responseupload.getAsJsonObject().get("Message").getAsString(),
-                                                    Toast.LENGTH_LONG)
-                                            .show();
-                                }
-                                else
-                                {
-                                    Toast.makeText(mContext,
-                                                    "Error In Insertion",
                                                     Toast.LENGTH_LONG)
                                             .show();
                                 }
@@ -399,142 +469,15 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
 
     private void insertImageList()
     {
-        imageList.add(imgPath);
+        System.out.println("imgPath"+imgPath);
+
       /*  Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         System.out.println("inside insertImageList file"+file);
         Uri contentUri = Uri.fromFile(file);
         mediaScanIntent.setData(contentUri);
         requireActivity().sendBroadcast(mediaScanIntent);
        // saveImage();*/
-      //  save();
-        //storeImg();
-       // MakeDir();
-      //  Savefile(filename,imgPath);
-        System.out.println("inside dispatchTakePictureIntent");
-        AppDelegate.getInstance().setImgList(imageList);
-
+        AppDelegate.getInstance().setSingleImageIntoList(imgPath);
         imageListBlank();
-
-
     }
-
-    private void saveImage()
-    {
-
-    }
-
-    private void save()
-    {  Drawable drawable = getResources().getDrawable(R.drawable.icn_blasting);
-        bitmap = ((BitmapDrawable) drawable).getBitmap();
-
-        ContextWrapper cw = new ContextWrapper(mContext);
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        File file = new File(directory, "abc" + ".jpg");
-        if (!file.exists()) {
-            Log.d("path", file.toString());
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                fos.flush();
-                fos.close();
-            } catch (java.io.IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-   /* private void storeImg()
-    {
-        OutputStream output;
-        // Find the SD Card path
-        File filepath = Environment.getExternalStorageDirectory();
-
-        // Create a new folder in SD Card
-        File dir = new File(filepath.getAbsolutePath()
-                + "/SmartappIMG/");
-        dir.mkdirs();
-
-        // Retrieve the image from the res folder
-      //  BitmapDrawable drawable = (BitmapDrawable) principal.getDrawable();
-      //  Bitmap bitmap1 = drawable.getBitmap();
-
-        // Create a name for the saved image
-        File file = new File(dir, "Wallpaper.jpg" );
-
-        try {
-
-            output = new FileOutputStream(file);
-
-            // Compress into png format image from 0% - 100%
-            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, output);
-            output.flush();
-            output.close();
-
-        }
-
-        catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-*/
-    private void MakeDir()
-    {
-        File dir = Environment.getExternalStoragePublicDirectory("MynewDir");
-        try
-        {
-            System.out.println("inside make dir try");
-            dir.mkdir();
-        }
-        catch (Exception e)
-        {
-            System.out.println("inside make dir catch");
-          e.printStackTrace();
-        }
-        File contentfilename=new File(dir,filename);
-        try
-        {
-            System.out.println("inside make dir  2nd try");
-            FileOutputStream stream= new FileOutputStream(contentfilename);
-            stream.write(filename.getBytes());
-            Toast.makeText(mContext, "Created",
-                            Toast.LENGTH_LONG)
-                    .show();
-        }
-
-        catch (IOException e)
-        {
-            System.out.println("inside make dir 2nd catch");
-            e.printStackTrace();
-        }
-
-    }
-
-    private void Savefile(String filename, String imgPath)
-    {
-        File direct = new File(Environment.getExternalStorageDirectory() + "/MyAppFolder/MyApp/");
-        File file = new File(Environment.getExternalStorageDirectory() + "/MyAppFolder/MyApp/"+5+".png");
-
-        if(!direct.exists()) {
-            direct.mkdir();
-        }
-
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-                FileChannel src = new FileInputStream(imgPath).getChannel();
-                FileChannel dst = new FileOutputStream(file).getChannel();
-                dst.transferFrom(src, 0, src.size());
-                src.close();
-                dst.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-
 }

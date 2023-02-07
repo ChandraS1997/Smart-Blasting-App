@@ -26,4 +26,11 @@ public class AppDelegate {
     public void setImgList(List<String> imgList) {
         this.imgList = imgList;
     }
+
+    public void setSingleImageIntoList(String filePath) {
+        if (imgList == null) {
+            imgList = new ArrayList<>();
+        }
+        imgList.add(filePath);
+    }
 }

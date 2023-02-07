@@ -123,4 +123,11 @@
 
     <string name="_3d_blades">3D Blades</string>
     <string name="_2022_01_04">2022/01/04</string>
+    <string name="error_insertion">Error In Insertion</string>
+    <string name="project_details">Project Details</string>
+    <string name="hole_detai">Hole Details</string>
+    <string name="gallery">Gallery</string>
+    <string name="blast_performance">Blast Performance</string>
+    <string name="switch_project">Switch Project</string>
+    <string name="logout">Logout</string>
 </resources>

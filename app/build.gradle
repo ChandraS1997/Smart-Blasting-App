@@ -103,4 +103,6 @@ dependencies {
     //Permission
     implementation 'com.nabinbhandari.android:permissions:3.8'
 
+    implementation 'id.zelory:compressor:1.0.4'
+
 }

@@ -21,6 +21,7 @@ import com.smart_blasting_drilling.android.utils.StringUtill;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -159,13 +160,39 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonObject> uploadApiCaller(final Context context, Map<String, Object> map)
+    public static LiveData<JsonObject> uploadApiCallerImage(final Context context, Map<String, RequestBody> map, MultipartBody.Part fileData)
     {
         final MutableLiveData<JsonObject> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonObject> call = uplodeApiService.UploadeApiCaller(map);
+        Call<JsonObject> call = uplodeApiService.UploadeApiCallerImage(map, fileData);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonObject> uploadApiCallerVideo(final Context context, Map<String, RequestBody> map, MultipartBody.Part fileData)
+    {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonObject> call = uplodeApiService.UploadeApiCallerVideo(map,fileData);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

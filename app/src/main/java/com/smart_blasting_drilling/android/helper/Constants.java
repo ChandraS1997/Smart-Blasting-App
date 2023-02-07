@@ -21,7 +21,6 @@ public class Constants {
     public static final String IMAGE_VIDEO_BASE_URL = "http://devsblastapi.mineexcellence.com/api/sblast/";
     public static final String UPLOAD_BASE_URL = " https://centralbims.mineexcellence.com/";
 
-
     public static String getUserAuthToken() {
         String token = "";
         if (BaseApplication.getPreferenceManger() != null) {

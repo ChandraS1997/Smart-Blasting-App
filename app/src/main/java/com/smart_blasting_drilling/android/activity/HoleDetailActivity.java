@@ -2,10 +2,13 @@ package com.smart_blasting_drilling.android.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -38,6 +41,11 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         binding.bottomHoleNavigation.mapBtn.setOnClickListener(this);
         binding.bottomHoleNavigation.listBtn.setOnClickListener(this);
         binding.headerLayHole.homeBtn.setOnClickListener(this);
+        binding.headerLayHole.menuBtn.setOnClickListener(this);
+        binding.drawerLayout.BlastPerformanceBtn.setOnClickListener(this);
+        binding.drawerLayout.switchBtn.setOnClickListener(this);
+        binding.drawerLayout.galleryBtn.setOnClickListener(this);
+        binding.drawerLayout.closeBtn.setOnClickListener(view -> binding.mainDrawerLayout.closeDrawer(GravityCompat.START));
 
         binding.headerLayHole.projectInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +59,10 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.menuBtn:
+                binding.mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                binding.mainDrawerLayout.openDrawer(Gravity.LEFT);
+                break;
             case R.id.homeBtn:
                 finish();
                 break;
@@ -69,6 +81,21 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 binding.projectInfoContainer.setVisibility(View.GONE);
                 binding.holeParaLay.setVisibility(View.GONE);
                 navController.navigate(R.id.holeDetailsTableViewFragment);
+                break;
+            case R.id.BlastPerformanceBtn:
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(this, PerformanceActivity.class));
+                //finishAffinity();
+                break;
+
+            case R.id.switchBtn:
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+                 finish();
+                break;
+
+            case R.id.galleryBtn:
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(this, MediaActivity.class));
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + view.getId());
