@@ -31,7 +31,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/headerLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
                         android:id="@+id/text3dBlades"
