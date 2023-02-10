@@ -3,11 +3,16 @@ package com.smart_blasting_drilling.android.ui.fragments;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,24 +26,47 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.hbisoft.pickit.PickiT;
 import com.hbisoft.pickit.PickiTCallbacks;
 import com.nabinbhandari.android.permissions.PermissionHandler;
 import com.nabinbhandari.android.permissions.Permissions;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.ui.adapter.MediaAdapter;
+import com.smart_blasting_drilling.android.activity.AuthActivity;
+import com.smart_blasting_drilling.android.activity.BaseActivity;
+import com.smart_blasting_drilling.android.adapter.MediaAdapter;
+import com.smart_blasting_drilling.android.api.apis.Service.MainService;
+import com.smart_blasting_drilling.android.api.apis.response.InsertMediaResponse;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.MediaFragmentBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import id.zelory.compressor.Compressor;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class MediaFragment extends BaseFragment implements PickiTCallbacks {
 
@@ -49,7 +77,9 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
     String imgPath;
     PickiT pickiT;
     ActivityResultLauncher<String> activityResultLauncher;
-    List<String> imageList = new ArrayList<>();
+    String filename;
+    Bitmap bitmap;
+     String extension;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,21 +109,30 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
     }
 
     private void imageListBlank() {
-        if (!Constants.isListEmpty(AppDelegate.getInstance().getImgList())) {
-            imageList.addAll(AppDelegate.getInstance().getImgList());
+        System.out.println("inside imageListBlank"+AppDelegate.getInstance().getImgList());
+
+        if (!Constants.isListEmpty(AppDelegate.getInstance().getImgList()))
+        {
+
+           // imageList.addAll(AppDelegate.getInstance().getImgList());
+            mediaAdapter = new MediaAdapter(mContext, AppDelegate.getInstance().getImgList());
+            binding.mediaRecycler.setAdapter(mediaAdapter);
         }
-        if (imageList.isEmpty()) {
+        if (Constants.isListEmpty(AppDelegate.getInstance().getImgList())) {
             binding.noimageTV.setVisibility(View.VISIBLE);
             binding.clickhereTv.setVisibility(View.VISIBLE);
             binding.mediaRecycler.setVisibility(View.GONE);
+            binding.addCameraFab.setVisibility(View.GONE);
         } else {
             binding.noimageTV.setVisibility(View.GONE);
             binding.clickhereTv.setVisibility(View.GONE);
             binding.mediaRecycler.setVisibility(View.VISIBLE);
+            binding.addCameraFab.setVisibility(View.VISIBLE);
         }
     }
 
     private void selectImage() {
+        System.out.println("inside selectImage");
         final CharSequence[] options = {mContext.getString(R.string.take_photo), mContext.getString(R.string.choose_from), mContext.getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(mContext.getString(R.string.choose_option));
@@ -111,7 +150,8 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
                 Permissions.check(mContext, permission, null, null, new PermissionHandler() {
                     @Override
                     public void onGranted() {
-                        activityResultLauncher.launch("image/*");
+                        String input = "image/*;video/*";
+                        activityResultLauncher.launch(input);
                     }
                 });
             } else if (options[item].equals(mContext.getString(R.string.cancel))) {
@@ -122,6 +162,7 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
     }
 
     private void requestCameraPermission() {
+        System.out.println("inside requestCameraPermission");
         String[] permissions = {Manifest.permission.CAMERA};
         Permissions.Options options = new Permissions.Options()
                 .setRationaleDialogTitle(mContext.getString(R.string.permission))
@@ -140,13 +181,16 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
     }
 
     public void openCamera(int requestCode) {
+        System.out.println("inside openCamera");
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
             file = createImageFile();
+
         } catch (IOException ex) {
             Toast.makeText(requireActivity(), getResources().getString(R.string.start_camera_failed), Toast.LENGTH_LONG).show();
         }
         if (file != null) {
+
             imgPath = file.getAbsolutePath();
             Uri fileUri = FileProvider.getUriForFile(requireContext(), requireActivity().getPackageName() + ".App.fileprovider", file);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
@@ -185,27 +229,255 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
             }*/
             imgPath = path;
             file = new File(path);
+        //    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+           /* Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            System.out.println("inside insertImageList file"+file);
+            Uri contentUri = Uri.fromFile(file);
+            mediaScanIntent.setData(contentUri);
+            requireActivity().sendBroadcast(mediaScanIntent);
+            // saveImage();
+            System.out.println("inside PickiTonCompleteListener");*/
+            filename=file.getName();
             AddImageRecycler();
-            imageListBlank();
+           // imageListBlank();
         }
 
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == PICK_IMAGE_CAMERA) {
+        if (requestCode == PICK_IMAGE_CAMERA)
+        {
+            System.out.println("inside onActivityResult");
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            System.out.println("inside insertImageList file"+file);
+            Uri contentUri = Uri.fromFile(file);
+            mediaScanIntent.setData(contentUri);
+            requireActivity().sendBroadcast(mediaScanIntent);
+            // saveImage();
             AddImageRecycler();
-            imageListBlank();
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void AddImageRecycler() {
-        imageList.add(imgPath);
-        AppDelegate.getInstance().setImgList(imageList);
-        binding.mediaRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
-        mediaAdapter = new MediaAdapter(mContext, imageList);
-        binding.mediaRecycler.setAdapter(mediaAdapter);
-        mediaAdapter.notifyDataSetChanged();
+    private void AddImageRecycler()
+    {
+        InsertMediaApiCALLER(imgPath);
+    }
+
+    private void InsertMediaApiCALLER(String imgPath)
+    {
+        showLoader();
+        Map<String, Object> map=new HashMap<>();
+        map.put("BlastCode","114239");
+        map.put("imagename","myimage");
+        map.put("imageurl",imgPath);
+        map.put("Blastno","5");
+        map.put("imagetype","pre");
+        map.put("media_clicked_date","2023-01-15 13:57:00");
+        map.put("media_upload_date","2023-01-15 13:57:00");
+        map.put("media_source","");
+        map.put("media_type","image");
+        MainService.ImageVideoApiCaller(mContext, map).observe((LifecycleOwner) mContext, responsemedia -> {
+            if (responsemedia == null) {
+                showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+            } else {
+                if (responsemedia != null) {
+
+                    try {
+
+                       JsonObject jsonObject = responsemedia.getAsJsonObject();
+                        if (jsonObject != null) {
+
+                            try {
+                                if (responsemedia.getAsJsonObject().get("Response").getAsString().equals("Success"))
+                                {
+                                    Toast.makeText(mContext,responsemedia.getAsJsonObject().get("ReturnObject").getAsString(), Toast.LENGTH_LONG).show();
+                                    insertImageList();
+                                     extension = imgPath.substring(imgPath.lastIndexOf("."));
+                                    if(extension.equals(".mp4"))
+                                    {
+                                        uploadeVideo();
+                                    }
+                                    else
+                                    {
+                                        uploadeImage();
+                                    }
+
+                                       /*  imageList.add(imgPath);
+                                         AppDelegate.getInstance().setImgList(imageList);
+                                      binding.mediaRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
+                                   mediaAdapter = new MediaAdapter(mContext, imageList);
+                                   binding.mediaRecycler.setAdapter(mediaAdapter);
+                                   mediaAdapter.notifyDataSetChanged();*/
+                                }
+                                else
+                                {
+                                    Toast.makeText(mContext, "Error In Insertion", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }
+
+                        }
+                    else {
+                            ((BaseActivity) requireActivity()).showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                        }
+                    } catch (Exception e) {
+                        Log.e(NODATAFOUND, e.getMessage());
+                    }
+                    hideLoader();
+                }
+            }
+            hideLoader();
+        });
+    }
+
+    private void uploadeVideo() {
+        showLoader();
+        Map<String, RequestBody> map=new HashMap<>();
+/*        map.put("options.mimeType","video/jpeg");
+        map.put("mediaPath",imgPath);*/
+        map.put("mediatype",toRequestBody("Video"));
+      //  map.put("Media",toRequestBody(imgPath));
+
+
+        MultipartBody.Part fileData = null;
+
+        if (imgPath != null) {
+            File compressedImgFile = Compressor.getDefault(mContext).compressToFile(file);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), compressedImgFile);
+            fileData = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        }
+
+
+
+        MainService.uploadApiCallerVideo(mContext, map,fileData).observe((LifecycleOwner) mContext, responseupload -> {
+            if (responseupload == null) {
+                showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+            } else {
+                if (responseupload != null) {
+
+                    try {
+
+                        JsonObject jsonObject = responseupload.getAsJsonObject();
+                        if (jsonObject != null) {
+
+                          /*  try
+                            {
+                                System.out.println("inside try");
+                                   if (responseupload.getAsJsonObject().get("status").getAsBoolean())
+                                    {
+                                    Toast.makeText(mContext, responseupload.getAsJsonObject().get("Message").getAsString(), Toast.LENGTH_LONG).show();
+                                  }
+                                else
+                                {
+                                    Toast.makeText(mContext, R.string.error_insertion, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                System.out.println("inside catch"+e);
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }*/
+
+                            try {
+                                System.out.println("inside try");
+                                if (responseupload.getAsJsonObject().has("Message")) {
+                                    Toast.makeText(mContext,
+                                                    responseupload.getAsJsonObject().get("Message").getAsString(),
+                                                    Toast.LENGTH_LONG)
+                                            .show();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                System.out.println("inside catch"+e);
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }
+
+                        }
+                        else {
+                            ((BaseActivity) requireActivity()).showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                        }
+                    } catch (Exception e) {
+                        Log.e(NODATAFOUND, e.getMessage());
+                    }
+                    hideLoader();
+                }
+            }
+            hideLoader();
+        });
+
+
+    }
+
+    private void uploadeImage()
+    {
+        showLoader();
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("mediatype",toRequestBody("Image"));
+        MultipartBody.Part fileData = null;
+        if (imgPath != null) {
+            File compressedImgFile = Compressor.getDefault(mContext).compressToFile(file);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), compressedImgFile);
+            fileData = MultipartBody.Part.createFormData("Media", file.getName(), requestFile);
+        }
+
+        MainService.uploadApiCallerImage(mContext, map, fileData).observe((LifecycleOwner) mContext, responseupload -> {
+            if (responseupload == null) {
+                showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+            } else {
+                if (responseupload != null) {
+
+                    try {
+
+                        JsonObject jsonObject = responseupload.getAsJsonObject();
+                        if (jsonObject != null) {
+
+                            try {
+                                if (responseupload.getAsJsonObject().has("Message")) {
+                                    Toast.makeText(mContext,
+                                                    responseupload.getAsJsonObject().get("Message").getAsString(),
+                                                    Toast.LENGTH_LONG)
+                                            .show();
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }
+
+                        }
+                        else {
+                            ((BaseActivity) requireActivity()).showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                        }
+                    } catch (Exception e) {
+                        Log.e(NODATAFOUND, e.getMessage());
+                    }
+                    hideLoader();
+                }
+            }
+            hideLoader();
+        });
+
+
+    }
+
+    private void insertImageList()
+    {
+        System.out.println("imgPath"+imgPath);
+
+      /*  Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        System.out.println("inside insertImageList file"+file);
+        Uri contentUri = Uri.fromFile(file);
+        mediaScanIntent.setData(contentUri);
+        requireActivity().sendBroadcast(mediaScanIntent);
+       // saveImage();*/
+        AppDelegate.getInstance().setSingleImageIntoList(imgPath);
+        imageListBlank();
     }
 }

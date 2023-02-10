@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:name=".app.BaseApplication"
@@ -41,7 +43,7 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
-        <provider
+       <!-- <provider
             android:name="com.smart_blasting_drilling.android.helper.AppFileProvider"
             android:authorities="${applicationId}.App.fileprovider"
             android:exported="false"
@@ -49,6 +51,16 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
+        </provider>-->
+
+        <provider
+            android:name="com.smart_blasting_drilling.android.helper.AppFileProvider"
+            android:authorities="${applicationId}.App.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path"></meta-data>
         </provider>
 
         <activity
@@ -76,6 +88,15 @@
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".activity.PerformanceActivity"
+            android:configChanges="locale|orientation"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
+
 
 
     </application>

@@ -98,7 +98,7 @@ public final class BaseService {
         }
 
         OkHttpClient mOkHttpClient = getUnsafeOkHttpClient();
-        if (baseUrl.equalsIgnoreCase(Constants.API_BLADES_URL)) {
+        if (baseUrl.equalsIgnoreCase(Constants.API_BLADES_URL) || baseUrl.equalsIgnoreCase(Constants.API_IMAGE_VIDEO_BASE_URL)) {
             mOkHttpClient = okHttpClient.build();
         } else {
             mOkHttpClient = getUnsafeOkHttpClient();

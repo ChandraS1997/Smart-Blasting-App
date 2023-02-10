@@ -6,19 +6,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom"
         android:orientation="vertical"
         android:padding="12dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
-<!--
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/userProfile"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="@dimen/_80sdp"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
 
         <ImageView
             android:id="@+id/closeBtn"
@@ -29,33 +20,8 @@
             android:padding="@dimen/_5sdp"
             android:src="@drawable/icn_close_light"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/userProfile"
+            app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/black" />
-
-        <TextView
-            android:id="@+id/userName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_7sdp"
-            android:fontFamily="@font/inter_semi_bold"
-            android:gravity="center"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/_18sdp"
-            app:layout_constraintStart_toStartOf="@+id/userProfile"
-            app:layout_constraintTop_toBottomOf="@+id/userProfile" />
-
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:background="#15000000"
-            app:layout_constraintTop_toBottomOf="@+id/userName"
-            app:layout_constraintVertical_bias="1.0"
-            tools:layout_editor_absoluteX="12dp" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nestedScrollView"
@@ -63,319 +29,187 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            app:layout_constraintBottom_toTopOf="@+id/versionCode"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view">
+            app:layout_constraintTop_toBottomOf="@+id/closeBtn">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/homeBtn"
+                    android:id="@+id/projectBtn"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/_7sdp"
                     android:background="@drawable/drawer_item_selector"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/homeImg"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_18sdp"
-                        android:src="@drawable/drawer_home"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571" />
 
                     <TextView
+                        android:id="@+id/project_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:fontFamily="@font/oxygen_light"
-                        android:text="@string/home"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/project_details"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="@+id/homeImg"
-                        app:layout_constraintStart_toEndOf="@+id/homeImg"
-                        app:layout_constraintTop_toTopOf="@+id/homeImg"
-                        app:layout_constraintVertical_bias="0.6" />
+                        android:textSize="@dimen/_20sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.9dp"
+                        android:background="#15000000"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/project_detail"
+                        />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/notificationBtn"
+                    android:id="@+id/HoleBtn"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_7sdp"
                     android:background="@drawable/drawer_item_selector"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/homeBtn">
+                    app:layout_constraintTop_toBottomOf="@+id/projectBtn">
 
-                    <ImageView
-                        android:id="@+id/notificationImg"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_18sdp"
-                        android:src="@drawable/drawer_notification"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571" />
 
                     <TextView
+                        android:id="@+id/hole_detailTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/notification"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/hole_detai"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="@+id/notificationImg"
-                        app:layout_constraintStart_toEndOf="@+id/notificationImg"
-                        app:layout_constraintTop_toTopOf="@+id/notificationImg"
-                        app:layout_constraintVertical_bias="0.6" />
+                        android:textSize="@dimen/_20sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.9dp"
+                        android:background="#15000000"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/hole_detailTv"
+                        />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                &lt;!&ndash;                <androidx.constraintlayout.widget.ConstraintLayout&ndash;&gt;
-                &lt;!&ndash;                    android:id="@+id/groceryBtn"&ndash;&gt;
-                &lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;
-                &lt;!&ndash;                    android:layout_height="@dimen/_40sdp"&ndash;&gt;
-                &lt;!&ndash;                    android:layout_marginTop="@dimen/_7sdp"&ndash;&gt;
-                &lt;!&ndash;                    android:background="@drawable/drawer_item_selector"&ndash;&gt;
-                &lt;!&ndash;                    app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;
-                &lt;!&ndash;                    app:layout_constraintHorizontal_bias="0.0"&ndash;&gt;
-                &lt;!&ndash;                    app:layout_constraintStart_toStartOf="parent"&ndash;&gt;
-                &lt;!&ndash;                    app:layout_constraintTop_toBottomOf="@+id/notificationBtn">&ndash;&gt;
-
-                &lt;!&ndash;                    <ImageView&ndash;&gt;
-                &lt;!&ndash;                        android:id="@+id/groceryImg"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_width="@dimen/_20sdp"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_height="@dimen/_20sdp"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_marginStart="@dimen/_18sdp"&ndash;&gt;
-                &lt;!&ndash;                        android:src="@drawable/drawer_order_list"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintStart_toStartOf="parent"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintTop_toTopOf="parent"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintVertical_bias="0.571" />&ndash;&gt;
-
-                &lt;!&ndash;                    <TextView&ndash;&gt;
-                &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_marginStart="@dimen/_20sdp"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_marginTop="@dimen/_2sdp"&ndash;&gt;
-                &lt;!&ndash;                        android:fontFamily="@font/poppins_medium"&ndash;&gt;
-                &lt;!&ndash;                        android:text="@string/grocery_lists"&ndash;&gt;
-                &lt;!&ndash;                        android:textColor="@color/black"&ndash;&gt;
-                &lt;!&ndash;                        android:textSize="@dimen/_14sdp"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintBottom_toBottomOf="@+id/groceryImg"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintStart_toEndOf="@+id/groceryImg"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintTop_toTopOf="@+id/groceryImg"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintVertical_bias="0.6" />&ndash;&gt;
-                &lt;!&ndash;                </androidx.constraintlayout.widget.ConstraintLayout>&ndash;&gt;
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ordersBtn"
+                    android:id="@+id/galleryBtn"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_7sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:background="@drawable/drawer_item_selector"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notificationBtn">
-
-                    <ImageView
-                        android:id="@+id/ordersImg"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_18sdp"
-                        android:src="@drawable/drawer_order"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571" />
+                    app:layout_constraintTop_toBottomOf="@+id/HoleBtn">
 
                     <TextView
+                        android:id="@+id/galleryTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/my_orders"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/gallery"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="@+id/ordersImg"
-                        app:layout_constraintStart_toEndOf="@+id/ordersImg"
-                        app:layout_constraintTop_toTopOf="@+id/ordersImg" />
+                        android:textSize="@dimen/_20sdp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.9dp"
+                        android:background="#15000000"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/galleryTv"
+                        />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/wishListBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:background="@drawable/drawer_item_selector"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ordersBtn">
-
-                    <ImageView
-                        android:id="@+id/favouriteImg"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_18sdp"
-                        android:src="@drawable/drawer_fav"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/wish_list"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="@+id/favouriteImg"
-                        app:layout_constraintStart_toEndOf="@+id/favouriteImg"
-                        app:layout_constraintTop_toTopOf="@+id/favouriteImg"
-                        app:layout_constraintVertical_bias="0.0" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                &lt;!&ndash;                <androidx.constraintlayout.widget.ConstraintLayout&ndash;&gt;
-                &lt;!&ndash;                    android:id="@+id/creditBtn"&ndash;&gt;
-                &lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;
-                &lt;!&ndash;                    android:layout_height="@dimen/_40sdp"&ndash;&gt;
-                &lt;!&ndash;                    android:layout_marginTop="@dimen/_7sdp"&ndash;&gt;
-                &lt;!&ndash;                    android:background="@drawable/drawer_item_selector"&ndash;&gt;
-                &lt;!&ndash;                    app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;
-                &lt;!&ndash;                    app:layout_constraintStart_toStartOf="parent"&ndash;&gt;
-                &lt;!&ndash;                    app:layout_constraintTop_toBottomOf="@+id/favouriteBtn">&ndash;&gt;
-
-                &lt;!&ndash;                    <ImageView&ndash;&gt;
-                &lt;!&ndash;                        android:id="@+id/creditImg"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_width="@dimen/_20sdp"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_height="@dimen/_20sdp"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_marginStart="@dimen/_18sdp"&ndash;&gt;
-                &lt;!&ndash;                        android:src="@drawable/icn_credit"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintStart_toStartOf="parent"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintTop_toTopOf="parent"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintVertical_bias="0.571" />&ndash;&gt;
-
-                &lt;!&ndash;                    <TextView&ndash;&gt;
-                &lt;!&ndash;                        android:layout_width="wrap_content"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;
-                &lt;!&ndash;                        android:layout_marginStart="@dimen/_20sdp"&ndash;&gt;
-                &lt;!&ndash;                        android:fontFamily="@font/poppins_medium"&ndash;&gt;
-                &lt;!&ndash;                        android:text="@string/credit"&ndash;&gt;
-                &lt;!&ndash;                        android:textColor="@color/black"&ndash;&gt;
-                &lt;!&ndash;                        android:textSize="@dimen/_14sdp"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintBottom_toBottomOf="@+id/creditImg"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintStart_toEndOf="@+id/creditImg"&ndash;&gt;
-                &lt;!&ndash;                        app:layout_constraintTop_toTopOf="@+id/creditImg" />&ndash;&gt;
-
-                &lt;!&ndash;                </androidx.constraintlayout.widget.ConstraintLayout>&ndash;&gt;
-
-                <View
-                    android:id="@+id/viewSecond"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.1dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_15sdp"
-                    android:background="#15000000"
-                    app:layout_constraintTop_toBottomOf="@+id/wishListBtn"
-                    tools:layout_editor_absoluteX="16dp" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/settingsBtn"
+                    android:id="@+id/BlastPerformanceBtn"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/drawer_item_selector"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profileBtn">
+                    app:layout_constraintTop_toBottomOf="@+id/galleryBtn">
 
-                    <ImageView
-                        android:id="@+id/settingsImg"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_18sdp"
-                        android:src="@drawable/drawer_setting"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571" />
 
                     <TextView
+                        android:id="@+id/blastPerformanceTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/settings"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/blast_performance"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="@+id/settingsImg"
-                        app:layout_constraintStart_toEndOf="@+id/settingsImg"
-                        app:layout_constraintTop_toTopOf="@+id/settingsImg"
-                        app:layout_constraintVertical_bias="0.6" />
+                        android:textSize="@dimen/_20sdp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.9dp"
+                        android:background="#15000000"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/blastPerformanceTv"
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/languagesBtn"
+                    android:id="@+id/switchBtn"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/drawer_item_selector"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/settingsBtn">
-
-                    <ImageView
-                        android:id="@+id/languagesImg"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_18sdp"
-                        android:src="@drawable/icn_translator"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571" />
+                    app:layout_constraintTop_toBottomOf="@+id/BlastPerformanceBtn">
 
                     <TextView
+                        android:id="@+id/switchTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/languages"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/switch_project"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="@+id/languagesImg"
-                        app:layout_constraintStart_toEndOf="@+id/languagesImg"
-                        app:layout_constraintTop_toTopOf="@+id/languagesImg"
-                        app:layout_constraintVertical_bias="0.6" />
+                        android:textSize="@dimen/_20sdp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.6"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.9dp"
+                        android:background="#15000000"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintTop_toBottomOf="@+id/switchTv"
+                        />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/logoutBtn"
@@ -383,85 +217,25 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_7sdp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/settingsBtn">
-
-                    <ImageView
-                        android:id="@+id/loginImg"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_18sdp"
-                        android:src="@drawable/drawer_login"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571" />
+                    app:layout_constraintTop_toBottomOf="@+id/switchBtn">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_marginTop="@dimen/_2sdp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/log_out"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/logout"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="@+id/loginImg"
-                        app:layout_constraintStart_toEndOf="@+id/loginImg"
-                        app:layout_constraintTop_toTopOf="@+id/loginImg"
-                        app:layout_constraintVertical_bias="0.6" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/profileBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginTop="@dimen/_7sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/wishListBtn">
-
-                    <ImageView
-                        android:id="@+id/registerImg"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginStart="@dimen/_18sdp"
-                        android:src="@drawable/drawer_user"
+                        android:textSize="@dimen/_20sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.571" />
+                        app:layout_constraintVertical_bias="0.6"
+                        app:layout_constraintLeft_toLeftOf="parent" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="@string/profile"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp"
-                        app:layout_constraintBottom_toBottomOf="@+id/registerImg"
-                        app:layout_constraintStart_toEndOf="@+id/registerImg"
-                        app:layout_constraintTop_toTopOf="@+id/registerImg"
-                        app:layout_constraintVertical_bias="0.6" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.core.widget.NestedScrollView>
-
-        <TextView
-            android:id="@+id/versionCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_25sdp"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:fontFamily="@font/inter_regular"
-            android:textColor="@color/_828282"
-            android:textSize="@dimen/_13sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

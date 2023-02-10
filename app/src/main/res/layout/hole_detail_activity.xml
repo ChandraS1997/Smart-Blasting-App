@@ -7,62 +7,94 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/header_lay_hole"
-            layout="@layout/header_lay_hole_activity" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/holeParaLay"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_hole_navigation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="0.3"
-            app:layout_constraintStart_toEndOf="@id/nav_host_hole"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/mainDrawerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
             <include
-                layout="@layout/hole_parameteres_layout"
-                app:layout_constraintRight_toRightOf="parent" />
+                android:id="@+id/header_lay_hole"
+                layout="@layout/header_lay_hole_activity" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/holeParaLay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_hole_navigation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="0.3"
+                app:layout_constraintStart_toEndOf="@id/nav_host_hole"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/project_info_container"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_hole_navigation"
-            app:layout_constraintEnd_toStartOf="@+id/nav_host_hole"
-            app:layout_constraintHorizontal_weight="0.3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+                <include
+                    layout="@layout/hole_parameteres_layout"
+                    app:layout_constraintRight_toRightOf="parent" />
 
-            <include android:id="@+id/projectInfoLayout"
-                layout="@layout/project_info_layout" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/project_info_container"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_hole_navigation"
+                app:layout_constraintEnd_toStartOf="@+id/nav_host_hole"
+                app:layout_constraintHorizontal_weight="0.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <fragment
-            android:id="@+id/nav_host_hole"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_hole_navigation"
-            app:layout_constraintEnd_toStartOf="@id/holeParaLay"
-            app:layout_constraintHorizontal_weight="0.5"
-            app:layout_constraintStart_toEndOf="@+id/project_info_container"
-            app:layout_constraintTop_toBottomOf="@+id/header_lay_hole"
-            app:navGraph="@navigation/hole_nav" />
+                <include android:id="@+id/projectInfoLayout"
+                    layout="@layout/project_info_layout" />
 
-        <include
-            android:id="@+id/bottom_hole_navigation"
-            layout="@layout/bottom_project_hole_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <fragment
+                android:id="@+id/nav_host_hole"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:defaultNavHost="true"
+                app:layout_constraintBottom_toTopOf="@+id/bottom_hole_navigation"
+                app:layout_constraintEnd_toStartOf="@id/holeParaLay"
+                app:layout_constraintHorizontal_weight="0.5"
+                app:layout_constraintStart_toEndOf="@+id/project_info_container"
+                app:layout_constraintTop_toBottomOf="@+id/header_lay_hole"
+                app:navGraph="@navigation/hole_nav" />
+
+            <include
+                android:id="@+id/bottom_hole_navigation"
+                layout="@layout/bottom_project_hole_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--            <include
+                android:id="@+id/appLayout"
+                layout="@layout/app_bar_hole" />-->
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/drawerNav"
+             android:layout_width="@dimen/_400sdp"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:fitsSystemWindows="true"
+                android:background="@drawable/drawer_white_bg"
+                android:theme="@style/NavigationItemNoRipple">
+
+                <include
+                    android:id="@+id/drawer_layout"
+                    layout="@layout/drawer_layout" />
+
+            </com.google.android.material.navigation.NavigationView>
+
+
+        </androidx.drawerlayout.widget.DrawerLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

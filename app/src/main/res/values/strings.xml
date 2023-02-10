@@ -106,8 +106,29 @@
     <string name="please_select_2mb_size">Please select file less than 2 mb!</string>
     <string name="no_image_found">No Image Available</string>
     <string name="click_here">click here to select image</string>
+    <string name="flyrocks">Flyrocks</string>
+    <string name="performance">Performance</string>
+    <string name="displacement">Displacement</string>
+    <string name="blasting_fumes">Blasting Fumes</string>
+    <string name="not">NO</string>
+    <string name="muck_profile">Muck Profile</string>
+    <string name="scattered">Scattered</string>
+    <string name="heave_swell">Heave/Swell</string>
+    <string name="good">Good</string>
+    <string name="stemming_ejection">Stemming Ejection</string>
+    <string name="backbreak_overbreak">BackBreak/OverBreak</string>
+    <string name="backbreak">BackBreak</string>
+    <string name="bounder_count">Bounder Count</string>
+    <string name="save">Save</string>
+
     <string name="_3d_blades">3D Blades</string>
     <string name="_2022_01_04">2022/01/04</string>
-    <string name="save">Save</string>
     <string name="choose_fields">Choose Fields</string>
+    <string name="error_insertion">Error In Insertion</string>
+    <string name="project_details">Project Details</string>
+    <string name="hole_detai">Hole Details</string>
+    <string name="gallery">Gallery</string>
+    <string name="blast_performance">Blast Performance</string>
+    <string name="switch_project">Switch Project</string>
+    <string name="logout">Logout</string>
 </resources>
