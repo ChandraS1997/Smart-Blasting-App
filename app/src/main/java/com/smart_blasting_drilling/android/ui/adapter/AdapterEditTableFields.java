@@ -68,7 +68,7 @@ public class AdapterEditTableFields extends BaseRecyclerAdapter {
         public void setData(TableEditModel tableEditModel) {
             binding.projectNameTitle.setText(StringUtill.getString(tableEditModel.getCheckBox()));
             binding.checkboxTableEdit.setOnCheckedChangeListener((compoundButton, b) -> {
-                tableEditModel.setSelected(!b);
+                tableEditModel.setSelected(b);
                 editModelArrayList.set(getAdapterPosition(), tableEditModel);
             });
         }

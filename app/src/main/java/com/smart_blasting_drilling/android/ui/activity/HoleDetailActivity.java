@@ -1,9 +1,17 @@
 package com.smart_blasting_drilling.android.ui.activity;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
@@ -14,14 +22,18 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.gson.Gson;
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.activity.PerformanceActivity;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
+import com.smart_blasting_drilling.android.app.BaseApplication;
+import com.smart_blasting_drilling.android.databinding.DialogSelectionFieldLayoutBinding;
 import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
+import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
+import com.smart_blasting_drilling.android.ui.adapter.AdapterEditTableFields;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 
@@ -38,7 +50,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (isBundleIntentEmpty()) {
+        if (isBundleIntentNotEmpty()) {
             bladesRetrieveData = (ResponseBladesRetrieveData) getIntent().getExtras().getSerializable("blades_data");
         }
         binding = DataBindingUtil.setContentView(this, R.layout.hole_detail_activity);
@@ -49,7 +61,13 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         StatusBarUtils.statusBarColor(this, R.color._FFA722);
 
         binding.headerLayHole.pageTitle.setText(getString(R.string.hole_detail));
-        binding.headerLayHole.projectInfo.setText(getString(R.string.project_info));
+        binding.headerLayHole.projectInfo.setText(getString(R.string.edit_field));
+        binding.headerLayHole.camIcon.setVisibility(View.GONE);
+        binding.headerLayHole.homeBtn.setVisibility(View.GONE);
+        binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
+        binding.headerLayHole.editTable.setVisibility(View.GONE);
+        binding.headerLayHole.menuBtn.setVisibility(View.VISIBLE);
+
         binding.headerLayHole.camIcon.setOnClickListener(this);
         binding.bottomHoleNavigation.mapBtn.setOnClickListener(this);
         binding.bottomHoleNavigation.listBtn.setOnClickListener(this);
@@ -58,22 +76,22 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         binding.drawerLayout.BlastPerformanceBtn.setOnClickListener(this);
         binding.drawerLayout.switchBtn.setOnClickListener(this);
         binding.drawerLayout.galleryBtn.setOnClickListener(this);
+        binding.drawerLayout.logoutBtn.setOnClickListener(this);
         binding.drawerLayout.closeBtn.setOnClickListener(view -> binding.mainDrawerLayout.closeDrawer(GravityCompat.START));
 
-        binding.headerLayHole.projectInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                binding.projectInfoContainer.setVisibility(View.VISIBLE);
-                binding.holeParaLay.setVisibility(View.GONE);
-            }
+        binding.headerLayHole.projectInfo.setOnClickListener(view -> {
+            /*binding.projectInfoContainer.setVisibility(View.VISIBLE);
+            binding.holeParaLay.setVisibility(View.GONE);*/
+            editTable();
         });
         binding.headerLayHole.editTable.setOnClickListener(this);
     }
 
     public List<TableEditModel> getTableModel() {
         List<TableEditModel> editModelArrayList = new ArrayList<>();
+        editModelArrayList.add(new TableEditModel("Row No"));
         editModelArrayList.add(new TableEditModel("Hole No"));
-        editModelArrayList.add(new TableEditModel("Hole Id "));
+        editModelArrayList.add(new TableEditModel("Hole Id"));
         editModelArrayList.add(new TableEditModel("Hole Depth"));
         editModelArrayList.add(new TableEditModel("Hole Status"));
         editModelArrayList.add(new TableEditModel("Hole Angle"));
@@ -94,6 +112,25 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 binding.mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 binding.mainDrawerLayout.openDrawer(Gravity.LEFT);
                 break;
+            case R.id.BlastPerformanceBtn:
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(new Intent(this, PerformanceActivity.class));
+                break;
+            case R.id.switchBtn:
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+                finish();
+                break;
+            case R.id.galleryBtn:
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("blades_data", bladesRetrieveData);
+                Intent intent = new Intent(this, MediaActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            case R.id.logoutBtn:
+                setLogOut();
+                break;
             case R.id.homeBtn:
                 finish();
                 break;
@@ -112,18 +149,6 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 binding.holeParaLay.setVisibility(View.GONE);
                 navController.navigate(R.id.holeDetailsTableViewFragment);
                 break;
-            case R.id.BlastPerformanceBtn:
-                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(new Intent(this, PerformanceActivity.class));
-                break;
-            case R.id.switchBtn:
-                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                finish();
-                break;
-            case R.id.galleryBtn:
-                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(new Intent(this, MediaActivity.class));
-                break;
             case R.id.editTable:
                 editTable();
                 break;
@@ -131,6 +156,11 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 throw new IllegalStateException("Unexpected value: " + view.getId());
         }
 
+    }
+
+    private void setLogOut() {
+        BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME).clearAllTables();
+        manger.logoutUser();
     }
 
     public void editTable() {

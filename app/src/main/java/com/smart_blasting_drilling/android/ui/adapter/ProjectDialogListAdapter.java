@@ -108,6 +108,7 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
                                         bladesDao.updateProject(entity);
                                     }
                                 }
+                                ((BaseActivity) context).hideLoader();
                             }
                         });
                     }

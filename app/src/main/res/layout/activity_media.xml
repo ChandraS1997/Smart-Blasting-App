@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -10,15 +11,80 @@
             android:id="@+id/header_media"
             layout="@layout/header_lay_media_activity" />
 
-        <fragment
-            android:id="@+id/media_nav"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:defaultNavHost="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/header_media"
-            app:navGraph="@navigation/media_nav" />
+            app:layout_constraintTop_toBottomOf="@id/header_media"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/noimageTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_18ssp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:fontFamily="@font/inter_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/no_image_found"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/clickhereTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_18ssp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:fontFamily="@font/inter_bold"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/click_here"
+                app:layout_constraintTop_toBottomOf="@+id/noimageTV"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:visibility="gone"
+                />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mediaRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="6"
+                app:spanCount="3"
+                tools:listitem="@layout/media_item"
+                android:visibility="visible"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_camera_fab"
+                android:visibility="gone"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                app:fabSize="auto"
+                app:maxImageSize="@dimen/_25sdp"
+                android:tint="@color/white"
+                app:borderWidth="0dp"
+                android:backgroundTint="@color/_FFA722"
+                app:fabCustomSize="@dimen/_50sdp"
+                android:layout_margin="@dimen/_15sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:srcCompat="@mipmap/ic_add" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

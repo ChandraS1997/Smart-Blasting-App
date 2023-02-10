@@ -58,18 +58,16 @@ public class HomeActivity extends BaseActivity {
         projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project2DBladesDao().getAllBladesProject()), projectListType));
         projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project3DBladesDao().getAllBladesProject()), projectListType));
 
-        projectLIstAdapter = new ProjectLIstAdapter(this, projectList);
-        binding.appLayout.projectListRv.setAdapter(projectLIstAdapter);
+        setDownloadDataView();
 
         StatusBarUtils.statusBarColor(this, R.color._FFA722);
         setPageTitle(getString(R.string.pro_title_list));
-//        navController = Navigation.findNavController(this, R.id.nav_host_main);
 
-//        setBottomUiNavigation(binding.appLayout.bottomNavigation.blastingBtn.getRootView());
         binding.appLayout.headerLayout.homeBtn.setVisibility(View.GONE);
 
         binding.appLayout.headerLayout.downBtn.setOnClickListener(view -> {
             showDownloadListDialog((is3DBlades, dialogFragment) -> {
+                showLoader();
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
@@ -82,8 +80,9 @@ public class HomeActivity extends BaseActivity {
                                 //} else {
                                 projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project2DBladesDao().getAllBladesProject()), projectListType));
                                 //}
-                                projectLIstAdapter.notifyDataSetChanged();
+                                setDownloadDataView();
                                 dialogFragment.dismiss();
+                                hideLoader();
                             }
                         });
                     }
@@ -95,7 +94,18 @@ public class HomeActivity extends BaseActivity {
         binding.appLayout.bottomNavigation.drillingBtn.setOnClickListener(this::setBottomUiNavigation);
         binding.appLayout.bottomNavigation.blastingBtn.setOnClickListener(this::setBottomUiNavigation);
 
-//        setNavigationView();
+    }
+
+    private void setDownloadDataView() {
+        if (!Constants.isListEmpty(projectList)) {
+            binding.appLayout.noProjectTV.setVisibility(View.GONE);
+            binding.appLayout.clickHereTv.setVisibility(View.GONE);
+            projectLIstAdapter = new ProjectLIstAdapter(this, projectList);
+            binding.appLayout.projectListRv.setAdapter(projectLIstAdapter);
+        } else {
+            binding.appLayout.noProjectTV.setVisibility(View.VISIBLE);
+            binding.appLayout.clickHereTv.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setNavigationView() {

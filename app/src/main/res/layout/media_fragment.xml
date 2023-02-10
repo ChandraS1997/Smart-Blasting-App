@@ -11,7 +11,7 @@
             android:id="@+id/noimageTV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/_18ssp"
+            android:textSize="@dimen/_18sdp"
             android:textColor="@color/black"
             android:gravity="center"
             android:fontFamily="@font/inter_bold"
@@ -45,8 +45,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mediaRecycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/_5sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
@@ -64,13 +65,14 @@
             android:layout_height="@dimen/_50sdp"
             app:fabSize="auto"
             app:maxImageSize="@dimen/_25sdp"
+            android:tint="@color/white"
             app:borderWidth="0dp"
             android:backgroundTint="@color/_FFA722"
             app:fabCustomSize="@dimen/_50sdp"
             android:layout_margin="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:srcCompat="@mipmap/ic_add" />
+            app:srcCompat="@drawable/camera" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

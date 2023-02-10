@@ -1,4 +1,4 @@
-package com.smart_blasting_drilling.android.activity;
+package com.smart_blasting_drilling.android.ui.activity;
 
 import android.os.Bundle;
 
@@ -9,7 +9,6 @@ import androidx.navigation.Navigation;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.databinding.PerformanceActivityBinding;
-import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 
 public class PerformanceActivity extends BaseActivity {
     PerformanceActivityBinding binding;
@@ -21,5 +20,8 @@ public class PerformanceActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.performance_activity);
         navController = Navigation.findNavController(this, R.id.performance_nav);
         binding.headerPerformance.perfrmanceTitle.setText(getString(R.string.performance));
+
+        binding.headerPerformance.backImg.setOnClickListener(view -> finish());
+
     }
 }

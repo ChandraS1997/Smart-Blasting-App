@@ -14,7 +14,6 @@
                 android:fillViewport="true"
                 app:layout_constraintTop_toTopOf="parent">
 
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -38,7 +37,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_regular"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_16ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/checkboxTableEdit"
                         app:layout_constraintTop_toTopOf="parent" />
