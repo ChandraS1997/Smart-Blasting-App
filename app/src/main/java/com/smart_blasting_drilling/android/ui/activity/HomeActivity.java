@@ -28,6 +28,8 @@ import com.smart_blasting_drilling.android.utils.ViewUtil;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HomeActivity extends BaseActivity {
     public NavController navController;
@@ -68,14 +70,24 @@ public class HomeActivity extends BaseActivity {
 
         binding.appLayout.headerLayout.downBtn.setOnClickListener(view -> {
             showDownloadListDialog((is3DBlades, dialogFragment) -> {
-                projectList.clear();
-//                if (is3DBlades) {
-                    projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project3DBladesDao().getAllBladesProject()), projectListType));
-//                } else {
-                    projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project2DBladesDao().getAllBladesProject()), projectListType));
-//                }
-                projectLIstAdapter.notifyDataSetChanged();
-                dialogFragment.dismiss();
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new TimerTask() {
+                            @Override
+                            public void run() {
+                                projectList.clear();
+                                //if (is3DBlades) {
+                                projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project3DBladesDao().getAllBladesProject()), projectListType));
+                                //} else {
+                                projectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project2DBladesDao().getAllBladesProject()), projectListType));
+                                //}
+                                projectLIstAdapter.notifyDataSetChanged();
+                                dialogFragment.dismiss();
+                            }
+                        });
+                    }
+                }, 1500);
             });
         });
 

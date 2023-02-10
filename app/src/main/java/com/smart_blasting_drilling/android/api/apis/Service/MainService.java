@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.api.APIError;
@@ -191,13 +192,13 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonObject> getMinePitZoneBenchApiCaller(final Context context, String userId, String blastId) {
+    public static LiveData<JsonObject> getMinePitZoneBenchApiCaller(final Context context, String userId, String companyId, String blastId) {
         final MutableLiveData<JsonObject> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
 
-        Call<JsonObject> call = bladesApiService.getMinePitZoneBenchApiCaller(userId, blastId);
+        Call<JsonObject> call = bladesApiService.getMinePitZoneBenchApiCaller(userId, companyId, blastId);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
@@ -214,6 +215,37 @@ public class MainService {
 
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
+                ((BaseActivity) context).hideLoader();
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+
+        return data;
+    }
+
+    public static LiveData<JsonElement> getAllDesignInfoApiCaller(final Context context, String userId, String companyId, String blastId, String dbName, int recordStatus) {
+        final MutableLiveData<JsonElement> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+
+        Call<JsonElement> call = bladesApiService.getAllDesignInfoApiCaller(userId, blastId, dbName, companyId, recordStatus);
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonElement> call, @NonNull Response<JsonElement> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    if (response.errorBody() != null) {
+//                        data.setValue(getError(response));
+                    } else {
+                        data.setValue(null);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
                 ((BaseActivity) context).hideLoader();
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }

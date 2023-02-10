@@ -5,11 +5,14 @@ import androidx.room.RoomDatabase;
 
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project2DBladesDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project3DBladesDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.Project2DBladesEntity;
 import com.smart_blasting_drilling.android.room_database.entities.Project3DBladesEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 
-@Database(entities = {Project2DBladesEntity.class, Project3DBladesEntity.class}, version = 2)
+@Database(version = 3, entities = {Project2DBladesEntity.class, Project3DBladesEntity.class, ProjectHoleDetailRowColEntity.class}, exportSchema = true)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract Project2DBladesDao project2DBladesDao();
     public abstract Project3DBladesDao project3DBladesDao();
+    public abstract ProjectHoleDetailRowColDao projectHoleDetailRowColDao();
 }

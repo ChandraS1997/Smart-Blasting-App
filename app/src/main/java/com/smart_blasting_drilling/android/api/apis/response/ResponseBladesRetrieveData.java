@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseBladesRetrieveData{
+import java.io.Serializable;
+
+public class ResponseBladesRetrieveData implements Serializable {
 
 	@SerializedName("PitName")
 	private String pitName;

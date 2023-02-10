@@ -2,7 +2,6 @@ package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -10,23 +9,26 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
+import com.smart_blasting_drilling.android.api.apis.response.TableFieldItemModel;
 import com.smart_blasting_drilling.android.app_utils.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.TableViewBinding;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TableViewAdapter extends BaseRecyclerAdapter {
 
-    Context ctx;
-    List<String> tableList;
-    ArrayList<TableEditModel> editModelArrayList ;
+    Context context;
+    List<TableFieldItemModel> editModelArrayList;
+    List<ResponseHoleDetailData> holeDetailDataList;
 
-    public TableViewAdapter(Context ctx, List<String> tableList, ArrayList<TableEditModel> arrayList) {
-        this.ctx = ctx;
-        this.tableList = tableList;
+    public TableViewAdapter(Context ctx, List<TableFieldItemModel> arrayList, List<ResponseHoleDetailData> holeDetailDataList) {
+        this.context = ctx;
         this.editModelArrayList = arrayList;
+        this.holeDetailDataList = holeDetailDataList;
     }
 
     @Override
@@ -38,21 +40,31 @@ public class TableViewAdapter extends BaseRecyclerAdapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return getViewHolder(LayoutInflater.from(ctx), parent);
+        return getViewHolder(LayoutInflater.from(context), parent);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.setDataBind(tableList.get(position));
+        viewHolder.setDataBind(holeDetailDataList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return tableList.size();
+        return holeDetailDataList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TableViewBinding binding;
 
         public ViewHolder(@NonNull TableViewBinding itemView) {
@@ -60,12 +72,12 @@ public class TableViewAdapter extends BaseRecyclerAdapter {
             binding = itemView;
         }
 
-        void setDataBind(String fieldName) {
-            if (getAdapterPosition() == 0) {
-                binding.tableHeadingRow.setVisibility(View.VISIBLE);
-            } else {
-                binding.tableHeadingRow.setVisibility(View.GONE);
-            }
+        void setDataBind(ResponseHoleDetailData holeDetailData) {
+            boolean isHeader = holeDetailData == null && getAdapterPosition() == 0;
+
+            HoleTableColumnViewAdapter columnViewAdapter = new HoleTableColumnViewAdapter(context, editModelArrayList.get(getAdapterPosition()).getTableEditModelList(), isHeader);
+            binding.columnList.setAdapter(columnViewAdapter);
+
         }
 
     }

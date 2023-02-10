@@ -9,6 +9,7 @@ import androidx.multidex.MultiDexApplication;
 import androidx.room.Room;
 
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.room_database.DatabaseMigrations;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.helper.CheckInternetConnection;
 import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
@@ -50,7 +51,9 @@ public class BaseApplication extends MultiDexApplication {
 
     public static AppDatabase getAppDatabase(Context context, String dbName) {
         if (appDatabase == null && getInstance() != null) {
-            appDatabase = Room.databaseBuilder(context, AppDatabase.class, dbName).fallbackToDestructiveMigration().allowMainThreadQueries().build();
+            appDatabase = Room.databaseBuilder(context, AppDatabase.class, dbName)
+                    .fallbackToDestructiveMigration().allowMainThreadQueries()
+                    .addMigrations(DatabaseMigrations.MIGRATION_2_3).build();
         }
         return appDatabase;
     }

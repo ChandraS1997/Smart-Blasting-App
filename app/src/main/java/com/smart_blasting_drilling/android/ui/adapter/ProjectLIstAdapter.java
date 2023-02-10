@@ -2,6 +2,7 @@ package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -61,11 +62,6 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
         }
 
         public void setDataBind(ResponseBladesRetrieveData data) {
-            itemView.setOnClickListener(v -> {
-                Intent i = new Intent(ctx, HoleDetailActivity.class);
-                ctx.startActivity(i);
-            });
-
             binding.titleNameTv.setText(StringUtill.getString(data.getDesignName()));
             binding.MinevalTv.setText(StringUtill.getString(data.getMineName()));
             binding.pit.setText(StringUtill.getString(data.getPitName()));
@@ -73,6 +69,14 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
 //            binding.StatusTv.setText(StringUtill.getString(data.get()));
             binding.Bench.setText(StringUtill.getString(data.getBenchName()));
             binding.CreatedDateval.setText(StringUtill.getString(DateUtils.getFormattedTime(data.getDesignDateTime(), "dd/MM/yyyy HH:mm:ss a", "dd/MM/yyyy")));
+
+            itemView.setOnClickListener(view -> {
+                Intent i = new Intent(ctx, HoleDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("blades_data", data);
+                i.putExtras(bundle);
+                ctx.startActivity(i);
+            });
 
         }
     }

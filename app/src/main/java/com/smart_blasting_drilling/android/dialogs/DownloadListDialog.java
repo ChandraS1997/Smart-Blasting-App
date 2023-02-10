@@ -143,9 +143,9 @@ public class DownloadListDialog extends BaseDialogFragment {
             calendar.set(Calendar.MONTH,month);
             calendar.set(Calendar.DAY_OF_MONTH,day);
             if (isStartDate) {
-                startDate = String.format("%s-%s-%s", year, month, year);
+                startDate = String.format("%s-%s-%s", year, month, day);
             } else {
-                endDate = String.format("%s-%s-%s", year, month, year);
+                endDate = String.format("%s-%s-%s", year, month, day);
             }
             updateLabel(textView);
         };

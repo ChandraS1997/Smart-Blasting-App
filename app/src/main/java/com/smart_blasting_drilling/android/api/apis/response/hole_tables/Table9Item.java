@@ -1,0 +1,72 @@
+package com.smart_blasting_drilling.android.api.apis.response.hole_tables;
+
+import com.google.gson.annotations.SerializedName;
+
+public class Table9Item{
+
+	@SerializedName("DesignId")
+	private int designId;
+
+	@SerializedName("ProdName")
+	private String prodName;
+
+	@SerializedName("ProdType")
+	private String prodType;
+
+	@SerializedName("ProdQty")
+	private int prodQty;
+
+	@SerializedName("ProdCost")
+	private int prodCost;
+
+	@SerializedName("ProdId")
+	private int prodId;
+
+	public void setDesignId(int designId){
+		this.designId = designId;
+	}
+
+	public int getDesignId(){
+		return designId;
+	}
+
+	public void setProdName(String prodName){
+		this.prodName = prodName;
+	}
+
+	public String getProdName(){
+		return prodName;
+	}
+
+	public void setProdType(String prodType){
+		this.prodType = prodType;
+	}
+
+	public String getProdType(){
+		return prodType;
+	}
+
+	public void setProdQty(int prodQty){
+		this.prodQty = prodQty;
+	}
+
+	public int getProdQty(){
+		return prodQty;
+	}
+
+	public void setProdCost(int prodCost){
+		this.prodCost = prodCost;
+	}
+
+	public int getProdCost(){
+		return prodCost;
+	}
+
+	public void setProdId(int prodId){
+		this.prodId = prodId;
+	}
+
+	public int getProdId(){
+		return prodId;
+	}
+}

@@ -766,4 +766,13 @@
     <dimen name="_99ssp">198.00sp</dimen>
     <dimen name="_9ssp">18.00sp</dimen>
 
+    <dimen name="_1560sdp">3120.00dp</dimen>
+    <dimen name="_1400sdp">2800.00dp</dimen>
+    <dimen name="_1380sdp">2760.00dp</dimen>
+    <dimen name="_1375sdp">2750.00dp</dimen>
+    <dimen name="_1373sdp">2746.00dp</dimen>
+    <dimen name="_1372sdp">2744.00dp</dimen>
+    <dimen name="_1371sdp">2742.00dp</dimen>
+    <dimen name="_1370sdp">2740.00dp</dimen>
+
 </resources>

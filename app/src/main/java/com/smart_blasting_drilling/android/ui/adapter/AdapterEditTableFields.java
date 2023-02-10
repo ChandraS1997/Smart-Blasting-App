@@ -16,15 +16,16 @@ import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterEditTableFields extends BaseRecyclerAdapter {
     ViewTableEditFieldsBinding binding;
     Context context;
-    ArrayList<TableEditModel> editModelArrayList;
+    List<TableEditModel> editModelArrayList;
     ArrayList<TableEditModel> selectedData = new ArrayList<>();
 
 
-    public AdapterEditTableFields(Context context, ArrayList<TableEditModel> editModelArrayList) {
+    public AdapterEditTableFields(Context context, List<TableEditModel> editModelArrayList) {
         this.context = context;
         this.editModelArrayList = editModelArrayList;
     }
@@ -52,8 +53,8 @@ public class AdapterEditTableFields extends BaseRecyclerAdapter {
         return editModelArrayList.size();
     }
 
-    public ArrayList<TableEditModel> getSelectedData() {
-        return selectedData;
+    public List<TableEditModel> getSelectedData() {
+        return editModelArrayList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -65,16 +66,10 @@ public class AdapterEditTableFields extends BaseRecyclerAdapter {
         }
 
         public void setData(TableEditModel tableEditModel) {
-            binding.checkboxTableEdit.setText(StringUtill.getString(tableEditModel.getCheckBox()));
-            binding.checkboxTableEdit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (b){
-                        selectedData.add(tableEditModel);
-                    }else{
-                        selectedData.remove(tableEditModel);
-                    }
-                }
+            binding.projectNameTitle.setText(StringUtill.getString(tableEditModel.getCheckBox()));
+            binding.checkboxTableEdit.setOnCheckedChangeListener((compoundButton, b) -> {
+                tableEditModel.setSelected(!b);
+                editModelArrayList.set(getAdapterPosition(), tableEditModel);
             });
         }
     }

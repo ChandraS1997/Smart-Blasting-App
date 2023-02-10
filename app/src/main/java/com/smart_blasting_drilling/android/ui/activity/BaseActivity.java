@@ -141,18 +141,6 @@ public class BaseActivity extends AppCompatActivity {
 
     public void logOutNotification() {
         showLoader();
-       /* MainService.userLogoutApiCaller(this, Constants.getUserAuthToken()).observe((LifecycleOwner) this, response -> {
-            if (response == null) {
-                showToast(getResources().getString(R.string.something_wrong));
-            } else {
-                showToast(TextUtil.getString(response.getMessage()));
-                BaseApplication.getPreferenceManger().logoutUser();
-                AppDelegate.setInstance(new AppDelegate());
-                startActivity(new Intent(this, HomeActivity.class));
-                finishAffinity();
-            }
-            hideLoader();
-        });*/
     }
 
     public void noInternetDialog() {
@@ -180,7 +168,9 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-
+    public boolean isBundleIntentEmpty() {
+        return getIntent() != null && getIntent().getExtras() != null;
+    }
 
     public boolean isCurrentLangArabic() {
 //        return manger.getStringValue(PreferenceManger.LANGUAGE_TYPE, Constants.LANGUAGE_TYPE.ENGLISH.toString()).equalsIgnoreCase(Constants.LANGUAGE_TYPE.ARABIC.toString());
