@@ -10,10 +10,11 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
+
 import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
 import com.smart_blasting_drilling.android.dialogs.AppProgressBar;
 import com.smart_blasting_drilling.android.helper.PreferenceManger;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,7 +38,7 @@ public class BaseFragment extends Fragment {
     public static final String APILOADINGTEXT = "Please wait...";
     public static final String NODATAFOUND = "Nothing to show here yet!";
     public static final String SESSION_EXPIRED_TEXT = "Session expired,Please Login Again.";
-String currentPhotoPath;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -81,10 +82,7 @@ String currentPhotoPath;
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-       // String imageFileName = "smartBLastingDrilling_Image-" + System.currentTimeMillis() + "_";
         File storageDir = mContext.getFilesDir();
-      //  return File.createTempFile(imageFileName, ".png", storageDir);
-
 
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -92,8 +90,7 @@ String currentPhotoPath;
                 storageDir      /* directory */
         );
 
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
+        String currentPhotoPath = image.getAbsolutePath();
         return image;
 
     }
@@ -139,7 +136,7 @@ String currentPhotoPath;
         if (qty - threshold == 0) {
             //    return "Only " + qty + " left in stock";
             return "Out of Stock";
-        } else if (qty <= 0 ) {
+        } else if (qty <= 0) {
             return "Out of Stock";
         } else if (qty > threshold) {
             return "";
@@ -158,7 +155,8 @@ String currentPhotoPath;
     public boolean isCurrentLangArabic() {
         /*if (getActivity() != null)
             return ((BaseActivity) mContext).isCurrentLangArabic();
-        else*/ return false;
+        else*/
+        return false;
     }
 
     public RequestBody toRequestBody(String value) {

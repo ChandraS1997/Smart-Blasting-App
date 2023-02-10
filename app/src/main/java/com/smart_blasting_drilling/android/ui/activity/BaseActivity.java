@@ -31,6 +31,11 @@ import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
 import com.smart_blasting_drilling.android.helper.PreferenceManger;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -181,6 +186,21 @@ public class BaseActivity extends AppCompatActivity {
         return !TextUtils.isEmpty(value) ? RequestBody.create(MediaType.parse("text/plain"), value) : null;
     }
 
+    public File createImageFile() throws IOException {
 
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getFilesDir();
+
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        String currentPhotoPath = image.getAbsolutePath();
+        return image;
+
+    }
 
 }

@@ -1,18 +1,9 @@
 package com.smart_blasting_drilling.android.ui.activity;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
@@ -23,17 +14,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.gson.Gson;
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.activity.PerformanceActivity;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
-import com.smart_blasting_drilling.android.databinding.DialogSelectionFieldLayoutBinding;
 import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
-import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
-import com.smart_blasting_drilling.android.ui.adapter.AdapterEditTableFields;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 
@@ -127,14 +115,11 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.BlastPerformanceBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this, PerformanceActivity.class));
-                //finishAffinity();
                 break;
-
             case R.id.switchBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                 finish();
+                finish();
                 break;
-
             case R.id.galleryBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(new Intent(this, MediaActivity.class));
