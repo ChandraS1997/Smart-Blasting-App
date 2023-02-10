@@ -2,7 +2,6 @@ package com.smart_blasting_drilling.android.api;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.smart_blasting_drilling.android.api.apis.response.InsertMediaResponse;
 
 import java.util.Map;
 
@@ -29,19 +28,6 @@ public interface APiInterface {
     @POST("v1/index.php")
     Call<JsonObject> registerApiCaller(@QueryMap Map<String, Object> queryMap, @PartMap Map<String, RequestBody> map);
 
-
-    @POST("v3/Insertmedia")
-    Call<JsonObject> InsertMediaApiCaller(@Body Map<String, Object> map);
-
-    @Multipart
-    @POST("upload_media.php?mediatype=Image")
-    Call<JsonObject> UploadeApiCallerImage(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part fileData);
-
-    @Multipart
-    @POST("upload_media.php?mediatype=Video")
-    Call<JsonObject> UploadeApiCallerVideo(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part fileData);
-
-
     @GET("Retrieve3DDesignByDate/{start_time}/{end_time}/c3VzaGls/1/c3VzaGls/centralmineinfo")
     Call<JsonObject> retrieve3DDegignByDateApiCaller(@Path(value = "start_time", encoded = true) String startDate, @Path(value = "end_time", encoded = true) String endDate);
 
@@ -53,5 +39,16 @@ public interface APiInterface {
 
     @GET("GetAllDesignInfo/{blast_id}/{user_id}/{company_id}/{db_name}/{record_status}")
     Call<JsonElement> getAllDesignInfoApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "blast_id", encoded = true) String blastId, @Path(value = "db_name", encoded = true) String dbName, @Path(value = "company_id", encoded = true) String companyId, @Path(value = "record_status", encoded = true) int recordStatus);
+
+    @POST("v3/Insertmedia")
+    Call<JsonObject> InsertMediaApiCaller(@Body Map<String, Object> map);
+
+    @Multipart
+    @POST("upload_media.php?mediatype=Image")
+    Call<JsonObject> UploadeApiCallerImage(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part fileData);
+
+    @Multipart
+    @POST("upload_media.php?mediatype=Video")
+    Call<JsonObject> UploadeApiCallerVideo(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part fileData);
 
 }

@@ -115,12 +115,14 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
     @Override
     public void editDataTable(List<TableEditModel> arrayList) {
         if (!Constants.isListEmpty(arrayList)) {
-            tableEditModelArrayList.clear();
             for (int i = 0; i < arrayList.size(); i++) {
-                tableEditModelArrayList.set(i,arrayList.get(i));
+                TableEditModel tableEditModel = arrayList.get(i);
+                tableEditModel.setSelected(arrayList.get(i).isSelected());
+                tableEditModel.setFirstTime(false);
+                tableEditModelArrayList.set(i, tableEditModel);
             }
             if (!Constants.isListEmpty(arrayList)) {
-                tableFieldItemModelList.add(0, new TableFieldItemModel(arrayList));
+                tableFieldItemModelList.add(0, new TableFieldItemModel(tableEditModelArrayList));
             }
         }
         setDataNotifyList();
@@ -178,6 +180,7 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                 for (int i = 1; i < holeDetailDataList.size(); i++) {
                     List<TableEditModel> editModelArrayList = new ArrayList<>();
                     ResponseHoleDetailData holeDetailData = holeDetailDataList.get(i);
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getRowNo()), tableEditModelArrayList.get(0).isSelected()));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleNo()), tableEditModelArrayList.get(0).isSelected()));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleID()), tableEditModelArrayList.get(0).isSelected()));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleDepth()), tableEditModelArrayList.get(0).isSelected()));

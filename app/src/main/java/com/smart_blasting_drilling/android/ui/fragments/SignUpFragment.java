@@ -130,6 +130,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                                 {
 
                                     if (responsesignup.getAsJsonObject().get("response").getAsString().equals("fail")) {
+                                        System.out.println("inside register api if if");
                                         showSnackBar(binding.getRoot(), StringUtill.getString(responsesignup.getAsJsonObject().get("Message").getAsString()));
                                         mContext.startActivity(new Intent(mContext, AuthActivity.class));
                                         ((AuthActivity) mContext).finishAffinity();

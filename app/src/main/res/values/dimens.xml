@@ -558,7 +558,6 @@
     <dimen name="_59sdp">59.00dp</dimen>
     <dimen name="_5sdp">5.00dp</dimen>
     <dimen name="_600sdp">600.00dp</dimen>
-    <dimen name="_700sdp">700.00dp</dimen>
     <dimen name="_60sdp">60.00dp</dimen>
     <dimen name="_61sdp">61.00dp</dimen>
     <dimen name="_62sdp">62.00dp</dimen>
@@ -768,6 +767,9 @@
 
     <dimen name="_1560sdp">1560.00dp</dimen>
     <dimen name="_1400sdp">1400.00dp</dimen>
+    <dimen name="_1450sdp">1450.00dp</dimen>
+    <dimen name="_1460sdp">1460.00dp</dimen>
+    <dimen name="_1470sdp">1470.00dp</dimen>
     <dimen name="_1380sdp">1380.00dp</dimen>
     <dimen name="_1375sdp">1375.00dp</dimen>
     <dimen name="_1373sdp">1373.00dp</dimen>

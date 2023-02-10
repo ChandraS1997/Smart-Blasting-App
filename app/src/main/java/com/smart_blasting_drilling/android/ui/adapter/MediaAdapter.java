@@ -61,37 +61,19 @@ public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void setDataBind(String path) {
-           // Glide.with(context).load(new File(path)).placeholder(R.drawable.ic_logo).into(binding.Image);
+            Glide.with(context).load(new File(path)).placeholder(R.drawable.ic_logo).into(binding.Image);
 
             String extension = path.substring(path.lastIndexOf("."));
-            if(extension.equals(".mp4"))
-            {
+            if (extension.equals(".mp4")) {
                 binding.VideoView.setVisibility(View.VISIBLE);
                 Uri uri = Uri.parse(path);
-
-                // sets the resource from the
-                // videoUrl to the videoView
                 binding.VideoView.setVideoURI(uri);
-
-                // creating object of
-                // media controller class
                 MediaController mediaController = new MediaController(context);
-
-                // sets the anchor view
-                // anchor view for the videoView
                 mediaController.setAnchorView(binding.VideoView);
-
-                // sets the media player to the videoView
                 mediaController.setMediaPlayer(binding.VideoView);
-
-                // sets the media controller to the videoView
                 binding.VideoView.setMediaController(mediaController);
-
-                // starts the video
                 binding.VideoView.start();
-            }
-            else
-            {
+            } else {
                 binding.Image.setVisibility(View.VISIBLE);
                 Glide.with(context).load(path).apply(new RequestOptions().error(R.drawable.ic_logo)).into(binding.Image);
             }

@@ -10,11 +10,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.api.APIError;
 import com.smart_blasting_drilling.android.api.APiInterface;
-import com.smart_blasting_drilling.android.api.apis.response.InsertMediaResponse;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.utils.StringUtill;
@@ -34,6 +32,7 @@ public class MainService {
     private static APiInterface bladesApiService = BaseService.getAPIClient(Constants.API_BLADES_URL).create(APiInterface.class);
     private static APiInterface  imageVideoApiService=BaseService.getAPIClient(Constants.API_IMAGE_VIDEO_BASE_URL).create(APiInterface.class);
     private static APiInterface  uplodeApiService=BaseService.getAPIClient(Constants.API_UPLOAD_BASE_URL).create(APiInterface.class);
+
     public static JsonObject tokenExpiredResponse(String msg, int code, int errorCode) {
         JsonObject apiResponse = new JsonObject();
         apiResponse.addProperty("errorMessage", msg);
@@ -101,6 +100,7 @@ public class MainService {
         return data;
     }
 
+    ////////////
     public static LiveData<JsonObject> RegisterApiCaller(final Context context, Map<String, RequestBody> map)
     {
         final MutableLiveData<JsonObject> data = new MutableLiveData<>();
@@ -132,87 +132,7 @@ public class MainService {
 
         return data;
     }
-
-
-
-    public static LiveData<JsonObject> ImageVideoApiCaller(final Context context, Map<String, Object> map)
-    {
-        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
-        if (!BaseApplication.getInstance().isInternetConnected(context)) {
-            return data;
-        }
-        Call<JsonObject> call = imageVideoApiService.InsertMediaApiCaller(map);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.body() != null) {
-                    data.setValue(response.body());
-                } else {
-                    data.setValue(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.e(" API FAILED ", t.getLocalizedMessage());
-
-            }
-        });
-        return data;
-    }
-
-    public static LiveData<JsonObject> uploadApiCallerImage(final Context context, Map<String, RequestBody> map, MultipartBody.Part fileData)
-    {
-        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
-        if (!BaseApplication.getInstance().isInternetConnected(context)) {
-            return data;
-        }
-        Call<JsonObject> call = uplodeApiService.UploadeApiCallerImage(map, fileData);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.body() != null) {
-                    data.setValue(response.body());
-                } else {
-                    data.setValue(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.e(" API FAILED ", t.getLocalizedMessage());
-
-            }
-        });
-        return data;
-    }
-
-    public static LiveData<JsonObject> uploadApiCallerVideo(final Context context, Map<String, RequestBody> map, MultipartBody.Part fileData)
-    {
-        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
-        if (!BaseApplication.getInstance().isInternetConnected(context)) {
-            return data;
-        }
-        Call<JsonObject> call = uplodeApiService.UploadeApiCallerVideo(map,fileData);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.body() != null) {
-                    data.setValue(response.body());
-                } else {
-                    data.setValue(null);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.e(" API FAILED ", t.getLocalizedMessage());
-
-            }
-        });
-        return data;
-    }
-
+    ////////////
 
     public static LiveData<JsonObject> retrieve3DDegignByDateApiCaller(final Context context, String startDate, String endDate) {
         final MutableLiveData<JsonObject> data = new MutableLiveData<>();
@@ -334,6 +254,84 @@ public class MainService {
             }
         });
 
+        return data;
+    }
+
+    public static LiveData<JsonObject> ImageVideoApiCaller(final Context context, Map<String, Object> map)
+    {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonObject> call = imageVideoApiService.InsertMediaApiCaller(map);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonObject> uploadApiCallerImage(final Context context, Map<String, RequestBody> map, MultipartBody.Part fileData)
+    {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonObject> call = uplodeApiService.UploadeApiCallerImage(map, fileData);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonObject> uploadApiCallerVideo(final Context context, Map<String, RequestBody> map, MultipartBody.Part fileData)
+    {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonObject> call = uplodeApiService.UploadeApiCallerVideo(map,fileData);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+
+            }
+        });
         return data;
     }
 

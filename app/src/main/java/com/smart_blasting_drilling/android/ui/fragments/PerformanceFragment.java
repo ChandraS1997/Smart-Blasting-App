@@ -1,4 +1,4 @@
-package com.smart_blasting_drilling.android.fragments;
+package com.smart_blasting_drilling.android.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

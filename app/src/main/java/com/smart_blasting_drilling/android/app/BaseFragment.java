@@ -10,18 +10,15 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
 import com.smart_blasting_drilling.android.dialogs.AppProgressBar;
 import com.smart_blasting_drilling.android.helper.PreferenceManger;
-import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -79,20 +76,9 @@ public class BaseFragment extends Fragment {
     }
 
     public File createImageFile() throws IOException {
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = "Wayrem_Image-" + System.currentTimeMillis() + "_";
         File storageDir = mContext.getFilesDir();
-
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        String currentPhotoPath = image.getAbsolutePath();
-        return image;
-
+        return File.createTempFile(imageFileName, ".png", storageDir);
     }
 
 
@@ -136,7 +122,7 @@ public class BaseFragment extends Fragment {
         if (qty - threshold == 0) {
             //    return "Only " + qty + " left in stock";
             return "Out of Stock";
-        } else if (qty <= 0) {
+        } else if (qty <= 0 ) {
             return "Out of Stock";
         } else if (qty > threshold) {
             return "";
@@ -155,8 +141,7 @@ public class BaseFragment extends Fragment {
     public boolean isCurrentLangArabic() {
         /*if (getActivity() != null)
             return ((BaseActivity) mContext).isCurrentLangArabic();
-        else*/
-        return false;
+        else*/ return false;
     }
 
     public RequestBody toRequestBody(String value) {

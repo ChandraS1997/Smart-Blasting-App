@@ -196,7 +196,7 @@
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:background="@drawable/login_btn_bg"
                     android:text="Register"
-                    android:textColor="@color/_C8C7CC"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/_17ssp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

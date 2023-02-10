@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/PerformanceFragment"
-        android:name="com.smart_blasting_drilling.android.fragments.PerformanceFragment"
+        android:name="com.smart_blasting_drilling.android.ui.fragments.PerformanceFragment"
         android:label="Performance"
         tools:layout="@layout/performanc_fragment"/>
 

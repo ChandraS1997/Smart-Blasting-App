@@ -10,28 +10,31 @@
         android:padding="@dimen/_30sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:background="@color/transparent"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:paddingBottom="@dimen/_20sdp">
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <include
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/header_lay_hole"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
                 layout="@layout/header_lay_hole_activity" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/tableEditRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_210sdp"
                 android:orientation="vertical"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/header_lay_hole"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/view_table_edit_fields"
@@ -39,31 +42,34 @@
 
             <Button
                 android:id="@+id/saveBtn"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/_130sdp"
                 android:layout_height="@dimen/_36sdp"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:layout_marginRight="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/login_btn_bg"
                 android:text="@string/save"
-                android:textColor="@color/_C8C7CC"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_17ssp"
                 app:layout_constraintEnd_toStartOf="@id/cancelBtn"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tableEditRecycler" />
 
             <Button
                 android:id="@+id/cancelBtn"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/_130sdp"
                 android:layout_height="@dimen/_36sdp"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/white_bg_rounded_btn"
                 android:text="@string/cancel"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_17ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/saveBtn"
                 app:layout_constraintTop_toBottomOf="@id/tableEditRecycler" />

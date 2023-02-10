@@ -21,7 +21,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tableRv"
-                    android:layout_width="@dimen/_1373sdp"
+                    android:layout_width="@dimen/_1450sdp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:nestedScrollingEnabled="false"

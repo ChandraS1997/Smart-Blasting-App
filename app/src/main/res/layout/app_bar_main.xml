@@ -26,17 +26,37 @@
             tools:itemCount="5"
             tools:listitem="@layout/adapter_drilling_blasting_item" />
 
-        <!--<fragment
-            android:id="@+id/nav_host_main"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:defaultNavHost="true"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        <TextView
+            android:id="@+id/noProjectTV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_18ssp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:fontFamily="@font/inter_bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerLayout"
-            app:layout_constraintVertical_bias="0.0"
-            app:navGraph="@navigation/main_nav" />-->
+            android:text="@string/no_project_downloaded"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/clickHereTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_18ssp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:fontFamily="@font/inter_bold"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/click_here"
+            app:layout_constraintTop_toBottomOf="@+id/noProjectTV"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:visibility="gone" />
 
         <include
             android:visibility="gone"
