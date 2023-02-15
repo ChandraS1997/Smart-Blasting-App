@@ -2,7 +2,9 @@ package com.smart_blasting_drilling.android.api.apis.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseHoleDetailData{
+import java.io.Serializable;
+
+public class ResponseHoleDetailData implements Serializable {
 
 	@SerializedName("CompanyID")
 	private String companyID;

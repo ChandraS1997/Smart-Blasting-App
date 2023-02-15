@@ -190,7 +190,7 @@ public class DownloadListDialog extends BaseDialogFragment {
 
     private void retrieveByDateApiCaller(String startDate, String endDate) {
         showLoader();
-        MainService.retrieveByDateApiCaller(mContext, startDate, endDate).observe((LifecycleOwner) mContext, responseLogin -> {
+        MainService.retrieveByDateApiCaller(mContext, startDate, endDate, manger.getUserDetails().getUserid(), manger.getUserDetails().getCompanyid()).observe((LifecycleOwner) mContext, responseLogin -> {
             if (responseLogin == null) {
                 showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
             } else {
@@ -225,7 +225,7 @@ public class DownloadListDialog extends BaseDialogFragment {
     }
     public void api3DDesignBlade(String startDate, String endDate){
         showLoader();
-        MainService.retrieve3DDegignByDateApiCaller(mContext,startDate,endDate).observe((LifecycleOwner) mContext,response ->{
+        MainService.retrieve3DDegignByDateApiCaller(mContext,startDate,endDate, manger.getUserDetails().getUserid(), manger.getUserDetails().getCompanyid()).observe((LifecycleOwner) mContext,response ->{
             if (response == null){
                 showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
             }else{

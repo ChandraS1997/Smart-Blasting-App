@@ -94,6 +94,7 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
                                 if (is3DBlades) {
                                     Project3DBladesDao bladesDao = appDatabase.project3DBladesDao();
                                     Project3DBladesEntity entity = new Gson().fromJson(new Gson().toJson(data), Project3DBladesEntity.class);
+                                    entity.setIs3dBlade(true);
                                     if (!bladesDao.isExistProject(data.getDesignId())) {
                                         bladesDao.insertProject(entity);
                                     } else {
@@ -102,6 +103,7 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
                                 } else {
                                     Project2DBladesDao bladesDao = appDatabase.project2DBladesDao();
                                     Project2DBladesEntity entity = new Gson().fromJson(new Gson().toJson(data), Project2DBladesEntity.class);
+                                    entity.setIs3dBlade(false);
                                     if (!bladesDao.isExistProject(data.getDesignId())) {
                                         bladesDao.insertProject(entity);
                                     } else {

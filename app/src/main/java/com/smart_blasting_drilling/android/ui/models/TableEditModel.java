@@ -1,11 +1,8 @@
 package com.smart_blasting_drilling.android.ui.models;
 
-import android.widget.CheckBox;
-
 public class TableEditModel {
     String checkBox;
     boolean isSelected = false;
-    boolean isFirstTime = true;
 
     public TableEditModel(String checkBox) {
         this.checkBox = checkBox;
@@ -14,6 +11,12 @@ public class TableEditModel {
     public TableEditModel(String checkBox, boolean isSelected) {
         this.checkBox = checkBox;
         this.isSelected = isSelected;
+    }
+
+    public TableEditModel(String checkBox, boolean isSelected, boolean isFirstTime) {
+        this.checkBox = checkBox;
+        this.isSelected = isSelected;
+//        this.isFirstTime = isFirstTime;
     }
 
     public String getCheckBox() {
@@ -32,11 +35,11 @@ public class TableEditModel {
         isSelected = selected;
     }
 
-    public boolean isFirstTime() {
+    /*public boolean isFirstTime() {
         return isFirstTime;
     }
 
     public void setFirstTime(boolean firstTime) {
         isFirstTime = firstTime;
-    }
+    }*/
 }

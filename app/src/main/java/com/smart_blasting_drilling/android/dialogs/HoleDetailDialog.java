@@ -16,8 +16,9 @@ import androidx.databinding.DataBindingUtil;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.app.BaseApplication;
-import com.smart_blasting_drilling.android.databinding.ProjectInfoDialogBinding;
+import com.smart_blasting_drilling.android.databinding.HoleParameteresLayoutBinding;
 import com.smart_blasting_drilling.android.databinding.ProjectInfoLayoutBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
@@ -25,25 +26,25 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdatePr
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
-public class ProjectDetailDialog extends BaseDialogFragment {
+public class HoleDetailDialog extends BaseDialogFragment {
 
-    ProjectInfoLayoutBinding binding;
-    public static final String TAG = "ProjectDetailDialog";
+    HoleParameteresLayoutBinding binding;
+    public static final String TAG = "HoleDetailDialog";
     Dialog dialog;
-    ProjectDetailDialog _self;
-    private ProjectInfoDialogListener mListener;
-    public ResponseBladesRetrieveData bladesRetrieveData;
-    public ResponseBladesRetrieveData updateBladesData;
+    HoleDetailDialog _self;
+    private HoleDetailDialog.ProjectInfoDialogListener mListener;
+    public ResponseHoleDetailData holeDetailData;
+    public ResponseHoleDetailData updateHoleDetailData;
 
-    public static ProjectDetailDialog getInstance(ResponseBladesRetrieveData bladesRetrieveData) {
-        ProjectDetailDialog frag = new ProjectDetailDialog();
+    public static HoleDetailDialog getInstance(ResponseHoleDetailData holeDetailData) {
+        HoleDetailDialog frag = new HoleDetailDialog();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("bladesRetrieveData", bladesRetrieveData);
+        bundle.putSerializable("holeDetail", holeDetailData);
         frag.setArguments(bundle);
         return frag;
     }
 
-    public void setUpListener(ProjectInfoDialogListener listener) {
+    public void setUpListener(HoleDetailDialog.ProjectInfoDialogListener listener) {
         this.mListener = listener;
     }
 
@@ -67,8 +68,8 @@ public class ProjectDetailDialog extends BaseDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            bladesRetrieveData = (ResponseBladesRetrieveData) getArguments().getSerializable("bladesRetrieveData");
-            updateBladesData = bladesRetrieveData;
+            holeDetailData = (ResponseHoleDetailData) getArguments().getSerializable("holeDetail");
+            updateHoleDetailData = holeDetailData;
         }
     }
 
@@ -91,17 +92,15 @@ public class ProjectDetailDialog extends BaseDialogFragment {
 
     @Override
     public void loadData() {
-        if (bladesRetrieveData != null) {
-            binding.projectName.setText(StringUtill.getString(bladesRetrieveData.getDesignName()));
-            binding.spinnerSiteName.setText(StringUtill.getString(bladesRetrieveData.getMineName()));
-            binding.spinnerSiteName.setText(StringUtill.getString(bladesRetrieveData.getMineName()));
+        if (holeDetailData != null) {
+
         }
 
         binding.closeBtn.setOnClickListener(view -> {
             dismiss();
         });
 
-        binding.saveAndProceedBtn.setOnClickListener(view -> {
+        binding.saveProceedBtn.setOnClickListener(view -> {
             UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
             AppDatabase appDatabase = BaseApplication.getAppDatabase(mContext, Constants.DATABASE_NAME);
             UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
@@ -116,22 +115,22 @@ public class ProjectDetailDialog extends BaseDialogFragment {
 
     }
 
-    private ProjectInfoDialogListener getListener() {
-        ProjectInfoDialogListener listener = mListener;
+    private HoleDetailDialog.ProjectInfoDialogListener getListener() {
+        HoleDetailDialog.ProjectInfoDialogListener listener = mListener;
 
-        if (listener == null && getTargetFragment() != null && getTargetFragment() instanceof ProjectInfoDialogListener)
-            listener = (ProjectInfoDialogListener) getTargetFragment();
+        if (listener == null && getTargetFragment() != null && getTargetFragment() instanceof HoleDetailDialog.ProjectInfoDialogListener)
+            listener = (HoleDetailDialog.ProjectInfoDialogListener) getTargetFragment();
 
-        if (listener == null && getActivity() != null && getActivity() instanceof ProjectInfoDialogListener)
-            listener = (ProjectInfoDialogListener) getActivity();
+        if (listener == null && getActivity() != null && getActivity() instanceof HoleDetailDialog.ProjectInfoDialogListener)
+            listener = (HoleDetailDialog.ProjectInfoDialogListener) getActivity();
 
         return listener;
     }
 
     public interface ProjectInfoDialogListener {
-        void onOk(ProjectDetailDialog dialogFragment);
+        void onOk(HoleDetailDialog dialogFragment);
 
-        default void onCancel(ProjectDetailDialog dialogFragment) {
+        default void onCancel(HoleDetailDialog dialogFragment) {
         }
     }
 

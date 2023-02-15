@@ -58,6 +58,7 @@ public class HoleEditTableFieldSelectionDialog extends BaseDialogFragment {
         binding.saveBtn.setOnClickListener(view -> {
             dismiss();
             if (Constants.onDataEditTable != null && adapterEditTableFields != null) {
+                manger.setTableField(adapterEditTableFields.getSelectedData());
                 Constants.onDataEditTable.editDataTable(adapterEditTableFields.getSelectedData());
             }
         });

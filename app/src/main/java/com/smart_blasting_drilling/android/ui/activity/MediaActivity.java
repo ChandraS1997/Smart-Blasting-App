@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -36,11 +38,20 @@ import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.databinding.ActivityMediaBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.ui.adapter.MediaAdapter;
+import com.smart_blasting_drilling.android.utils.CapturePhotoUtils;
 import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.DonwloadFileManagerUtils;
+import com.smart_blasting_drilling.android.utils.FileStoreUtils;
+import com.smart_blasting_drilling.android.utils.ImageCompressAsync;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,11 +74,14 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
     Bitmap bitmap;
     String extension;
     ResponseBladesRetrieveData bladesRetrieveData;
+    FileStoreUtils fileStoreUtils;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_media);
+
+        fileStoreUtils = new FileStoreUtils(this);
 
         binding.headerMedia.mediaTitle.setText(getString(R.string.media));
 
@@ -222,7 +236,10 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         if (!file.exists()) {
             file.mkdir();
         }
-        insertMediaApiCaller(imgPath, extension, bladesRetrieveData.getDesignId(), "5");
+        fileStoreUtils.addFileIntoDirectory(imgPath);
+
+        updateImageInBitmap(false, new File(imgPath));
+//        insertMediaApiCaller(imgPath, extension, bladesRetrieveData.getDesignId(), "5");
     }
 
     private void insertMediaApiCaller(String imgPath, String extension, String blastCode, String blastNo) {
@@ -321,59 +338,22 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         imageListBlank();
     }
 
+    private void updateImageInBitmap(boolean isFromGallery, File imageFile) {
 
-    File mediaFile;
-
-    private void fileDownloadCode(String docType, String url) {
-        String[] docSplit = url.split("/");
-        String[] fileName = docSplit[docSplit.length - 1].split("\\.");
-        mediaFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),getString(R.string.app_name)+File.separator+String.format("%s_%s.%s", docType, fileName[0], fileName[1]));
-        if (!mediaFile.exists()) {
-            String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            Permissions.check(this, permissions, null, null, new PermissionHandler() {
-                @Override
-                public void onGranted() {
-                    downloadMedia(docType,url, String.format("%s_%s.jpg", docType, fileName[0]));
-                }
-            });
-        } else {
-            showToast("File already exist");
-        }
-    }
-
-    private void downloadMedia(String docType, String url, String fileName) {
-        if (checkDir()) {
-            long refId = downloadFile(url, fileName, mediaFile);
-            Log.e(String.valueOf(refId), url);
-            showToast("File successfully downloaded at "+mediaFile.getAbsolutePath());
-        }
-    }
-
-    public boolean checkDir() {
-        File dirName = new File(Environment.DIRECTORY_DOWNLOADS, getString(R.string.app_name));
-        if (!dirName.exists()) {
-            createDir();
-        }
-        return true;
-    }
-
-    public void createDir() {
-        try {
-            File dir = new File(Environment.DIRECTORY_DOWNLOADS, getString(R.string.app_name));
-            Log.e("msg", "createFolder: " + dir.exists());
-            if (!dir.exists()) {
-                dir.mkdirs();
+        new ImageCompressAsync(this, "image/*", 400, part -> {
+            if (part == null) {
+            } else {
+                Bitmap bOutput;
+                float degrees = isFromGallery ? 0 : 90;
+                Matrix matrix = new Matrix();
+//                matrix.setRotate(degrees);
+                bOutput = Bitmap.createBitmap(part, 0, 0, part.getWidth(), part.getHeight(), matrix, true);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bOutput.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                CapturePhotoUtils.insertImage(getContentResolver(), bOutput, String.format("%s_%s", getString(R.string.app_name), System.currentTimeMillis()), "Project gallery image");
             }
-        } catch (Exception ex) {
-            Log.e("error", "creating file error: ", ex);
-        }
-
-    }
-
-    private long downloadFile(String url, String fileName, File filePath) {
-        Uri uri = Uri.parse(url);
-        DonwloadFileManagerUtils downloadHelper = new DonwloadFileManagerUtils(this);
-        return downloadHelper.downloadData(uri, fileName, filePath);
+        }).execute(imageFile);
     }
 
 }

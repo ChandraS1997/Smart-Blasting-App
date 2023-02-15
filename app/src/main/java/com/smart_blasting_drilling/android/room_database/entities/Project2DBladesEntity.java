@@ -9,6 +9,10 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 public class Project2DBladesEntity {
 
+    @ColumnInfo(name = "BladesType")
+    @SerializedName("BladesType")
+    boolean is3dBlade;
+
     @PrimaryKey(autoGenerate = true)
     public long id;
 
@@ -115,6 +119,14 @@ public class Project2DBladesEntity {
     @SerializedName("ChrctSize")
     @ColumnInfo(name = "ChrctSize")
     private String chrctSize;
+
+    public boolean isIs3dBlade() {
+        return is3dBlade;
+    }
+
+    public void setIs3dBlade(boolean is3dBlade) {
+        this.is3dBlade = is3dBlade;
+    }
 
     public long getId() {
         return id;

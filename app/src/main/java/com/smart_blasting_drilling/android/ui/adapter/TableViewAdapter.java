@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.smart_blasting_drilling.android.R;
@@ -13,6 +15,10 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailD
 import com.smart_blasting_drilling.android.api.apis.response.TableFieldItemModel;
 import com.smart_blasting_drilling.android.app_utils.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.TableViewBinding;
+import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
+import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
+import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
@@ -77,6 +83,14 @@ public class TableViewAdapter extends BaseRecyclerAdapter {
 
             HoleTableColumnViewAdapter columnViewAdapter = new HoleTableColumnViewAdapter(context, editModelArrayList.get(getAdapterPosition()).getTableEditModelList(), isHeader);
             binding.columnList.setAdapter(columnViewAdapter);
+
+            itemView.setOnClickListener(view -> {
+                FragmentManager fm = ((BaseActivity) context).getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                HoleDetailDialog infoDialogFragment = HoleDetailDialog.getInstance(holeDetailData);
+                ft.add(infoDialogFragment, HoleDetailDialog.TAG);
+                ft.commitAllowingStateLoss();
+            });
 
         }
 

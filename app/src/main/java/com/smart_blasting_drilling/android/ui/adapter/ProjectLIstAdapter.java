@@ -24,10 +24,15 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
 
     Context ctx;
     List<ResponseBladesRetrieveData> projectList;
+    OnItemClickCallBack itemClickCallBack;
 
     public ProjectLIstAdapter(Context ctx, List<ResponseBladesRetrieveData> projectList) {
         this.ctx = ctx;
         this.projectList = projectList;
+    }
+
+    public void setItemClickCallBack(OnItemClickCallBack itemClickCallBack) {
+        this.itemClickCallBack = itemClickCallBack;
     }
 
     @Override
@@ -53,6 +58,10 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
         return projectList.size();
     }
 
+    public interface OnItemClickCallBack {
+        void onClick(ResponseBladesRetrieveData data);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         AdapterDrillingBlastingItemBinding binding;
 
@@ -71,11 +80,8 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
             binding.CreatedDateval.setText(StringUtill.getString(DateUtils.getFormattedTime(data.getDesignDateTime(), "dd/MM/yyyy HH:mm:ss a", "dd/MM/yyyy")));
 
             itemView.setOnClickListener(view -> {
-                Intent i = new Intent(ctx, HoleDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("blades_data", data);
-                i.putExtras(bundle);
-                ctx.startActivity(i);
+                if (itemClickCallBack != null)
+                    itemClickCallBack.onClick(data);
             });
 
         }

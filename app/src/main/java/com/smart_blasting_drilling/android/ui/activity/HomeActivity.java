@@ -4,16 +4,28 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
+import androidx.room.migration.Migration;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.Service.MainService;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
+import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
+import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.ui.adapter.ProjectLIstAdapter;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.app.BaseApplication;
@@ -101,6 +113,12 @@ public class HomeActivity extends BaseActivity {
             binding.appLayout.noProjectTV.setVisibility(View.GONE);
             binding.appLayout.clickHereTv.setVisibility(View.GONE);
             projectLIstAdapter = new ProjectLIstAdapter(this, projectList);
+            projectLIstAdapter.setItemClickCallBack(new ProjectLIstAdapter.OnItemClickCallBack() {
+                @Override
+                public void onClick(ResponseBladesRetrieveData data) {
+                    setApiData(data);
+                }
+            });
             binding.appLayout.projectListRv.setAdapter(projectLIstAdapter);
         } else {
             binding.appLayout.noProjectTV.setVisibility(View.VISIBLE);
@@ -162,6 +180,107 @@ public class HomeActivity extends BaseActivity {
         if (!TextUtil.isEmpty(title)) {
             binding.appLayout.headerLayout.pageTitle.setText(TextUtil.getString(title));
         }
+    }
+
+    // On Item Click
+    ProjectHoleDetailRowColDao entity;
+    ResponseBladesRetrieveData bladesRetrieveData;
+
+    private void setApiData(ResponseBladesRetrieveData bladesRetrieveData) {
+        this.bladesRetrieveData = bladesRetrieveData;
+        appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
+        entity = appDatabase.projectHoleDetailRowColDao();
+        if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
+            getAllDesignInfoApiCaller(bladesRetrieveData.isIs3dBlade());
+        } else {
+            ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
+            AllTablesData tablesData = new AllTablesData();
+            Type typeList = new TypeToken<List<ResponseHoleDetailData>>(){}.getType();
+            tablesData.setTable2(new Gson().fromJson(rowColEntity.projectHole, typeList));
+            setHoleTableData(tablesData);
+        }
+    }
+
+    private void setHoleTableData(AllTablesData tablesData) {
+        Intent i = new Intent(HomeActivity.this, HoleDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("all_table_Data", tablesData);
+        bundle.putSerializable("blades_data", bladesRetrieveData);
+        i.putExtras(bundle);
+        startActivity(i);
+    }
+
+    public void getAllDesignInfoApiCaller(boolean is3D) {
+        showLoader();
+        ResponseLoginData loginData = manger.getUserDetails();
+        MainService.getAll2D_3DDesignInfoApiCaller(this, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.getDesignId(), "dev_centralmineinfo", 0, is3D).observe((LifecycleOwner) this, new Observer<JsonElement>() {
+            @Override
+            public void onChanged(JsonElement response) {
+                if (response == null) {
+                    showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+                } else {
+                    if (!(response.isJsonNull())) {
+                        try {
+                            JsonObject jsonObject = response.getAsJsonObject();
+                            if (jsonObject != null) {
+                                try {
+                                    if (jsonObject.get("GetAllDesignInfoResult").getAsString().contains("Table2")) {
+                                        AllTablesData tablesData = new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), AllTablesData.class);
+                                        setHoleTableData(tablesData);
+                                    }
+                                } catch (Exception e) {
+                                    Log.e(NODATAFOUND, e.getMessage());
+                                }
+
+                            } else {
+                                showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                            }
+                        } catch (Exception e) {
+                            Log.e(NODATAFOUND, e.getMessage());
+                        }
+                        hideLoader();
+                    }
+                }
+                hideLoader();
+            }
+        });
+    }
+
+    public void getMinePitZoneBenchApiCaller() {
+        showLoader();
+        ResponseLoginData loginData = manger.getUserDetails();
+        MainService.getMinePitZoneBenchApiCaller(this, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.getDesignId()).observe((LifecycleOwner) this, new Observer<JsonElement>() {
+            @Override
+            public void onChanged(JsonElement response) {
+                if (response == null) {
+                    showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+                } else {
+                    if (!(response.isJsonNull())) {
+                        try {
+                            JsonObject jsonObject = response.getAsJsonObject();
+                            if (jsonObject != null) {
+                                try {
+                                    if (jsonObject.has("GetAllMinePitZoneBenchResult")) {
+                                        if (jsonObject.get("GetAllMinePitZoneBenchResult").getAsString().contains("Table")) {
+
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    Log.e(NODATAFOUND, e.getMessage());
+                                }
+
+                            } else {
+                                showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                            }
+                        } catch (Exception e) {
+                            Log.e(NODATAFOUND, e.getMessage());
+                        }
+                        hideLoader();
+                    }
+                }
+                hideLoader();
+            }
+        });
     }
 
 }

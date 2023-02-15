@@ -1,6 +1,5 @@
 package com.smart_blasting_drilling.android.ui.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,10 +30,8 @@ import com.smart_blasting_drilling.android.interfaces.OnDataEditTable;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
-import com.smart_blasting_drilling.android.ui.activity.AuthActivity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
-import com.smart_blasting_drilling.android.ui.activity.HomeActivity;
 import com.smart_blasting_drilling.android.ui.adapter.TableViewAdapter;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.FragmentHoleDetailsTableBinding;
@@ -52,6 +49,7 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
     List<TableFieldItemModel> tableFieldItemModelList = new ArrayList<>();
     List<TableEditModel> tableEditModelArrayList = new ArrayList<>();
     ResponseBladesRetrieveData bladesRetrieveData;
+    AllTablesData allTablesData;
     List<ResponseHoleDetailData> holeDetailDataList = new ArrayList<>();
 
     AppDatabase appDatabase;
@@ -75,6 +73,7 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hole_details_table, container, false);
 
             bladesRetrieveData = ((HoleDetailActivity) mContext).bladesRetrieveData;
+            allTablesData = ((HoleDetailActivity) mContext).allTablesData;
 
             appDatabase = BaseApplication.getAppDatabase(mContext, Constants.DATABASE_NAME);
             entity = appDatabase.projectHoleDetailRowColDao();
@@ -87,29 +86,28 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
 
             holeDetailDataList.add(null);
 
-            tableViewAdapter = new TableViewAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
-            binding.tableRv.setAdapter(tableViewAdapter);
+           /* tableViewAdapter = new TableViewAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
+            binding.tableRv.setAdapter(tableViewAdapter);*/
 
-//            if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
-                getAllDesignInfoApiCaller();
-           /* } else {
-                ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
+            if (allTablesData == null) {
+                getAllDesignInfoApiCaller(bladesRetrieveData.isIs3dBlade());
+            } else {
+                /*ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
                 AllTablesData tablesData = new AllTablesData();
                 Type typeList = new TypeToken<List<ResponseHoleDetailData>>(){}.getType();
-                tablesData.setTable2(new Gson().fromJson(rowColEntity.projectHole, typeList));
-                setTableData(tablesData);
-            }*/
+                tablesData.setTable2(new Gson().fromJson(rowColEntity.projectHole, typeList));*/
+                holeDetailDataList.clear();
+                setTableData(allTablesData);
+            }
         }
         return binding.getRoot();
     }
 
     private void setTableData(AllTablesData tablesData) {
-        holeDetailDataList.clear();
-        holeDetailDataList.add(null);
         holeDetailDataList.addAll(tablesData.getTable2());
         ((HoleDetailActivity) mContext).holeDetailDataList.clear();
         ((HoleDetailActivity) mContext).holeDetailDataList.addAll(tablesData.getTable2());
-        setDataNotifyList();
+        setDataNotifyList(true);
     }
 
     @Override
@@ -118,20 +116,17 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
             for (int i = 0; i < arrayList.size(); i++) {
                 TableEditModel tableEditModel = arrayList.get(i);
                 tableEditModel.setSelected(arrayList.get(i).isSelected());
-                tableEditModel.setFirstTime(false);
+//                tableEditModel.setFirstTime(false);
                 tableEditModelArrayList.set(i, tableEditModel);
             }
-            if (!Constants.isListEmpty(arrayList)) {
-                tableFieldItemModelList.add(0, new TableFieldItemModel(tableEditModelArrayList));
-            }
+            setDataNotifyList(false);
         }
-        setDataNotifyList();
     }
 
-    public void getAllDesignInfoApiCaller() {
+    public void getAllDesignInfoApiCaller(boolean is3d) {
         showLoader();
         ResponseLoginData loginData = manger.getUserDetails();
-        MainService.getAllDesignInfoApiCaller(mContext, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.getDesignId(), "dev_centralmineinfo", 0).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
+        MainService.getAll2D_3DDesignInfoApiCaller(mContext, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.getDesignId(), "dev_centralmineinfo", 0, is3d).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
             @Override
             public void onChanged(JsonElement response) {
                 if (response == null) {
@@ -144,8 +139,10 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                                 try {
                                     if (jsonObject.get("GetAllDesignInfoResult").getAsString().contains("Table2")) {
                                         AllTablesData tablesData = new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), AllTablesData.class);
+                                        holeDetailDataList.clear();
+                                        holeDetailDataList.add(null);
                                         setTableData(tablesData);
-                                        setDataIntoDb();
+                                        setDataIntoDb(tablesData);
                                     }
                                 } catch (Exception e) {
                                     Log.e(NODATAFOUND, e.getMessage());
@@ -165,8 +162,8 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
         });
     }
 
-    private void setDataIntoDb() {
-        String str = new Gson().toJson(holeDetailDataList);
+    private void setDataIntoDb(AllTablesData tablesData) {
+        String str = new Gson().toJson(tablesData.getTable2());
         if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
             entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), str));
         } else {
@@ -174,24 +171,24 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
         }
     }
 
-    private void setDataNotifyList() {
+    private void setDataNotifyList(boolean update) {
         try {
             if (!Constants.isListEmpty(holeDetailDataList)) {
                 for (int i = 1; i < holeDetailDataList.size(); i++) {
                     List<TableEditModel> editModelArrayList = new ArrayList<>();
                     ResponseHoleDetailData holeDetailData = holeDetailDataList.get(i);
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getRowNo()), tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleNo()), tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleID()), tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleDepth()), tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel("Hole Status", tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleAngle()), tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleDiameter()), tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBurden()), tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getSpacing()), tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getX()), tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getY()), tableEditModelArrayList.get(0).isSelected()));
-                    editModelArrayList.add(new TableEditModel("Z", tableEditModelArrayList.get(0).isSelected()));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getRowNo()), tableEditModelArrayList.get(0).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleNo()), tableEditModelArrayList.get(1).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleID()), tableEditModelArrayList.get(2).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleDepth()), tableEditModelArrayList.get(3).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel("Hole Status", tableEditModelArrayList.get(4).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleAngle()), tableEditModelArrayList.get(5).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleDiameter()), tableEditModelArrayList.get(6).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBurden()), tableEditModelArrayList.get(7).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getSpacing()), tableEditModelArrayList.get(8).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getX()), tableEditModelArrayList.get(9).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getY()), tableEditModelArrayList.get(10).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel("Z", tableEditModelArrayList.get(11).isSelected(), update));
                     int chargingCount = 0;
                     if (!StringUtill.isEmpty(holeDetailData.getColName())) {
                         chargingCount = chargingCount + 1;
@@ -205,13 +202,17 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                     if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getStemLngth()))) {
                         chargingCount = chargingCount + 1;
                     }
-                    editModelArrayList.add(new TableEditModel(String.valueOf(chargingCount), tableEditModelArrayList.get(0).isSelected()));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(chargingCount), tableEditModelArrayList.get(12).isSelected(), update));
 
-                    tableFieldItemModelList.add(new TableFieldItemModel(editModelArrayList));
+                    if (!update) {
+                        tableFieldItemModelList.set(i, new TableFieldItemModel(editModelArrayList));
+                    } else {
+                        tableFieldItemModelList.add(new TableFieldItemModel(editModelArrayList));
+                    }
                 }
             }
-            Log.e("Data : ", new Gson().toJson(tableFieldItemModelList));
-            tableViewAdapter.notifyDataSetChanged();
+            tableViewAdapter = new TableViewAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
+            binding.tableRv.setAdapter(tableViewAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }

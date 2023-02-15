@@ -1,10 +1,11 @@
 package com.smart_blasting_drilling.android.api.apis.response.hole_tables;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 
-public class AllTablesData{
+public class AllTablesData implements Serializable {
 
 	@SerializedName("Table2")
 	private List<ResponseHoleDetailData> table2;

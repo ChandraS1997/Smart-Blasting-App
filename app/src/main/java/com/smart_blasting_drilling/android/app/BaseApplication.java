@@ -5,21 +5,23 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.text.TextUtils;
 import android.util.Log;
+
 import androidx.multidex.MultiDexApplication;
 import androidx.room.Room;
 
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.room_database.DatabaseMigrations;
-import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.helper.CheckInternetConnection;
 import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
 import com.smart_blasting_drilling.android.helper.InAppInstallUtil;
 import com.smart_blasting_drilling.android.helper.PreferenceManger;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 
 import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Objects;
+
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
@@ -52,8 +54,7 @@ public class BaseApplication extends MultiDexApplication {
     public static AppDatabase getAppDatabase(Context context, String dbName) {
         if (appDatabase == null && getInstance() != null) {
             appDatabase = Room.databaseBuilder(context, AppDatabase.class, dbName)
-                    .fallbackToDestructiveMigration().allowMainThreadQueries()
-                    .addMigrations(DatabaseMigrations.MIGRATION_2_3).build();
+                    .fallbackToDestructiveMigration().allowMainThreadQueries().build();
         }
         return appDatabase;
     }

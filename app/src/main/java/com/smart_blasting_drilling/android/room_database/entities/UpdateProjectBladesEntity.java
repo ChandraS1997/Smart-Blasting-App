@@ -6,12 +6,10 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity
-public class Project3DBladesEntity {
+import java.io.Serializable;
 
-    @ColumnInfo(name = "BladesType")
-    @SerializedName("BladesType")
-    boolean is3dBlade;
+@Entity
+public class UpdateProjectBladesEntity implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     public long id;
@@ -64,6 +62,14 @@ public class Project3DBladesEntity {
     @ColumnInfo(name = "AirVibration")
     private String airVibration;
 
+    public String getB_i() {
+        return b_i;
+    }
+
+    public void setB_i(String b_i) {
+        this.b_i = b_i;
+    }
+
     @SerializedName("BI")
     @ColumnInfo(name = "BI")
     private String b_i;
@@ -111,14 +117,6 @@ public class Project3DBladesEntity {
     @SerializedName("ChrctSize")
     @ColumnInfo(name = "ChrctSize")
     private String chrctSize;
-
-    public boolean isIs3dBlade() {
-        return is3dBlade;
-    }
-
-    public void setIs3dBlade(boolean is3dBlade) {
-        this.is3dBlade = is3dBlade;
-    }
 
     public long getId() {
         return id;
@@ -224,14 +222,6 @@ public class Project3DBladesEntity {
         this.airVibration = airVibration;
     }
 
-    public String getB_i() {
-        return b_i;
-    }
-
-    public void setB_i(String b_i) {
-        this.b_i = b_i;
-    }
-
     public String getPcntOverSize() {
         return pcntOverSize;
     }
@@ -319,4 +309,5 @@ public class Project3DBladesEntity {
     public void setChrctSize(String chrctSize) {
         this.chrctSize = chrctSize;
     }
+
 }

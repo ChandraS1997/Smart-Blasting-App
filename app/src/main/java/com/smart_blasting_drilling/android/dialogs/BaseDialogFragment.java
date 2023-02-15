@@ -8,11 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.DialogFragment;
+
+import com.smart_blasting_drilling.android.app.BaseApplication;
+import com.smart_blasting_drilling.android.helper.PreferenceManger;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 
 public abstract class BaseDialogFragment extends DialogFragment {
 
     Context mContext;
+    public PreferenceManger manger;
 
     public BaseDialogFragment() {
     }
@@ -21,6 +25,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.mContext = context;
+        this.manger = BaseApplication.getPreferenceManger();
     }
 
     @Override

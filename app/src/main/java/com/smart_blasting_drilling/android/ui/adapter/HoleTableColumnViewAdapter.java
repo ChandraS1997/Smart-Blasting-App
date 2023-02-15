@@ -74,13 +74,13 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
 
         void setDataBind(TableEditModel model) {
 
-            if (!model.isFirstTime()) {
+//            if (!model.isFirstTime()) {
                 if (model.isSelected()) {
                     binding.holeIdVal.setVisibility(View.VISIBLE);
                 } else {
                     binding.holeIdVal.setVisibility(View.GONE);
                 }
-            }
+//            }
             binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
 
             LinearLayout.LayoutParams layoutParams;

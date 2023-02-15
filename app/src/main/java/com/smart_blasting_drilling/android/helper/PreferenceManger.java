@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
+import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -12,12 +13,12 @@ import java.util.List;
 
 
 public class PreferenceManger {
-
     public static final String PREF_KEY = "waiter_preference";
     public static final String AUTH_TOKEN = "auth_token";
     public static final String USER_DETAILS = "user_details";
     public final String CHECK_USER_IS_LOGGED_IN = "user_logged_in";
     private final SharedPreferences mSharedPreferences;
+    private static final String TABLE_FIELD = "table_field";
 
     public PreferenceManger(SharedPreferences mSharedPreferences) {
         this.mSharedPreferences = mSharedPreferences;
@@ -102,10 +103,23 @@ public class PreferenceManger {
         Gson gson = new Gson();
         String json = gson.toJson(list);
         putString(key, json);
+
     }
 
     public void putAuthToken(String token) {
         putString(AUTH_TOKEN, token);
     }
 
+    public void setTableField(List<TableEditModel> tableField) {
+        Gson gson = new Gson();
+        String json = gson.toJson(tableField);
+        putString(TABLE_FIELD, json);
+    }
+
+    public List<TableEditModel> getTableField() {
+        Gson gson = new Gson();
+        String json = getStringValue(TABLE_FIELD);
+        Type typeToken = new TypeToken<List<TableEditModel>>(){}.getType();
+        return new Gson().fromJson(json, typeToken);
+    }
 }
