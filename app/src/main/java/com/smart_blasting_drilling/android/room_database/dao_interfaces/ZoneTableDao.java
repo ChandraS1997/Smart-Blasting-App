@@ -15,14 +15,14 @@ public interface ZoneTableDao {
     @Insert
     void insertProject(ResponseZoneTableEntity data);
 
-    @Query("SELECT EXISTS(SELECT * FROM ResponseZoneTableEntity WHERE zoneCode = :zoneCode)")
-    Boolean isExistProject(int zoneCode);
+    @Query("SELECT EXISTS(SELECT * FROM ResponseZoneTableEntity)")
+    Boolean isExistProject();
 
     @Query("SELECT * FROM ResponseZoneTableEntity")
     List<ResponseZoneTableEntity> getAllBladesProject();
 
-    @Query("DELETE FROM ResponseZoneTableEntity WHERE zoneCode = :zoneCode")
-    void deleteProjectById(int zoneCode);
+    @Query("DELETE FROM ResponseZoneTableEntity")
+    void deleteProjectById();
 
     @Query("DELETE FROM ResponseZoneTableEntity")
     void deleteAllProject();

@@ -15,14 +15,14 @@ public interface BenchTableDao {
     @Insert
     void insertProject(ResponseBenchTableEntity data);
 
-    @Query("SELECT EXISTS(SELECT * FROM ResponseBenchTableEntity WHERE benchCode = :benchCode)")
-    Boolean isExistProject(int benchCode);
+    @Query("SELECT EXISTS(SELECT * FROM ResponseBenchTableEntity)")
+    Boolean isExistProject();
 
     @Query("SELECT * FROM ResponseBenchTableEntity")
     List<ResponseBenchTableEntity> getAllBladesProject();
 
-    @Query("DELETE FROM ResponseBenchTableEntity WHERE benchCode = :benchCode")
-    void deleteProjectById(int benchCode);
+    @Query("DELETE FROM ResponseBenchTableEntity")
+    void deleteProjectById();
 
     @Query("DELETE FROM ResponseBenchTableEntity")
     void deleteAllProject();

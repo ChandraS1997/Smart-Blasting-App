@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseSiteDetail;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.ProjectInfoDialogBinding;
 import com.smart_blasting_drilling.android.databinding.ProjectInfoLayoutBinding;
@@ -24,6 +30,10 @@ import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.utils.StringUtill;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProjectDetailDialog extends BaseDialogFragment {
 
@@ -34,6 +44,13 @@ public class ProjectDetailDialog extends BaseDialogFragment {
     private ProjectInfoDialogListener mListener;
     public ResponseBladesRetrieveData bladesRetrieveData;
     public ResponseBladesRetrieveData updateBladesData;
+    AppDatabase appDatabase;
+    List<String> siteName = new ArrayList<>();
+
+    public ProjectDetailDialog() {
+        _self = this;
+        appDatabase = BaseApplication.getAppDatabase(mContext, Constants.DATABASE_NAME);
+    }
 
     public static ProjectDetailDialog getInstance(ResponseBladesRetrieveData bladesRetrieveData) {
         ProjectDetailDialog frag = new ProjectDetailDialog();
@@ -91,6 +108,15 @@ public class ProjectDetailDialog extends BaseDialogFragment {
 
     @Override
     public void loadData() {
+        if (!Constants.isListEmpty(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject())) {
+            if (appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0) != null) {
+                Type siteList = new TypeToken<List<ResponseSiteDetail>>(){}.getType();
+                List<ResponseSiteDetail> siteDetailList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonArray.class).get(0), siteList);
+                Log.e("Data : ", new Gson().toJson(siteDetailList));
+            }
+        }
+
+
         if (bladesRetrieveData != null) {
             binding.projectName.setText(StringUtill.getString(bladesRetrieveData.getDesignName()));
             binding.spinnerSiteName.setText(StringUtill.getString(bladesRetrieveData.getMineName()));

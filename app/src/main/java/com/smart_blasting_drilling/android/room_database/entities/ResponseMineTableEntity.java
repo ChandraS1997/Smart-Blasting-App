@@ -14,7 +14,7 @@ public class ResponseMineTableEntity implements Serializable {
 	@PrimaryKey(autoGenerate = true)
 	public long id;
 
-	@ColumnInfo(name = "BenchData")
+	@ColumnInfo(name = "MineData")
 	private String data;
 
 	public ResponseMineTableEntity() {

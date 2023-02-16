@@ -15,14 +15,14 @@ public interface TypeTableDao {
     @Insert
     void insertProject(ResponseTypeTableEntity data);
 
-    @Query("SELECT EXISTS(SELECT * FROM ResponseTypeTableEntity WHERE typeId = :typeId)")
-    Boolean isExistProject(int typeId);
+    /*@Query("SELECT * FROM ResponseTypeTableEntity")
+    Boolean isExistProject();*/
 
     @Query("SELECT * FROM ResponseTypeTableEntity")
     List<ResponseTypeTableEntity> getAllBladesProject();
 
-    @Query("DELETE FROM ResponseTypeTableEntity WHERE typeId = :typeId")
-    void deleteProjectById(int typeId);
+    @Query("DELETE FROM ResponseTypeTableEntity")
+    void deleteProjectById();
 
     @Query("DELETE FROM ResponseTypeTableEntity")
     void deleteAllProject();

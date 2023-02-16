@@ -34,14 +34,23 @@ public interface APiInterface {
     @GET("RetrieveByDate/{start_time}/{end_time}/{user_id}/1/{company_id}/centralmineinfo")
     Call<JsonObject> retrieveByDateApiCaller(@Path(value = "start_time", encoded = true) String startDate, @Path(value = "end_time", encoded = true) String endDate, @Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
-    @GET("/get-mine-pit-zone-bench/{user_id}/{company_id}/{blast_id}")
-    Call<JsonObject> getMinePitZoneBenchApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId, @Path(value = "blast_id", encoded = true) String blastId);
+    @GET("/get-mine-pit-zone-bench/{user_id}/{company_id}/1")
+    Call<JsonObject> getMinePitZoneBenchApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
     @GET("GetAllDesignInfo/{blast_id}/{user_id}/{company_id}/{db_name}/{record_status}")
     Call<JsonElement> getAllDesignInfoApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "blast_id", encoded = true) String blastId, @Path(value = "db_name", encoded = true) String dbName, @Path(value = "company_id", encoded = true) String companyId, @Path(value = "record_status", encoded = true) int recordStatus);
 
     @GET("GetAll3DDesignInfo/{blast_id}/{user_id}/{company_id}/{db_name}/{record_status}")
     Call<JsonElement> getAllDesign3DInfoApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "blast_id", encoded = true) String blastId, @Path(value = "db_name", encoded = true) String dbName, @Path(value = "company_id", encoded = true) String companyId, @Path(value = "record_status", encoded = true) int recordStatus);
+
+    @GET("v5/getrecord/{user_id}/{company_id}/1")
+    Call<JsonElement> getRecordApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
+
+    @GET("/get-allmineinfo/SurfaceInitiator/{user_id}/{company_id}/1")
+    Call<JsonElement> getAllMineInfoSurfaceInitiatorApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
+
+    @GET("get-drillaccessoriesinfoalldata/{user_id}/{company_id}")
+    Call<JsonElement> getDrillAccessoriesInfoAllDataApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
     @POST("v3/Insertmedia")
     Call<JsonObject> InsertMediaApiCaller(@Body Map<String, Object> map);

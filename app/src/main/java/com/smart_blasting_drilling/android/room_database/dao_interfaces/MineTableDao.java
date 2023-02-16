@@ -15,14 +15,14 @@ public interface MineTableDao {
     @Insert
     void insertProject(ResponseMineTableEntity data);
 
-    @Query("SELECT EXISTS(SELECT * FROM ResponseMineTableEntity WHERE mineCode = :mineCode)")
-    Boolean isExistProject(int mineCode);
+    @Query("SELECT EXISTS(SELECT * FROM ResponseMineTableEntity)")
+    Boolean isExistProject();
 
     @Query("SELECT * FROM ResponseMineTableEntity")
     List<ResponseMineTableEntity> getAllBladesProject();
 
-    @Query("DELETE FROM ResponseMineTableEntity WHERE mineCode = :mineCode")
-    void deleteProjectById(int mineCode);
+    @Query("DELETE FROM ResponseMineTableEntity")
+    void deleteProjectById();
 
     @Query("DELETE FROM ResponseMineTableEntity")
     void deleteAllProject();

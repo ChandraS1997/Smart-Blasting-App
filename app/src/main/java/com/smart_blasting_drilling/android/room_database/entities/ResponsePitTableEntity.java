@@ -14,7 +14,7 @@ public class ResponsePitTableEntity implements Serializable {
 	@PrimaryKey(autoGenerate = true)
 	public long id;
 
-	@ColumnInfo(name = "BenchData")
+	@ColumnInfo(name = "PitData")
 	private String data;
 
 	public ResponsePitTableEntity() {

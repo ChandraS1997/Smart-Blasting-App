@@ -15,14 +15,14 @@ public interface FileTypeTableDao {
     @Insert
     void insertProject(ResponseFileDetailsTableEntity data);
 
-    @Query("SELECT EXISTS(SELECT * FROM ResponseFileDetailsTableEntity WHERE fileCode = :fileCode)")
-    Boolean isExistProject(int fileCode);
+    @Query("SELECT EXISTS(SELECT * FROM ResponseFileDetailsTableEntity)")
+    Boolean isExistProject();
 
     @Query("SELECT * FROM ResponseFileDetailsTableEntity")
     List<ResponseFileDetailsTableEntity> getAllBladesProject();
 
-    @Query("DELETE FROM ResponseFileDetailsTableEntity WHERE fileCode = :fileCode")
-    void deleteProjectById(int fileCode);
+    @Query("DELETE FROM ResponseFileDetailsTableEntity")
+    void deleteProjectById();
 
     @Query("DELETE FROM ResponseFileDetailsTableEntity")
     void deleteAllProject();

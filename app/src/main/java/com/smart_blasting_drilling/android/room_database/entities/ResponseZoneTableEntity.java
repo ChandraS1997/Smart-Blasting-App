@@ -14,7 +14,7 @@ public class ResponseZoneTableEntity implements Serializable {
 	@PrimaryKey(autoGenerate = true)
 	public long id;
 
-	@ColumnInfo(name = "BenchData")
+	@ColumnInfo(name = "ZoneData")
 	private String data;
 
 	public ResponseZoneTableEntity() {

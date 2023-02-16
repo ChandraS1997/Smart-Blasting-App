@@ -14,7 +14,7 @@ public class ResponseTypeTableEntity implements Serializable {
 	@PrimaryKey(autoGenerate = true)
 	public long id;
 
-	@ColumnInfo(name = "BenchData")
+	@ColumnInfo(name = "TypeData")
 	private String data;
 
 	public ResponseTypeTableEntity() {

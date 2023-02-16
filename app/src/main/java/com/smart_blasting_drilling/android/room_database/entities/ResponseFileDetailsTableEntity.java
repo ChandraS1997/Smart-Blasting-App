@@ -14,7 +14,7 @@ public class ResponseFileDetailsTableEntity implements Serializable {
 	@PrimaryKey(autoGenerate = true)
 	public long id;
 
-	@ColumnInfo(name = "BenchData")
+	@ColumnInfo(name = "FileData")
 	private String data;
 
 	public ResponseFileDetailsTableEntity() {

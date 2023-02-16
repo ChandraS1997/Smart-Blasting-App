@@ -6,30 +6,44 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.AllMineInfoSurfaceInitiatorDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.BenchTableDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.DrillAccessoriesInfoAllDataDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.ExplosiveDataDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.FileTypeTableDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.InitiatingDataDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.MineTableDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.PitTableDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project2DBladesDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project3DBladesDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.RockDataDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.TldDataDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.TypeTableDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ZoneTableDao;
+import com.smart_blasting_drilling.android.room_database.entities.AllMineInfoSurfaceInitiatorEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ExplosiveDataEntity;
+import com.smart_blasting_drilling.android.room_database.entities.InitiatingDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.Project2DBladesEntity;
 import com.smart_blasting_drilling.android.room_database.entities.Project3DBladesEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseBenchTableEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ResponseDrillAccessoriesInfoAllDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseFileDetailsTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseMineTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponsePitTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseTypeTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseZoneTableEntity;
+import com.smart_blasting_drilling.android.room_database.entities.RockDataEntity;
+import com.smart_blasting_drilling.android.room_database.entities.TldDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 
-@Database(version = 3, entities = {Project2DBladesEntity.class, Project3DBladesEntity.class, ProjectHoleDetailRowColEntity.class, UpdateProjectBladesEntity.class
+@Database(version = 1, entities = {Project2DBladesEntity.class, Project3DBladesEntity.class, ProjectHoleDetailRowColEntity.class, UpdateProjectBladesEntity.class
             , ResponseBenchTableEntity.class, ResponseFileDetailsTableEntity.class, ResponseMineTableEntity.class, ResponsePitTableEntity.class
-            , ResponseTypeTableEntity.class, ResponseZoneTableEntity.class}, exportSchema = true,
+            , ResponseTypeTableEntity.class, ResponseZoneTableEntity.class, ExplosiveDataEntity.class
+            , TldDataEntity.class, InitiatingDataEntity.class, RockDataEntity.class
+            , AllMineInfoSurfaceInitiatorEntity.class, ResponseDrillAccessoriesInfoAllDataEntity.class}, exportSchema = true,
     autoMigrations = {})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -43,6 +57,12 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PitTableDao pitTableDao();
     public abstract TypeTableDao typeTableDao();
     public abstract ZoneTableDao zoneTableDao();
+    public abstract ExplosiveDataDao explosiveDataDao();
+    public abstract TldDataDao tldDataEntity();
+    public abstract RockDataDao rockDataDao();
+    public abstract InitiatingDataDao initiatingDataDao();
+    public abstract AllMineInfoSurfaceInitiatorDao allMineInfoSurfaceInitiatorDao();
+    public abstract DrillAccessoriesInfoAllDataDao drillAccessoriesInfoAllDataDao();
 
     public static class DatabaseMigrations {
         public Migration MIGRATION_2_3 = new Migration(2, 3) {

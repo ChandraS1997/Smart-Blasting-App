@@ -113,7 +113,7 @@ public class BaseApplication extends MultiDexApplication {
         if (new CheckInternetConnection(this).isConnected())
             return true;
         else {
-            ((BaseActivity) context).noInternetDialog();
+//            ((BaseActivity) context).noInternetDialog();
         }
         return false;
     }
