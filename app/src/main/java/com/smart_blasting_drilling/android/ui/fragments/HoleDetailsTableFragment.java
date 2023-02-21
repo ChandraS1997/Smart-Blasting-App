@@ -43,7 +43,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HoleDetailsTableFragment extends BaseFragment implements OnDataEditTable {
+public class HoleDetailsTableFragment extends BaseFragment implements OnDataEditTable, HoleDetailActivity.RowItemDetail {
 
     FragmentHoleDetailsTableBinding binding;
     TableViewAdapter tableViewAdapter;
@@ -55,6 +55,12 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
 
     AppDatabase appDatabase;
     ProjectHoleDetailRowColDao entity;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((HoleDetailActivity) mContext).rowItemDetail = this;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,10 +112,21 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
     }
 
     private void setTableData(AllTablesData tablesData) {
-        holeDetailDataList.addAll(tablesData.getTable2());
-        ((HoleDetailActivity) mContext).holeDetailDataList.clear();
-        ((HoleDetailActivity) mContext).holeDetailDataList.addAll(tablesData.getTable2());
-        setDataNotifyList(true);
+        if (tablesData != null) {
+            if (!Constants.isListEmpty(tablesData.getTable2())) {
+                List<ResponseHoleDetailData> holeDetailData = new ArrayList<>();
+                for (int i = 0; i < tablesData.getTable2().size(); i++) {
+                    if (tablesData.getTable2().get(i).getRowNo() == ((HoleDetailActivity) mContext).rowPageVal) {
+                        holeDetailData.add(tablesData.getTable2().get(i));
+                    }
+                }
+                holeDetailDataList.clear();
+                holeDetailDataList.addAll(holeDetailData);
+                setDataNotifyList(true);
+            }
+        }
+//        ((HoleDetailActivity) mContext).holeDetailDataList.clear();
+//        ((HoleDetailActivity) mContext).holeDetailDataList.addAll(tablesData.getTable2());
     }
 
     @Override
@@ -143,6 +160,7 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                                         AllTablesData tablesData = new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), AllTablesData.class);
                                         holeDetailDataList.clear();
                                         holeDetailDataList.add(null);
+                                        allTablesData = tablesData;
                                         setTableData(tablesData);
                                         setDataIntoDb(tablesData);
                                     }
@@ -220,4 +238,8 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
         }
     }
 
+    @Override
+    public void setRowOfTable(int rowNo) {
+        setTableData(allTablesData);
+    }
 }

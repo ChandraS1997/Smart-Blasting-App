@@ -89,6 +89,21 @@
                 app:layout_constraintEnd_toStartOf="@+id/project_info"
                 android:layout_marginEnd="@dimen/_10sdp"/>
 
+            <com.smart_blasting_drilling.android.utils.EditSpinner
+                android:id="@+id/spinnerRow"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:editable="false"
+                android:paddingEnd="@dimen/_15sdp"
+                android:textColor="@color/_414346"
+                android:textSize="@dimen/_15ssp"
+                app:dropDownDrawable="@drawable/downarro"
+                app:dropDownDrawableHeight="@dimen/_8sdp"
+                app:dropDownDrawableSpacing="15dp"
+                app:dropDownDrawableWidth="@dimen/_14ssp"
+                app:dropDownHeight="@dimen/_150sdp"
+                app:layout_constraintEnd_toStartOf="@id/project_info"/>
+
             <TextView
                 android:id="@+id/project_info"
                 android:layout_width="wrap_content"

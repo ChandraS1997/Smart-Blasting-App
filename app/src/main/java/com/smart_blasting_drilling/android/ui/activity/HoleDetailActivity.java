@@ -2,8 +2,10 @@ package com.smart_blasting_drilling.android.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
@@ -14,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.gson.Gson;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
@@ -40,6 +43,9 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     public boolean isTableHeaderFirstTimeLoad = true;
 
     public List<ResponseHoleDetailData> holeDetailDataList = new ArrayList<>();
+    public int rowPageVal = 1;
+    public RowItemDetail rowItemDetail;
+    List<String> rowList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,8 +53,35 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         if (isBundleIntentNotEmpty()) {
             bladesRetrieveData = (ResponseBladesRetrieveData) getIntent().getExtras().getSerializable("blades_data");
             allTablesData = (AllTablesData) getIntent().getExtras().getSerializable("all_table_Data");
+            for (int i = 0; i < allTablesData.getTable2().size(); i++) {
+                boolean isFound = false;
+                for (int j = 0; j < rowList.size(); j++) {
+                    if (rowList.get(j).replace("Row ", "").equals(String.valueOf(allTablesData.getTable2().get(i).getRowNo()))) {
+                        isFound = true;
+                        break;
+                    }
+                }
+                if (!isFound)
+                    rowList.add("Row " + allTablesData.getTable2().get(i).getRowNo());
+            }
         }
         binding = DataBindingUtil.setContentView(this, R.layout.hole_detail_activity);
+
+        String[] rowSpinnerList = new String[rowList.size()];
+        for (int i = 0; i < rowList.size(); i++) {
+            rowSpinnerList[i] = rowList.get(i);
+        }
+
+        binding.headerLayHole.spinnerRow.setAdapter(Constants.getAdapter(this, rowSpinnerList));
+        binding.headerLayHole.spinnerRow.setText(rowSpinnerList[0]);
+        binding.headerLayHole.spinnerRow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                rowPageVal = Integer.parseInt(rowSpinnerList[i].replace("Row ", ""));
+                if (rowItemDetail != null)
+                    rowItemDetail.setRowOfTable(rowPageVal);
+            }
+        });
 
         navController = Navigation.findNavController(this, R.id.nav_host_hole);
         Constants.onHoleClickListener = this;
@@ -102,6 +135,10 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         editModelArrayList.add(new TableEditModel("Z"));
         editModelArrayList.add(new TableEditModel("Charging"));
         return editModelArrayList;
+    }
+
+    public interface RowItemDetail {
+        void setRowOfTable(int rowNo);
     }
 
     @Override
