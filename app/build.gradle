@@ -106,4 +106,7 @@ dependencies {
 
     implementation 'id.zelory:compressor:1.0.4'
 
+    // Country Picker
+    implementation 'com.hbb20:ccp:2.7.0'
+
 }

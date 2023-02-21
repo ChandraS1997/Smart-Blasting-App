@@ -7,6 +7,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.smart_blasting_drilling.android.room_database.entities.AllMineInfoSurfaceInitiatorEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ResponseDrillAccessoriesInfoAllDataEntity;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ public interface AllMineInfoSurfaceInitiatorDao {
 
     @Query("DELETE FROM AllMineInfoSurfaceInitiatorEntity")
     void deleteAllProject();
+
+    @Query("UPDATE AllMineInfoSurfaceInitiatorEntity Set MineInfoInitiator=:data WHERE id=:id")
+    void updateProject(int id, String data);
 
     @Update
     void updateProject(AllMineInfoSurfaceInitiatorEntity data);

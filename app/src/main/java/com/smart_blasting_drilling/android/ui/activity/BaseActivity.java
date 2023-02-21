@@ -190,4 +190,10 @@ public class BaseActivity extends AppCompatActivity {
         return File.createTempFile(imageFileName, ".png", storageDir);
     }
 
+    public File createVideoFile() throws IOException {
+        String imageFileName = "Drill_Video-" + System.currentTimeMillis() + "_";
+        File storageDir = getFilesDir();
+        return File.createTempFile(imageFileName, ".mp4", storageDir);
+    }
+
 }

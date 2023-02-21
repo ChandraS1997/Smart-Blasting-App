@@ -6,6 +6,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.smart_blasting_drilling.android.room_database.entities.InitiatingDataEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ResponseMineTableEntity;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ public interface InitiatingDataDao {
 
     @Query("DELETE FROM InitiatingDataEntity")
     void deleteAllProject();
+
+    @Query("UPDATE InitiatingDataEntity Set InitiatingData=:data WHERE id=:id")
+    void updateProject(int id, String data);
 
     @Update
     void updateProject(InitiatingDataEntity data);

@@ -6,6 +6,9 @@ import java.io.Serializable;
 
 public class ResponseHoleDetailData implements Serializable {
 
+	@SerializedName("GeoStru")
+	private String geoStru;
+
 	@SerializedName("CompanyID")
 	private String companyID;
 
@@ -20,6 +23,18 @@ public class ResponseHoleDetailData implements Serializable {
 
 	@SerializedName("Burden")
 	private Object burden;
+
+	@SerializedName("UnitBlastingCost")
+	private Object unitBlastingCost;
+
+	@SerializedName("Undersize")
+	private Object undersize;
+
+	@SerializedName("MuckForwardDistance")
+	private Object muckForwardDistance;
+
+	@SerializedName("BlastingQuality")
+	private Object blastingQuality;
 
 	@SerializedName("Density")
 	private Object density;
@@ -225,6 +240,12 @@ public class ResponseHoleDetailData implements Serializable {
 	@SerializedName("Name")
 	private String name;
 
+	@SerializedName("GroundVibration")
+	private Object groundVibration;
+
+	@SerializedName("BoulderYield")
+	private Object boulderYield;
+
 	@SerializedName("Isvisible")
 	private int isvisible;
 
@@ -292,7 +313,7 @@ public class ResponseHoleDetailData implements Serializable {
 	private int mag2Unit2;
 
 	@SerializedName("NoOfDecks")
-	private Object noOfDecks;
+	private int noOfDecks;
 
 	@SerializedName("ColWt")
 	private Object colWt;
@@ -328,7 +349,7 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object blockStartAt;
 
 	@SerializedName("HoleID")
-	private Object holeID;
+	private String holeID;
 
 	@SerializedName("Magazine11")
 	private Object magazine11;
@@ -401,6 +422,60 @@ public class ResponseHoleDetailData implements Serializable {
 
 	@SerializedName("DrillY")
 	private Object drillY;
+
+	@SerializedName("BlastingSafety")
+	private Object blastingSafety;
+
+	@SerializedName("StdDev")
+	private Object stdDev;
+
+	@SerializedName("DesiredFragmentationPercentage")
+	private Object desiredFragmentationPercentage;
+
+	@SerializedName("b")
+	private Object b;
+
+	@SerializedName("FloorCondition")
+	private Object floorCondition;
+
+	@SerializedName("AirVibration")
+	private Object airVibration;
+
+	@SerializedName("Flyrock")
+	private Object flyrock;
+
+	@SerializedName("BlastingCost")
+	private Object blastingCost;
+
+	@SerializedName("Backbreak")
+	private Object backbreak;
+
+	@SerializedName("PitCode")
+	private int pitCode;
+
+	@SerializedName("PowderFactor")
+	private Object powderFactor;
+
+	@SerializedName("k")
+	private Object k;
+
+	@SerializedName("CofCor")
+	private Object cofCor;
+
+	@SerializedName("MuckpileHeight")
+	private Object muckpileHeight;
+
+	@SerializedName("DrillFactor")
+	private Object drillFactor;
+
+	@SerializedName("ZoneCode")
+	private int zoneCode;
+
+	@SerializedName("Bedding")
+	private String bedding;
+
+	@SerializedName("Location")
+	private String location;
 
 	public void setCompanyID(String companyID){
 		this.companyID = companyID;
@@ -1162,11 +1237,11 @@ public class ResponseHoleDetailData implements Serializable {
 		return mag2Unit2;
 	}
 
-	public void setNoOfDecks(Object noOfDecks){
+	public void setNoOfDecks(int noOfDecks){
 		this.noOfDecks = noOfDecks;
 	}
 
-	public Object getNoOfDecks(){
+	public int getNoOfDecks(){
 		return noOfDecks;
 	}
 
@@ -1258,11 +1333,11 @@ public class ResponseHoleDetailData implements Serializable {
 		return blockStartAt;
 	}
 
-	public void setHoleID(Object holeID){
+	public void setHoleID(String holeID){
 		this.holeID = holeID;
 	}
 
-	public Object getHoleID(){
+	public String getHoleID(){
 		return holeID;
 	}
 

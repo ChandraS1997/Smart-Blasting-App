@@ -5,6 +5,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.smart_blasting_drilling.android.room_database.entities.ResponseMineTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseTypeTableEntity;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public interface TypeTableDao {
 
     @Query("DELETE FROM ResponseTypeTableEntity")
     void deleteAllProject();
+
+    @Query("UPDATE ResponseTypeTableEntity Set TypeData=:data WHERE id=:id")
+    void updateProject(int id, String data);
 
     @Update
     void updateProject(ResponseTypeTableEntity data);

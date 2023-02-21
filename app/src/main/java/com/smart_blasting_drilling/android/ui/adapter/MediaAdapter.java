@@ -66,15 +66,19 @@ public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             String extension = path.substring(path.lastIndexOf("."));
             if (extension.equals(".mp4")) {
                 binding.VideoView.setVisibility(View.VISIBLE);
+                binding.Image.setVisibility(View.GONE);
                 Uri uri = Uri.parse(path);
-                binding.VideoView.setVideoURI(uri);
+                /*binding.VideoView.setVideoURI(uri);
                 MediaController mediaController = new MediaController(context);
                 mediaController.setAnchorView(binding.VideoView);
                 mediaController.setMediaPlayer(binding.VideoView);
                 binding.VideoView.setMediaController(mediaController);
-                binding.VideoView.start();
+                binding.VideoView.start();*/
+                binding.VideoView.setBackgroundColor(context.getColor(R.color.black));
+                binding.VideoView.setImageResource(R.drawable.play);
             } else {
                 binding.Image.setVisibility(View.VISIBLE);
+                binding.VideoView.setVisibility(View.GONE);
                 Glide.with(context).load(path).apply(new RequestOptions().error(R.drawable.ic_logo)).into(binding.Image);
             }
 

@@ -5,6 +5,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.smart_blasting_drilling.android.room_database.entities.ResponseMineTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.TldDataEntity;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public interface TldDataDao {
 
     @Query("DELETE FROM TldDataEntity")
     void deleteAllProject();
+
+    @Query("UPDATE TldDataEntity Set TldData=:data WHERE id=:id")
+    void updateProject(int id, String data);
 
     @Update
     void updateProject(TldDataEntity data);

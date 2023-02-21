@@ -27,6 +27,9 @@ public interface DrillAccessoriesInfoAllDataDao {
     @Query("DELETE FROM ResponseDrillAccessoriesInfoAllDataEntity")
     void deleteAllProject();
 
+    @Query("UPDATE ResponseDrillAccessoriesInfoAllDataEntity Set FileData=:data WHERE id=:id")
+    void updateProject(int id, String data);
+
     @Update
     void updateProject(ResponseDrillAccessoriesInfoAllDataEntity data);
 

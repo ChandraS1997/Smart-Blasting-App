@@ -138,5 +138,9 @@
     <string name="no_project_downloaded">No project downloaded</string>
     <string name="save_proceed"><![CDATA[Save & Proceed]]></string>
     <string name="hole_parameters">Hole Parameters</string>
+    <string name="please_select_country">Please Select Your Country</string>
+    <string name="please_enter_comment">Please Enter Comment</string>
+    <string name="error">Error</string>
+    <string name="take_video">Take Video</string>
 
 </resources>

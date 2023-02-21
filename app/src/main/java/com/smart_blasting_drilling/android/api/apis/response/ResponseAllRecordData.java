@@ -1,40 +1,41 @@
 package com.smart_blasting_drilling.android.api.apis.response;
 
-import com.google.gson.JsonArray;
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
 public class ResponseAllRecordData implements Serializable {
 
-    @SerializedName("field_info")
-    String fieldInfo;
+	@SerializedName("Response")
+	String response;
 
-    @SerializedName("resultset")
-    List<JsonArray> resultSetList;
+	@SerializedName("ErrorMessage")
+	String errorMessage;
 
-    public ResponseAllRecordData(String fieldInfo, List<JsonArray> resultSetList) {
-        this.fieldInfo = fieldInfo;
-        this.resultSetList = resultSetList;
-    }
+	@SerializedName("ReturnObject")
+	private String responseAllRecordData;
 
-    public ResponseAllRecordData() {
-    }
+	public void setResponseAllRecordData(String responseAllRecordData){
+		this.responseAllRecordData = responseAllRecordData;
+	}
 
-    public String getFieldInfo() {
-        return fieldInfo;
-    }
+	public String getResponseAllRecordData(){
+		return responseAllRecordData;
+	}
 
-    public void setFieldInfo(String fieldInfo) {
-        this.fieldInfo = fieldInfo;
-    }
+	public String getResponse() {
+		return response;
+	}
 
-    public List<JsonArray> getResultSetList() {
-        return resultSetList;
-    }
+	public void setResponse(String response) {
+		this.response = response;
+	}
 
-    public void setResultSetList(List<JsonArray> resultSetList) {
-        this.resultSetList = resultSetList;
-    }
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
+	}
 }

@@ -14,6 +14,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.smart_blasting_drilling.android.api.APIError;
 import com.smart_blasting_drilling.android.api.APiInterface;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordData;
+import com.smart_blasting_drilling.android.api.apis.response.hole_tables.GetAllMinePitZoneBenchResult;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
@@ -34,6 +36,7 @@ public class MainService {
     private static final APiInterface bladesApiService = BaseService.getAPIClient(Constants.API_BLADES_URL).create(APiInterface.class);
     private static final APiInterface imageVideoApiService = BaseService.getAPIClient(Constants.API_IMAGE_VIDEO_BASE_URL).create(APiInterface.class);
     private static final APiInterface uplodeApiService = BaseService.getAPIClient(Constants.API_UPLOAD_BASE_URL).create(APiInterface.class);
+    private static final APiInterface drimzApiService = BaseService.getAPIClient(Constants.API_DRIMS_BASE_URL).create(APiInterface.class);
 
     public static JsonObject tokenExpiredResponse(String msg, int code, int errorCode) {
         JsonObject apiResponse = new JsonObject();
@@ -196,21 +199,21 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonObject> getMinePitZoneBenchApiCaller(final Context context, String userId, String companyId) {
-        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+    public static LiveData<GetAllMinePitZoneBenchResult> getMinePitZoneBenchApiCaller(final Context context, String userId, String companyId) {
+        final MutableLiveData<GetAllMinePitZoneBenchResult> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
 
-        Call<JsonObject> call = bladesApiService.getMinePitZoneBenchApiCaller(userId, companyId);
-        call.enqueue(new Callback<JsonObject>() {
+        Call<GetAllMinePitZoneBenchResult> call = bladesApiService.getMinePitZoneBenchApiCaller(userId, companyId);
+        call.enqueue(new Callback<GetAllMinePitZoneBenchResult>() {
             @Override
-            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
+            public void onResponse(@NonNull Call<GetAllMinePitZoneBenchResult> call, @NonNull Response<GetAllMinePitZoneBenchResult> response) {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
                     if (response.errorBody() != null) {
-                        data.setValue(getError(response));
+                        data.setValue(null);
                     } else {
                         data.setValue(null);
                     }
@@ -218,8 +221,8 @@ public class MainService {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
-                ((BaseActivity) context).hideLoader();
+            public void onFailure(@NonNull Call<GetAllMinePitZoneBenchResult> call, @NonNull Throwable t) {
+                data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }
         });
@@ -230,14 +233,14 @@ public class MainService {
     public static LiveData<JsonElement> getAll2D_3DDesignInfoApiCaller(final Context context, String userId, String companyId, String blastId, String dbName, int recordStatus, boolean is3D) {
         final MutableLiveData<JsonElement> data = new MutableLiveData<>();
         if (is3D) {
-            getAllDesign3DInfoApiCaller(context, userId, blastId, dbName, companyId, recordStatus).observe((LifecycleOwner) context, new Observer<JsonElement>() {
+            getAllDesign3DInfoApiCaller(context, userId, companyId, blastId, dbName, recordStatus).observe((LifecycleOwner) context, new Observer<JsonElement>() {
                 @Override
                 public void onChanged(JsonElement element) {
                     data.setValue(element);
                 }
             });
         } else {
-            getAllDesignInfoApiCaller(context, userId, blastId, dbName, companyId, recordStatus).observe((LifecycleOwner) context, new Observer<JsonElement>() {
+            getAllDesignInfoApiCaller(context, userId, companyId, blastId, dbName, recordStatus).observe((LifecycleOwner) context, new Observer<JsonElement>() {
                 @Override
                 public void onChanged(JsonElement element) {
                     data.setValue(element);
@@ -254,7 +257,7 @@ public class MainService {
             return data;
         }
 
-        Call<JsonElement> call = bladesApiService.getAllDesignInfoApiCaller(blastId, userId, companyId, dbName, recordStatus);
+        Call<JsonElement> call = bladesApiService.getAllDesignInfoApiCaller(userId, blastId, dbName, companyId, recordStatus);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(@NonNull Call<JsonElement> call, @NonNull Response<JsonElement> response) {
@@ -285,7 +288,7 @@ public class MainService {
             return data;
         }
 
-        Call<JsonElement> call = bladesApiService.getAllDesign3DInfoApiCaller(blastId, userId, companyId, dbName, recordStatus);
+        Call<JsonElement> call = bladesApiService.getAllDesign3DInfoApiCaller(userId, blastId, dbName, companyId, recordStatus);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(@NonNull Call<JsonElement> call, @NonNull Response<JsonElement> response) {
@@ -310,16 +313,16 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonElement> getRecordApiCaller(final Context context, String userId, String companyId) {
-        final MutableLiveData<JsonElement> data = new MutableLiveData<>();
+    public static LiveData<ResponseAllRecordData> getRecordApiCaller(final Context context, String userId, String companyId) {
+        final MutableLiveData<ResponseAllRecordData> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
 
-        Call<JsonElement> call = uplodeApiService.getRecordApiCaller(userId, companyId);
-        call.enqueue(new Callback<JsonElement>() {
+        Call<ResponseAllRecordData> call = imageVideoApiService.getRecordApiCaller(userId, companyId);
+        call.enqueue(new Callback<ResponseAllRecordData>() {
             @Override
-            public void onResponse(@NonNull Call<JsonElement> call, @NonNull Response<JsonElement> response) {
+            public void onResponse(@NonNull Call<ResponseAllRecordData> call, @NonNull Response<ResponseAllRecordData> response) {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
@@ -332,8 +335,8 @@ public class MainService {
             }
 
             @Override
-            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
-                ((BaseActivity) context).hideLoader();
+            public void onFailure(@NonNull Call<ResponseAllRecordData> call, @NonNull Throwable t) {
+                data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }
         });
@@ -364,7 +367,7 @@ public class MainService {
 
             @Override
             public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
-                ((BaseActivity) context).hideLoader();
+                data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }
         });
@@ -378,7 +381,7 @@ public class MainService {
             return data;
         }
 
-        Call<JsonElement> call = bladesApiService.getDrillAccessoriesInfoAllDataApiCaller(userId, companyId);
+        Call<JsonElement> call = drimzApiService.getDrillAccessoriesInfoAllDataApiCaller(userId, companyId);
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(@NonNull Call<JsonElement> call, @NonNull Response<JsonElement> response) {
@@ -395,7 +398,69 @@ public class MainService {
 
             @Override
             public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
-                ((BaseActivity) context).hideLoader();
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+
+        return data;
+    }
+
+    public static LiveData<JsonElement> getDrillMethodApiCaller(final Context context) {
+        final MutableLiveData<JsonElement> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+
+        Call<JsonElement> call = drimzApiService.getDrillMethodApiCaller();
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonElement> call, @NonNull Response<JsonElement> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    if (response.errorBody() != null) {
+//                        data.setValue(getError(response));
+                    } else {
+                        data.setValue(null);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+
+        return data;
+    }
+
+    public static LiveData<JsonElement> getDrillMaterialApiCaller(final Context context) {
+        final MutableLiveData<JsonElement> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+
+        Call<JsonElement> call = drimzApiService.getDrillMaterialApiCaller();
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonElement> call, @NonNull Response<JsonElement> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    if (response.errorBody() != null) {
+//                        data.setValue(getError(response));
+                    } else {
+                        data.setValue(null);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
+                data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }
         });
@@ -433,7 +498,7 @@ public class MainService {
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonObject> call = uplodeApiService.UploadeApiCallerImage(map, fileData);
+        Call<JsonObject> call = uplodeApiService.UploadeApiCallerImage(/*map, */fileData);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

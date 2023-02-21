@@ -1,163 +1,117 @@
 package com.smart_blasting_drilling.android.api.apis.response.hole_tables;
 
-import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
-public class TableItem{
+import java.io.Serializable;
 
-	@SerializedName("PitName")
-	private String pitName;
+public class TableItem implements Serializable {
 
-	@SerializedName("BlastQty")
-	private int blastQty;
+	@SerializedName("Owner")
+	private String owner;
 
-	@SerializedName("DesignId")
-	private int designId;
+	@SerializedName("Email")
+	private String email;
 
-	@SerializedName("DesignName")
-	private String designName;
-
-	@SerializedName("MineLat")
-	private String mineLat;
-
-	@SerializedName("DesignDateTime")
-	private String designDateTime;
-
-	@SerializedName("isPatternImport")
-	private String isPatternImport;
+	@SerializedName("CompanyID")
+	private String companyID;
 
 	@SerializedName("UnitSystem")
 	private int unitSystem;
 
-	@SerializedName("MineName")
-	private String mineName;
+	@SerializedName("MineCode")
+	private int mineCode;
 
-	@SerializedName("BenchName")
-	private String benchName;
+	@SerializedName("LogoFileName")
+	private String logoFileName;
 
-	@SerializedName("MineId")
-	private int mineId;
+	@SerializedName("FragOverSize")
+	private Object fragOverSize;
 
-	@SerializedName("FaceHeight")
-	private int faceHeight;
+	@SerializedName("long")
+	private String jsonMemberLong;
 
-	@SerializedName("CoordinateType")
-	private int coordinateType;
+	@SerializedName("Name")
+	private String name;
 
-	@SerializedName("ZoneName")
-	private String zoneName;
+	@SerializedName("Add1")
+	private String add1;
 
-	@SerializedName("PowderFactorUnitId")
-	private int powderFactorUnitId;
+	@SerializedName("FlyRockLimit")
+	private Object flyRockLimit;
 
-	@SerializedName("BlastDesignMethod")
-	private int blastDesignMethod;
+	@SerializedName("GroundVibLimit")
+	private Object groundVibLimit;
 
-	@SerializedName("BenchID")
-	private int benchID;
+	@SerializedName("FragUnderSize")
+	private Object fragUnderSize;
 
-	@SerializedName("BlastQtyUnit")
-	private String blastQtyUnit;
+	@SerializedName("Isvisible")
+	private int isvisible;
 
-	@SerializedName("FaceLength")
-	private int faceLength;
+	@SerializedName("UserID")
+	private String userID;
 
-	@SerializedName("MineLong")
-	private String mineLong;
+	@SerializedName("Production")
+	private int production;
 
-	@SerializedName("DesignCode")
-	private String designCode;
+	@SerializedName("Mineral")
+	private String mineral;
 
-	@SerializedName("ZoneId")
-	private int zoneId;
+	@SerializedName("MineCode1")
+	private int mineCode1;
 
-	@SerializedName("BlastLocation")
-	private String blastLocation;
+	@SerializedName("LicenceMag1")
+	private String licenceMag1;
 
-	@SerializedName("PowderFactor")
-	private int powderFactor;
+	@SerializedName("digitalmappath")
+	private String digitalmappath;
 
-	@SerializedName("FaceWidth")
-	private int faceWidth;
+	@SerializedName("AirVibLimit")
+	private Object airVibLimit;
 
-	@SerializedName("PitId")
-	private int pitId;
+	@SerializedName("LicenceMag2")
+	private String licenceMag2;
 
-	@SerializedName("BlastingTypeId")
-	private int blastingTypeId;
+	@SerializedName("circle_radious")
+	private String circleRadious;
 
-	@SerializedName("MineLogo")
-	private String mineLogo;
+	@SerializedName("FragInRange")
+	private Object fragInRange;
 
-	@SerializedName("FaceCoordinate")
-	private List<FaceCoordinateItem> faceCoordinate;
+	@SerializedName("Tel")
+	private String tel;
 
-	@SerializedName("MeanFragmentationSize")
-	private int meanFragmentationSize;
+	@SerializedName("Fax")
+	private String fax;
 
-	@SerializedName("IsQty")
-	private boolean isQty;
+	@SerializedName("Lat")
+	private String lat;
 
-	@SerializedName("ChargePerDelay")
-	private int chargePerDelay;
+	@SerializedName("DronefilePath")
+	private String dronefilePath;
 
-	@SerializedName("BlastingType")
-	private String blastingType;
-
-	public void setPitName(String pitName){
-		this.pitName = pitName;
+	public void setOwner(String owner){
+		this.owner = owner;
 	}
 
-	public String getPitName(){
-		return pitName;
+	public String getOwner(){
+		return owner;
 	}
 
-	public void setBlastQty(int blastQty){
-		this.blastQty = blastQty;
+	public void setEmail(String email){
+		this.email = email;
 	}
 
-	public int getBlastQty(){
-		return blastQty;
+	public String getEmail(){
+		return email;
 	}
 
-	public void setDesignId(int designId){
-		this.designId = designId;
+	public void setCompanyID(String companyID){
+		this.companyID = companyID;
 	}
 
-	public int getDesignId(){
-		return designId;
-	}
-
-	public void setDesignName(String designName){
-		this.designName = designName;
-	}
-
-	public String getDesignName(){
-		return designName;
-	}
-
-	public void setMineLat(String mineLat){
-		this.mineLat = mineLat;
-	}
-
-	public String getMineLat(){
-		return mineLat;
-	}
-
-	public void setDesignDateTime(String designDateTime){
-		this.designDateTime = designDateTime;
-	}
-
-	public String getDesignDateTime(){
-		return designDateTime;
-	}
-
-	public void setIsPatternImport(String isPatternImport){
-		this.isPatternImport = isPatternImport;
-	}
-
-	public String getIsPatternImport(){
-		return isPatternImport;
+	public String getCompanyID(){
+		return companyID;
 	}
 
 	public void setUnitSystem(int unitSystem){
@@ -168,203 +122,195 @@ public class TableItem{
 		return unitSystem;
 	}
 
-	public void setMineName(String mineName){
-		this.mineName = mineName;
+	public void setMineCode(int mineCode){
+		this.mineCode = mineCode;
 	}
 
-	public String getMineName(){
-		return mineName;
+	public int getMineCode(){
+		return mineCode;
 	}
 
-	public void setBenchName(String benchName){
-		this.benchName = benchName;
+	public void setLogoFileName(String logoFileName){
+		this.logoFileName = logoFileName;
 	}
 
-	public String getBenchName(){
-		return benchName;
+	public String getLogoFileName(){
+		return logoFileName;
 	}
 
-	public void setMineId(int mineId){
-		this.mineId = mineId;
+	public void setFragOverSize(Object fragOverSize){
+		this.fragOverSize = fragOverSize;
 	}
 
-	public int getMineId(){
-		return mineId;
+	public Object getFragOverSize(){
+		return fragOverSize;
 	}
 
-	public void setFaceHeight(int faceHeight){
-		this.faceHeight = faceHeight;
+	public void setJsonMemberLong(String jsonMemberLong){
+		this.jsonMemberLong = jsonMemberLong;
 	}
 
-	public int getFaceHeight(){
-		return faceHeight;
+	public String getJsonMemberLong(){
+		return jsonMemberLong;
 	}
 
-	public void setCoordinateType(int coordinateType){
-		this.coordinateType = coordinateType;
+	public void setName(String name){
+		this.name = name;
 	}
 
-	public int getCoordinateType(){
-		return coordinateType;
+	public String getName(){
+		return name;
 	}
 
-	public void setZoneName(String zoneName){
-		this.zoneName = zoneName;
+	public void setAdd1(String add1){
+		this.add1 = add1;
 	}
 
-	public String getZoneName(){
-		return zoneName;
+	public String getAdd1(){
+		return add1;
 	}
 
-	public void setPowderFactorUnitId(int powderFactorUnitId){
-		this.powderFactorUnitId = powderFactorUnitId;
+	public void setFlyRockLimit(Object flyRockLimit){
+		this.flyRockLimit = flyRockLimit;
 	}
 
-	public int getPowderFactorUnitId(){
-		return powderFactorUnitId;
+	public Object getFlyRockLimit(){
+		return flyRockLimit;
 	}
 
-	public void setBlastDesignMethod(int blastDesignMethod){
-		this.blastDesignMethod = blastDesignMethod;
+	public void setGroundVibLimit(Object groundVibLimit){
+		this.groundVibLimit = groundVibLimit;
 	}
 
-	public int getBlastDesignMethod(){
-		return blastDesignMethod;
+	public Object getGroundVibLimit(){
+		return groundVibLimit;
 	}
 
-	public void setBenchID(int benchID){
-		this.benchID = benchID;
+	public void setFragUnderSize(Object fragUnderSize){
+		this.fragUnderSize = fragUnderSize;
 	}
 
-	public int getBenchID(){
-		return benchID;
+	public Object getFragUnderSize(){
+		return fragUnderSize;
 	}
 
-	public void setBlastQtyUnit(String blastQtyUnit){
-		this.blastQtyUnit = blastQtyUnit;
+	public void setIsvisible(int isvisible){
+		this.isvisible = isvisible;
 	}
 
-	public String getBlastQtyUnit(){
-		return blastQtyUnit;
+	public int getIsvisible(){
+		return isvisible;
 	}
 
-	public void setFaceLength(int faceLength){
-		this.faceLength = faceLength;
+	public void setUserID(String userID){
+		this.userID = userID;
 	}
 
-	public int getFaceLength(){
-		return faceLength;
+	public String getUserID(){
+		return userID;
 	}
 
-	public void setMineLong(String mineLong){
-		this.mineLong = mineLong;
+	public void setProduction(int production){
+		this.production = production;
 	}
 
-	public String getMineLong(){
-		return mineLong;
+	public int getProduction(){
+		return production;
 	}
 
-	public void setDesignCode(String designCode){
-		this.designCode = designCode;
+	public void setMineral(String mineral){
+		this.mineral = mineral;
 	}
 
-	public String getDesignCode(){
-		return designCode;
+	public String getMineral(){
+		return mineral;
 	}
 
-	public void setZoneId(int zoneId){
-		this.zoneId = zoneId;
+	public void setMineCode1(int mineCode1){
+		this.mineCode1 = mineCode1;
 	}
 
-	public int getZoneId(){
-		return zoneId;
+	public int getMineCode1(){
+		return mineCode1;
 	}
 
-	public void setBlastLocation(String blastLocation){
-		this.blastLocation = blastLocation;
+	public void setLicenceMag1(String licenceMag1){
+		this.licenceMag1 = licenceMag1;
 	}
 
-	public String getBlastLocation(){
-		return blastLocation;
+	public String getLicenceMag1(){
+		return licenceMag1;
 	}
 
-	public void setPowderFactor(int powderFactor){
-		this.powderFactor = powderFactor;
+	public void setDigitalmappath(String digitalmappath){
+		this.digitalmappath = digitalmappath;
 	}
 
-	public int getPowderFactor(){
-		return powderFactor;
+	public String getDigitalmappath(){
+		return digitalmappath;
 	}
 
-	public void setFaceWidth(int faceWidth){
-		this.faceWidth = faceWidth;
+	public void setAirVibLimit(Object airVibLimit){
+		this.airVibLimit = airVibLimit;
 	}
 
-	public int getFaceWidth(){
-		return faceWidth;
+	public Object getAirVibLimit(){
+		return airVibLimit;
 	}
 
-	public void setPitId(int pitId){
-		this.pitId = pitId;
+	public void setLicenceMag2(String licenceMag2){
+		this.licenceMag2 = licenceMag2;
 	}
 
-	public int getPitId(){
-		return pitId;
+	public String getLicenceMag2(){
+		return licenceMag2;
 	}
 
-	public void setBlastingTypeId(int blastingTypeId){
-		this.blastingTypeId = blastingTypeId;
+	public void setCircleRadious(String circleRadious){
+		this.circleRadious = circleRadious;
 	}
 
-	public int getBlastingTypeId(){
-		return blastingTypeId;
+	public String getCircleRadious(){
+		return circleRadious;
 	}
 
-	public void setMineLogo(String mineLogo){
-		this.mineLogo = mineLogo;
+	public void setFragInRange(Object fragInRange){
+		this.fragInRange = fragInRange;
 	}
 
-	public String getMineLogo(){
-		return mineLogo;
+	public Object getFragInRange(){
+		return fragInRange;
 	}
 
-	public void setFaceCoordinate(List<FaceCoordinateItem> faceCoordinate){
-		this.faceCoordinate = faceCoordinate;
+	public void setTel(String tel){
+		this.tel = tel;
 	}
 
-	public List<FaceCoordinateItem> getFaceCoordinate(){
-		return faceCoordinate;
+	public String getTel(){
+		return tel;
 	}
 
-	public void setMeanFragmentationSize(int meanFragmentationSize){
-		this.meanFragmentationSize = meanFragmentationSize;
+	public void setFax(String fax){
+		this.fax = fax;
 	}
 
-	public int getMeanFragmentationSize(){
-		return meanFragmentationSize;
+	public String getFax(){
+		return fax;
 	}
 
-	public void setIsQty(boolean isQty){
-		this.isQty = isQty;
+	public void setLat(String lat){
+		this.lat = lat;
 	}
 
-	public boolean isIsQty(){
-		return isQty;
+	public String getLat(){
+		return lat;
 	}
 
-	public void setChargePerDelay(int chargePerDelay){
-		this.chargePerDelay = chargePerDelay;
+	public void setDronefilePath(String dronefilePath){
+		this.dronefilePath = dronefilePath;
 	}
 
-	public int getChargePerDelay(){
-		return chargePerDelay;
-	}
-
-	public void setBlastingType(String blastingType){
-		this.blastingType = blastingType;
-	}
-
-	public String getBlastingType(){
-		return blastingType;
+	public String getDronefilePath(){
+		return dronefilePath;
 	}
 }

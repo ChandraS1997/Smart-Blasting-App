@@ -6,6 +6,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.smart_blasting_drilling.android.room_database.entities.ResponseFileDetailsTableEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ResponseTypeTableEntity;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ public interface FileTypeTableDao {
 
     @Query("DELETE FROM ResponseFileDetailsTableEntity")
     void deleteAllProject();
+
+    @Query("UPDATE ResponseFileDetailsTableEntity Set FileData=:data WHERE id=:id")
+    void updateProject(int id, String data);
 
     @Update
     void updateProject(ResponseFileDetailsTableEntity data);

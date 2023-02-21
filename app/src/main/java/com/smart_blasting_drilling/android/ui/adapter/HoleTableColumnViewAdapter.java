@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.HoleTableColumnViewBinding;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
@@ -74,13 +75,15 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
 
         void setDataBind(TableEditModel model) {
 
-//            if (!model.isFirstTime()) {
+            if (((HoleDetailActivity) context).isTableHeaderFirstTimeLoad) {
+                binding.holeIdVal.setVisibility(View.VISIBLE);
+            } else {
                 if (model.isSelected()) {
                     binding.holeIdVal.setVisibility(View.VISIBLE);
                 } else {
                     binding.holeIdVal.setVisibility(View.GONE);
                 }
-//            }
+            }
             binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
 
             LinearLayout.LayoutParams layoutParams;

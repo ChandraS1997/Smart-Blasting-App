@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -86,8 +87,8 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
 
             holeDetailDataList.add(null);
 
-           /* tableViewAdapter = new TableViewAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
-            binding.tableRv.setAdapter(tableViewAdapter);*/
+            tableViewAdapter = new TableViewAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
+            binding.tableRv.setAdapter(tableViewAdapter);
 
             if (allTablesData == null) {
                 getAllDesignInfoApiCaller(bladesRetrieveData.isIs3dBlade());
@@ -97,6 +98,7 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                 Type typeList = new TypeToken<List<ResponseHoleDetailData>>(){}.getType();
                 tablesData.setTable2(new Gson().fromJson(rowColEntity.projectHole, typeList));*/
                 holeDetailDataList.clear();
+                holeDetailDataList.add(null);
                 setTableData(allTablesData);
             }
         }
@@ -163,11 +165,11 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
     }
 
     private void setDataIntoDb(AllTablesData tablesData) {
-        String str = new Gson().toJson(tablesData.getTable2());
+        String str = new Gson().toJson(tablesData);
         if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
             entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), str));
         } else {
-            entity.updateProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), str));
+            entity.updateProject(0, bladesRetrieveData.getDesignId(), str);
         }
     }
 

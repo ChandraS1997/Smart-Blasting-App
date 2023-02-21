@@ -37,6 +37,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     HoleDetailActivityBinding binding;
     public AllTablesData allTablesData;
     public ResponseBladesRetrieveData bladesRetrieveData;
+    public boolean isTableHeaderFirstTimeLoad = true;
 
     public List<ResponseHoleDetailData> holeDetailDataList = new ArrayList<>();
 
@@ -81,8 +82,10 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     public List<TableEditModel> getTableModel() {
-        if (!Constants.isListEmpty(manger.getTableField()))
+        if (!Constants.isListEmpty(manger.getTableField())) {
+            isTableHeaderFirstTimeLoad = false;
             return manger.getTableField();
+        }
 
         List<TableEditModel> editModelArrayList = new ArrayList<>();
         editModelArrayList.add(new TableEditModel("Row No"));
@@ -125,6 +128,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.projectBtn:
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ProjectDetailDialog infoDialogFragment = ProjectDetailDialog.getInstance(bladesRetrieveData);
@@ -132,9 +136,11 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 ft.commitAllowingStateLoss();
                 break;
             case R.id.logoutBtn:
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 setLogOut();
                 break;
             case R.id.homeBtn:
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 finish();
                 break;
             case R.id.mapBtn:

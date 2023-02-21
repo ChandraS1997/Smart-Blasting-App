@@ -2,346 +2,414 @@ package com.smart_blasting_drilling.android.api.apis.response.hole_tables;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Table1Item{
+import java.io.Serializable;
 
-	@SerializedName("YoungModulus")
-	private String youngModulus;
+public class Table1Item implements Serializable {
 
-	@SerializedName("DesignId")
-	private int designId;
+    @SerializedName("YoungModulus")
+    private String youngModulus;
 
-	@SerializedName("BenchHeight")
-	private int benchHeight;
+    @SerializedName("DesignId")
+    private int designId;
 
-	@SerializedName("GroundSiteExponent")
-	private Object groundSiteExponent;
+    @SerializedName("BenchHeight")
+    private int benchHeight;
 
-	@SerializedName("DeckLength")
-	private int deckLength;
+    @SerializedName("GroundSiteExponent")
+    private Object groundSiteExponent;
 
-	@SerializedName("FragOverSize")
-	private int fragOverSize;
+    @SerializedName("DeckLength")
+    private int deckLength;
 
-	@SerializedName("RockDensity")
-	private String rockDensity;
+    @SerializedName("FragOverSize")
+    private int fragOverSize;
 
-	@SerializedName("JpoType")
-	private String jpoType;
+    @SerializedName("RockDensity")
+    private String rockDensity;
 
-	@SerializedName("FragUnderSize")
-	private Object fragUnderSize;
+    @SerializedName("JpoType")
+    private String jpoType;
 
-	@SerializedName("PatternTypeId")
-	private int patternTypeId;
+    @SerializedName("FragUnderSize")
+    private Object fragUnderSize;
 
-	@SerializedName("TotalRows")
-	private int totalRows;
+    @SerializedName("PatternTypeId")
+    private int patternTypeId;
 
-	@SerializedName("Subdrill")
-	private int subdrill;
+    @SerializedName("TotalRows")
+    private int totalRows;
 
-	@SerializedName("FragOptimumSize")
-	private Object fragOptimumSize;
+    @SerializedName("Subdrill")
+    private int subdrill;
 
-	@SerializedName("GroundSiteConstant")
-	private int groundSiteConstant;
+    @SerializedName("FragOptimumSize")
+    private Object fragOptimumSize;
 
-	@SerializedName("RockName")
-	private String rockName;
+    @SerializedName("GroundSiteConstant")
+    private int groundSiteConstant;
 
-	@SerializedName("Distance")
-	private int distance;
+    @SerializedName("RockName")
+    private String rockName;
 
-	@SerializedName("AirSiteExponent")
-	private Object airSiteExponent;
+    @SerializedName("Distance")
+    private int distance;
 
-	@SerializedName("Rock_USC")
-	private String rockUSC;
+    @SerializedName("AirSiteExponent")
+    private Object airSiteExponent;
 
-	@SerializedName("PatternType")
-	private String patternType;
+    @SerializedName("Rock_USC")
+    private String rockUSC;
 
-	@SerializedName("AirSiteConstant")
-	private Object airSiteConstant;
+    @SerializedName("PatternType")
+    private String patternType;
 
-	@SerializedName("FaceAngle")
-	private int faceAngle;
+    @SerializedName("AirSiteConstant")
+    private Object airSiteConstant;
 
-	@SerializedName("RmdType")
-	private int rmdType;
+    @SerializedName("FaceAngle")
+    private int faceAngle;
 
-	@SerializedName("HoleAngle")
-	private int holeAngle;
+    @SerializedName("RmdType")
+    private int rmdType;
 
-	@SerializedName("WaterDpth")
-	private int waterDpth;
+    @SerializedName("HoleAngle")
+    private int holeAngle;
 
-	@SerializedName("RockCode")
-	private int rockCode;
+    @SerializedName("WaterDpth")
+    private int waterDpth;
 
-	@SerializedName("NoOfDecks")
-	private int noOfDecks;
+    @SerializedName("RockCode")
+    private int rockCode;
 
-	@SerializedName("HoleDia")
-	private int holeDia;
+    @SerializedName("NoOfDecks")
+    private int noOfDecks;
 
-	@SerializedName("ChargePerDelay")
-	private int chargePerDelay;
+    @SerializedName("HoleDia")
+    private int holeDia;
 
-	@SerializedName("BenchWidth")
-	private int benchWidth;
+    @SerializedName("ChargePerDelay")
+    private int chargePerDelay;
 
-	@SerializedName("FlyrockConstant")
-	private int flyrockConstant;
+    @SerializedName("BenchWidth")
+    private int benchWidth;
 
-	@SerializedName("VerticaljointSpacing")
-	private String verticaljointSpacing;
+    @SerializedName("FlyrockConstant")
+    private int flyrockConstant;
 
-	public void setYoungModulus(String youngModulus){
-		this.youngModulus = youngModulus;
-	}
+    @SerializedName("VerticaljointSpacing")
+    private String verticaljointSpacing;
 
-	public String getYoungModulus(){
-		return youngModulus;
-	}
-
-	public void setDesignId(int designId){
-		this.designId = designId;
-	}
-
-	public int getDesignId(){
-		return designId;
-	}
-
-	public void setBenchHeight(int benchHeight){
-		this.benchHeight = benchHeight;
-	}
-
-	public int getBenchHeight(){
-		return benchHeight;
-	}
-
-	public void setGroundSiteExponent(Object groundSiteExponent){
-		this.groundSiteExponent = groundSiteExponent;
-	}
-
-	public Object getGroundSiteExponent(){
-		return groundSiteExponent;
-	}
-
-	public void setDeckLength(int deckLength){
-		this.deckLength = deckLength;
-	}
-
-	public int getDeckLength(){
-		return deckLength;
-	}
-
-	public void setFragOverSize(int fragOverSize){
-		this.fragOverSize = fragOverSize;
-	}
-
-	public int getFragOverSize(){
-		return fragOverSize;
-	}
-
-	public void setRockDensity(String rockDensity){
-		this.rockDensity = rockDensity;
-	}
-
-	public String getRockDensity(){
-		return rockDensity;
-	}
-
-	public void setJpoType(String jpoType){
-		this.jpoType = jpoType;
-	}
-
-	public String getJpoType(){
-		return jpoType;
-	}
-
-	public void setFragUnderSize(Object fragUnderSize){
-		this.fragUnderSize = fragUnderSize;
-	}
-
-	public Object getFragUnderSize(){
-		return fragUnderSize;
-	}
-
-	public void setPatternTypeId(int patternTypeId){
-		this.patternTypeId = patternTypeId;
-	}
-
-	public int getPatternTypeId(){
-		return patternTypeId;
-	}
-
-	public void setTotalRows(int totalRows){
-		this.totalRows = totalRows;
-	}
-
-	public int getTotalRows(){
-		return totalRows;
-	}
-
-	public void setSubdrill(int subdrill){
-		this.subdrill = subdrill;
-	}
-
-	public int getSubdrill(){
-		return subdrill;
-	}
-
-	public void setFragOptimumSize(Object fragOptimumSize){
-		this.fragOptimumSize = fragOptimumSize;
-	}
-
-	public Object getFragOptimumSize(){
-		return fragOptimumSize;
-	}
-
-	public void setGroundSiteConstant(int groundSiteConstant){
-		this.groundSiteConstant = groundSiteConstant;
-	}
-
-	public int getGroundSiteConstant(){
-		return groundSiteConstant;
-	}
-
-	public void setRockName(String rockName){
-		this.rockName = rockName;
-	}
-
-	public String getRockName(){
-		return rockName;
-	}
-
-	public void setDistance(int distance){
-		this.distance = distance;
-	}
-
-	public int getDistance(){
-		return distance;
-	}
-
-	public void setAirSiteExponent(Object airSiteExponent){
-		this.airSiteExponent = airSiteExponent;
-	}
-
-	public Object getAirSiteExponent(){
-		return airSiteExponent;
-	}
-
-	public void setRockUSC(String rockUSC){
-		this.rockUSC = rockUSC;
-	}
-
-	public String getRockUSC(){
-		return rockUSC;
-	}
-
-	public void setPatternType(String patternType){
-		this.patternType = patternType;
-	}
-
-	public String getPatternType(){
-		return patternType;
-	}
-
-	public void setAirSiteConstant(Object airSiteConstant){
-		this.airSiteConstant = airSiteConstant;
-	}
-
-	public Object getAirSiteConstant(){
-		return airSiteConstant;
-	}
-
-	public void setFaceAngle(int faceAngle){
-		this.faceAngle = faceAngle;
-	}
-
-	public int getFaceAngle(){
-		return faceAngle;
-	}
-
-	public void setRmdType(int rmdType){
-		this.rmdType = rmdType;
-	}
-
-	public int getRmdType(){
-		return rmdType;
-	}
-
-	public void setHoleAngle(int holeAngle){
-		this.holeAngle = holeAngle;
-	}
-
-	public int getHoleAngle(){
-		return holeAngle;
-	}
-
-	public void setWaterDpth(int waterDpth){
-		this.waterDpth = waterDpth;
-	}
-
-	public int getWaterDpth(){
-		return waterDpth;
-	}
-
-	public void setRockCode(int rockCode){
-		this.rockCode = rockCode;
-	}
-
-	public int getRockCode(){
-		return rockCode;
-	}
-
-	public void setNoOfDecks(int noOfDecks){
-		this.noOfDecks = noOfDecks;
-	}
-
-	public int getNoOfDecks(){
-		return noOfDecks;
-	}
-
-	public void setHoleDia(int holeDia){
-		this.holeDia = holeDia;
-	}
-
-	public int getHoleDia(){
-		return holeDia;
-	}
-
-	public void setChargePerDelay(int chargePerDelay){
-		this.chargePerDelay = chargePerDelay;
-	}
-
-	public int getChargePerDelay(){
-		return chargePerDelay;
-	}
-
-	public void setBenchWidth(int benchWidth){
-		this.benchWidth = benchWidth;
-	}
-
-	public int getBenchWidth(){
-		return benchWidth;
-	}
-
-	public void setFlyrockConstant(int flyrockConstant){
-		this.flyrockConstant = flyrockConstant;
-	}
-
-	public int getFlyrockConstant(){
-		return flyrockConstant;
-	}
-
-	public void setVerticaljointSpacing(String verticaljointSpacing){
-		this.verticaljointSpacing = verticaljointSpacing;
-	}
-
-	public String getVerticaljointSpacing(){
-		return verticaljointSpacing;
-	}
+    @SerializedName("CompanyID")
+    private String companyID;
+
+    @SerializedName("Isvisible")
+    private int isvisible;
+
+    @SerializedName("UserID")
+    private Object userID;
+
+    @SerializedName("ZoneCode")
+    private int zoneCode;
+
+    @SerializedName("BenchCode")
+    private int benchCode;
+
+    @SerializedName("Name")
+    private String name;
+
+    public void setYoungModulus(String youngModulus) {
+        this.youngModulus = youngModulus;
+    }
+
+    public String getYoungModulus() {
+        return youngModulus;
+    }
+
+    public void setDesignId(int designId) {
+        this.designId = designId;
+    }
+
+    public int getDesignId() {
+        return designId;
+    }
+
+    public void setBenchHeight(int benchHeight) {
+        this.benchHeight = benchHeight;
+    }
+
+    public int getBenchHeight() {
+        return benchHeight;
+    }
+
+    public void setGroundSiteExponent(Object groundSiteExponent) {
+        this.groundSiteExponent = groundSiteExponent;
+    }
+
+    public Object getGroundSiteExponent() {
+        return groundSiteExponent;
+    }
+
+    public void setDeckLength(int deckLength) {
+        this.deckLength = deckLength;
+    }
+
+    public int getDeckLength() {
+        return deckLength;
+    }
+
+    public void setFragOverSize(int fragOverSize) {
+        this.fragOverSize = fragOverSize;
+    }
+
+    public int getFragOverSize() {
+        return fragOverSize;
+    }
+
+    public void setRockDensity(String rockDensity) {
+        this.rockDensity = rockDensity;
+    }
+
+    public String getRockDensity() {
+        return rockDensity;
+    }
+
+    public void setJpoType(String jpoType) {
+        this.jpoType = jpoType;
+    }
+
+    public String getJpoType() {
+        return jpoType;
+    }
+
+    public void setFragUnderSize(Object fragUnderSize) {
+        this.fragUnderSize = fragUnderSize;
+    }
+
+    public Object getFragUnderSize() {
+        return fragUnderSize;
+    }
+
+    public void setPatternTypeId(int patternTypeId) {
+        this.patternTypeId = patternTypeId;
+    }
+
+    public int getPatternTypeId() {
+        return patternTypeId;
+    }
+
+    public void setTotalRows(int totalRows) {
+        this.totalRows = totalRows;
+    }
+
+    public int getTotalRows() {
+        return totalRows;
+    }
+
+    public void setSubdrill(int subdrill) {
+        this.subdrill = subdrill;
+    }
+
+    public int getSubdrill() {
+        return subdrill;
+    }
+
+    public void setFragOptimumSize(Object fragOptimumSize) {
+        this.fragOptimumSize = fragOptimumSize;
+    }
+
+    public Object getFragOptimumSize() {
+        return fragOptimumSize;
+    }
+
+    public void setGroundSiteConstant(int groundSiteConstant) {
+        this.groundSiteConstant = groundSiteConstant;
+    }
+
+    public int getGroundSiteConstant() {
+        return groundSiteConstant;
+    }
+
+    public void setRockName(String rockName) {
+        this.rockName = rockName;
+    }
+
+    public String getRockName() {
+        return rockName;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setAirSiteExponent(Object airSiteExponent) {
+        this.airSiteExponent = airSiteExponent;
+    }
+
+    public Object getAirSiteExponent() {
+        return airSiteExponent;
+    }
+
+    public void setRockUSC(String rockUSC) {
+        this.rockUSC = rockUSC;
+    }
+
+    public void setCompanyID(String companyID) {
+        this.companyID = companyID;
+    }
+
+    public String getCompanyID() {
+        return companyID;
+    }
+
+    public void setIsvisible(int isvisible) {
+        this.isvisible = isvisible;
+    }
+
+    public int getIsvisible() {
+        return isvisible;
+    }
+
+    public void setUserID(Object userID) {
+        this.userID = userID;
+    }
+
+    public Object getUserID() {
+        return userID;
+    }
+
+    public void setZoneCode(int zoneCode) {
+        this.zoneCode = zoneCode;
+    }
+
+    public int getZoneCode() {
+        return zoneCode;
+    }
+
+    public void setBenchCode(int benchCode) {
+        this.benchCode = benchCode;
+    }
+
+    public int getBenchCode() {
+        return benchCode;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRockUSC() {
+        return rockUSC;
+    }
+
+    public String getPatternType() {
+        return patternType;
+    }
+
+    public void setPatternType(String patternType) {
+        this.patternType = patternType;
+    }
+
+    public Object getAirSiteConstant() {
+        return airSiteConstant;
+    }
+
+    public void setAirSiteConstant(Object airSiteConstant) {
+        this.airSiteConstant = airSiteConstant;
+    }
+
+    public int getFaceAngle() {
+        return faceAngle;
+    }
+
+    public void setFaceAngle(int faceAngle) {
+        this.faceAngle = faceAngle;
+    }
+
+    public int getRmdType() {
+        return rmdType;
+    }
+
+    public void setRmdType(int rmdType) {
+        this.rmdType = rmdType;
+    }
+
+    public int getHoleAngle() {
+        return holeAngle;
+    }
+
+    public void setHoleAngle(int holeAngle) {
+        this.holeAngle = holeAngle;
+    }
+
+    public int getWaterDpth() {
+        return waterDpth;
+    }
+
+    public void setWaterDpth(int waterDpth) {
+        this.waterDpth = waterDpth;
+    }
+
+    public int getRockCode() {
+        return rockCode;
+    }
+
+    public void setRockCode(int rockCode) {
+        this.rockCode = rockCode;
+    }
+
+    public int getNoOfDecks() {
+        return noOfDecks;
+    }
+
+    public void setNoOfDecks(int noOfDecks) {
+        this.noOfDecks = noOfDecks;
+    }
+
+    public int getHoleDia() {
+        return holeDia;
+    }
+
+    public void setHoleDia(int holeDia) {
+        this.holeDia = holeDia;
+    }
+
+    public int getChargePerDelay() {
+        return chargePerDelay;
+    }
+
+    public void setChargePerDelay(int chargePerDelay) {
+        this.chargePerDelay = chargePerDelay;
+    }
+
+    public int getBenchWidth() {
+        return benchWidth;
+    }
+
+    public void setBenchWidth(int benchWidth) {
+        this.benchWidth = benchWidth;
+    }
+
+    public int getFlyrockConstant() {
+        return flyrockConstant;
+    }
+
+    public void setFlyrockConstant(int flyrockConstant) {
+        this.flyrockConstant = flyrockConstant;
+    }
+
+    public String getVerticaljointSpacing() {
+        return verticaljointSpacing;
+    }
+
+    public void setVerticaljointSpacing(String verticaljointSpacing) {
+        this.verticaljointSpacing = verticaljointSpacing;
+    }
 }

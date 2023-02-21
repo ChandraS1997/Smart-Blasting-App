@@ -5,6 +5,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.smart_blasting_drilling.android.room_database.entities.AllMineInfoSurfaceInitiatorEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseMineTableEntity;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public interface MineTableDao {
 
     @Query("DELETE FROM ResponseMineTableEntity")
     void deleteAllProject();
+
+    @Query("UPDATE ResponseMineTableEntity Set MineData=:data WHERE id=:id")
+    void updateProject(int id, String data);
 
     @Update
     void updateProject(ResponseMineTableEntity data);

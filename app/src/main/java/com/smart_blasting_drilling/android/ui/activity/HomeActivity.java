@@ -22,9 +22,11 @@ import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordData;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordDataItem;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.hole_tables.GetAllMinePitZoneBenchResult;
 import com.smart_blasting_drilling.android.app.BaseApis;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllMineInfoSurfaceInitiatorEntity;
@@ -32,6 +34,9 @@ import com.smart_blasting_drilling.android.room_database.entities.ExplosiveDataE
 import com.smart_blasting_drilling.android.room_database.entities.InitiatingDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseBenchTableEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ResponseDrillAccessoriesInfoAllDataEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ResponseDrillMaterialEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ResponseDrillMethodEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseFileDetailsTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseMineTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponsePitTableEntity;
@@ -128,9 +133,6 @@ public class HomeActivity extends BaseActivity {
 
     private void callBaseApis() {
         getMinePitZoneBenchApiCaller();
-        getRecordApiCaller();
-        getAllMineInfoSurfaceInitiatorApiCaller();
-        getDrillAccessoriesInfoAllDataApiCaller();
     }
 
     private void setDownloadDataView() {
@@ -221,12 +223,19 @@ public class HomeActivity extends BaseActivity {
             ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
             AllTablesData tablesData = new AllTablesData();
             Type typeList = new TypeToken<List<ResponseHoleDetailData>>(){}.getType();
-            tablesData.setTable2(new Gson().fromJson(rowColEntity.projectHole, typeList));
+            tablesData = new Gson().fromJson(rowColEntity.projectHole, AllTablesData.class);
             setHoleTableData(tablesData);
         }
     }
 
     private void setHoleTableData(AllTablesData tablesData) {
+        String str = new Gson().toJson(tablesData);
+        if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
+            entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), str));
+        } else {
+            entity.updateProject(0, bladesRetrieveData.getDesignId(), str);
+        }
+
         Intent i = new Intent(HomeActivity.this, HoleDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("all_table_Data", tablesData);
@@ -273,207 +282,175 @@ public class HomeActivity extends BaseActivity {
 
     public void getMinePitZoneBenchApiCaller() {
         ResponseLoginData loginData = manger.getUserDetails();
-        MainService.getMinePitZoneBenchApiCaller(this, loginData.getUserid(), loginData.getCompanyid()).observe((LifecycleOwner) this, new Observer<JsonElement>() {
+        MainService.getMinePitZoneBenchApiCaller(this, loginData.getUserid(), loginData.getCompanyid()).observe((LifecycleOwner) this, new Observer<GetAllMinePitZoneBenchResult>() {
             @Override
-            public void onChanged(JsonElement response) {
+            public void onChanged(GetAllMinePitZoneBenchResult response) {
                 if (response == null) {
                     showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
                 } else {
-                    if (!(response.isJsonNull())) {
-                        try {
-                            JsonObject jsonObject = response.getAsJsonObject();
-                            if (jsonObject != null) {
-                                try {
-                                    if (jsonObject.has("GetAllMinePitZoneBenchResult")) {
-                                        if (jsonObject.get("GetAllMinePitZoneBenchResult").getAsString().contains("Table")) {
-                                            ResponseMineTableEntity mineTableEntity = new ResponseMineTableEntity();
-                                            mineTableEntity.setData(new Gson().toJson(jsonObject.get("GetAllMinePitZoneBenchResult").getAsJsonObject().get("Table")));
-                                            if (Constants.isListEmpty(appDatabase.mineTableDao().getAllBladesProject())) {
-                                                appDatabase.mineTableDao().insertProject(mineTableEntity);
-                                            } else {
-                                                appDatabase.mineTableDao().updateProject(mineTableEntity);
-                                            }
-                                        }
-                                        if (jsonObject.get("GetAllMinePitZoneBenchResult").getAsString().contains("Table1")) {
-                                            ResponseBenchTableEntity benchTableEntity = new ResponseBenchTableEntity();
-                                            benchTableEntity.setData(new Gson().toJson(jsonObject.get("GetAllMinePitZoneBenchResult").getAsJsonObject().get("Table1")));
-                                            appDatabase.benchTableDao().insertProject(benchTableEntity);
-                                            if (Constants.isListEmpty(appDatabase.benchTableDao().getAllBladesProject())) {
-                                                appDatabase.benchTableDao().insertProject(benchTableEntity);
-                                            } else {
-                                                appDatabase.benchTableDao().updateProject(benchTableEntity);
-                                            }
-                                        }
-                                        if (jsonObject.get("GetAllMinePitZoneBenchResult").getAsString().contains("Table2")) {
-                                            ResponseZoneTableEntity zoneTableEntity = new ResponseZoneTableEntity();
-                                            zoneTableEntity.setData(new Gson().toJson(jsonObject.get("GetAllMinePitZoneBenchResult").getAsJsonObject().get("Table2")));
-                                            appDatabase.zoneTableDao().insertProject(zoneTableEntity);
-                                            if (Constants.isListEmpty(appDatabase.zoneTableDao().getAllBladesProject())) {
-                                                appDatabase.zoneTableDao().insertProject(zoneTableEntity);
-                                            } else {
-                                                appDatabase.zoneTableDao().updateProject(zoneTableEntity);
-                                            }
-                                        }
-                                        if (jsonObject.get("GetAllMinePitZoneBenchResult").getAsString().contains("Table3")) {
-                                            ResponsePitTableEntity pitTableEntity = new ResponsePitTableEntity();
-                                            pitTableEntity.setData(new Gson().toJson(jsonObject.get("GetAllMinePitZoneBenchResult").getAsJsonObject().get("Table3")));
-                                            if (Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject())) {
-                                                appDatabase.pitTableDao().insertProject(pitTableEntity);
-                                            } else {
-                                                appDatabase.pitTableDao().updateProject(pitTableEntity);
-                                            }
-                                        }
-                                        if (jsonObject.get("GetAllMinePitZoneBenchResult").getAsString().contains("Table4")) {
-                                            ResponseTypeTableEntity typeTableEntity = new ResponseTypeTableEntity();
-                                            typeTableEntity.setData(new Gson().toJson(jsonObject.get("GetAllMinePitZoneBenchResult").getAsJsonObject().get("Table4")));
-                                            appDatabase.typeTableDao().insertProject(typeTableEntity);
-                                            if (Constants.isListEmpty(appDatabase.typeTableDao().getAllBladesProject())) {
-                                                appDatabase.typeTableDao().insertProject(typeTableEntity);
-                                            } else {
-                                                appDatabase.typeTableDao().updateProject(typeTableEntity);
-                                            }
-                                        }
-                                        if (jsonObject.get("GetAllMinePitZoneBenchResult").getAsString().contains("Table5")) {
-                                            ResponseFileDetailsTableEntity fileDetailsTableEntity = new ResponseFileDetailsTableEntity();
-                                            fileDetailsTableEntity.setData(new Gson().toJson(jsonObject.get("GetAllMinePitZoneBenchResult").getAsJsonObject().get("Table5")));
-                                            appDatabase.fileDetailsTableDao().insertProject(fileDetailsTableEntity);
-                                            if (Constants.isListEmpty(appDatabase.fileDetailsTableDao().getAllBladesProject())) {
-                                                appDatabase.fileDetailsTableDao().insertProject(fileDetailsTableEntity);
-                                            } else {
-                                                appDatabase.fileDetailsTableDao().updateProject(fileDetailsTableEntity);
-                                            }
-                                        }
-
+                    try {
+                        AllTablesData allTablesData = new Gson().fromJson(response.getGetAllMinePitZoneBenchResult(), AllTablesData.class);
+                        if (allTablesData != null) {
+                            try {
+                                if (allTablesData.getTable() != null) {
+                                    ResponseMineTableEntity mineTableEntity = new ResponseMineTableEntity();
+                                    mineTableEntity.setData(new Gson().toJson(allTablesData.getTable()));
+                                    if (Constants.isListEmpty(appDatabase.mineTableDao().getAllBladesProject())) {
+                                        appDatabase.mineTableDao().insertProject(mineTableEntity);
+                                    } else {
+                                        appDatabase.mineTableDao().updateProject(0, new Gson().toJson(mineTableEntity));
                                     }
-                                } catch (Exception e) {
-                                    Log.e(NODATAFOUND, e.getMessage());
                                 }
-
-                            } else {
-                                Log.e(ERROR, SOMETHING_WENT_WRONG);
-//                                showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                                if (allTablesData.getTable1() != null) {
+                                    ResponseBenchTableEntity benchTableEntity = new ResponseBenchTableEntity();
+                                    benchTableEntity.setData(new Gson().toJson(allTablesData.getTable1()));
+                                    if (Constants.isListEmpty(appDatabase.benchTableDao().getAllBladesProject())) {
+                                        appDatabase.benchTableDao().insertProject(benchTableEntity);
+                                    } else {
+                                        appDatabase.benchTableDao().updateProject(0, new Gson().toJson(benchTableEntity));
+                                    }
+                                }
+                                if (allTablesData.getTable2() != null) {
+                                    ResponseZoneTableEntity zoneTableEntity = new ResponseZoneTableEntity();
+                                    zoneTableEntity.setData(new Gson().toJson(allTablesData.getTable2()));
+                                    if (Constants.isListEmpty(appDatabase.zoneTableDao().getAllBladesProject())) {
+                                        appDatabase.zoneTableDao().insertProject(zoneTableEntity);
+                                    } else {
+                                        appDatabase.zoneTableDao().updateProject(0, new Gson().toJson(zoneTableEntity));
+                                    }
+                                }
+                                if (allTablesData.getTable3() != null) {
+                                    ResponsePitTableEntity pitTableEntity = new ResponsePitTableEntity();
+                                    pitTableEntity.setData(new Gson().toJson(allTablesData.getTable3()));
+                                    if (Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject())) {
+                                        appDatabase.pitTableDao().insertProject(pitTableEntity);
+                                    } else {
+                                        appDatabase.pitTableDao().updateProject(0, new Gson().toJson(pitTableEntity));
+                                    }
+                                }
+                                if (allTablesData.getTable4() != null) {
+                                    ResponseTypeTableEntity typeTableEntity = new ResponseTypeTableEntity();
+                                    typeTableEntity.setData(new Gson().toJson(allTablesData.getTable4()));
+                                    if (Constants.isListEmpty(appDatabase.typeTableDao().getAllBladesProject())) {
+                                        appDatabase.typeTableDao().insertProject(typeTableEntity);
+                                    } else {
+                                        appDatabase.typeTableDao().updateProject(0, new Gson().toJson(typeTableEntity));
+                                    }
+                                }
+                                if (allTablesData.getTable5() != null) {
+                                    ResponseFileDetailsTableEntity fileDetailsTableEntity = new ResponseFileDetailsTableEntity();
+                                    fileDetailsTableEntity.setData(new Gson().toJson(allTablesData.getTable5()));
+                                    if (Constants.isListEmpty(appDatabase.fileDetailsTableDao().getAllBladesProject())) {
+                                        appDatabase.fileDetailsTableDao().insertProject(fileDetailsTableEntity);
+                                    } else {
+                                        appDatabase.fileDetailsTableDao().updateProject(0, new Gson().toJson(fileDetailsTableEntity));
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Log.e(NODATAFOUND, e.getMessage());
                             }
-                        } catch (Exception e) {
-                            Log.e(NODATAFOUND, e.getMessage());
+
+                        } else {
+                            Log.e(ERROR, SOMETHING_WENT_WRONG);
+//                                showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
                         }
-                        hideLoader();
+                    } catch (Exception e) {
+                        Log.e(NODATAFOUND, e.getMessage());
                     }
                 }
+                getRecordApiCaller();
             }
         });
     }
 
     public void getRecordApiCaller() {
         ResponseLoginData loginData = manger.getUserDetails();
-        MainService.getRecordApiCaller(this, loginData.getUserid(), loginData.getCompanyid()).observe((LifecycleOwner) this, new Observer<JsonElement>() {
+        MainService.getRecordApiCaller(this, loginData.getUserid(), loginData.getCompanyid()).observe((LifecycleOwner) this, new Observer<ResponseAllRecordData>() {
             @Override
-            public void onChanged(JsonElement response) {
-                if (response == null) {
+            public void onChanged(ResponseAllRecordData responseAllRecordData) {
+                if (responseAllRecordData == null) {
                     showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
                 } else {
-                    if (!(response.isJsonNull())) {
+                    try {
                         try {
-                            JsonObject jsonObject = response.getAsJsonObject();
-                            if (jsonObject != null) {
-                                try {
-                                    Type listType = new TypeToken<List<ResponseAllRecordData>>(){}.getType();
-                                    List<ResponseAllRecordData> allRecordDataList = new Gson().fromJson(jsonObject.get("ReturnObject").getAsJsonArray(), listType);
-                                    for (ResponseAllRecordData allRecordData : allRecordDataList) {
-                                        switch (allRecordData.getFieldInfo()) {
-                                            case "Mine":
-                                                ResponseMineTableEntity mineTableEntity = new ResponseMineTableEntity();
-                                                mineTableEntity.setData(new Gson().toJson(allRecordData.getResultSetList()));
-                                                if (Constants.isListEmpty(appDatabase.mineTableDao().getAllBladesProject())) {
-                                                    appDatabase.mineTableDao().insertProject(mineTableEntity);
-                                                } else {
-                                                    appDatabase.mineTableDao().updateProject(mineTableEntity);
-                                                }
-                                                break;
-                                            case "Pit":
-                                                ResponsePitTableEntity pitTableEntity = new ResponsePitTableEntity();
-                                                pitTableEntity.setData(new Gson().toJson(allRecordData.getResultSetList()));
-                                                if (Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject())) {
-                                                    appDatabase.pitTableDao().insertProject(pitTableEntity);
-                                                } else {
-                                                    appDatabase.pitTableDao().updateProject(pitTableEntity);
-                                                }
-                                                break;
-                                            case "Bench":
-                                                ResponseBenchTableEntity benchTableEntity = new ResponseBenchTableEntity();
-                                                benchTableEntity.setData(new Gson().toJson(allRecordData.getResultSetList()));
-                                                appDatabase.benchTableDao().insertProject(benchTableEntity);
-                                                if (Constants.isListEmpty(appDatabase.benchTableDao().getAllBladesProject())) {
-                                                    appDatabase.benchTableDao().insertProject(benchTableEntity);
-                                                } else {
-                                                    appDatabase.benchTableDao().updateProject(benchTableEntity);
-                                                }
-                                                break;
-                                            case "Zone":
-                                                ResponseZoneTableEntity zoneTableEntity = new ResponseZoneTableEntity();
-                                                zoneTableEntity.setData(new Gson().toJson(allRecordData.getResultSetList()));
-                                                appDatabase.zoneTableDao().insertProject(zoneTableEntity);
-                                                if (Constants.isListEmpty(appDatabase.zoneTableDao().getAllBladesProject())) {
-                                                    appDatabase.zoneTableDao().insertProject(zoneTableEntity);
-                                                } else {
-                                                    appDatabase.zoneTableDao().updateProject(zoneTableEntity);
-                                                }
-                                                break;
-                                            case "Explosive":
-                                                ExplosiveDataEntity explosiveDataEntity = new ExplosiveDataEntity();
-                                                explosiveDataEntity.setData(new Gson().toJson(allRecordData.getResultSetList()));
-                                                appDatabase.explosiveDataDao().insertProject(explosiveDataEntity);
-                                                if (Constants.isListEmpty(appDatabase.explosiveDataDao().getAllBladesProject())) {
-                                                    appDatabase.explosiveDataDao().insertProject(explosiveDataEntity);
-                                                } else {
-                                                    appDatabase.explosiveDataDao().updateProject(explosiveDataEntity);
-                                                }
-                                                break;
-                                            case "tld":
-                                                TldDataEntity tldDataEntity = new TldDataEntity();
-                                                tldDataEntity.setData(new Gson().toJson(allRecordData.getResultSetList()));
-                                                appDatabase.tldDataEntity().insertProject(tldDataEntity);
-                                                if (Constants.isListEmpty(appDatabase.tldDataEntity().getAllBladesProject())) {
-                                                    appDatabase.tldDataEntity().insertProject(tldDataEntity);
-                                                } else {
-                                                    appDatabase.tldDataEntity().updateProject(tldDataEntity);
-                                                }
-                                                break;
-                                            case "initiating":
-                                                InitiatingDataEntity initiatingDataEntity = new InitiatingDataEntity();
-                                                initiatingDataEntity.setData(new Gson().toJson(allRecordData.getResultSetList()));
-                                                appDatabase.initiatingDataDao().insertProject(initiatingDataEntity);
-                                                if (Constants.isListEmpty(appDatabase.initiatingDataDao().getAllBladesProject())) {
-                                                    appDatabase.initiatingDataDao().insertProject(initiatingDataEntity);
-                                                } else {
-                                                    appDatabase.initiatingDataDao().updateProject(initiatingDataEntity);
-                                                }
-                                                break;
-                                            case "rock":
-                                                RockDataEntity rockDataEntity = new RockDataEntity();
-                                                rockDataEntity.setData(new Gson().toJson(allRecordData.getResultSetList()));
-                                                appDatabase.rockDataDao().insertProject(rockDataEntity);
-                                                if (Constants.isListEmpty(appDatabase.rockDataDao().getAllBladesProject())) {
-                                                    appDatabase.rockDataDao().insertProject(rockDataEntity);
-                                                } else {
-                                                    appDatabase.rockDataDao().updateProject(rockDataEntity);
-                                                }
-                                                break;
-                                        }
+                            Type itemList = new TypeToken<List<ResponseAllRecordDataItem>>(){}.getType();
+                            List<ResponseAllRecordDataItem> allRecordDataItemList = new Gson().fromJson(responseAllRecordData.getResponseAllRecordData(), itemList);
+                            for (ResponseAllRecordDataItem allRecordData : allRecordDataItemList) {
+                                if ("Mine".equals(allRecordData.getFieldInfo())) {
+                                    ResponseMineTableEntity mineTableEntity = new ResponseMineTableEntity();
+                                    mineTableEntity.setData(new Gson().toJson(allRecordData.getResultset()));
+                                    if (Constants.isListEmpty(appDatabase.mineTableDao().getAllBladesProject())) {
+                                        appDatabase.mineTableDao().insertProject(mineTableEntity);
+                                    } else {
+                                        appDatabase.mineTableDao().updateProject(0, new Gson().toJson(mineTableEntity));
                                     }
-                                } catch (Exception e) {
-                                    Log.e(NODATAFOUND, e.getMessage());
+                                } else if ("Pit".equals(allRecordData.getFieldInfo())) {
+                                    ResponsePitTableEntity pitTableEntity = new ResponsePitTableEntity();
+                                    pitTableEntity.setData(new Gson().toJson(allRecordData.getResultset()));
+                                    if (Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject())) {
+                                        appDatabase.pitTableDao().insertProject(pitTableEntity);
+                                    } else {
+                                        appDatabase.pitTableDao().updateProject(0, new Gson().toJson(pitTableEntity));
+                                    }
+                                } else if ("Bench".equals(allRecordData.getFieldInfo())) {
+                                    ResponseBenchTableEntity benchTableEntity = new ResponseBenchTableEntity();
+                                    benchTableEntity.setData(new Gson().toJson(allRecordData.getResultset()));
+                                    if (Constants.isListEmpty(appDatabase.benchTableDao().getAllBladesProject())) {
+                                        appDatabase.benchTableDao().insertProject(benchTableEntity);
+                                    } else {
+                                        appDatabase.benchTableDao().updateProject(0, new Gson().toJson(benchTableEntity));
+                                    }
+                                } else if ("Zone".equals(allRecordData.getFieldInfo())) {
+                                    ResponseZoneTableEntity zoneTableEntity = new ResponseZoneTableEntity();
+                                    zoneTableEntity.setData(new Gson().toJson(allRecordData.getResultset()));
+                                    if (Constants.isListEmpty(appDatabase.zoneTableDao().getAllBladesProject())) {
+                                        appDatabase.zoneTableDao().insertProject(zoneTableEntity);
+                                    } else {
+                                        appDatabase.zoneTableDao().updateProject(0, new Gson().toJson(zoneTableEntity));
+                                    }
+                                } else if ("Explosive".equals(allRecordData.getFieldInfo())) {
+                                    ExplosiveDataEntity explosiveDataEntity = new ExplosiveDataEntity();
+                                    explosiveDataEntity.setData(new Gson().toJson(allRecordData.getResultset()));
+                                    if (Constants.isListEmpty(appDatabase.explosiveDataDao().getAllBladesProject())) {
+                                        appDatabase.explosiveDataDao().insertProject(explosiveDataEntity);
+                                    } else {
+                                        appDatabase.explosiveDataDao().updateProject(0, new Gson().toJson(explosiveDataEntity));
+                                    }
+                                } else if ("tld".equals(allRecordData.getFieldInfo())) {
+                                    TldDataEntity tldDataEntity = new TldDataEntity();
+                                    tldDataEntity.setData(new Gson().toJson(allRecordData.getResultset()));
+                                    if (Constants.isListEmpty(appDatabase.tldDataEntity().getAllBladesProject())) {
+                                        appDatabase.tldDataEntity().insertProject(tldDataEntity);
+                                    } else {
+                                        appDatabase.tldDataEntity().updateProject(0, new Gson().toJson(tldDataEntity));
+                                    }
+                                } else if ("initiating".equals(allRecordData.getFieldInfo())) {
+                                    InitiatingDataEntity initiatingDataEntity = new InitiatingDataEntity();
+                                    initiatingDataEntity.setData(new Gson().toJson(allRecordData.getResultset()));
+                                    if (Constants.isListEmpty(appDatabase.initiatingDataDao().getAllBladesProject())) {
+                                        appDatabase.initiatingDataDao().insertProject(initiatingDataEntity);
+                                    } else {
+                                        appDatabase.initiatingDataDao().updateProject(0, new Gson().toJson(initiatingDataEntity));
+                                    }
+                                } else if ("rock".equals(allRecordData.getFieldInfo())) {
+                                    RockDataEntity rockDataEntity = new RockDataEntity();
+                                    rockDataEntity.setData(new Gson().toJson(allRecordData.getResultset()));
+                                    if (Constants.isListEmpty(appDatabase.rockDataDao().getAllBladesProject())) {
+                                        appDatabase.rockDataDao().insertProject(rockDataEntity);
+                                    } else {
+                                        appDatabase.rockDataDao().updateProject(0, new Gson().toJson(rockDataEntity));
+                                    }
                                 }
-
-                            } else {
-                                Log.e(ERROR, SOMETHING_WENT_WRONG);
-//                                showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
                             }
                         } catch (Exception e) {
                             Log.e(NODATAFOUND, e.getMessage());
                         }
-                        hideLoader();
+                    } catch (Exception e) {
+                        Log.e(NODATAFOUND, e.getMessage());
                     }
+                    hideLoader();
                 }
+                getAllMineInfoSurfaceInitiatorApiCaller();
             }
         });
     }
@@ -492,8 +469,12 @@ public class HomeActivity extends BaseActivity {
                             if (jsonObject != null) {
                                 try {
                                     AllMineInfoSurfaceInitiatorEntity entity = new AllMineInfoSurfaceInitiatorEntity();
-                                    entity.setData(jsonObject.get("ReturnObject").getAsString());
-                                    appDatabase.allMineInfoSurfaceInitiatorDao().insertProject(entity);
+                                    entity.setData(jsonObject.get("GetAllmineinfoResult").getAsString());
+                                    if (Constants.isListEmpty(appDatabase.allMineInfoSurfaceInitiatorDao().getAllBladesProject())) {
+                                        appDatabase.allMineInfoSurfaceInitiatorDao().insertProject(entity);
+                                    } else {
+                                        appDatabase.allMineInfoSurfaceInitiatorDao().updateProject(0, new Gson().toJson(entity));
+                                    }
                                 } catch (Exception e) {
                                     Log.e(NODATAFOUND, e.getMessage());
                                 }
@@ -505,9 +486,9 @@ public class HomeActivity extends BaseActivity {
                         } catch (Exception e) {
                             Log.e(NODATAFOUND, e.getMessage());
                         }
-                        hideLoader();
                     }
                 }
+                getDrillAccessoriesInfoAllDataApiCaller();
             }
         });
     }
@@ -523,21 +504,89 @@ public class HomeActivity extends BaseActivity {
                         JsonObject jsonObject = response.getAsJsonObject();
                         if (jsonObject != null) {
                             try {
-                                AllMineInfoSurfaceInitiatorEntity entity = new AllMineInfoSurfaceInitiatorEntity();
-                                entity.setData(jsonObject.get("ReturnObject").getAsString());
-                                appDatabase.allMineInfoSurfaceInitiatorDao().insertProject(entity);
+                                ResponseDrillAccessoriesInfoAllDataEntity entity = new ResponseDrillAccessoriesInfoAllDataEntity();
+                                entity.setData(jsonObject.get("GetdrillaccessoriesinfoalldataResult").getAsString());
+                                if (Constants.isListEmpty(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject())) {
+                                    appDatabase.drillAccessoriesInfoAllDataDao().insertProject(entity);
+                                } else {
+                                    appDatabase.drillAccessoriesInfoAllDataDao().updateProject(0, new Gson().toJson(entity));
+                                }
                             } catch (Exception e) {
                                 Log.e(NODATAFOUND, e.getMessage());
                             }
 
                         } else {
                             Log.e(ERROR, SOMETHING_WENT_WRONG);
-//                                showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
                         }
                     } catch (Exception e) {
                         Log.e(NODATAFOUND, e.getMessage());
                     }
-                    hideLoader();
+                }
+            }
+            getDrillMethodApiCaller();
+        });
+    }
+
+    public void getDrillMethodApiCaller() {
+        MainService.getDrillMethodApiCaller(this).observe(this, response -> {
+            if (response == null) {
+                showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+            } else {
+                if (!(response.isJsonNull())) {
+                    try {
+                        JsonObject jsonObject = response.getAsJsonObject();
+                        if (jsonObject != null) {
+                            try {
+                                ResponseDrillMethodEntity entity = new ResponseDrillMethodEntity();
+                                entity.setData(jsonObject.get("GetDrillMethodResult").getAsString());
+                                if (Constants.isListEmpty(appDatabase.drillMethodDao().getAllEntityDataList())) {
+                                    appDatabase.drillMethodDao().insertItem(entity);
+                                } else {
+                                    appDatabase.drillMethodDao().updateItem(0, new Gson().toJson(entity));
+                                }
+                            } catch (Exception e) {
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }
+
+                        } else {
+                            Log.e(ERROR, SOMETHING_WENT_WRONG);
+                        }
+                    } catch (Exception e) {
+                        Log.e(NODATAFOUND, e.getMessage());
+                    }
+                }
+            }
+            getDrillMaterialApiCaller();
+        });
+    }
+
+    public void getDrillMaterialApiCaller() {
+        MainService.getDrillMaterialApiCaller(this).observe(this, response -> {
+            if (response == null) {
+                showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+            } else {
+                if (!(response.isJsonNull())) {
+                    try {
+                        JsonObject jsonObject = response.getAsJsonObject();
+                        if (jsonObject != null) {
+                            try {
+                                ResponseDrillMaterialEntity entity = new ResponseDrillMaterialEntity();
+                                entity.setData(jsonObject.get("GetDrillMaterialResult").getAsString());
+                                if (Constants.isListEmpty(appDatabase.drillMaterialDao().getAllEntityDataList())) {
+                                    appDatabase.drillMaterialDao().insertItem(entity);
+                                } else {
+                                    appDatabase.drillMaterialDao().updateItem(0, new Gson().toJson(entity));
+                                }
+                            } catch (Exception e) {
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }
+
+                        } else {
+                            Log.e(ERROR, SOMETHING_WENT_WRONG);
+                        }
+                    } catch (Exception e) {
+                        Log.e(NODATAFOUND, e.getMessage());
+                    }
                 }
             }
         });
