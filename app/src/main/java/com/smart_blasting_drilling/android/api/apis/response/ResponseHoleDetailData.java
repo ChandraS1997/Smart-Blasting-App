@@ -15,6 +15,9 @@ public class ResponseHoleDetailData implements Serializable {
 	@SerializedName("inHoleDelayQty")
 	private int inHoleDelayQty;
 
+	@SerializedName("HoleStatus")
+	private String holeStatus;
+
 	@SerializedName("Magazine2")
 	private String magazine2;
 
@@ -146,6 +149,9 @@ public class ResponseHoleDetailData implements Serializable {
 
 	@SerializedName("Y")
 	private Object y;
+
+	@SerializedName("Z")
+	private Object z;
 
 	@SerializedName("LicenseMagzine22")
 	private String licenseMagzine22;
@@ -477,6 +483,14 @@ public class ResponseHoleDetailData implements Serializable {
 	@SerializedName("Location")
 	private String location;
 
+	public String getHoleStatus() {
+		return holeStatus == null ? "Pending Holes" : holeStatus;
+	}
+
+	public void setHoleStatus(String holeStatus) {
+		this.holeStatus = holeStatus;
+	}
+
 	public void setCompanyID(String companyID){
 		this.companyID = companyID;
 	}
@@ -587,6 +601,254 @@ public class ResponseHoleDetailData implements Serializable {
 
 	public Object getRee2(){
 		return ree2;
+	}
+
+	public String getGeoStru() {
+		return geoStru;
+	}
+
+	public void setGeoStru(String geoStru) {
+		this.geoStru = geoStru;
+	}
+
+	public Object getUnitBlastingCost() {
+		return unitBlastingCost;
+	}
+
+	public void setUnitBlastingCost(Object unitBlastingCost) {
+		this.unitBlastingCost = unitBlastingCost;
+	}
+
+	public Object getUndersize() {
+		return undersize;
+	}
+
+	public void setUndersize(Object undersize) {
+		this.undersize = undersize;
+	}
+
+	public Object getMuckForwardDistance() {
+		return muckForwardDistance;
+	}
+
+	public void setMuckForwardDistance(Object muckForwardDistance) {
+		this.muckForwardDistance = muckForwardDistance;
+	}
+
+	public Object getBlastingQuality() {
+		return blastingQuality;
+	}
+
+	public void setBlastingQuality(Object blastingQuality) {
+		this.blastingQuality = blastingQuality;
+	}
+
+	public Object getZ() {
+		return z == null ? "" : z;
+	}
+
+	public void setZ(Object z) {
+		this.z = z;
+	}
+
+	public Object getGroundVibration() {
+		return groundVibration;
+	}
+
+	public void setGroundVibration(Object groundVibration) {
+		this.groundVibration = groundVibration;
+	}
+
+	public Object getBoulderYield() {
+		return boulderYield;
+	}
+
+	public void setBoulderYield(Object boulderYield) {
+		this.boulderYield = boulderYield;
+	}
+
+	public Object getvOD() {
+		return vOD;
+	}
+
+	public void setvOD(Object vOD) {
+		this.vOD = vOD;
+	}
+
+	public int getrRDelay() {
+		return rRDelay;
+	}
+
+	public void setrRDelay(int rRDelay) {
+		this.rRDelay = rRDelay;
+	}
+
+	public Object getvOD1() {
+		return vOD1;
+	}
+
+	public void setvOD1(Object vOD1) {
+		this.vOD1 = vOD1;
+	}
+
+	public Object getvOD2() {
+		return vOD2;
+	}
+
+	public void setvOD2(Object vOD2) {
+		this.vOD2 = vOD2;
+	}
+
+	public int gethHDelay() {
+		return hHDelay;
+	}
+
+	public void sethHDelay(int hHDelay) {
+		this.hHDelay = hHDelay;
+	}
+
+	public Object getBlastingSafety() {
+		return blastingSafety;
+	}
+
+	public void setBlastingSafety(Object blastingSafety) {
+		this.blastingSafety = blastingSafety;
+	}
+
+	public Object getStdDev() {
+		return stdDev;
+	}
+
+	public void setStdDev(Object stdDev) {
+		this.stdDev = stdDev;
+	}
+
+	public Object getDesiredFragmentationPercentage() {
+		return desiredFragmentationPercentage;
+	}
+
+	public void setDesiredFragmentationPercentage(Object desiredFragmentationPercentage) {
+		this.desiredFragmentationPercentage = desiredFragmentationPercentage;
+	}
+
+	public Object getB() {
+		return b;
+	}
+
+	public void setB(Object b) {
+		this.b = b;
+	}
+
+	public Object getFloorCondition() {
+		return floorCondition;
+	}
+
+	public void setFloorCondition(Object floorCondition) {
+		this.floorCondition = floorCondition;
+	}
+
+	public Object getAirVibration() {
+		return airVibration;
+	}
+
+	public void setAirVibration(Object airVibration) {
+		this.airVibration = airVibration;
+	}
+
+	public Object getFlyrock() {
+		return flyrock;
+	}
+
+	public void setFlyrock(Object flyrock) {
+		this.flyrock = flyrock;
+	}
+
+	public Object getBlastingCost() {
+		return blastingCost;
+	}
+
+	public void setBlastingCost(Object blastingCost) {
+		this.blastingCost = blastingCost;
+	}
+
+	public Object getBackbreak() {
+		return backbreak;
+	}
+
+	public void setBackbreak(Object backbreak) {
+		this.backbreak = backbreak;
+	}
+
+	public int getPitCode() {
+		return pitCode;
+	}
+
+	public void setPitCode(int pitCode) {
+		this.pitCode = pitCode;
+	}
+
+	public Object getPowderFactor() {
+		return powderFactor;
+	}
+
+	public void setPowderFactor(Object powderFactor) {
+		this.powderFactor = powderFactor;
+	}
+
+	public Object getK() {
+		return k;
+	}
+
+	public void setK(Object k) {
+		this.k = k;
+	}
+
+	public Object getCofCor() {
+		return cofCor;
+	}
+
+	public void setCofCor(Object cofCor) {
+		this.cofCor = cofCor;
+	}
+
+	public Object getMuckpileHeight() {
+		return muckpileHeight;
+	}
+
+	public void setMuckpileHeight(Object muckpileHeight) {
+		this.muckpileHeight = muckpileHeight;
+	}
+
+	public Object getDrillFactor() {
+		return drillFactor;
+	}
+
+	public void setDrillFactor(Object drillFactor) {
+		this.drillFactor = drillFactor;
+	}
+
+	public int getZoneCode() {
+		return zoneCode;
+	}
+
+	public void setZoneCode(int zoneCode) {
+		this.zoneCode = zoneCode;
+	}
+
+	public String getBedding() {
+		return bedding;
+	}
+
+	public void setBedding(String bedding) {
+		this.bedding = bedding;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	public void setBsterWt(int bsterWt){

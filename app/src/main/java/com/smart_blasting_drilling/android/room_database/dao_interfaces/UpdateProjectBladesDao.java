@@ -26,6 +26,9 @@ public interface UpdateProjectBladesDao {
     @Query("DELETE FROM UpdateProjectBladesEntity")
     void deleteAllProject();
 
+    @Query("UPDATE UpdateProjectBladesEntity Set BladesData=:data WHERE designId=:id")
+    void updateProject(String id, String data);
+
     @Update
     void updateProject(UpdateProjectBladesEntity data);
 

@@ -233,7 +233,7 @@ public class HomeActivity extends BaseActivity {
         if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
             entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), str));
         } else {
-            entity.updateProject(0, bladesRetrieveData.getDesignId(), str);
+            entity.updateProject(bladesRetrieveData.getDesignId(), str);
         }
 
         Intent i = new Intent(HomeActivity.this, HoleDetailActivity.class);

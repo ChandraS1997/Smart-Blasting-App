@@ -55,7 +55,7 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:backgroundTint="@color/black"
                 android:src="@drawable/ic_baseline_create_24"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:padding="@dimen/_1sdp"
                 app:layout_constraintStart_toEndOf="@id/homeBtn"
                 app:layout_constraintTop_toTopOf="parent"
@@ -82,7 +82,7 @@
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:src="@drawable/camera"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:padding="@dimen/_1sdp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -94,9 +94,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:editable="false"
-                android:paddingEnd="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:textColor="@color/_414346"
                 android:textSize="@dimen/_15ssp"
+                android:background="@null"
+                android:drawableTint="@color/black"
+                android:fontFamily="@font/inter_semi_bold"
                 app:dropDownDrawable="@drawable/downarro"
                 app:dropDownDrawableHeight="@dimen/_8sdp"
                 app:dropDownDrawableSpacing="15dp"
@@ -115,7 +119,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/_10sdp" />
+                android:layout_marginEnd="@dimen/_5sdp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

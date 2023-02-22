@@ -142,5 +142,22 @@
     <string name="please_enter_comment">Please Enter Comment</string>
     <string name="error">Error</string>
     <string name="take_video">Take Video</string>
+    <string name="no_hole_detail_found">No Hole Detail Found</string>
+    <string name="charging">Charging</string>
+    <string name="charging_param">Charging Parameters</string>
+    <string name="column">Column Name</string>
+    <string name="column_length">Column Length</string>
+    <string name="column_weight">Column Weight</string>
+    <string name="bottom">Bottom Name</string>
+    <string name="bottom_length">Bottom Length</string>
+    <string name="bottom_weight">Bottom Weight</string>
+    <string name="buster_weight">Buster weight</string>
+    <string name="buster_length">Buster Length</string>
+    <string name="buster">Buster name</string>
+    <string name="stem">Stem Name</string>
+    <string name="diameter">Diameter</string>
+    <string name="x">X</string>
+    <string name="y">Y</string>
+    <string name="z">Z</string>
 
 </resources>

@@ -2,6 +2,7 @@ package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,13 @@ public class MapHolePointAdapter extends BaseRecyclerAdapter {
         }
 
         void setDataBind(MapHoleDataModel mapHoleDataModel) {
-            HoleItemAdapter adapter = new HoleItemAdapter(context, mapHoleDataModel.getHoleDetailDataList());
+            int spaceVal = 0;
+            if (getAdapterPosition() % 2 == 0) {
+                spaceVal = 1;
+            } else {
+                spaceVal = 0;
+            }
+            HoleItemAdapter adapter = new HoleItemAdapter(context, mapHoleDataModel.getHoleDetailDataList(), spaceVal);
             binding.rowHolePoint.setAdapter(adapter);
         }
 

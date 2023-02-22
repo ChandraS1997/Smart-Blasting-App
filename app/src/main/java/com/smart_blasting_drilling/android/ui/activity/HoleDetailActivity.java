@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -29,6 +30,8 @@ import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDi
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
+import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 
@@ -46,6 +49,8 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     public int rowPageVal = 1;
     public RowItemDetail rowItemDetail;
     List<String> rowList = new ArrayList<>();
+
+    public MutableLiveData<Boolean> mapViewDataUpdateLiveData = new MutableLiveData<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,16 +77,18 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             rowSpinnerList[i] = rowList.get(i);
         }
 
-        binding.headerLayHole.spinnerRow.setAdapter(Constants.getAdapter(this, rowSpinnerList));
-        binding.headerLayHole.spinnerRow.setText(rowSpinnerList[0]);
-        binding.headerLayHole.spinnerRow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                rowPageVal = Integer.parseInt(rowSpinnerList[i].replace("Row ", ""));
+        if (rowSpinnerList.length > 0){
+            binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
+            binding.headerLayHole.spinnerRow.setAdapter(Constants.getAdapter(this, rowSpinnerList));
+            binding.headerLayHole.spinnerRow.setText(rowSpinnerList[0]);
+            binding.headerLayHole.spinnerRow.setOnItemClickListener((adapterView, view, i, l) -> {
+                rowPageVal = Integer.parseInt(rowSpinnerList[i].replace("Row ", "0"));
                 if (rowItemDetail != null)
-                    rowItemDetail.setRowOfTable(rowPageVal);
-            }
-        });
+                    rowItemDetail.setRowOfTable(rowPageVal, allTablesData);
+            });
+        } else {
+            binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
+        }
 
         navController = Navigation.findNavController(this, R.id.nav_host_hole);
         Constants.onHoleClickListener = this;
@@ -138,7 +145,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     public interface RowItemDetail {
-        void setRowOfTable(int rowNo);
+        void setRowOfTable(int rowNo, AllTablesData allTablesData);
     }
 
     @Override
@@ -182,6 +189,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.mapBtn:
                 binding.headerLayHole.projectInfo.setVisibility(View.GONE);
+                binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
                 binding.holeParaLay.setVisibility(View.GONE);
                 navController.navigate(R.id.mapViewFrament);
                 break;
@@ -190,6 +198,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.listBtn:
                 binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
+                binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
                 binding.holeParaLay.setVisibility(View.GONE);
                 navController.navigate(R.id.holeDetailsTableViewFragment);
                 break;
@@ -231,6 +240,29 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         if (binding.holeParaLay.getVisibility() == View.VISIBLE)
             binding.holeParaLay.setVisibility(View.GONE);
         binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
+    }
+
+    public void openHoleDetailDialog(ResponseHoleDetailData holeDetailData) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        HoleDetailDialog infoDialogFragment = HoleDetailDialog.getInstance(holeDetailData);
+
+        infoDialogFragment.setUpListener((dialogFragment, designId) -> {
+            ProjectHoleDetailRowColDao dao = BaseApplication.getAppDatabase(HoleDetailActivity.this, Constants.DATABASE_NAME).projectHoleDetailRowColDao();
+            ProjectHoleDetailRowColEntity entity = dao.getAllBladesProject(designId);
+            allTablesData = new Gson().fromJson(entity.getProjectHole(), AllTablesData.class);
+
+            if (rowItemDetail != null)
+                rowItemDetail.setRowOfTable(rowPageVal, allTablesData);
+
+            if (mapViewDataUpdateLiveData != null)
+                mapViewDataUpdateLiveData.setValue(true);
+
+            dialogFragment.dismiss();
+        });
+
+        ft.add(infoDialogFragment, HoleDetailDialog.TAG);
+        ft.commitAllowingStateLoss();
     }
 
 }
