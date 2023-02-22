@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/header_media"
+            layout="@layout/header_lay_media_activity" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/_10sdp"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@id/header_media"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/electricalDetonatorContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/electronicDetonatorTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:text="@string/electronic_electric_detonator"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15ssp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:background="@drawable/yellow_rounded_bg"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="@dimen/_10sdp"/>
+
+                    <ImageView
+                        android:id="@+id/eleArrowImg"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/down_arrow"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="@id/electronicDetonatorTxt"
+                        app:layout_constraintBottom_toBottomOf="@id/electronicDetonatorTxt"
+                        app:layout_constraintEnd_toEndOf="@id/electronicDetonatorTxt"
+                        app:tint="@color/white" />
+
+                    <ImageView
+                        android:id="@+id/eleDetonatorAddBtn"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/down_arrow"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="@id/electronicDetonatorTxt"
+                        app:layout_constraintBottom_toBottomOf="@id/electronicDetonatorTxt"
+                        app:layout_constraintEnd_toStartOf="@id/eleArrowImg"
+                        app:tint="@color/white" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/electronicDetonatorList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/electronicDetonatorTxt"/>
+
+                    <Button
+                        android:id="@+id/eleSaveBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        app:layout_constraintTop_toBottomOf="@id/electronicDetonatorList"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/login_btn_bg"
+                        android:text="@string/save"
+                        android:textColor="@color/white"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/downTheHoleContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    app:layout_constraintTop_toBottomOf="@id/electricalDetonatorContainer">
+
+                    <TextView
+                        android:id="@+id/downTheHoleTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:text="@string/electronic_electric_detonator"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15ssp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:background="@drawable/yellow_rounded_bg"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="@dimen/_10sdp"/>
+
+                    <ImageView
+                        android:id="@+id/downTheHoleArrowImg"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/down_arrow"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="@id/downTheHoleTxt"
+                        app:layout_constraintBottom_toBottomOf="@id/downTheHoleTxt"
+                        app:layout_constraintEnd_toEndOf="@id/downTheHoleTxt"
+                        app:tint="@color/white" />
+
+                    <ImageView
+                        android:id="@+id/downTheHoleAddBtn"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/down_arrow"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="@id/downTheHoleTxt"
+                        app:layout_constraintBottom_toBottomOf="@id/downTheHoleTxt"
+                        app:layout_constraintEnd_toStartOf="@id/downTheHoleArrowImg"
+                        app:tint="@color/white" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/downTheHoleList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/downTheHoleTxt"/>
+
+                    <Button
+                        android:id="@+id/downTheHoleSaveBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        app:layout_constraintTop_toBottomOf="@id/downTheHoleList"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/login_btn_bg"
+                        android:text="@string/save"
+                        android:textColor="@color/white"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/tldRowToRowContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    app:layout_constraintTop_toBottomOf="@id/downTheHoleContainer">
+
+                    <TextView
+                        android:id="@+id/tldRowToRowTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:text="@string/electronic_electric_detonator"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15ssp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:background="@drawable/yellow_rounded_bg"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="@dimen/_10sdp"/>
+
+                    <ImageView
+                        android:id="@+id/tldRowToRowArrowImg"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/down_arrow"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="@id/tldRowToRowTxt"
+                        app:layout_constraintBottom_toBottomOf="@id/tldRowToRowTxt"
+                        app:layout_constraintEnd_toEndOf="@id/tldRowToRowTxt"
+                        app:tint="@color/white" />
+
+                    <ImageView
+                        android:id="@+id/tldRowToRowAddBtn"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/down_arrow"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="@id/tldRowToRowTxt"
+                        app:layout_constraintBottom_toBottomOf="@id/tldRowToRowTxt"
+                        app:layout_constraintEnd_toStartOf="@id/tldRowToRowArrowImg"
+                        app:tint="@color/white" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/tldRowToRowList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/tldRowToRowTxt"/>
+
+                    <Button
+                        android:id="@+id/tldRowToRowSaveBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        app:layout_constraintTop_toBottomOf="@id/tldRowToRowList"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/login_btn_bg"
+                        android:text="@string/save"
+                        android:textColor="@color/white"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/tlsHoleToHoleContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    app:layout_constraintTop_toBottomOf="@id/tldRowToRowContainer">
+
+                    <TextView
+                        android:id="@+id/tlsHoleToHoleTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:text="@string/electronic_electric_detonator"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15ssp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:background="@drawable/yellow_rounded_bg"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="@dimen/_10sdp"/>
+
+                    <ImageView
+                        android:id="@+id/tlsHoleToHoleArrowImg"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/down_arrow"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="@id/tlsHoleToHoleTxt"
+                        app:layout_constraintBottom_toBottomOf="@id/tlsHoleToHoleTxt"
+                        app:layout_constraintEnd_toEndOf="@id/tlsHoleToHoleTxt"
+                        app:tint="@color/white" />
+
+                    <ImageView
+                        android:id="@+id/tlsHoleToHoleAddBtn"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:src="@drawable/down_arrow"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintTop_toTopOf="@id/tlsHoleToHoleTxt"
+                        app:layout_constraintBottom_toBottomOf="@id/tlsHoleToHoleTxt"
+                        app:layout_constraintEnd_toStartOf="@id/tlsHoleToHoleArrowImg"
+                        app:tint="@color/white" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/tlsHoleToHoleList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@id/tlsHoleToHoleTxt"/>
+
+                    <Button
+                        android:id="@+id/tlsHoleToHoleSaveBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        app:layout_constraintTop_toBottomOf="@id/tlsHoleToHoleList"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/login_btn_bg"
+                        android:text="@string/save"
+                        android:textColor="@color/white"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

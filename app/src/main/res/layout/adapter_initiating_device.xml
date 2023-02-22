@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="@dimen/_2sdp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                android:id="@+id/itemPageCountTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Item No. :- 1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/inter_semi_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <ImageView
+                android:id="@+id/deleteIcn"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@mipmap/ic_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/itemTypeItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DTH"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/inter_semi_bold"
+                app:layout_constraintTop_toTopOf="@id/typeSpinner"
+                app:layout_constraintBottom_toBottomOf="@id/typeSpinner"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/costTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/unit_cost"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/inter_semi_bold"
+                app:layout_constraintTop_toTopOf="@id/unitCostEt"
+                app:layout_constraintBottom_toBottomOf="@id/unitCostEt"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/quantityTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quantity"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13ssp"
+                android:fontFamily="@font/inter_semi_bold"
+                app:layout_constraintTop_toTopOf="@id/qtyEt"
+                app:layout_constraintBottom_toBottomOf="@id/qtyEt"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <com.smart_blasting_drilling.android.utils.EditSpinner
+                android:id="@+id/typeSpinner"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:fontFamily="@font/inter_semi_bold"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:editable="false"
+                android:textColor="@color/black"
+                android:imeOptions="flagNoExtractUi"
+                android:background="@drawable/border_edittext_bg_5_dp"
+                android:textSize="@dimen/_18ssp"
+                android:drawableTint="@color/black"
+                app:dropDownDrawable="@drawable/downarro"
+                app:dropDownDrawableHeight="@dimen/_8sdp"
+                app:dropDownDrawableSpacing="15dp"
+                app:dropDownDrawableWidth="@dimen/_14ssp"
+                app:dropDownHeight="@dimen/_150sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/itemPageCountTxt" />
+
+            <EditText
+                android:id="@+id/unitCostEt"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:fontFamily="@font/inter_semi_bold"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:imeOptions="flagNoExtractUi"
+                android:inputType="numberDecimal"
+                android:background="@drawable/border_edittext_bg_5_dp"
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/typeSpinner" />
+
+            <EditText
+                android:id="@+id/qtyEt"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:fontFamily="@font/inter_semi_bold"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:inputType="numberDecimal"
+                android:imeOptions="flagNoExtractUi"
+                android:background="@drawable/border_edittext_bg_5_dp"
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/unitCostEt" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

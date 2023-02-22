@@ -159,5 +159,10 @@
     <string name="x">X</string>
     <string name="y">Y</string>
     <string name="z">Z</string>
+    <string name="stem_length">Stem Length</string>
+    <string name="electronic_electric_detonator">Electronic/Electric Detonator</string>
+    <string name="initiating_device">Initiating Device</string>
+    <string name="unit_cost">Unit Cost</string>
+    <string name="quantity">Quantity</string>
 
 </resources>
