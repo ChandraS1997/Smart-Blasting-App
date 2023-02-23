@@ -28,7 +28,9 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectH
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
+import com.smart_blasting_drilling.android.ui.activity.HomeActivity;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.ArrayList;
@@ -149,9 +151,11 @@ public class HoleDetailDialog extends BaseDialogFragment {
             updateHoleDetailData.setHoleStatus(StringUtill.getString(binding.holeStatusSpinner.getText().toString()));
 
             bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
+            bladesEntity.setHoleId(holeDetailData.getHoleNo());
+            bladesEntity.setRowId(holeDetailData.getRowNo());
             bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
 
-            if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
+            if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()), holeDetailData.getRowNo(), holeDetailData.getHoleNo())) {
                 updateProjectBladesDao.insertProject(bladesEntity);
             } else {
                 updateProjectBladesDao.updateProject(bladesEntity);
@@ -182,6 +186,9 @@ public class HoleDetailDialog extends BaseDialogFragment {
 
                 }
             }
+
+            ((BaseActivity) mContext).setJsonForSyncProjectData(((HoleDetailActivity) mContext).bladesRetrieveData, holeDetailData);
+
             ProjectInfoDialogListener listener = getListener();
             if (listener != null) {
                 listener.onOk(_self, String.valueOf(updateHoleDetailData.getDesignId()));

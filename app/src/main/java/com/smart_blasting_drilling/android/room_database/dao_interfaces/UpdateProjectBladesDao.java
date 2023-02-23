@@ -14,11 +14,17 @@ public interface UpdateProjectBladesDao {
     @Insert
     void insertProject(UpdateProjectBladesEntity data);
 
+    @Query("SELECT EXISTS(SELECT * FROM UpdateProjectBladesEntity WHERE designId = :designId AND RowId = :rowId AND HoleId = :holeId)")
+    Boolean isExistProject(String designId, int rowId, int holeId);
+
     @Query("SELECT EXISTS(SELECT * FROM UpdateProjectBladesEntity WHERE designId = :designId)")
     Boolean isExistProject(String designId);
 
     @Query("SELECT * FROM UpdateProjectBladesEntity")
     List<UpdateProjectBladesEntity> getAllBladesProject();
+
+    @Query("SELECT * FROM UpdateProjectBladesEntity WHERE designId = :designId AND RowId = :rowId AND HoleId = :holeId")
+    UpdateProjectBladesEntity getAllBladesProject(String designId, int rowId, int holeId);
 
     @Query("DELETE FROM UpdateProjectBladesEntity WHERE designId = :designId")
     void deleteProjectById(String designId);

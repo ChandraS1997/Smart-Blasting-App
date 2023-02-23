@@ -7,6 +7,7 @@ import androidx.room.Update;
 
 import com.smart_blasting_drilling.android.room_database.entities.ResponseBenchTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseMineTableEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ResponseZoneTableEntity;
 
 import java.util.List;
 
@@ -21,6 +22,9 @@ public interface BenchTableDao {
 
     @Query("SELECT * FROM ResponseBenchTableEntity")
     List<ResponseBenchTableEntity> getAllBladesProject();
+
+    @Query("SELECT * FROM ResponseBenchTableEntity WHERE id=:id")
+    ResponseBenchTableEntity getAllBladesProject(int id);
 
     @Query("DELETE FROM ResponseBenchTableEntity")
     void deleteProjectById();

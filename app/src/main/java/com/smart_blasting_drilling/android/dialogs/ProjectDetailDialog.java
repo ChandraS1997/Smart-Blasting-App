@@ -324,19 +324,6 @@ public class ProjectDetailDialog extends BaseDialogFragment {
             dismiss();
         });
 
-        binding.saveAndProceedBtn.setOnClickListener(view -> {
-            UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
-            AppDatabase appDatabase = BaseApplication.getAppDatabase(mContext, Constants.DATABASE_NAME);
-            UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
-
-            if (!updateProjectBladesDao.isExistProject(bladesEntity.getDesignId())) {
-                updateProjectBladesDao.insertProject(bladesEntity);
-            } else {
-                updateProjectBladesDao.updateProject(bladesEntity);
-            }
-            dismiss();
-        });
-
     }
 
     private ProjectInfoDialogListener getListener() {

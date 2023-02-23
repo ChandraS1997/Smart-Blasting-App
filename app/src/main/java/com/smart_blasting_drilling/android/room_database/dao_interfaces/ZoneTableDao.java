@@ -6,6 +6,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.smart_blasting_drilling.android.room_database.entities.ResponseMineTableEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ResponsePitTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseZoneTableEntity;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public interface ZoneTableDao {
 
     @Query("SELECT * FROM ResponseZoneTableEntity")
     List<ResponseZoneTableEntity> getAllBladesProject();
+
+    @Query("SELECT * FROM ResponseZoneTableEntity WHERE id=:id")
+    ResponseZoneTableEntity getAllBladesProject(int id);
 
     @Query("DELETE FROM ResponseZoneTableEntity")
     void deleteProjectById();

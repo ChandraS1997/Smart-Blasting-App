@@ -14,6 +14,12 @@ public class UpdateProjectBladesEntity implements Serializable {
     @PrimaryKey(autoGenerate = true)
     public long id;
 
+    @ColumnInfo(name = "RowId")
+    public int rowId;
+
+    @ColumnInfo(name = "HoleId")
+    public int holeId;
+
     @ColumnInfo(name = "BladesData")
     private String data;
 
@@ -30,6 +36,22 @@ public class UpdateProjectBladesEntity implements Serializable {
     }
 
     public UpdateProjectBladesEntity() {
+    }
+
+    public int getRowId() {
+        return rowId;
+    }
+
+    public void setRowId(int rowId) {
+        this.rowId = rowId;
+    }
+
+    public int getHoleId() {
+        return holeId;
+    }
+
+    public void setHoleId(int holeId) {
+        this.holeId = holeId;
     }
 
     public long getId() {

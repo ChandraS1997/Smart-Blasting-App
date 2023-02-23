@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.room.migration.Migration;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -23,6 +24,7 @@ import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordDataItem;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseEmployeeData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.api.apis.response.ResultsetItem;
@@ -595,49 +597,6 @@ public class HomeActivity extends BaseActivity {
                 }
             }
         });
-    }
-
-    private void setJsonForSyncProjectData(ResponseBladesRetrieveData bladesRetrieveData) {
-        Map<String, Object> map = new HashMap<>();
-
-        UpdatedProjectDetailEntity projectDetailEntity = new UpdatedProjectDetailEntity();
-        ResponsePitTableEntity pitTableEntity = new ResponsePitTableEntity();
-
-        if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
-            projectDetailEntity = appDatabase.updatedProjectDataDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
-        }
-        JsonObject projectDetailJson = new Gson().fromJson(projectDetailEntity.getData(), JsonObject.class);
-
-        if (!Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject())) {
-            pitTableEntity = appDatabase.pitTableDao().getAllBladesProject(0);
-        }
-        List<ResultsetItem> pitResultItemList = new Gson().fromJson(pitTableEntity.getData(), new TypeToken<List<ResultsetItem>>() {}.getType());
-        for (ResultsetItem resultsetItem : pitResultItemList) {
-            if (resultsetItem.getName().equals(StringUtill.getString(bladesRetrieveData.getPitName()))) {
-                map.put("pitCode", resultsetItem.getPitCode());
-            }
-        }
-
-        map.put("projectNumber", bladesRetrieveData.getDesignCode());
-        map.put("projectName", bladesRetrieveData.getDesignName());
-        map.put("siteCode", projectDetailJson.get("site_id").getAsString());
-        map.put("zoneCode", projectDetailJson.get("site_id").getAsString());
-        map.put("benchCode", projectDetailJson.get("site_id").getAsString());
-        map.put("rigCode", projectDetailJson.get("site_id").getAsString());
-        map.put("drillingTypeId", projectDetailJson.get("site_id").getAsString());
-        map.put("materialTypeId", projectDetailJson.get("site_id").getAsString());
-        map.put("startTime", projectDetailJson.get("site_id").getAsString());
-        map.put("endTime", projectDetailJson.get("site_id").getAsString());
-        map.put("drillPattern", projectDetailJson.get("site_id").getAsString());
-        map.put("clientName", projectDetailJson.get("site_id").getAsString());
-        map.put("creationDate", projectDetailJson.get("site_id").getAsString());
-        map.put("companyId", projectDetailJson.get("site_id").getAsString());
-        map.put("userId", projectDetailJson.get("site_id").getAsString());
-        map.put("projectStatus", projectDetailJson.get("site_id").getAsString());
-        map.put("modificationDate", projectDetailJson.get("site_id").getAsString());
-        map.put("deviceType", projectDetailJson.get("site_id").getAsString());
-        map.put("projectSource", projectDetailJson.get("site_id").getAsString());
-
     }
 
 

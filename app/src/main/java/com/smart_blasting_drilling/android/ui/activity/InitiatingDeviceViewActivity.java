@@ -234,10 +234,13 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
                     deviceModelList.addAll(initiatingDeviceAllTypeModelList.get(j).getDeviceModelList());
                 }
             }
-            modelList.get(i).addDeviceModelList(deviceModelList);
+            InitiatingDeviceAllTypeModel typeModel = new InitiatingDeviceAllTypeModel();
+            typeModel.setDeviceName(modelList.get(i).getDeviceName());
+            typeModel.addDeviceModelList(deviceModelList);
+            selectionModelList.add(typeModel);
         }
 
-        Log.e("Data : ", new Gson().toJson(modelList));
+        Log.e("Data : ", new Gson().toJson(selectionModelList));
 
     }
 
