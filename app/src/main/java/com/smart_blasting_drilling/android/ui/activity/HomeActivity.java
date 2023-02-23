@@ -25,6 +25,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordDa
 import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordDataItem;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
+import com.smart_blasting_drilling.android.api.apis.response.ResultsetItem;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.GetAllMinePitZoneBenchResult;
 import com.smart_blasting_drilling.android.app.BaseApis;
@@ -44,6 +45,7 @@ import com.smart_blasting_drilling.android.room_database.entities.ResponseTypeTa
 import com.smart_blasting_drilling.android.room_database.entities.ResponseZoneTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.RockDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.TldDataEntity;
+import com.smart_blasting_drilling.android.room_database.entities.UpdatedProjectDetailEntity;
 import com.smart_blasting_drilling.android.ui.adapter.ProjectLIstAdapter;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.app.BaseApplication;
@@ -52,12 +54,15 @@ import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 import com.smart_blasting_drilling.android.utils.TextUtil;
 import com.smart_blasting_drilling.android.utils.ViewUtil;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -591,5 +596,49 @@ public class HomeActivity extends BaseActivity {
             }
         });
     }
+
+    private void setJsonForSyncProjectData(ResponseBladesRetrieveData bladesRetrieveData) {
+        Map<String, Object> map = new HashMap<>();
+
+        UpdatedProjectDetailEntity projectDetailEntity = new UpdatedProjectDetailEntity();
+        ResponsePitTableEntity pitTableEntity = new ResponsePitTableEntity();
+
+        if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+            projectDetailEntity = appDatabase.updatedProjectDataDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+        }
+        JsonObject projectDetailJson = new Gson().fromJson(projectDetailEntity.getData(), JsonObject.class);
+
+        if (!Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject())) {
+            pitTableEntity = appDatabase.pitTableDao().getAllBladesProject(0);
+        }
+        List<ResultsetItem> pitResultItemList = new Gson().fromJson(pitTableEntity.getData(), new TypeToken<List<ResultsetItem>>() {}.getType());
+        for (ResultsetItem resultsetItem : pitResultItemList) {
+            if (resultsetItem.getName().equals(StringUtill.getString(bladesRetrieveData.getPitName()))) {
+                map.put("pitCode", resultsetItem.getPitCode());
+            }
+        }
+
+        map.put("projectNumber", bladesRetrieveData.getDesignCode());
+        map.put("projectName", bladesRetrieveData.getDesignName());
+        map.put("siteCode", projectDetailJson.get("site_id").getAsString());
+        map.put("zoneCode", projectDetailJson.get("site_id").getAsString());
+        map.put("benchCode", projectDetailJson.get("site_id").getAsString());
+        map.put("rigCode", projectDetailJson.get("site_id").getAsString());
+        map.put("drillingTypeId", projectDetailJson.get("site_id").getAsString());
+        map.put("materialTypeId", projectDetailJson.get("site_id").getAsString());
+        map.put("startTime", projectDetailJson.get("site_id").getAsString());
+        map.put("endTime", projectDetailJson.get("site_id").getAsString());
+        map.put("drillPattern", projectDetailJson.get("site_id").getAsString());
+        map.put("clientName", projectDetailJson.get("site_id").getAsString());
+        map.put("creationDate", projectDetailJson.get("site_id").getAsString());
+        map.put("companyId", projectDetailJson.get("site_id").getAsString());
+        map.put("userId", projectDetailJson.get("site_id").getAsString());
+        map.put("projectStatus", projectDetailJson.get("site_id").getAsString());
+        map.put("modificationDate", projectDetailJson.get("site_id").getAsString());
+        map.put("deviceType", projectDetailJson.get("site_id").getAsString());
+        map.put("projectSource", projectDetailJson.get("site_id").getAsString());
+
+    }
+
 
 }

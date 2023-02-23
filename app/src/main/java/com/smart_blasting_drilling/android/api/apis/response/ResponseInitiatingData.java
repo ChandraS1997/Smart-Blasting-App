@@ -2,7 +2,7 @@ package com.smart_blasting_drilling.android.api.apis.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseInitiatingData{
+public class ResponseInitiatingData {
 
 	@SerializedName("Comment")
 	private String comment;

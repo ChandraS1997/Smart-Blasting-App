@@ -370,8 +370,15 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         MultipartBody.Part fileData = null;
         if (imgPath != null) {
             File compressedImgFile = Compressor.getDefault(this).compressToFile(file);
+
+            RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                    .addFormDataPart("Media","MicrosoftTeams-image.png",
+                            RequestBody.create(MediaType.parse("application/octet-stream"),
+                                    compressedImgFile))
+                    .build();
+
             RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), compressedImgFile);
-            fileData = MultipartBody.Part.createFormData("Media", file.getName(), requestFile);
+            fileData = MultipartBody.Part.createFormData("Media", file.getName(), body);
         }
 
         MainService.uploadApiCallerImage(this, map, fileData).observe(this, responseupload -> {

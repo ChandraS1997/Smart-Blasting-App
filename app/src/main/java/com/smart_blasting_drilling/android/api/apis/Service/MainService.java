@@ -17,6 +17,7 @@ import com.smart_blasting_drilling.android.api.APiInterface;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.GetAllMinePitZoneBenchResult;
 import com.smart_blasting_drilling.android.app.BaseApplication;
+import com.smart_blasting_drilling.android.dialogs.AppProgressBar;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.utils.StringUtill;
@@ -486,6 +487,7 @@ public class MainService {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                AppProgressBar.hideLoaderDialog();
                 Log.e(" API FAILED ", t.getLocalizedMessage());
 
             }
@@ -538,6 +540,81 @@ public class MainService {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e(" API FAILED ", t.getLocalizedMessage());
 
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonObject> insertUpdateAppSyncDetailsApiCaller(final Context context, Map<String, Object> map) {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonObject> call = uplodeApiService.insertUpdateAppSyncDetailsApiCaller(map);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonObject> insertUpdateAppHoleDetailsSyncApiCaller(final Context context, Map<String, Object> map) {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonObject> call = uplodeApiService.insertUpdateAppHoleDetailsSyncApiCaller(map);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonObject> insertUpdateAppHoleDetailsmultipleSyncApiCaller(final Context context, Map<String, Object> map) {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonObject> call = uplodeApiService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(map);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
             }
         });
         return data;

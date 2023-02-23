@@ -11,6 +11,7 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.DrillAcc
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ExplosiveDataDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.FileTypeTableDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.InitiatingDataDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.InitiatingDeviceDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.MineTableDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.PitTableDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project2DBladesDao;
@@ -18,6 +19,7 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project3
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ResponseDrillMaterialDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdatedProjectDataDao;
+import com.smart_blasting_drilling.android.room_database.entities.InitiatingDeviceDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseDrillMaterialEntity;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ResponseDrillMethodDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.RockDataDao;
@@ -49,7 +51,8 @@ import com.smart_blasting_drilling.android.room_database.entities.UpdatedProject
             , ResponseTypeTableEntity.class, ResponseZoneTableEntity.class, ExplosiveDataEntity.class
             , TldDataEntity.class, InitiatingDataEntity.class, RockDataEntity.class
             , AllMineInfoSurfaceInitiatorEntity.class, ResponseDrillAccessoriesInfoAllDataEntity.class
-            , ResponseDrillMethodEntity.class, ResponseDrillMaterialEntity.class, UpdatedProjectDetailEntity.class}, exportSchema = true,
+            , ResponseDrillMethodEntity.class, ResponseDrillMaterialEntity.class, UpdatedProjectDetailEntity.class
+            , InitiatingDeviceDataEntity.class}, exportSchema = true,
     autoMigrations = {})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -72,6 +75,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ResponseDrillMethodDao drillMethodDao();
     public abstract ResponseDrillMaterialDao drillMaterialDao();
     public abstract UpdatedProjectDataDao updatedProjectDataDao();
+    public abstract InitiatingDeviceDao initiatingDeviceDao();
 
     public static class DatabaseMigrations {
         public Migration MIGRATION_2_3 = new Migration(2, 3) {

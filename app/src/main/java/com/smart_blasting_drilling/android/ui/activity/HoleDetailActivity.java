@@ -113,6 +113,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         binding.drawerLayout.galleryBtn.setOnClickListener(this);
         binding.drawerLayout.logoutBtn.setOnClickListener(this);
         binding.drawerLayout.projectBtn.setOnClickListener(this);
+        binding.drawerLayout.initiatingDeviceContainer.setOnClickListener(this);
         binding.drawerLayout.closeBtn.setOnClickListener(view -> binding.mainDrawerLayout.closeDrawer(GravityCompat.START));
 
         binding.headerLayHole.projectInfo.setOnClickListener(view -> {
@@ -195,6 +196,9 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.camIcon:
                 startActivity(new Intent(this, MediaActivity.class));
+                break;
+            case R.id.initiatingDeviceContainer:
+                startActivity(new Intent(this, InitiatingDeviceViewActivity.class));
                 break;
             case R.id.listBtn:
                 binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);

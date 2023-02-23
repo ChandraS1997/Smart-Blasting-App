@@ -164,5 +164,8 @@
     <string name="initiating_device">Initiating Device</string>
     <string name="unit_cost">Unit Cost</string>
     <string name="quantity">Quantity</string>
+    <string name="down_the_hole">Down The Hole</string>
+    <string name="tld_row_to_row">TLD(Row To Row)</string>
+    <string name="tld_hole_to_hole">TLD(Hole To Hole)</string>
 
 </resources>

@@ -22,6 +22,9 @@ public interface PitTableDao {
     @Query("SELECT * FROM ResponsePitTableEntity")
     List<ResponsePitTableEntity> getAllBladesProject();
 
+    @Query("SELECT * FROM ResponsePitTableEntity WHERE id=:id")
+    ResponsePitTableEntity getAllBladesProject(int id);
+
     @Query("DELETE FROM ResponsePitTableEntity")
     void deleteProjectById();
 

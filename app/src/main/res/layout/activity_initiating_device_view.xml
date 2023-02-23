@@ -35,7 +35,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:text="@string/electronic_electric_detonator"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_15ssp"
                         app:layout_constraintTop_toTopOf="parent"
                         android:background="@drawable/yellow_rounded_bg"
@@ -49,21 +49,28 @@
                         android:layout_height="@dimen/_20sdp"
                         android:src="@drawable/down_arrow"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:rotation="270"
                         app:layout_constraintTop_toTopOf="@id/electronicDetonatorTxt"
                         app:layout_constraintBottom_toBottomOf="@id/electronicDetonatorTxt"
                         app:layout_constraintEnd_toEndOf="@id/electronicDetonatorTxt"
-                        app:tint="@color/white" />
+                        app:tint="@color/black" />
 
                     <ImageView
                         android:id="@+id/eleDetonatorAddBtn"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/down_arrow"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@mipmap/icn_add_btn"
                         android:layout_marginEnd="@dimen/_10sdp"
                         app:layout_constraintTop_toTopOf="@id/electronicDetonatorTxt"
                         app:layout_constraintBottom_toBottomOf="@id/electronicDetonatorTxt"
-                        app:layout_constraintEnd_toStartOf="@id/eleArrowImg"
-                        app:tint="@color/white" />
+                        app:layout_constraintEnd_toStartOf="@id/eleArrowImg" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:visibility="gone"
+                        android:id="@+id/eleListGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:constraint_referenced_ids="electronicDetonatorList, eleSaveBtn"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/electronicDetonatorList"
@@ -97,8 +104,8 @@
                         android:id="@+id/downTheHoleTxt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
-                        android:text="@string/electronic_electric_detonator"
-                        android:textColor="@color/white"
+                        android:text="@string/down_the_hole"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_15ssp"
                         app:layout_constraintTop_toTopOf="parent"
                         android:background="@drawable/yellow_rounded_bg"
@@ -112,21 +119,28 @@
                         android:layout_height="@dimen/_20sdp"
                         android:src="@drawable/down_arrow"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:rotation="270"
                         app:layout_constraintTop_toTopOf="@id/downTheHoleTxt"
                         app:layout_constraintBottom_toBottomOf="@id/downTheHoleTxt"
                         app:layout_constraintEnd_toEndOf="@id/downTheHoleTxt"
-                        app:tint="@color/white" />
+                        app:tint="@color/black" />
 
                     <ImageView
                         android:id="@+id/downTheHoleAddBtn"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/down_arrow"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@mipmap/icn_add_btn"
                         android:layout_marginEnd="@dimen/_10sdp"
                         app:layout_constraintTop_toTopOf="@id/downTheHoleTxt"
                         app:layout_constraintBottom_toBottomOf="@id/downTheHoleTxt"
-                        app:layout_constraintEnd_toStartOf="@id/downTheHoleArrowImg"
-                        app:tint="@color/white" />
+                        app:layout_constraintEnd_toStartOf="@id/downTheHoleArrowImg" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:visibility="gone"
+                        android:id="@+id/downToHoleListGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:constraint_referenced_ids="downTheHoleList, downTheHoleSaveBtn"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/downTheHoleList"
@@ -160,8 +174,8 @@
                         android:id="@+id/tldRowToRowTxt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
-                        android:text="@string/electronic_electric_detonator"
-                        android:textColor="@color/white"
+                        android:text="@string/tld_row_to_row"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_15ssp"
                         app:layout_constraintTop_toTopOf="parent"
                         android:background="@drawable/yellow_rounded_bg"
@@ -175,21 +189,28 @@
                         android:layout_height="@dimen/_20sdp"
                         android:src="@drawable/down_arrow"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:rotation="270"
                         app:layout_constraintTop_toTopOf="@id/tldRowToRowTxt"
                         app:layout_constraintBottom_toBottomOf="@id/tldRowToRowTxt"
                         app:layout_constraintEnd_toEndOf="@id/tldRowToRowTxt"
-                        app:tint="@color/white" />
+                        app:tint="@color/black" />
 
                     <ImageView
                         android:id="@+id/tldRowToRowAddBtn"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/down_arrow"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@mipmap/icn_add_btn"
                         android:layout_marginEnd="@dimen/_10sdp"
                         app:layout_constraintTop_toTopOf="@id/tldRowToRowTxt"
                         app:layout_constraintBottom_toBottomOf="@id/tldRowToRowTxt"
-                        app:layout_constraintEnd_toStartOf="@id/tldRowToRowArrowImg"
-                        app:tint="@color/white" />
+                        app:layout_constraintEnd_toStartOf="@id/tldRowToRowArrowImg" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:visibility="gone"
+                        android:id="@+id/tldRowToRowListGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:constraint_referenced_ids="tldRowToRowList, tldRowToRowSaveBtn"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/tldRowToRowList"
@@ -223,8 +244,8 @@
                         android:id="@+id/tlsHoleToHoleTxt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
-                        android:text="@string/electronic_electric_detonator"
-                        android:textColor="@color/white"
+                        android:text="@string/tld_hole_to_hole"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/_15ssp"
                         app:layout_constraintTop_toTopOf="parent"
                         android:background="@drawable/yellow_rounded_bg"
@@ -238,21 +259,28 @@
                         android:layout_height="@dimen/_20sdp"
                         android:src="@drawable/down_arrow"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:rotation="270"
                         app:layout_constraintTop_toTopOf="@id/tlsHoleToHoleTxt"
                         app:layout_constraintBottom_toBottomOf="@id/tlsHoleToHoleTxt"
                         app:layout_constraintEnd_toEndOf="@id/tlsHoleToHoleTxt"
-                        app:tint="@color/white" />
+                        app:tint="@color/black" />
 
                     <ImageView
                         android:id="@+id/tlsHoleToHoleAddBtn"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:src="@drawable/down_arrow"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:src="@mipmap/icn_add_btn"
                         android:layout_marginEnd="@dimen/_10sdp"
                         app:layout_constraintTop_toTopOf="@id/tlsHoleToHoleTxt"
                         app:layout_constraintBottom_toBottomOf="@id/tlsHoleToHoleTxt"
-                        app:layout_constraintEnd_toStartOf="@id/tlsHoleToHoleArrowImg"
-                        app:tint="@color/white" />
+                        app:layout_constraintEnd_toStartOf="@id/tlsHoleToHoleArrowImg" />
+
+                    <androidx.constraintlayout.widget.Group
+                        android:visibility="gone"
+                        android:id="@+id/tlsHoleToHoleListGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:constraint_referenced_ids="tlsHoleToHoleList, tlsHoleToHoleSaveBtn"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/tlsHoleToHoleList"

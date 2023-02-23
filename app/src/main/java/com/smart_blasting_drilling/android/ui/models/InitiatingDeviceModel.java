@@ -5,9 +5,16 @@ public class InitiatingDeviceModel {
     int pageCount;
     String type;
     String cost;
-    int qty;
+    String qty;
 
-    public InitiatingDeviceModel(int pageCount, String type, String cost, int qty) {
+    public InitiatingDeviceModel() {
+    }
+
+    public InitiatingDeviceModel(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public InitiatingDeviceModel(int pageCount, String type, String cost, String qty) {
         this.pageCount = pageCount;
         this.type = type;
         this.cost = cost;
@@ -38,11 +45,11 @@ public class InitiatingDeviceModel {
         this.cost = cost;
     }
 
-    public int getQty() {
+    public String getQty() {
         return qty;
     }
 
-    public void setQty(int qty) {
+    public void setQty(String qty) {
         this.qty = qty;
     }
 }

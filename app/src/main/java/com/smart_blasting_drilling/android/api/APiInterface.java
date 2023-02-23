@@ -72,4 +72,13 @@ public interface APiInterface {
     @POST("api/sblast/upload_media.php?mediatype=Video")
     Call<JsonObject> UploadeApiCallerVideo(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part fileData);
 
+    @POST("insertUpdateAppSyncDetails")
+    Call<JsonObject> insertUpdateAppSyncDetailsApiCaller(@Body Map<String, Object> map);
+
+    @POST("insertUpdateAppHoleDetailsSync")
+    Call<JsonObject> insertUpdateAppHoleDetailsSyncApiCaller(@Body Map<String, Object> map);
+
+    @POST("insertUpdateAppHoleDetailsmultipleSync")
+    Call<JsonObject> insertUpdateAppHoleDetailsmultipleSyncApiCaller(@Body Map<String, Object> map);
+
 }
