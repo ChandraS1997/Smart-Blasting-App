@@ -528,7 +528,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public Object getBurden(){
-		return burden;
+		return burden == null ? "0.0" : burden;
 	}
 
 	public void setDensity(Object density){
@@ -544,7 +544,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public Object getHoleType(){
-		return holeType;
+		return holeType != null ? "0.0" : holeType;
 	}
 
 	public void setBtmName(Object btmName){
@@ -716,7 +716,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public Object getStdDev() {
-		return stdDev;
+		return stdDev == null ? "0" : stdDev;
 	}
 
 	public void setStdDev(Object stdDev) {
@@ -1112,7 +1112,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public Object getSpacing(){
-		return spacing;
+		return spacing != null ? "0.0" : spacing;
 	}
 
 	public void setBtmId(int btmId){

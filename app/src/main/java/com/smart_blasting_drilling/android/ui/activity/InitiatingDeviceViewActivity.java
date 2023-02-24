@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseInitiatingData;
 import com.smart_blasting_drilling.android.api.apis.response.ResultsetItem;
 import com.smart_blasting_drilling.android.app.BaseApplication;
@@ -39,6 +40,10 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
     TldRowToRowAdapter tldRowToRowAdapter;
     TldHoleToHoleAdapter tldHoleToHoleAdapter;
 
+    ResponseBladesRetrieveData bladesRetrieveData;
+
+    AppDatabase appDatabase;
+
     List<ResultsetItem> responseInitiatingDataList = new ArrayList<>();
 
     List<InitiatingDeviceModel> electronicDetonatorModelList = new ArrayList<>();
@@ -53,13 +58,17 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_initiating_device_view);
 
+        appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
+
+        if (isBundleIntentNotEmpty()) {
+            bladesRetrieveData = (ResponseBladesRetrieveData) getIntent().getExtras().getSerializable("blades_data");
+        }
+
         StatusBarUtils.statusBarColor(this, R.color._FFA722);
         binding.headerMedia.mediaTitle.setText(getString(R.string.initiating_device));
 
-        binding.headerMedia.mediaTitle.setOnClickListener(view -> removeDuplicateItem());
-
         binding.headerMedia.backImg.setOnClickListener(view -> {
-            onDestroy();
+            removeDuplicateItem();
             finish();
         });
 
@@ -131,17 +140,17 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
         });
 
         binding.downTheHoleSaveBtn.setOnClickListener(view -> {
-            List<InitiatingDeviceModel> modelList = electronicDetonatorAdapter.getInitiatingDeviceModelList();
+            List<InitiatingDeviceModel> modelList = downTheHoleAdapter.getInitiatingDeviceModelList();
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("Down The Hole", modelList));
         });
 
         binding.tldRowToRowSaveBtn.setOnClickListener(view -> {
-            List<InitiatingDeviceModel> modelList = electronicDetonatorAdapter.getInitiatingDeviceModelList();
+            List<InitiatingDeviceModel> modelList = tldRowToRowAdapter.getInitiatingDeviceModelList();
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("TLD(Row To Row)", modelList));
         });
 
         binding.tlsHoleToHoleSaveBtn.setOnClickListener(view -> {
-            List<InitiatingDeviceModel> modelList = electronicDetonatorAdapter.getInitiatingDeviceModelList();
+            List<InitiatingDeviceModel> modelList = tldHoleToHoleAdapter.getInitiatingDeviceModelList();
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("TLD(Hole To Hole)", modelList));
         });
 
@@ -179,34 +188,28 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
 
     private void setEleDetListNotify() {
         electronicDetonatorModelList.add(new InitiatingDeviceModel());
-        electronicDetonatorAdapter.notifyDataSetChanged();
+        electronicDetonatorAdapter.notifyItemChanged(electronicDetonatorModelList.size() - 1);
     }
 
     private void setDownTheHoleNotify() {
         downTheHoleModelList.add(new InitiatingDeviceModel());
-        downTheHoleAdapter.notifyDataSetChanged();
+        downTheHoleAdapter.notifyItemChanged(downTheHoleModelList.size() - 1);
     }
 
     private void setTldRowToRowListNotify() {
         tldRowToRowModelList.add(new InitiatingDeviceModel());
-        tldRowToRowAdapter.notifyDataSetChanged();
+        tldRowToRowAdapter.notifyItemChanged(tldRowToRowModelList.size() - 1);
     }
 
     private void setTlsHoleToHoleListNotify() {
         tldHoleToHoleModelList.add(new InitiatingDeviceModel());
-        tldHoleToHoleAdapter.notifyDataSetChanged();
+        tldHoleToHoleAdapter.notifyItemChanged(tldHoleToHoleModelList.size() - 1);
     }
 
     @Override
     protected void onDestroy() {
+        removeDuplicateItem();
         super.onDestroy();
-        AppDatabase appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
-        String data = new Gson().fromJson(new Gson().toJson(initiatingDeviceAllTypeModelList), String.class);
-        if (!appDatabase.initiatingDeviceDao().isExistItem(0)) {
-            appDatabase.initiatingDeviceDao().insertItem(new InitiatingDeviceDataEntity(data));
-        } else {
-            appDatabase.initiatingDeviceDao().updateItem(0, data);
-        }
     }
 
     private void removeDuplicateItem() {
@@ -232,15 +235,27 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
             for (int j = 0; j < initiatingDeviceAllTypeModelList.size(); j++) {
                 if (modelList.get(i).getDeviceName().equals(initiatingDeviceAllTypeModelList.get(j).getDeviceName())) {
                     deviceModelList.addAll(initiatingDeviceAllTypeModelList.get(j).getDeviceModelList());
+                    break;
                 }
             }
-            InitiatingDeviceAllTypeModel typeModel = new InitiatingDeviceAllTypeModel();
-            typeModel.setDeviceName(modelList.get(i).getDeviceName());
-            typeModel.addDeviceModelList(deviceModelList);
-            selectionModelList.add(typeModel);
+            if (deviceModelList.size() > 0) {
+                InitiatingDeviceAllTypeModel typeModel = new InitiatingDeviceAllTypeModel();
+                typeModel.setDeviceName(modelList.get(i).getDeviceName());
+                typeModel.addDeviceModelList(deviceModelList);
+                selectionModelList.add(typeModel);
+            }
         }
 
         Log.e("Data : ", new Gson().toJson(selectionModelList));
+
+        if (appDatabase.initiatingDeviceDao().isExistItem(bladesRetrieveData.getDesignId())) {
+            appDatabase.initiatingDeviceDao().updateItem(bladesRetrieveData.getDesignId(), new Gson().toJson(selectionModelList));
+        } else {
+            InitiatingDeviceDataEntity entity = new InitiatingDeviceDataEntity();
+            entity.setData(new Gson().toJson(selectionModelList));
+            entity.setDesignId(bladesRetrieveData.getDesignId());
+            appDatabase.initiatingDeviceDao().insertItem(entity);
+        }
 
     }
 

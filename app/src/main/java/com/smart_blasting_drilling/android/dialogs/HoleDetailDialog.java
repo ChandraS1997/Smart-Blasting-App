@@ -26,6 +26,7 @@ import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
+import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
@@ -187,7 +188,9 @@ public class HoleDetailDialog extends BaseDialogFragment {
                 }
             }
 
-            ((BaseActivity) mContext).setJsonForSyncProjectData(((HoleDetailActivity) mContext).bladesRetrieveData, holeDetailData);
+            AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(updateHoleDetailData.getDesignId()));
+
+            ((BaseActivity) mContext).setInsertUpdateHoleDetailSync(((HoleDetailActivity) mContext).bladesRetrieveData, updateHoleDetailData, modelEntity != null ? modelEntity.getProjectCode() : "0");
 
             ProjectInfoDialogListener listener = getListener();
             if (listener != null) {

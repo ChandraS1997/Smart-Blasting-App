@@ -12,10 +12,21 @@ public class InitiatingDeviceDataEntity {
     @PrimaryKey(autoGenerate = true)
     public long id;
 
+    @ColumnInfo(name = "DesignId")
+    private String designId;
+
     @ColumnInfo(name = "InitiatingDeviceData")
     private String data;
 
     public InitiatingDeviceDataEntity() {
+    }
+
+    public String getDesignId() {
+        return designId;
+    }
+
+    public void setDesignId(String designId) {
+        this.designId = designId;
     }
 
     public InitiatingDeviceDataEntity(String data) {

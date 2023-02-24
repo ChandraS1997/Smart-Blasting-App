@@ -41,6 +41,8 @@ import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdatedProjectDetailEntity;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
@@ -159,6 +161,8 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         appDatabase.updatedProjectDataDao().insertItem(new UpdatedProjectDetailEntity(bladesRetrieveData.getDesignId(), new Gson().toJson(jsonObject)));
                         showSnackBar(binding.getRoot(), "Project added successfully");
                     }
+
+                    ((BaseActivity) mContext).setJsonForSyncProjectData(((HoleDetailActivity) mContext).bladesRetrieveData, ((HoleDetailActivity) mContext).allTablesData.getTable2());
                 } catch (Exception e) {
                     e.getLocalizedMessage();
                 }

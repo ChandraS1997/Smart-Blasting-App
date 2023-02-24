@@ -14,10 +14,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
@@ -31,6 +34,7 @@ import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
+import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
@@ -69,6 +73,8 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 if (!isFound)
                     rowList.add("Row " + allTablesData.getTable2().get(i).getRowNo());
             }
+
+            setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
         }
         binding = DataBindingUtil.setContentView(this, R.layout.hole_detail_activity);
 
@@ -120,6 +126,29 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             editTable();
         });
         binding.headerLayHole.editTable.setOnClickListener(this);
+
+        binding.headerLayHole.refreshIcn.setOnClickListener(view -> {
+            binding.headerLayHole.progressBar.setVisibility(View.VISIBLE);
+            binding.headerLayHole.refreshIcn.setVisibility(View.GONE);
+            AllProjectBladesModelEntity modelEntity = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME).allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.getDesignId()));
+            setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), modelEntity != null ? modelEntity.getProjectCode() : "0").observe(this, new Observer<JsonPrimitive>() {
+                @Override
+                public void onChanged(JsonPrimitive response) {
+                    if (response == null) {
+                        Log.e(ERROR, SOMETHING_WENT_WRONG);
+                    } else {
+                        if (!(response.isJsonNull())) {
+                            showToast("Project Holes Sync Successfully");
+                        } else {
+                            showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                        }
+                    }
+                    hideLoader();
+                    binding.headerLayHole.progressBar.setVisibility(View.GONE);
+                    binding.headerLayHole.refreshIcn.setVisibility(View.VISIBLE);
+                }
+            });
+        });
     }
 
     public List<TableEditModel> getTableModel() {
@@ -151,6 +180,8 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        Bundle bundle = new Bundle();
+        Intent intent;
         switch (view.getId()) {
             case R.id.menuBtn:
                 binding.mainDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -166,9 +197,8 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.galleryBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                Bundle bundle = new Bundle();
                 bundle.putSerializable("blades_data", bladesRetrieveData);
-                Intent intent = new Intent(this, MediaActivity.class);
+                intent = new Intent(this, MediaActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
@@ -198,7 +228,10 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 startActivity(new Intent(this, MediaActivity.class));
                 break;
             case R.id.initiatingDeviceContainer:
-                startActivity(new Intent(this, InitiatingDeviceViewActivity.class));
+                bundle.putSerializable("blades_data", bladesRetrieveData);
+                intent = new Intent(this, InitiatingDeviceViewActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
             case R.id.listBtn:
                 binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);

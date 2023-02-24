@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.smart_blasting_drilling.android.api.APIError;
 import com.smart_blasting_drilling.android.api.APiInterface;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordData;
@@ -545,15 +546,15 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonObject> insertUpdateAppSyncDetailsApiCaller(final Context context, Map<String, Object> map) {
-        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+    public static LiveData<JsonPrimitive> insertUpdateAppSyncDetailsApiCaller(final Context context, JsonObject map) {
+        final MutableLiveData<JsonPrimitive> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonObject> call = uplodeApiService.insertUpdateAppSyncDetailsApiCaller(map);
-        call.enqueue(new Callback<JsonObject>() {
+        Call<JsonPrimitive> call = drimzApiService.insertUpdateAppSyncDetailsApiCaller(map);
+        call.enqueue(new Callback<JsonPrimitive>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<JsonPrimitive> call, Response<JsonPrimitive> response) {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
@@ -562,7 +563,7 @@ public class MainService {
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<JsonPrimitive> call, Throwable t) {
                 data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }
@@ -570,15 +571,15 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonObject> insertUpdateAppHoleDetailsSyncApiCaller(final Context context, Map<String, Object> map) {
-        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+    public static LiveData<JsonPrimitive> insertUpdateAppHoleDetailsSyncApiCaller(final Context context, JsonObject map) {
+        final MutableLiveData<JsonPrimitive> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonObject> call = uplodeApiService.insertUpdateAppHoleDetailsSyncApiCaller(map);
-        call.enqueue(new Callback<JsonObject>() {
+        Call<JsonPrimitive> call = drimzApiService.insertUpdateAppHoleDetailsSyncApiCaller(map);
+        call.enqueue(new Callback<JsonPrimitive>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<JsonPrimitive> call, Response<JsonPrimitive> response) {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
@@ -587,7 +588,7 @@ public class MainService {
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<JsonPrimitive> call, Throwable t) {
                 data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }
@@ -595,15 +596,15 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonObject> insertUpdateAppHoleDetailsmultipleSyncApiCaller(final Context context, Map<String, Object> map) {
-        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+    public static LiveData<JsonPrimitive> insertUpdateAppHoleDetailsmultipleSyncApiCaller(final Context context, JsonObject map) {
+        final MutableLiveData<JsonPrimitive> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonObject> call = uplodeApiService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(map);
-        call.enqueue(new Callback<JsonObject>() {
+        Call<JsonPrimitive> call = drimzApiService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(map);
+        call.enqueue(new Callback<JsonPrimitive>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<JsonPrimitive> call, Response<JsonPrimitive> response) {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
@@ -612,7 +613,7 @@ public class MainService {
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<JsonPrimitive> call, Throwable t) {
                 data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }

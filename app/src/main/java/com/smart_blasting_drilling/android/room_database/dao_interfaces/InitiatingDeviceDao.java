@@ -15,8 +15,8 @@ public interface InitiatingDeviceDao {
     @Insert
     void insertItem(InitiatingDeviceDataEntity data);
 
-    @Query("SELECT EXISTS(SELECT * FROM InitiatingDeviceDataEntity WHERE id = :id)")
-    Boolean isExistItem(int id);
+    @Query("SELECT EXISTS(SELECT * FROM InitiatingDeviceDataEntity WHERE DesignId = :id)")
+    Boolean isExistItem(String id);
 
     @Query("SELECT * FROM InitiatingDeviceDataEntity")
     List<InitiatingDeviceDataEntity> getAllEntityDataList();
@@ -30,8 +30,8 @@ public interface InitiatingDeviceDao {
     @Query("DELETE FROM InitiatingDeviceDataEntity")
     void deleteAllItem();
 
-    @Query("UPDATE InitiatingDeviceDataEntity SET InitiatingDeviceData=:data WHERE id = :id")
-    void updateItem(int id, String data);
+    @Query("UPDATE InitiatingDeviceDataEntity SET InitiatingDeviceData=:data WHERE DesignId = :id")
+    void updateItem(String id, String data);
 
     @Update
     void updateItem(InitiatingDeviceDataEntity data);

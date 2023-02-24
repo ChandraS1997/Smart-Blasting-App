@@ -2,6 +2,7 @@ package com.smart_blasting_drilling.android.api;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.GetAllMinePitZoneBenchResult;
@@ -73,12 +74,12 @@ public interface APiInterface {
     Call<JsonObject> UploadeApiCallerVideo(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part fileData);
 
     @POST("insertUpdateAppSyncDetails")
-    Call<JsonObject> insertUpdateAppSyncDetailsApiCaller(@Body Map<String, Object> map);
+    Call<JsonPrimitive> insertUpdateAppSyncDetailsApiCaller(@Body JsonObject map);
 
     @POST("insertUpdateAppHoleDetailsSync")
-    Call<JsonObject> insertUpdateAppHoleDetailsSyncApiCaller(@Body Map<String, Object> map);
+    Call<JsonPrimitive> insertUpdateAppHoleDetailsSyncApiCaller(@Body JsonObject map);
 
     @POST("insertUpdateAppHoleDetailsmultipleSync")
-    Call<JsonObject> insertUpdateAppHoleDetailsmultipleSyncApiCaller(@Body Map<String, Object> map);
+    Call<JsonPrimitive> insertUpdateAppHoleDetailsmultipleSyncApiCaller(@Body JsonObject map);
 
 }
