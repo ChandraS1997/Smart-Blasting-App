@@ -109,4 +109,7 @@ dependencies {
     // Country Picker
     implementation 'com.hbb20:ccp:2.7.0'
 
+    // PhotoView
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
 }

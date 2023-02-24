@@ -92,6 +92,13 @@
             android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
 
+        <activity android:name=".ui.activity.FullMediaViewActivity"
+            android:configChanges="locale|orientation"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
+
 
     </application>
 

@@ -1,7 +1,9 @@
 package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.databinding.MediaItemBinding;
+import com.smart_blasting_drilling.android.ui.activity.FullMediaViewActivity;
 
 import java.io.File;
 import java.util.List;
@@ -81,6 +84,14 @@ public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 binding.VideoView.setVisibility(View.GONE);
                 Glide.with(context).load(path).apply(new RequestOptions().error(R.drawable.ic_logo)).into(binding.Image);
             }
+
+            itemView.setOnClickListener(view -> {
+                Bundle bundle = new Bundle();
+                bundle.putString("media_uri", path);
+                Intent intent = new Intent(context, FullMediaViewActivity.class);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            });
 
         }
     }

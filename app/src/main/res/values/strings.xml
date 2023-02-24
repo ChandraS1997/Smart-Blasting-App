@@ -16,7 +16,7 @@
     <string name="enter_email">Please Enter Username</string>
     <string name="enter_email_valid">Please Enter Valid Email</string>
     <string name="please_enter_password">Please Enter Your Password</string>
-    <string name="pass_six_greater">Password must be greater 6 character</string>
+    <string name="pass_six_greater">Password must be greater than 6 character</string>
     <string name="enteremail">Enter Username</string>
     <string name="design">Design</string>
     <string name="drilling">Drilling</string>
