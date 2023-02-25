@@ -137,7 +137,7 @@
 
 
 
-                <com.smart_blasting_drilling.android.helper.TextSpinner
+                <com.hbb20.CountryCodePicker
                     android:id="@+id/countryEdt"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_35sdp"
@@ -151,13 +151,19 @@
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"
-                    app:dropDownDrawable="@drawable/down_arrow"
                     android:textCursorDrawable="@drawable/cursor_color"
                     android:textSize="@dimen/_14ssp"
+                    app:ccp_defaultNameCode="IN"
+                    app:ccp_showPhoneCode="false"
+                    app:ccp_showFullName="true"
+                    app:ccp_showArrow="false"
+                    app:ccp_clickable="true"
+                    android:gravity="center_vertical"
+                    app:ccp_textGravity="CENTER"
+                    app:ccp_textSize="@dimen/_14ssp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/companyEdt"
-                    tools:ignore="TextFields"
                     android:hint="@string/select_country"
                     android:textColorHint="@color/black"
                     android:imeOptions="flagNoExtractUi"/>

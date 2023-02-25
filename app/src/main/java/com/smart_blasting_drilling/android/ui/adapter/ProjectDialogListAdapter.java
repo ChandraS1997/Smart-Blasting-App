@@ -23,6 +23,7 @@ import com.smart_blasting_drilling.android.databinding.ProjectListViewBinding;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project2DBladesDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project3DBladesDao;
+import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
 import com.smart_blasting_drilling.android.room_database.entities.Project2DBladesEntity;
 import com.smart_blasting_drilling.android.room_database.entities.Project3DBladesEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
@@ -94,6 +95,7 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
                                 if (is3DBlades) {
                                     Project3DBladesDao bladesDao = appDatabase.project3DBladesDao();
                                     Project3DBladesEntity entity = new Gson().fromJson(new Gson().toJson(data), Project3DBladesEntity.class);
+                                    entity.setIs3dBlade(true);
                                     if (!bladesDao.isExistProject(data.getDesignId())) {
                                         bladesDao.insertProject(entity);
                                     } else {
@@ -102,12 +104,23 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
                                 } else {
                                     Project2DBladesDao bladesDao = appDatabase.project2DBladesDao();
                                     Project2DBladesEntity entity = new Gson().fromJson(new Gson().toJson(data), Project2DBladesEntity.class);
+                                    entity.setIs3dBlade(false);
                                     if (!bladesDao.isExistProject(data.getDesignId())) {
                                         bladesDao.insertProject(entity);
                                     } else {
                                         bladesDao.updateProject(entity);
                                     }
                                 }
+                                AllProjectBladesModelEntity allProjectBladesModelEntity = new AllProjectBladesModelEntity();
+                                allProjectBladesModelEntity.setData(new Gson().toJson(data));
+                                allProjectBladesModelEntity.setIs2dBlade(is3DBlades);
+                                allProjectBladesModelEntity.setDesignId(data.getDesignId());
+                                if (!appDatabase.allProjectBladesModelDao().isExistItem(data.getDesignId())) {
+                                    appDatabase.allProjectBladesModelDao().insertItem(allProjectBladesModelEntity);
+                                } else {
+                                    appDatabase.allProjectBladesModelDao().updateItem(data.getDesignId(), new Gson().toJson(data));
+                                }
+
                                 ((BaseActivity) context).hideLoader();
                             }
                         });

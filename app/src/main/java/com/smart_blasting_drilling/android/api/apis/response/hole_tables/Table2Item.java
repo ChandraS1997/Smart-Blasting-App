@@ -2,7 +2,12 @@ package com.smart_blasting_drilling.android.api.apis.response.hole_tables;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Table2Item{
+import java.io.Serializable;
+
+public class Table2Item implements Serializable {
+
+	@SerializedName("GeoStru")
+	private String geoStru;
 
 	@SerializedName("CompanyID")
 	private String companyID;
@@ -18,6 +23,18 @@ public class Table2Item{
 
 	@SerializedName("Burden")
 	private int burden;
+
+	@SerializedName("UnitBlastingCost")
+	private Object unitBlastingCost;
+
+	@SerializedName("Undersize")
+	private Object undersize;
+
+	@SerializedName("MuckForwardDistance")
+	private Object muckForwardDistance;
+
+	@SerializedName("BlastingQuality")
+	private Object blastingQuality;
 
 	@SerializedName("Density")
 	private Object density;
@@ -223,6 +240,12 @@ public class Table2Item{
 	@SerializedName("Name")
 	private String name;
 
+	@SerializedName("GroundVibration")
+	private Object groundVibration;
+
+	@SerializedName("BoulderYield")
+	private Object boulderYield;
+
 	@SerializedName("Isvisible")
 	private int isvisible;
 
@@ -400,6 +423,1084 @@ public class Table2Item{
 	@SerializedName("DrillY")
 	private int drillY;
 
+	@SerializedName("BlastingSafety")
+	private Object blastingSafety;
+
+	@SerializedName("StdDev")
+	private Object stdDev;
+
+	@SerializedName("DesiredFragmentationPercentage")
+	private Object desiredFragmentationPercentage;
+
+	@SerializedName("b")
+	private Object b;
+
+	@SerializedName("FloorCondition")
+	private Object floorCondition;
+
+	@SerializedName("AirVibration")
+	private Object airVibration;
+
+	@SerializedName("Flyrock")
+	private Object flyrock;
+
+	@SerializedName("BlastingCost")
+	private Object blastingCost;
+
+	@SerializedName("Backbreak")
+	private Object backbreak;
+
+	@SerializedName("PitCode")
+	private int pitCode;
+
+	@SerializedName("PowderFactor")
+	private Object powderFactor;
+
+	@SerializedName("k")
+	private Object k;
+
+	@SerializedName("CofCor")
+	private Object cofCor;
+
+	@SerializedName("MuckpileHeight")
+	private Object muckpileHeight;
+
+	@SerializedName("DrillFactor")
+	private Object drillFactor;
+
+	@SerializedName("ZoneCode")
+	private int zoneCode;
+
+	@SerializedName("Bedding")
+	private String bedding;
+
+	@SerializedName("Location")
+	private String location;
+
+	public int getInHoleDelayQty() {
+		return inHoleDelayQty;
+	}
+
+	public void setInHoleDelayQty(int inHoleDelayQty) {
+		this.inHoleDelayQty = inHoleDelayQty;
+	}
+
+	public String getMagazine2() {
+		return magazine2;
+	}
+
+	public void setMagazine2(String magazine2) {
+		this.magazine2 = magazine2;
+	}
+
+	public String getMagazine1() {
+		return magazine1;
+	}
+
+	public void setMagazine1(String magazine1) {
+		this.magazine1 = magazine1;
+	}
+
+	public int getBurden() {
+		return burden;
+	}
+
+	public void setBurden(int burden) {
+		this.burden = burden;
+	}
+
+	public int getHoleType() {
+		return holeType;
+	}
+
+	public void setHoleType(int holeType) {
+		this.holeType = holeType;
+	}
+
+	public Object getBtmName() {
+		return btmName;
+	}
+
+	public void setBtmName(Object btmName) {
+		this.btmName = btmName;
+	}
+
+	public Object getComment1() {
+		return comment1;
+	}
+
+	public void setComment1(Object comment1) {
+		this.comment1 = comment1;
+	}
+
+	public int getMag2Unit() {
+		return mag2Unit;
+	}
+
+	public void setMag2Unit(int mag2Unit) {
+		this.mag2Unit = mag2Unit;
+	}
+
+	public String getComment2() {
+		return comment2;
+	}
+
+	public void setComment2(String comment2) {
+		this.comment2 = comment2;
+	}
+
+	public int getVerticalDip() {
+		return verticalDip;
+	}
+
+	public void setVerticalDip(int verticalDip) {
+		this.verticalDip = verticalDip;
+	}
+
+	public int getBtmLength() {
+		return btmLength;
+	}
+
+	public void setBtmLength(int btmLength) {
+		this.btmLength = btmLength;
+	}
+
+	public Object getRee2() {
+		return ree2;
+	}
+
+	public void setRee2(Object ree2) {
+		this.ree2 = ree2;
+	}
+
+	public int getBsterWt() {
+		return bsterWt;
+	}
+
+	public void setBsterWt(int bsterWt) {
+		this.bsterWt = bsterWt;
+	}
+
+	public String getMake() {
+		return make;
+	}
+
+	public void setMake(String make) {
+		this.make = make;
+	}
+
+	public int getDipAzimuth() {
+		return dipAzimuth;
+	}
+
+	public void setDipAzimuth(int dipAzimuth) {
+		this.dipAzimuth = dipAzimuth;
+	}
+
+	public String getLicenseMagzine12() {
+		return licenseMagzine12;
+	}
+
+	public void setLicenseMagzine12(String licenseMagzine12) {
+		this.licenseMagzine12 = licenseMagzine12;
+	}
+
+	public int getDeckLength5() {
+		return deckLength5;
+	}
+
+	public void setDeckLength5(int deckLength5) {
+		this.deckLength5 = deckLength5;
+	}
+
+	public Object getLicenseMagzine11() {
+		return licenseMagzine11;
+	}
+
+	public void setLicenseMagzine11(Object licenseMagzine11) {
+		this.licenseMagzine11 = licenseMagzine11;
+	}
+
+	public int getDeckLength4() {
+		return deckLength4;
+	}
+
+	public void setDeckLength4(int deckLength4) {
+		this.deckLength4 = deckLength4;
+	}
+
+	public int getWaterDepth() {
+		return waterDepth;
+	}
+
+	public void setWaterDepth(int waterDepth) {
+		this.waterDepth = waterDepth;
+	}
+
+	public int getDeckLength3() {
+		return deckLength3;
+	}
+
+	public void setDeckLength3(int deckLength3) {
+		this.deckLength3 = deckLength3;
+	}
+
+	public int getDeckLength2() {
+		return deckLength2;
+	}
+
+	public void setDeckLength2(int deckLength2) {
+		this.deckLength2 = deckLength2;
+	}
+
+	public int getDeckLength1() {
+		return deckLength1;
+	}
+
+	public void setDeckLength1(int deckLength1) {
+		this.deckLength1 = deckLength1;
+	}
+
+	public int getHoleAngle() {
+		return holeAngle;
+	}
+
+	public void setHoleAngle(int holeAngle) {
+		this.holeAngle = holeAngle;
+	}
+
+	public int getDesignId() {
+		return designId;
+	}
+
+	public void setDesignId(int designId) {
+		this.designId = designId;
+	}
+
+	public int getDeckStartAt2() {
+		return deckStartAt2;
+	}
+
+	public void setDeckStartAt2(int deckStartAt2) {
+		this.deckStartAt2 = deckStartAt2;
+	}
+
+	public int getDeckStartAt3() {
+		return deckStartAt3;
+	}
+
+	public void setDeckStartAt3(int deckStartAt3) {
+		this.deckStartAt3 = deckStartAt3;
+	}
+
+	public int getDeckStartAt1() {
+		return deckStartAt1;
+	}
+
+	public void setDeckStartAt1(int deckStartAt1) {
+		this.deckStartAt1 = deckStartAt1;
+	}
+
+	public int getDeckStartAt4() {
+		return deckStartAt4;
+	}
+
+	public void setDeckStartAt4(int deckStartAt4) {
+		this.deckStartAt4 = deckStartAt4;
+	}
+
+	public int getDeckStartAt5() {
+		return deckStartAt5;
+	}
+
+	public void setDeckStartAt5(int deckStartAt5) {
+		this.deckStartAt5 = deckStartAt5;
+	}
+
+	public int getBasePercent1() {
+		return basePercent1;
+	}
+
+	public void setBasePercent1(int basePercent1) {
+		this.basePercent1 = basePercent1;
+	}
+
+	public int getBasePercent2() {
+		return basePercent2;
+	}
+
+	public void setBasePercent2(int basePercent2) {
+		this.basePercent2 = basePercent2;
+	}
+
+	public int getBasePercent3() {
+		return basePercent3;
+	}
+
+	public void setBasePercent3(int basePercent3) {
+		this.basePercent3 = basePercent3;
+	}
+
+	public int getIsvisible2() {
+		return isvisible2;
+	}
+
+	public void setIsvisible2(int isvisible2) {
+		this.isvisible2 = isvisible2;
+	}
+
+	public Object getIsvisible1() {
+		return isvisible1;
+	}
+
+	public void setIsvisible1(Object isvisible1) {
+		this.isvisible1 = isvisible1;
+	}
+
+	public Object getLicenseMagzine21() {
+		return licenseMagzine21;
+	}
+
+	public void setLicenseMagzine21(Object licenseMagzine21) {
+		this.licenseMagzine21 = licenseMagzine21;
+	}
+
+	public String getBsterName() {
+		return bsterName;
+	}
+
+	public void setBsterName(String bsterName) {
+		this.bsterName = bsterName;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public String getLicenseMagzine2() {
+		return licenseMagzine2;
+	}
+
+	public void setLicenseMagzine2(String licenseMagzine2) {
+		this.licenseMagzine2 = licenseMagzine2;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public String getLicenseMagzine22() {
+		return licenseMagzine22;
+	}
+
+	public void setLicenseMagzine22(String licenseMagzine22) {
+		this.licenseMagzine22 = licenseMagzine22;
+	}
+
+	public String getLicenseMagzine1() {
+		return licenseMagzine1;
+	}
+
+	public void setLicenseMagzine1(String licenseMagzine1) {
+		this.licenseMagzine1 = licenseMagzine1;
+	}
+
+	public int getBsterId() {
+		return bsterId;
+	}
+
+	public void setBsterId(int bsterId) {
+		this.bsterId = bsterId;
+	}
+
+	public Object getMag1Unit1() {
+		return mag1Unit1;
+	}
+
+	public void setMag1Unit1(Object mag1Unit1) {
+		this.mag1Unit1 = mag1Unit1;
+	}
+
+	public int getSpacing() {
+		return spacing;
+	}
+
+	public void setSpacing(int spacing) {
+		this.spacing = spacing;
+	}
+
+	public int getBtmId() {
+		return btmId;
+	}
+
+	public void setBtmId(int btmId) {
+		this.btmId = btmId;
+	}
+
+	public int getBasePercent4() {
+		return basePercent4;
+	}
+
+	public void setBasePercent4(int basePercent4) {
+		this.basePercent4 = basePercent4;
+	}
+
+	public int getBasePercent5() {
+		return basePercent5;
+	}
+
+	public void setBasePercent5(int basePercent5) {
+		this.basePercent5 = basePercent5;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public Object getRee() {
+		return ree;
+	}
+
+	public void setRee(Object ree) {
+		this.ree = ree;
+	}
+
+	public int getExplosiveDia2() {
+		return explosiveDia2;
+	}
+
+	public void setExplosiveDia2(int explosiveDia2) {
+		this.explosiveDia2 = explosiveDia2;
+	}
+
+	public Object getExplosiveDia1() {
+		return explosiveDia1;
+	}
+
+	public void setExplosiveDia1(Object explosiveDia1) {
+		this.explosiveDia1 = explosiveDia1;
+	}
+
+	public int getExpCode2() {
+		return expCode2;
+	}
+
+	public void setExpCode2(int expCode2) {
+		this.expCode2 = expCode2;
+	}
+
+	public Object getExpCode1() {
+		return expCode1;
+	}
+
+	public void setExpCode1(Object expCode1) {
+		this.expCode1 = expCode1;
+	}
+
+	public int getMag1Unit2() {
+		return mag1Unit2;
+	}
+
+	public void setMag1Unit2(int mag1Unit2) {
+		this.mag1Unit2 = mag1Unit2;
+	}
+
+	public Object getColLength() {
+		return colLength;
+	}
+
+	public void setColLength(Object colLength) {
+		this.colLength = colLength;
+	}
+
+	public Object getUnitCost1() {
+		return unitCost1;
+	}
+
+	public void setUnitCost1(Object unitCost1) {
+		this.unitCost1 = unitCost1;
+	}
+
+	public int getColId() {
+		return colId;
+	}
+
+	public void setColId(int colId) {
+		this.colId = colId;
+	}
+
+	public Object getUnitCost2() {
+		return unitCost2;
+	}
+
+	public void setUnitCost2(Object unitCost2) {
+		this.unitCost2 = unitCost2;
+	}
+
+	public Object getStemLngth() {
+		return stemLngth;
+	}
+
+	public void setStemLngth(Object stemLngth) {
+		this.stemLngth = stemLngth;
+	}
+
+	public int getHoleDiameter() {
+		return holeDiameter;
+	}
+
+	public void setHoleDiameter(int holeDiameter) {
+		this.holeDiameter = holeDiameter;
+	}
+
+	public int getExplosiveDia() {
+		return explosiveDia;
+	}
+
+	public void setExplosiveDia(int explosiveDia) {
+		this.explosiveDia = explosiveDia;
+	}
+
+	public Object getMake1() {
+		return make1;
+	}
+
+	public void setMake1(Object make1) {
+		this.make1 = make1;
+	}
+
+	public Object getDensity1() {
+		return density1;
+	}
+
+	public void setDensity1(Object density1) {
+		this.density1 = density1;
+	}
+
+	public int getHoleDepth() {
+		return holeDepth;
+	}
+
+	public void setHoleDepth(int holeDepth) {
+		this.holeDepth = holeDepth;
+	}
+
+	public Object getDensity2() {
+		return density2;
+	}
+
+	public void setDensity2(Object density2) {
+		this.density2 = density2;
+	}
+
+	public int getCostUnit2() {
+		return costUnit2;
+	}
+
+	public void setCostUnit2(int costUnit2) {
+		this.costUnit2 = costUnit2;
+	}
+
+	public Object getCostUnit1() {
+		return costUnit1;
+	}
+
+	public void setCostUnit1(Object costUnit1) {
+		this.costUnit1 = costUnit1;
+	}
+
+	public int getDelay() {
+		return delay;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+
+	public String getMake2() {
+		return make2;
+	}
+
+	public void setMake2(String make2) {
+		this.make2 = make2;
+	}
+
+	public Object getMag1Class1() {
+		return mag1Class1;
+	}
+
+	public void setMag1Class1(Object mag1Class1) {
+		this.mag1Class1 = mag1Class1;
+	}
+
+	public int getMag1Unit() {
+		return mag1Unit;
+	}
+
+	public void setMag1Unit(int mag1Unit) {
+		this.mag1Unit = mag1Unit;
+	}
+
+	public int getExpCode() {
+		return expCode;
+	}
+
+	public void setExpCode(int expCode) {
+		this.expCode = expCode;
+	}
+
+	public int getCostUnit() {
+		return costUnit;
+	}
+
+	public void setCostUnit(int costUnit) {
+		this.costUnit = costUnit;
+	}
+
+	public int getMag1Class2() {
+		return mag1Class2;
+	}
+
+	public void setMag1Class2(int mag1Class2) {
+		this.mag1Class2 = mag1Class2;
+	}
+
+	public Object getName1() {
+		return name1;
+	}
+
+	public void setName1(Object name1) {
+		this.name1 = name1;
+	}
+
+	public String getName2() {
+		return name2;
+	}
+
+	public void setName2(String name2) {
+		this.name2 = name2;
+	}
+
+	public int getBtmWt() {
+		return btmWt;
+	}
+
+	public void setBtmWt(int btmWt) {
+		this.btmWt = btmWt;
+	}
+
+	public int getDipAzimuthError() {
+		return dipAzimuthError;
+	}
+
+	public void setDipAzimuthError(int dipAzimuthError) {
+		this.dipAzimuthError = dipAzimuthError;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public Object getvOD() {
+		return vOD;
+	}
+
+	public void setvOD(Object vOD) {
+		this.vOD = vOD;
+	}
+
+	public int getRowNo() {
+		return rowNo;
+	}
+
+	public void setRowNo(int rowNo) {
+		this.rowNo = rowNo;
+	}
+
+	public Object getClass1() {
+		return class1;
+	}
+
+	public void setClass1(Object class1) {
+		this.class1 = class1;
+	}
+
+	public Object getExpType1() {
+		return expType1;
+	}
+
+	public void setExpType1(Object expType1) {
+		this.expType1 = expType1;
+	}
+
+	public String getClass2() {
+		return class2;
+	}
+
+	public void setClass2(String class2) {
+		this.class2 = class2;
+	}
+
+	public int getExpType2() {
+		return expType2;
+	}
+
+	public void setExpType2(int expType2) {
+		this.expType2 = expType2;
+	}
+
+	public String getCompanyID2() {
+		return companyID2;
+	}
+
+	public void setCompanyID2(String companyID2) {
+		this.companyID2 = companyID2;
+	}
+
+	public Object getMag2Unit1() {
+		return mag2Unit1;
+	}
+
+	public void setMag2Unit1(Object mag2Unit1) {
+		this.mag2Unit1 = mag2Unit1;
+	}
+
+	public Object getCompanyID1() {
+		return companyID1;
+	}
+
+	public void setCompanyID1(Object companyID1) {
+		this.companyID1 = companyID1;
+	}
+
+	public int getMag1Class() {
+		return mag1Class;
+	}
+
+	public void setMag1Class(int mag1Class) {
+		this.mag1Class = mag1Class;
+	}
+
+	public int getMag2Unit2() {
+		return mag2Unit2;
+	}
+
+	public void setMag2Unit2(int mag2Unit2) {
+		this.mag2Unit2 = mag2Unit2;
+	}
+
+	public int getNoOfDecks() {
+		return noOfDecks;
+	}
+
+	public void setNoOfDecks(int noOfDecks) {
+		this.noOfDecks = noOfDecks;
+	}
+
+	public Object getColWt() {
+		return colWt;
+	}
+
+	public void setColWt(Object colWt) {
+		this.colWt = colWt;
+	}
+
+	public int getrRDelay() {
+		return rRDelay;
+	}
+
+	public void setrRDelay(int rRDelay) {
+		this.rRDelay = rRDelay;
+	}
+
+	public Object getBlock() {
+		return block;
+	}
+
+	public void setBlock(Object block) {
+		this.block = block;
+	}
+
+	public String getClassStr() {
+		return classStr;
+	}
+
+	public void setClassStr(String classStr) {
+		this.classStr = classStr;
+	}
+
+	public int getType2() {
+		return type2;
+	}
+
+	public void setType2(int type2) {
+		this.type2 = type2;
+	}
+
+	public String getColName() {
+		return colName;
+	}
+
+	public void setColName(String colName) {
+		this.colName = colName;
+	}
+
+	public Object getvOD1() {
+		return vOD1;
+	}
+
+	public void setvOD1(Object vOD1) {
+		this.vOD1 = vOD1;
+	}
+
+	public Object getType1() {
+		return type1;
+	}
+
+	public void setType1(Object type1) {
+		this.type1 = type1;
+	}
+
+	public Object getvOD2() {
+		return vOD2;
+	}
+
+	public void setvOD2(Object vOD2) {
+		this.vOD2 = vOD2;
+	}
+
+	public int getBsterLength() {
+		return bsterLength;
+	}
+
+	public void setBsterLength(int bsterLength) {
+		this.bsterLength = bsterLength;
+	}
+
+	public Object getBlockStartAt() {
+		return blockStartAt;
+	}
+
+	public void setBlockStartAt(Object blockStartAt) {
+		this.blockStartAt = blockStartAt;
+	}
+
+	public String getHoleID() {
+		return holeID;
+	}
+
+	public void setHoleID(String holeID) {
+		this.holeID = holeID;
+	}
+
+	public Object getMagazine11() {
+		return magazine11;
+	}
+
+	public void setMagazine11(Object magazine11) {
+		this.magazine11 = magazine11;
+	}
+
+	public int getInHoleDelay() {
+		return inHoleDelay;
+	}
+
+	public void setInHoleDelay(int inHoleDelay) {
+		this.inHoleDelay = inHoleDelay;
+	}
+
+	public String getMagazine12() {
+		return magazine12;
+	}
+
+	public void setMagazine12(String magazine12) {
+		this.magazine12 = magazine12;
+	}
+
+	public Object getUserID1() {
+		return userID1;
+	}
+
+	public void setUserID1(Object userID1) {
+		this.userID1 = userID1;
+	}
+
+	public Object getRee1() {
+		return ree1;
+	}
+
+	public void setRee1(Object ree1) {
+		this.ree1 = ree1;
+	}
+
+	public String getUserID2() {
+		return userID2;
+	}
+
+	public void setUserID2(String userID2) {
+		this.userID2 = userID2;
+	}
+
+	public int getVerticalDipError() {
+		return verticalDipError;
+	}
+
+	public void setVerticalDipError(int verticalDipError) {
+		this.verticalDipError = verticalDipError;
+	}
+
+	public int getSubgrade() {
+		return subgrade;
+	}
+
+	public void setSubgrade(int subgrade) {
+		this.subgrade = subgrade;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public int getMag2Class() {
+		return mag2Class;
+	}
+
+	public void setMag2Class(int mag2Class) {
+		this.mag2Class = mag2Class;
+	}
+
+	public int gethHDelay() {
+		return hHDelay;
+	}
+
+	public void sethHDelay(int hHDelay) {
+		this.hHDelay = hHDelay;
+	}
+
+	public int getHoleNo() {
+		return holeNo;
+	}
+
+	public void setHoleNo(int holeNo) {
+		this.holeNo = holeNo;
+	}
+
+	public String getColor2() {
+		return color2;
+	}
+
+	public void setColor2(String color2) {
+		this.color2 = color2;
+	}
+
+	public Object getColor1() {
+		return color1;
+	}
+
+	public void setColor1(Object color1) {
+		this.color1 = color1;
+	}
+
+	public String getTieLineId() {
+		return tieLineId;
+	}
+
+	public void setTieLineId(String tieLineId) {
+		this.tieLineId = tieLineId;
+	}
+
+	public String getMagazine22() {
+		return magazine22;
+	}
+
+	public void setMagazine22(String magazine22) {
+		this.magazine22 = magazine22;
+	}
+
+	public Object getUnitCost() {
+		return unitCost;
+	}
+
+	public void setUnitCost(Object unitCost) {
+		this.unitCost = unitCost;
+	}
+
+	public int getExpType() {
+		return expType;
+	}
+
+	public void setExpType(int expType) {
+		this.expType = expType;
+	}
+
+	public Object getMag2Class1() {
+		return mag2Class1;
+	}
+
+	public void setMag2Class1(Object mag2Class1) {
+		this.mag2Class1 = mag2Class1;
+	}
+
+	public int getMag2Class2() {
+		return mag2Class2;
+	}
+
+	public void setMag2Class2(int mag2Class2) {
+		this.mag2Class2 = mag2Class2;
+	}
+
+	public Object getMagazine21() {
+		return magazine21;
+	}
+
+	public void setMagazine21(Object magazine21) {
+		this.magazine21 = magazine21;
+	}
+
+	public int getDrillX() {
+		return drillX;
+	}
+
+	public void setDrillX(int drillX) {
+		this.drillX = drillX;
+	}
+
+	public int getDrillY() {
+		return drillY;
+	}
+
+	public void setDrillY(int drillY) {
+		this.drillY = drillY;
+	}
+
+	public void setGeoStru(String geoStru){
+		this.geoStru = geoStru;
+	}
+
+	public String getGeoStru(){
+		return geoStru;
+	}
+
 	public void setCompanyID(String companyID){
 		this.companyID = companyID;
 	}
@@ -408,36 +1509,36 @@ public class Table2Item{
 		return companyID;
 	}
 
-	public void setInHoleDelayQty(int inHoleDelayQty){
-		this.inHoleDelayQty = inHoleDelayQty;
+	public void setUnitBlastingCost(Object unitBlastingCost){
+		this.unitBlastingCost = unitBlastingCost;
 	}
 
-	public int getInHoleDelayQty(){
-		return inHoleDelayQty;
+	public Object getUnitBlastingCost(){
+		return unitBlastingCost;
 	}
 
-	public void setMagazine2(String magazine2){
-		this.magazine2 = magazine2;
+	public void setUndersize(Object undersize){
+		this.undersize = undersize;
 	}
 
-	public String getMagazine2(){
-		return magazine2;
+	public Object getUndersize(){
+		return undersize;
 	}
 
-	public void setMagazine1(String magazine1){
-		this.magazine1 = magazine1;
+	public void setMuckForwardDistance(Object muckForwardDistance){
+		this.muckForwardDistance = muckForwardDistance;
 	}
 
-	public String getMagazine1(){
-		return magazine1;
+	public Object getMuckForwardDistance(){
+		return muckForwardDistance;
 	}
 
-	public void setBurden(int burden){
-		this.burden = burden;
+	public void setBlastingQuality(Object blastingQuality){
+		this.blastingQuality = blastingQuality;
 	}
 
-	public int getBurden(){
-		return burden;
+	public Object getBlastingQuality(){
+		return blastingQuality;
 	}
 
 	public void setDensity(Object density){
@@ -448,540 +1549,28 @@ public class Table2Item{
 		return density;
 	}
 
-	public void setHoleType(int holeType){
-		this.holeType = holeType;
-	}
-
-	public int getHoleType(){
-		return holeType;
-	}
-
-	public void setBtmName(Object btmName){
-		this.btmName = btmName;
-	}
-
-	public Object getBtmName(){
-		return btmName;
-	}
-
-	public void setComment1(Object comment1){
-		this.comment1 = comment1;
-	}
-
-	public Object getComment1(){
-		return comment1;
-	}
-
-	public void setMag2Unit(int mag2Unit){
-		this.mag2Unit = mag2Unit;
-	}
-
-	public int getMag2Unit(){
-		return mag2Unit;
-	}
-
-	public void setComment2(String comment2){
-		this.comment2 = comment2;
-	}
-
-	public String getComment2(){
-		return comment2;
-	}
-
-	public void setVerticalDip(int verticalDip){
-		this.verticalDip = verticalDip;
-	}
-
-	public int getVerticalDip(){
-		return verticalDip;
-	}
-
-	public void setBtmLength(int btmLength){
-		this.btmLength = btmLength;
-	}
-
-	public int getBtmLength(){
-		return btmLength;
-	}
-
-	public void setRee2(Object ree2){
-		this.ree2 = ree2;
-	}
-
-	public Object getRee2(){
-		return ree2;
-	}
-
-	public void setBsterWt(int bsterWt){
-		this.bsterWt = bsterWt;
-	}
-
-	public int getBsterWt(){
-		return bsterWt;
-	}
-
-	public void setMake(String make){
-		this.make = make;
-	}
-
-	public String getMake(){
-		return make;
-	}
-
-	public void setDipAzimuth(int dipAzimuth){
-		this.dipAzimuth = dipAzimuth;
-	}
-
-	public int getDipAzimuth(){
-		return dipAzimuth;
-	}
-
-	public void setLicenseMagzine12(String licenseMagzine12){
-		this.licenseMagzine12 = licenseMagzine12;
-	}
-
-	public String getLicenseMagzine12(){
-		return licenseMagzine12;
-	}
-
-	public void setDeckLength5(int deckLength5){
-		this.deckLength5 = deckLength5;
-	}
-
-	public int getDeckLength5(){
-		return deckLength5;
-	}
-
-	public void setLicenseMagzine11(Object licenseMagzine11){
-		this.licenseMagzine11 = licenseMagzine11;
-	}
-
-	public Object getLicenseMagzine11(){
-		return licenseMagzine11;
-	}
-
-	public void setDeckLength4(int deckLength4){
-		this.deckLength4 = deckLength4;
-	}
-
-	public int getDeckLength4(){
-		return deckLength4;
-	}
-
-	public void setWaterDepth(int waterDepth){
-		this.waterDepth = waterDepth;
-	}
-
-	public int getWaterDepth(){
-		return waterDepth;
-	}
-
-	public void setDeckLength3(int deckLength3){
-		this.deckLength3 = deckLength3;
-	}
-
-	public int getDeckLength3(){
-		return deckLength3;
-	}
-
-	public void setDeckLength2(int deckLength2){
-		this.deckLength2 = deckLength2;
-	}
-
-	public int getDeckLength2(){
-		return deckLength2;
-	}
-
-	public void setDeckLength1(int deckLength1){
-		this.deckLength1 = deckLength1;
-	}
-
-	public int getDeckLength1(){
-		return deckLength1;
-	}
-
-	public void setHoleAngle(int holeAngle){
-		this.holeAngle = holeAngle;
-	}
-
-	public int getHoleAngle(){
-		return holeAngle;
-	}
-
-	public void setDesignId(int designId){
-		this.designId = designId;
-	}
-
-	public int getDesignId(){
-		return designId;
-	}
-
-	public void setDeckStartAt2(int deckStartAt2){
-		this.deckStartAt2 = deckStartAt2;
-	}
-
-	public int getDeckStartAt2(){
-		return deckStartAt2;
-	}
-
-	public void setDeckStartAt3(int deckStartAt3){
-		this.deckStartAt3 = deckStartAt3;
-	}
-
-	public int getDeckStartAt3(){
-		return deckStartAt3;
-	}
-
-	public void setDeckStartAt1(int deckStartAt1){
-		this.deckStartAt1 = deckStartAt1;
-	}
-
-	public int getDeckStartAt1(){
-		return deckStartAt1;
-	}
-
-	public void setDeckStartAt4(int deckStartAt4){
-		this.deckStartAt4 = deckStartAt4;
-	}
-
-	public int getDeckStartAt4(){
-		return deckStartAt4;
-	}
-
-	public void setDeckStartAt5(int deckStartAt5){
-		this.deckStartAt5 = deckStartAt5;
-	}
-
-	public int getDeckStartAt5(){
-		return deckStartAt5;
-	}
-
-	public void setBasePercent1(int basePercent1){
-		this.basePercent1 = basePercent1;
-	}
-
-	public int getBasePercent1(){
-		return basePercent1;
-	}
-
-	public void setBasePercent2(int basePercent2){
-		this.basePercent2 = basePercent2;
-	}
-
-	public int getBasePercent2(){
-		return basePercent2;
-	}
-
-	public void setBasePercent3(int basePercent3){
-		this.basePercent3 = basePercent3;
-	}
-
-	public int getBasePercent3(){
-		return basePercent3;
-	}
-
-	public void setIsvisible2(int isvisible2){
-		this.isvisible2 = isvisible2;
-	}
-
-	public int getIsvisible2(){
-		return isvisible2;
-	}
-
-	public void setIsvisible1(Object isvisible1){
-		this.isvisible1 = isvisible1;
-	}
-
-	public Object getIsvisible1(){
-		return isvisible1;
-	}
-
-	public void setLicenseMagzine21(Object licenseMagzine21){
-		this.licenseMagzine21 = licenseMagzine21;
-	}
-
-	public Object getLicenseMagzine21(){
-		return licenseMagzine21;
-	}
-
-	public void setBsterName(String bsterName){
-		this.bsterName = bsterName;
-	}
-
-	public String getBsterName(){
-		return bsterName;
-	}
-
-	public void setX(int x){
-		this.x = x;
-	}
-
-	public int getX(){
-		return x;
-	}
-
-	public void setLicenseMagzine2(String licenseMagzine2){
-		this.licenseMagzine2 = licenseMagzine2;
-	}
-
-	public String getLicenseMagzine2(){
-		return licenseMagzine2;
-	}
-
-	public void setY(int y){
-		this.y = y;
-	}
-
-	public int getY(){
-		return y;
-	}
-
-	public void setLicenseMagzine22(String licenseMagzine22){
-		this.licenseMagzine22 = licenseMagzine22;
-	}
-
-	public String getLicenseMagzine22(){
-		return licenseMagzine22;
-	}
-
-	public void setLicenseMagzine1(String licenseMagzine1){
-		this.licenseMagzine1 = licenseMagzine1;
-	}
-
-	public String getLicenseMagzine1(){
-		return licenseMagzine1;
-	}
-
-	public void setBsterId(int bsterId){
-		this.bsterId = bsterId;
-	}
-
-	public int getBsterId(){
-		return bsterId;
-	}
-
-	public void setMag1Unit1(Object mag1Unit1){
-		this.mag1Unit1 = mag1Unit1;
-	}
-
-	public Object getMag1Unit1(){
-		return mag1Unit1;
-	}
-
-	public void setSpacing(int spacing){
-		this.spacing = spacing;
-	}
-
-	public int getSpacing(){
-		return spacing;
-	}
-
-	public void setBtmId(int btmId){
-		this.btmId = btmId;
-	}
-
-	public int getBtmId(){
-		return btmId;
-	}
-
-	public void setBasePercent4(int basePercent4){
-		this.basePercent4 = basePercent4;
-	}
-
-	public int getBasePercent4(){
-		return basePercent4;
-	}
-
-	public void setBasePercent5(int basePercent5){
-		this.basePercent5 = basePercent5;
-	}
-
-	public int getBasePercent5(){
-		return basePercent5;
-	}
-
-	public void setType(int type){
-		this.type = type;
-	}
-
-	public int getType(){
-		return type;
-	}
-
-	public void setRee(Object ree){
-		this.ree = ree;
-	}
-
-	public Object getRee(){
-		return ree;
-	}
-
-	public void setExplosiveDia2(int explosiveDia2){
-		this.explosiveDia2 = explosiveDia2;
-	}
-
-	public int getExplosiveDia2(){
-		return explosiveDia2;
-	}
-
-	public void setExplosiveDia1(Object explosiveDia1){
-		this.explosiveDia1 = explosiveDia1;
-	}
-
-	public Object getExplosiveDia1(){
-		return explosiveDia1;
-	}
-
-	public void setExpCode2(int expCode2){
-		this.expCode2 = expCode2;
-	}
-
-	public int getExpCode2(){
-		return expCode2;
-	}
-
-	public void setExpCode1(Object expCode1){
-		this.expCode1 = expCode1;
-	}
-
-	public Object getExpCode1(){
-		return expCode1;
-	}
-
-	public void setMag1Unit2(int mag1Unit2){
-		this.mag1Unit2 = mag1Unit2;
-	}
-
-	public int getMag1Unit2(){
-		return mag1Unit2;
-	}
-
-	public void setColLength(Object colLength){
-		this.colLength = colLength;
-	}
-
-	public Object getColLength(){
-		return colLength;
-	}
-
-	public void setUnitCost1(Object unitCost1){
-		this.unitCost1 = unitCost1;
-	}
-
-	public Object getUnitCost1(){
-		return unitCost1;
-	}
-
-	public void setColId(int colId){
-		this.colId = colId;
-	}
-
-	public int getColId(){
-		return colId;
-	}
-
-	public void setUnitCost2(Object unitCost2){
-		this.unitCost2 = unitCost2;
-	}
-
-	public Object getUnitCost2(){
-		return unitCost2;
-	}
-
-	public void setStemLngth(Object stemLngth){
-		this.stemLngth = stemLngth;
-	}
-
-	public Object getStemLngth(){
-		return stemLngth;
-	}
-
-	public void setHoleDiameter(int holeDiameter){
-		this.holeDiameter = holeDiameter;
-	}
-
-	public int getHoleDiameter(){
-		return holeDiameter;
-	}
-
-	public void setExplosiveDia(int explosiveDia){
-		this.explosiveDia = explosiveDia;
-	}
-
-	public int getExplosiveDia(){
-		return explosiveDia;
-	}
-
-	public void setMake1(Object make1){
-		this.make1 = make1;
-	}
-
-	public Object getMake1(){
-		return make1;
-	}
-
-	public void setDensity1(Object density1){
-		this.density1 = density1;
-	}
-
-	public Object getDensity1(){
-		return density1;
-	}
-
-	public void setHoleDepth(int holeDepth){
-		this.holeDepth = holeDepth;
-	}
-
-	public int getHoleDepth(){
-		return holeDepth;
-	}
-
-	public void setDensity2(Object density2){
-		this.density2 = density2;
-	}
-
-	public Object getDensity2(){
-		return density2;
-	}
-
-	public void setCostUnit2(int costUnit2){
-		this.costUnit2 = costUnit2;
-	}
-
-	public int getCostUnit2(){
-		return costUnit2;
-	}
-
-	public void setCostUnit1(Object costUnit1){
-		this.costUnit1 = costUnit1;
-	}
-
-	public Object getCostUnit1(){
-		return costUnit1;
-	}
-
-	public void setDelay(int delay){
-		this.delay = delay;
-	}
-
-	public int getDelay(){
-		return delay;
-	}
-
-	public void setMake2(String make2){
-		this.make2 = make2;
-	}
-
-	public String getMake2(){
-		return make2;
-	}
-
 	public void setName(String name){
 		this.name = name;
 	}
 
 	public String getName(){
 		return name;
+	}
+
+	public void setGroundVibration(Object groundVibration){
+		this.groundVibration = groundVibration;
+	}
+
+	public Object getGroundVibration(){
+		return groundVibration;
+	}
+
+	public void setBoulderYield(Object boulderYield){
+		this.boulderYield = boulderYield;
+	}
+
+	public Object getBoulderYield(){
+		return boulderYield;
 	}
 
 	public void setIsvisible(int isvisible){
@@ -992,302 +1581,6 @@ public class Table2Item{
 		return isvisible;
 	}
 
-	public void setMag1Class1(Object mag1Class1){
-		this.mag1Class1 = mag1Class1;
-	}
-
-	public Object getMag1Class1(){
-		return mag1Class1;
-	}
-
-	public void setMag1Unit(int mag1Unit){
-		this.mag1Unit = mag1Unit;
-	}
-
-	public int getMag1Unit(){
-		return mag1Unit;
-	}
-
-	public void setExpCode(int expCode){
-		this.expCode = expCode;
-	}
-
-	public int getExpCode(){
-		return expCode;
-	}
-
-	public void setCostUnit(int costUnit){
-		this.costUnit = costUnit;
-	}
-
-	public int getCostUnit(){
-		return costUnit;
-	}
-
-	public void setMag1Class2(int mag1Class2){
-		this.mag1Class2 = mag1Class2;
-	}
-
-	public int getMag1Class2(){
-		return mag1Class2;
-	}
-
-	public void setName1(Object name1){
-		this.name1 = name1;
-	}
-
-	public Object getName1(){
-		return name1;
-	}
-
-	public void setName2(String name2){
-		this.name2 = name2;
-	}
-
-	public String getName2(){
-		return name2;
-	}
-
-	public void setBtmWt(int btmWt){
-		this.btmWt = btmWt;
-	}
-
-	public int getBtmWt(){
-		return btmWt;
-	}
-
-	public void setDipAzimuthError(int dipAzimuthError){
-		this.dipAzimuthError = dipAzimuthError;
-	}
-
-	public int getDipAzimuthError(){
-		return dipAzimuthError;
-	}
-
-	public void setColor(String color){
-		this.color = color;
-	}
-
-	public String getColor(){
-		return color;
-	}
-
-	public void setVOD(Object vOD){
-		this.vOD = vOD;
-	}
-
-	public Object getVOD(){
-		return vOD;
-	}
-
-	public void setRowNo(int rowNo){
-		this.rowNo = rowNo;
-	}
-
-	public int getRowNo(){
-		return rowNo;
-	}
-
-	public void setClass1(Object class1){
-		this.class1 = class1;
-	}
-
-	public Object getClass1(){
-		return class1;
-	}
-
-	public void setExpType1(Object expType1){
-		this.expType1 = expType1;
-	}
-
-	public Object getExpType1(){
-		return expType1;
-	}
-
-	public void setClass2(String class2){
-		this.class2 = class2;
-	}
-
-	public String getClass2(){
-		return class2;
-	}
-
-	public void setExpType2(int expType2){
-		this.expType2 = expType2;
-	}
-
-	public int getExpType2(){
-		return expType2;
-	}
-
-	public void setCompanyID2(String companyID2){
-		this.companyID2 = companyID2;
-	}
-
-	public String getCompanyID2(){
-		return companyID2;
-	}
-
-	public void setMag2Unit1(Object mag2Unit1){
-		this.mag2Unit1 = mag2Unit1;
-	}
-
-	public Object getMag2Unit1(){
-		return mag2Unit1;
-	}
-
-	public void setCompanyID1(Object companyID1){
-		this.companyID1 = companyID1;
-	}
-
-	public Object getCompanyID1(){
-		return companyID1;
-	}
-
-	public void setMag1Class(int mag1Class){
-		this.mag1Class = mag1Class;
-	}
-
-	public int getMag1Class(){
-		return mag1Class;
-	}
-
-	public void setMag2Unit2(int mag2Unit2){
-		this.mag2Unit2 = mag2Unit2;
-	}
-
-	public int getMag2Unit2(){
-		return mag2Unit2;
-	}
-
-	public void setNoOfDecks(int noOfDecks){
-		this.noOfDecks = noOfDecks;
-	}
-
-	public int getNoOfDecks(){
-		return noOfDecks;
-	}
-
-	public void setColWt(Object colWt){
-		this.colWt = colWt;
-	}
-
-	public Object getColWt(){
-		return colWt;
-	}
-
-	public void setRRDelay(int rRDelay){
-		this.rRDelay = rRDelay;
-	}
-
-	public int getRRDelay(){
-		return rRDelay;
-	}
-
-	public void setBlock(Object block){
-		this.block = block;
-	}
-
-	public Object getBlock(){
-		return block;
-	}
-
-	public void setClassStr(String classStr){
-		this.classStr = classStr;
-	}
-
-	public String getClassStr(){
-		return classStr;
-	}
-
-	public void setType2(int type2){
-		this.type2 = type2;
-	}
-
-	public int getType2(){
-		return type2;
-	}
-
-	public void setColName(String colName){
-		this.colName = colName;
-	}
-
-	public String getColName(){
-		return colName;
-	}
-
-	public void setVOD1(Object vOD1){
-		this.vOD1 = vOD1;
-	}
-
-	public Object getVOD1(){
-		return vOD1;
-	}
-
-	public void setType1(Object type1){
-		this.type1 = type1;
-	}
-
-	public Object getType1(){
-		return type1;
-	}
-
-	public void setVOD2(Object vOD2){
-		this.vOD2 = vOD2;
-	}
-
-	public Object getVOD2(){
-		return vOD2;
-	}
-
-	public void setBsterLength(int bsterLength){
-		this.bsterLength = bsterLength;
-	}
-
-	public int getBsterLength(){
-		return bsterLength;
-	}
-
-	public void setBlockStartAt(Object blockStartAt){
-		this.blockStartAt = blockStartAt;
-	}
-
-	public Object getBlockStartAt(){
-		return blockStartAt;
-	}
-
-	public void setHoleID(String holeID){
-		this.holeID = holeID;
-	}
-
-	public String getHoleID(){
-		return holeID;
-	}
-
-	public void setMagazine11(Object magazine11){
-		this.magazine11 = magazine11;
-	}
-
-	public Object getMagazine11(){
-		return magazine11;
-	}
-
-	public void setInHoleDelay(int inHoleDelay){
-		this.inHoleDelay = inHoleDelay;
-	}
-
-	public int getInHoleDelay(){
-		return inHoleDelay;
-	}
-
-	public void setMagazine12(String magazine12){
-		this.magazine12 = magazine12;
-	}
-
-	public String getMagazine12(){
-		return magazine12;
-	}
-
 	public void setUserID(String userID){
 		this.userID = userID;
 	}
@@ -1296,163 +1589,147 @@ public class Table2Item{
 		return userID;
 	}
 
-	public void setUserID1(Object userID1){
-		this.userID1 = userID1;
+	public void setBlastingSafety(Object blastingSafety){
+		this.blastingSafety = blastingSafety;
 	}
 
-	public Object getUserID1(){
-		return userID1;
+	public Object getBlastingSafety(){
+		return blastingSafety;
 	}
 
-	public void setRee1(Object ree1){
-		this.ree1 = ree1;
+	public void setStdDev(Object stdDev){
+		this.stdDev = stdDev;
 	}
 
-	public Object getRee1(){
-		return ree1;
+	public Object getStdDev(){
+		return stdDev;
 	}
 
-	public void setUserID2(String userID2){
-		this.userID2 = userID2;
+	public void setDesiredFragmentationPercentage(Object desiredFragmentationPercentage){
+		this.desiredFragmentationPercentage = desiredFragmentationPercentage;
 	}
 
-	public String getUserID2(){
-		return userID2;
+	public Object getDesiredFragmentationPercentage(){
+		return desiredFragmentationPercentage;
 	}
 
-	public void setVerticalDipError(int verticalDipError){
-		this.verticalDipError = verticalDipError;
+	public void setB(Object b){
+		this.b = b;
 	}
 
-	public int getVerticalDipError(){
-		return verticalDipError;
+	public Object getB(){
+		return b;
 	}
 
-	public void setSubgrade(int subgrade){
-		this.subgrade = subgrade;
+	public void setFloorCondition(Object floorCondition){
+		this.floorCondition = floorCondition;
 	}
 
-	public int getSubgrade(){
-		return subgrade;
+	public Object getFloorCondition(){
+		return floorCondition;
 	}
 
-	public void setComment(String comment){
-		this.comment = comment;
+	public void setAirVibration(Object airVibration){
+		this.airVibration = airVibration;
 	}
 
-	public String getComment(){
-		return comment;
+	public Object getAirVibration(){
+		return airVibration;
 	}
 
-	public void setMag2Class(int mag2Class){
-		this.mag2Class = mag2Class;
+	public void setFlyrock(Object flyrock){
+		this.flyrock = flyrock;
 	}
 
-	public int getMag2Class(){
-		return mag2Class;
+	public Object getFlyrock(){
+		return flyrock;
 	}
 
-	public void setHHDelay(int hHDelay){
-		this.hHDelay = hHDelay;
+	public void setBlastingCost(Object blastingCost){
+		this.blastingCost = blastingCost;
 	}
 
-	public int getHHDelay(){
-		return hHDelay;
+	public Object getBlastingCost(){
+		return blastingCost;
 	}
 
-	public void setHoleNo(int holeNo){
-		this.holeNo = holeNo;
+	public void setBackbreak(Object backbreak){
+		this.backbreak = backbreak;
 	}
 
-	public int getHoleNo(){
-		return holeNo;
+	public Object getBackbreak(){
+		return backbreak;
 	}
 
-	public void setColor2(String color2){
-		this.color2 = color2;
+	public void setPitCode(int pitCode){
+		this.pitCode = pitCode;
 	}
 
-	public String getColor2(){
-		return color2;
+	public int getPitCode(){
+		return pitCode;
 	}
 
-	public void setColor1(Object color1){
-		this.color1 = color1;
+	public void setPowderFactor(Object powderFactor){
+		this.powderFactor = powderFactor;
 	}
 
-	public Object getColor1(){
-		return color1;
+	public Object getPowderFactor(){
+		return powderFactor;
 	}
 
-	public void setTieLineId(String tieLineId){
-		this.tieLineId = tieLineId;
+	public void setK(Object k){
+		this.k = k;
 	}
 
-	public String getTieLineId(){
-		return tieLineId;
+	public Object getK(){
+		return k;
 	}
 
-	public void setMagazine22(String magazine22){
-		this.magazine22 = magazine22;
+	public void setCofCor(Object cofCor){
+		this.cofCor = cofCor;
 	}
 
-	public String getMagazine22(){
-		return magazine22;
+	public Object getCofCor(){
+		return cofCor;
 	}
 
-	public void setUnitCost(Object unitCost){
-		this.unitCost = unitCost;
+	public void setMuckpileHeight(Object muckpileHeight){
+		this.muckpileHeight = muckpileHeight;
 	}
 
-	public Object getUnitCost(){
-		return unitCost;
+	public Object getMuckpileHeight(){
+		return muckpileHeight;
 	}
 
-	public void setExpType(int expType){
-		this.expType = expType;
+	public void setDrillFactor(Object drillFactor){
+		this.drillFactor = drillFactor;
 	}
 
-	public int getExpType(){
-		return expType;
+	public Object getDrillFactor(){
+		return drillFactor;
 	}
 
-	public void setMag2Class1(Object mag2Class1){
-		this.mag2Class1 = mag2Class1;
+	public void setZoneCode(int zoneCode){
+		this.zoneCode = zoneCode;
 	}
 
-	public Object getMag2Class1(){
-		return mag2Class1;
+	public int getZoneCode(){
+		return zoneCode;
 	}
 
-	public void setMag2Class2(int mag2Class2){
-		this.mag2Class2 = mag2Class2;
+	public void setBedding(String bedding){
+		this.bedding = bedding;
 	}
 
-	public int getMag2Class2(){
-		return mag2Class2;
+	public String getBedding(){
+		return bedding;
 	}
 
-	public void setMagazine21(Object magazine21){
-		this.magazine21 = magazine21;
+	public void setLocation(String location){
+		this.location = location;
 	}
 
-	public Object getMagazine21(){
-		return magazine21;
-	}
-
-	public void setDrillX(int drillX){
-		this.drillX = drillX;
-	}
-
-	public int getDrillX(){
-		return drillX;
-	}
-
-	public void setDrillY(int drillY){
-		this.drillY = drillY;
-	}
-
-	public int getDrillY(){
-		return drillY;
+	public String getLocation(){
+		return location;
 	}
 }

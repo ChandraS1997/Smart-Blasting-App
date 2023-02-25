@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/_80000000">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/_20sdp"
+            android:background="@color/white">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/head_lay"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:background="@color/_FFA722"
+                android:elevation="@dimen/_3sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingTop="@dimen/_1sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_1sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/closeBtn"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
+                    android:src="@mipmap/ic_close"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/pageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_18ssp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:text="@string/charging_param"
+                    android:fontFamily="@font/inter_bold"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/saveProceedBtn"
+                app:layout_constraintTop_toBottomOf="@id/head_lay">
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/middle_row_parameter_lay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_1sdp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/columnDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/columnName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/column"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_18ssp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerColumn"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:paddingEnd="@dimen/_10sdp"
+                                android:textColor="@color/_414346"
+                                android:textSize="@dimen/_15ssp"
+                                android:inputType="text"
+                                android:background="@drawable/border_edittext_bg"
+                                android:drawableTint="@color/black"
+                                android:fontFamily="@font/inter_semi_bold"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                app:layout_constraintTop_toBottomOf="@id/columnName"/>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/columnDataLthWghtContain"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                app:layout_constraintTop_toBottomOf="@id/spinnerColumn">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/columnLengthContainer"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="@dimen/_4sdp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/colWeightContainer"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/columnLengthTxt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/inter_semi_bold"
+                                        android:text="@string/column_length"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_18ssp"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <EditText
+                                        android:id="@+id/columnLengthEt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_38sdp"
+                                        android:layout_marginTop="@dimen/_4sdp"
+                                        android:textColor="@color/black"
+                                        android:hint="@string/column_length"
+                                        android:fontFamily="@font/inter_regular"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:paddingHorizontal="@dimen/_7sdp"
+                                        android:inputType="numberDecimal"
+                                        android:background="@drawable/border_edittext_bg"
+                                        app:layout_constraintTop_toBottomOf="@id/columnLengthTxt"/>
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/colWeightContainer"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="@dimen/_4sdp"
+                                    app:layout_constraintStart_toEndOf="@id/columnLengthContainer"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/columnWeightTxt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/inter_semi_bold"
+                                        android:text="@string/column_weight"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_18ssp"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <EditText
+                                        android:id="@+id/columnWeightEt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_38sdp"
+                                        android:layout_marginTop="@dimen/_4sdp"
+                                        android:textColor="@color/black"
+                                        android:hint="@string/column_weight"
+                                        android:fontFamily="@font/inter_regular"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:inputType="numberDecimal"
+                                        android:paddingHorizontal="@dimen/_7sdp"
+                                        android:background="@drawable/border_edittext_bg"
+                                        app:layout_constraintTop_toBottomOf="@id/columnWeightTxt"/>
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <View
+                                android:id="@+id/colomnViewLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                app:layout_constraintTop_toBottomOf="@id/columnDataLthWghtContain"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/bottomDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            app:layout_constraintTop_toBottomOf="@id/columnDataContainer">
+
+                            <TextView
+                                android:id="@+id/bottomName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_bold"
+                                android:text="@string/bottom"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_18ssp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerbottom"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:paddingEnd="@dimen/_10sdp"
+                                android:textColor="@color/_414346"
+                                android:textSize="@dimen/_15ssp"
+                                android:inputType="text"
+                                android:background="@drawable/border_edittext_bg"
+                                android:drawableTint="@color/black"
+                                android:fontFamily="@font/inter_semi_bold"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                app:layout_constraintTop_toBottomOf="@id/bottomName"/>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/bottomDataLthWghtContain"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                app:layout_constraintTop_toBottomOf="@id/spinnerbottom">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/bottomLengthContainer"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="@dimen/_4sdp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/bottomWeightContainer"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/bottomLengthTxt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/inter_semi_bold"
+                                        android:text="@string/bottom_length"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_18ssp"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <EditText
+                                        android:id="@+id/bottomLengthEt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_38sdp"
+                                        android:layout_marginTop="@dimen/_4sdp"
+                                        android:textColor="@color/black"
+                                        android:hint="@string/bottom_length"
+                                        android:fontFamily="@font/inter_regular"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:paddingHorizontal="@dimen/_7sdp"
+                                        android:inputType="numberDecimal"
+                                        android:background="@drawable/border_edittext_bg"
+                                        app:layout_constraintTop_toBottomOf="@id/bottomLengthTxt"/>
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/bottomWeightContainer"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="@dimen/_4sdp"
+                                    app:layout_constraintStart_toEndOf="@id/bottomLengthContainer"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/bottomWeightTxt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/inter_semi_bold"
+                                        android:text="@string/bottom_weight"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_18ssp"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <EditText
+                                        android:id="@+id/bottomWeightEt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_38sdp"
+                                        android:layout_marginTop="@dimen/_4sdp"
+                                        android:textColor="@color/black"
+                                        android:hint="@string/bottom_weight"
+                                        android:fontFamily="@font/inter_regular"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:inputType="numberDecimal"
+                                        android:paddingHorizontal="@dimen/_7sdp"
+                                        android:background="@drawable/border_edittext_bg"
+                                        app:layout_constraintTop_toBottomOf="@id/bottomWeightTxt"/>
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <View
+                                android:id="@+id/bottomViewLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                app:layout_constraintTop_toBottomOf="@id/bottomDataLthWghtContain"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/busterDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            app:layout_constraintTop_toBottomOf="@id/bottomDataContainer">
+
+                            <TextView
+                                android:id="@+id/busterName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_bold"
+                                android:text="@string/buster"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_18ssp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerbuster"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:paddingEnd="@dimen/_10sdp"
+                                android:textColor="@color/_414346"
+                                android:textSize="@dimen/_15ssp"
+                                android:inputType="text"
+                                android:background="@drawable/border_edittext_bg"
+                                android:drawableTint="@color/black"
+                                android:fontFamily="@font/inter_semi_bold"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                app:layout_constraintTop_toBottomOf="@id/busterName"/>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/busterDataLthWghtContain"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                app:layout_constraintTop_toBottomOf="@id/spinnerbuster">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/busterLengthContainer"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="@dimen/_4sdp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@id/busterWeightContainer"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/busterLengthTxt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/inter_semi_bold"
+                                        android:text="@string/buster_length"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_18ssp"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <EditText
+                                        android:id="@+id/busterLengthEt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_38sdp"
+                                        android:layout_marginTop="@dimen/_4sdp"
+                                        android:textColor="@color/black"
+                                        android:hint="@string/buster_length"
+                                        android:fontFamily="@font/inter_regular"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:paddingHorizontal="@dimen/_7sdp"
+                                        android:inputType="numberDecimal"
+                                        android:background="@drawable/border_edittext_bg"
+                                        app:layout_constraintTop_toBottomOf="@id/busterLengthTxt"/>
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/busterWeightContainer"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="@dimen/_4sdp"
+                                    app:layout_constraintStart_toEndOf="@id/busterLengthContainer"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <TextView
+                                        android:id="@+id/busterWeightTxt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/inter_semi_bold"
+                                        android:text="@string/bottom_weight"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_18ssp"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <EditText
+                                        android:id="@+id/busterWeightEt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_38sdp"
+                                        android:layout_marginTop="@dimen/_4sdp"
+                                        android:textColor="@color/black"
+                                        android:hint="@string/buster_weight"
+                                        android:fontFamily="@font/inter_regular"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:inputType="numberDecimal"
+                                        android:paddingHorizontal="@dimen/_7sdp"
+                                        android:background="@drawable/border_edittext_bg"
+                                        app:layout_constraintTop_toBottomOf="@id/busterWeightTxt"/>
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <View
+                                android:id="@+id/busterViewLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                app:layout_constraintTop_toBottomOf="@id/busterDataLthWghtContain"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/stemDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_90sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            app:layout_constraintTop_toBottomOf="@id/busterDataContainer">
+
+                            <TextView
+                                android:id="@+id/stemName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_bold"
+                                android:text="@string/stem_length"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_18ssp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <EditText
+                                android:id="@+id/spinnerStem"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_40sdp"
+                                android:paddingEnd="@dimen/_10sdp"
+                                android:textColor="@color/_414346"
+                                android:hint="@string/stem_length"
+                                android:paddingHorizontal="@dimen/_10sdp"
+                                android:textSize="@dimen/_15ssp"
+                                android:inputType="numberDecimal"
+                                android:background="@drawable/border_edittext_bg"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                app:layout_constraintTop_toBottomOf="@id/stemName"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.core.widget.NestedScrollView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/saveProceedBtn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@color/_FFA722"
+                android:fontFamily="@font/inter_bold"
+                android:textSize="@dimen/_16ssp"
+                android:text="@string/save_and_proceed"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

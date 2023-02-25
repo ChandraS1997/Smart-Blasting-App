@@ -4,301 +4,363 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/_80000000">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_margin="@dimen/_20sdp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/rightlay"
+                android:id="@+id/head_lay"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2">
+                android:layout_height="@dimen/_50sdp"
+                android:background="@color/_FFA722"
+                android:elevation="@dimen/_3sdp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingTop="@dimen/_1sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_1sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/head_lay"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"
-                    android:background="@color/_FFA722"
-                    android:elevation="@dimen/_3sdp"
-                    android:paddingStart="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_1sdp"
-                    android:paddingEnd="@dimen/_10sdp"
-                    android:paddingBottom="@dimen/_1sdp"
+                <ImageView
+                    android:id="@+id/closeBtn"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
+                    android:src="@mipmap/ic_close"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/pageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_18ssp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:text="@string/hole_parameters"
+                    android:fontFamily="@font/inter_bold"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/holeTitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:fontFamily="@font/inter_bold"
-                        android:gravity="center"
-                        android:text="Hole Parameters"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_18sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.core.widget.NestedScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:fillViewport="true"
-                    app:layout_constraintBottom_toTopOf="@+id/saveProceedBtn"
-                    app:layout_constraintTop_toBottomOf="@id/head_lay">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/middle_row_parameter_lay"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginBottom="@dimen/_1sdp"
-                        android:background="@color/_E1E2E6">
-
-                        <TextView
-                            android:id="@+id/NameTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="@string/name"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/NameTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="45"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/NameTitle" />
-
-
-                        <View
-                            android:id="@+id/viewLineName"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.2dp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:background="@color/black"
-                            app:layout_constraintTop_toBottomOf="@+id/NameTv" />
-
-
-                        <TextView
-                            android:id="@+id/holeStatusTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="@string/hole_status"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineName" />
-
-                        <TextView
-                            android:id="@+id/holeStatusTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="ding"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/holeStatusTitle" />
-
-
-                        <View
-                            android:id="@+id/viewLineHoleStatus"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.2dp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:background="@color/black"
-                            app:layout_constraintTop_toBottomOf="@+id/holeStatusTv" />
-
-
-                        <TextView
-                            android:id="@+id/depthTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="Depth"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineHoleStatus" />
-
-                        <TextView
-                            android:id="@+id/depthTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="55"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/depthTitle" />
-
-
-                        <View
-                            android:id="@+id/viewLineDepth"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.2dp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:background="@color/black"
-                            app:layout_constraintTop_toBottomOf="@+id/depthTv" />
-
-
-                        <TextView
-                            android:id="@+id/angleTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="Angle"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineDepth" />
-
-                        <TextView
-                            android:id="@+id/angleTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="90"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/angleTitle" />
-
-
-                        <View
-                            android:id="@+id/viewLineAngle"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.2dp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:background="@color/black"
-                            app:layout_constraintTop_toBottomOf="@+id/angleTv" />
-
-
-                        <TextView
-                            android:id="@+id/deviationTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="@string/deviation"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineAngle" />
-
-                        <TextView
-                            android:id="@+id/deviationTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/deviationTitle" />
-
-
-                        <View
-                            android:id="@+id/viewLineDeviation"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.2dp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:background="@color/black"
-                            app:layout_constraintTop_toBottomOf="@+id/angleTv" />
-
-
-                        <TextView
-                            android:id="@+id/diameterTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="@string/deviation"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/viewLineAngle" />
-
-                        <TextView
-                            android:id="@+id/diameterTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_18sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/diameterTitle" />
-
-
-                        <View
-                            android:id="@+id/viewLineDiameter"
-                            android:layout_width="match_parent"
-                            android:layout_height="0.2dp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:background="@color/black"
-                            app:layout_constraintTop_toBottomOf="@+id/diameterTv" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.core.widget.NestedScrollView>
-
-                <Button
-                    android:id="@+id/saveProceedBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:background="@color/_FFA722"
-                    android:fontFamily="@font/inter_bold"
-                    android:textSize="@dimen/_16ssp"
-                    android:text="@string/save_and_proceed"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-
+                    app:layout_constraintTop_toTopOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:fillViewport="true"
+                app:layout_constraintBottom_toTopOf="@+id/saveProceedBtn"
+                app:layout_constraintTop_toBottomOf="@id/head_lay">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/middle_row_parameter_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/_1sdp"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/holeDepthTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/hole_depth"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_16ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/holeDepthEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/inter_bold"
+                        android:hint="0"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/_10sdp"
+                        android:background="@drawable/border_edittext_bg"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/holeDepthTxt" />
+
+                    <TextView
+                        android:id="@+id/holeStatusTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/hole_status"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/holeDepthEt" />
+
+                    <com.smart_blasting_drilling.android.utils.EditSpinner
+                        android:id="@+id/holeStatusSpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/inter_bold"
+                        android:padding="@dimen/_10sdp"
+                        android:editable="false"
+                        android:textColor="@color/black"
+                        android:imeOptions="flagNoExtractUi"
+                        android:background="@drawable/border_edittext_bg"
+                        android:textSize="@dimen/_18ssp"
+                        android:drawableTint="@color/black"
+                        app:dropDownDrawable="@drawable/downarro"
+                        app:dropDownDrawableHeight="@dimen/_8sdp"
+                        app:dropDownDrawableSpacing="15dp"
+                        app:dropDownDrawableWidth="@dimen/_14ssp"
+                        app:dropDownHeight="@dimen/_150sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/holeStatusTitle" />
+
+                    <TextView
+                        android:id="@+id/holeAngle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/hole_angle"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/holeStatusSpinner" />
+
+                    <EditText
+                        android:id="@+id/holeAngleEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:hint="0"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/_10sdp"
+                        android:background="@drawable/border_edittext_bg"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/holeAngle" />
+
+                    <TextView
+                        android:id="@+id/diameterTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/diameter"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/holeAngleEt" />
+
+                    <EditText
+                        android:id="@+id/diameterEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:hint="0"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/_10sdp"
+                        android:imeOptions="flagNoExtractUi"
+                        android:background="@drawable/border_edittext_bg"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/diameterTxt" />
+
+                    <TextView
+                        android:id="@+id/burdenTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/burden"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/diameterEt" />
+
+                    <EditText
+                        android:id="@+id/burdenEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:hint="0"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/_10sdp"
+                        android:imeOptions="flagNoExtractUi"
+                        android:background="@drawable/border_edittext_bg"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/burdenTxt" />
+
+                    <TextView
+                        android:id="@+id/spacingTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/spacing"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/burdenEt" />
+
+                    <EditText
+                        android:id="@+id/spacingEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:hint="0"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/_10sdp"
+                        android:background="@drawable/border_edittext_bg"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/spacingTxt" />
+
+                    <TextView
+                        android:id="@+id/xTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/x"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/spacingEt" />
+
+                    <EditText
+                        android:id="@+id/xEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:hint="0"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/_10sdp"
+                        android:imeOptions="flagNoExtractUi"
+                        android:background="@drawable/border_edittext_bg"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/xTxt" />
+
+                    <TextView
+                        android:id="@+id/yTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/y"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/xEt" />
+
+                    <EditText
+                        android:id="@+id/yTxtEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:hint="0"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/_10sdp"
+                        android:background="@drawable/border_edittext_bg"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/yTxt" />
+
+                    <TextView
+                        android:id="@+id/zTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="@string/z"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/yTxtEt" />
+
+                    <EditText
+                        android:id="@+id/zEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:hint="0"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/_10sdp"
+                        android:background="@drawable/border_edittext_bg"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/zTxt" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <Button
+                android:id="@+id/saveProceedBtn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@color/_FFA722"
+                android:fontFamily="@font/inter_bold"
+                android:textSize="@dimen/_16ssp"
+                android:text="@string/save_and_proceed"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

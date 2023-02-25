@@ -37,32 +37,13 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/project_info_container"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@+id/bottom_hole_navigation"
-                    app:layout_constraintEnd_toStartOf="@+id/nav_host_hole"
-                    app:layout_constraintHorizontal_weight="0.3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <include android:id="@+id/projectInfoLayout"
-                        layout="@layout/project_info_layout" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <fragment
                     android:id="@+id/nav_host_hole"
                     android:name="androidx.navigation.fragment.NavHostFragment"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="0dp"
                     app:defaultNavHost="true"
                     app:layout_constraintBottom_toTopOf="@+id/bottom_hole_navigation"
-                    app:layout_constraintEnd_toStartOf="@id/holeParaLay"
-                    app:layout_constraintHorizontal_weight="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/project_info_container"
                     app:layout_constraintTop_toBottomOf="@+id/header_lay_hole"
                     app:navGraph="@navigation/hole_nav" />
 

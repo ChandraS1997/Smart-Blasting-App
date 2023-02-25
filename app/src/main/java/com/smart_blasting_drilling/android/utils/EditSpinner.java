@@ -355,7 +355,11 @@ public class EditSpinner extends androidx.appcompat.widget.AppCompatEditText {
         }
 
         requestFocus();
-        mPopup.show();
+        try {
+            mPopup.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mPopup.getListView().setOverScrollMode(View.OVER_SCROLL_ALWAYS);
 
         if (mOnShowListener != null) {

@@ -1,7 +1,9 @@
 package com.smart_blasting_drilling.android.utils;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
@@ -9,33 +11,30 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
 import com.smart_blasting_drilling.android.R;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class BitmapUtils {
     private Camera mCamera;
     private static String imageFileName;
+    private static String videoFileName;
     private static final String FILE_PROVIDER_AUTHORITY = "com.example.android.fileprovider";
-
-
-    /**
-     * Resamples the captured photo to fit the screen for better memory usage.
-     *
-     * @param context   The application context.
-     * @param imagePath The path of the photo to be resampled.
-     * @return The resampled bitmap
-     */
     public static Bitmap resamplePic(Context context, String imagePath) {
 
         System.out.println("inside resample");
@@ -63,13 +62,6 @@ public class BitmapUtils {
 
         return BitmapFactory.decodeFile(imagePath);
     }
-
-    /**
-     * Creates the temporary image file in the cache directory.
-     *
-     * @return The temporary image file.
-     * @throws IOException Thrown if there is an error creating the file
-     */
     static File createTempImageFile(Context context) throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
@@ -82,13 +74,6 @@ public class BitmapUtils {
                 storageDir      /* directory */
         );
     }
-
-    /**
-     * Deletes image file for a given path.
-     *
-     * @param context   The application context.
-     * @param imagePath The path of the photo to be deleted.
-     */
     static boolean deleteImageFile(Context context, String imagePath) {
 
         // Get the file
@@ -105,13 +90,6 @@ public class BitmapUtils {
 
         return deleted;
     }
-
-    /**
-     * Helper method for adding the photo to the system photo gallery so it can be accessed
-     * from other apps.
-     *
-     * @param imagePath The path of the saved image
-     */
     private static void galleryAddPic(Context context, String imagePath) {
 
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -124,70 +102,115 @@ public class BitmapUtils {
        // holder.duration.setText(getDuration(mediaPlayer.getDuration()));
     }
 
-
-    /**
-     * Helper method for saving the image.
-     *
-     * @param context The application context.
-     * @param image   The image to be saved.
-     * @return The path of the saved image.
-     */
-    public static String saveImage(Context context, Bitmap image,String  extension) {
-
-        System.out.println("inside save image");
-
+    public static String saveImage(Context context, Bitmap image,String  extension, Uri path) {
         String savedImagePath = null;
-
-        // Create the new file in the external storage
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
                 Locale.getDefault()).format(new Date());
-        if(extension.equals(".mp4"))
-        {
-          imageFileName = "JPEG_" + timeStamp + ".mp4";
+        if(extension.equals(".mp4")) {
+            videoFileName = "VIDEO_" + timeStamp + ".mp4";
         }
-        else
-        {
-          imageFileName = "JPEG_" + timeStamp + ".jpg";
-        }
-
-        File storageDir = new File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                        + "/MyCamera");
+        else {
+          imageFileName = "JPEG_" + timeStamp + ".jpg";}
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/MyCamera");
         boolean success = true;
         if (!storageDir.exists()) {
             success = storageDir.mkdirs();
         }
-
-        // Save the new Bitmap
         if (success) {
-            File imageFile = new File(storageDir, imageFileName);
-            savedImagePath = imageFile.getAbsolutePath();
-            try {
-                OutputStream fOut = new FileOutputStream(imageFile);
 
-                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-                fOut.close();
+            try {
+
+                if(extension.equals(".mp4")) {
+                    AssetFileDescriptor videoAsset = context.getContentResolver().openAssetFileDescriptor(path, "r");
+                    FileInputStream in = videoAsset.createInputStream();
+
+                    File newfile = new File(storageDir, videoFileName);
+                    OutputStream out = new FileOutputStream(newfile);
+
+                    // Copy the bits from instream to outstream
+                    byte[] buf = new byte[1024];
+                    int len;
+
+                    while ((len = in.read(buf)) > 0) {
+                        out.write(buf, 0, len);
+                    }
+                    in.close();
+                    out.close();
+
+                    Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    mediaScanIntent.setData(path);
+                    context.sendBroadcast(mediaScanIntent);
+
+                }else {
+                    File imageFile = new File(storageDir, imageFileName);
+                    savedImagePath = imageFile.getAbsolutePath();
+                    OutputStream fOut = new FileOutputStream(imageFile);
+                    image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                    fOut.close();
+                    galleryAddPic(context, savedImagePath);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            // Add the image to the system gallery
-            galleryAddPic(context, savedImagePath);
-
-            // Show a Toast with the save location
-           // String savedMessage = context.getString(R.string.saved_message, savedImagePath);
-
         }
-
         return savedImagePath;
     }
 
-    /**
-     * Helper method for sharing an image.
-     *
-     * @param context   The image context.
-     * @param imagePath The path of the image to be shared.
-     */
+
+
+    private void saveVideoToInternalStorage (Context context,String filePath) {
+
+        File newfile;
+
+        try {
+
+            File currentFile = new File(filePath);
+            String fileName = currentFile.getName();
+
+            ContextWrapper cw = new ContextWrapper(context);
+            File directory = cw.getDir("videoDir", Context.MODE_PRIVATE);
+
+
+            newfile = new File(directory, fileName);
+
+            if(currentFile.exists()){
+
+                InputStream in = new FileInputStream(currentFile);
+                OutputStream out = new FileOutputStream(newfile);
+
+                // Copy the bits from instream to outstream
+                byte[] buf = new byte[1024];
+                int len;
+
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+
+                in.close();
+                out.close();
+
+                Log.v("", "Video file saved successfully.");
+
+            }else{
+                Log.v("", "Video saving failed. Source file missing.");
+            }
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void loadVideoFromInternalStorage(String filePath){
+
+        Uri uri = Uri.parse(Environment.getExternalStorageDirectory()+filePath);
+        //myVideoView.setVideoURI(uri);
+
+    }
     static void shareImage(Context context, String imagePath) {
         // Create the share intent and start the share activity
         File imageFile = new File(imagePath);

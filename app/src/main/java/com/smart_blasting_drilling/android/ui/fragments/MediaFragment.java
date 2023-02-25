@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +34,6 @@ import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.MediaFragmentBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
-import com.smart_blasting_drilling.android.utils.BitmapUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,7 +50,7 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
     PickiT pickiT;
     ActivityResultLauncher<String> activityResultLauncher;
     List<String> imageList = new ArrayList<>();
-    private Bitmap mResultsBitmap;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,11 +183,8 @@ public class MediaFragment extends BaseFragment implements PickiTCallbacks {
             } else {
                 showToast(mContext.getString(R.string.please_select_2mb_size));
             }*/
-            System.out.println("inside PickiTonCompleteListener");
             imgPath = path;
             file = new File(path);
-          //  mResultsBitmap = BitmapUtils.resamplePic(mContext, path);
-          //  BitmapUtils.saveImage(mContext, mResultsBitmap);
             AddImageRecycler();
             imageListBlank();
         }

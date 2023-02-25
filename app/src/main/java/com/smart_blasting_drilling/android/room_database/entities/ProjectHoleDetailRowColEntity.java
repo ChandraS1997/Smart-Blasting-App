@@ -20,4 +20,28 @@ public class ProjectHoleDetailRowColEntity {
         this.designId = designId;
         this.projectHole = projectHole;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDesignId() {
+        return designId;
+    }
+
+    public void setDesignId(String designId) {
+        this.designId = designId;
+    }
+
+    public String getProjectHole() {
+        return projectHole;
+    }
+
+    public void setProjectHole(String projectHole) {
+        this.projectHole = projectHole;
+    }
 }

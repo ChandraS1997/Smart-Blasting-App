@@ -55,7 +55,7 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:backgroundTint="@color/black"
                 android:src="@drawable/ic_baseline_create_24"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:padding="@dimen/_1sdp"
                 app:layout_constraintStart_toEndOf="@id/homeBtn"
                 app:layout_constraintTop_toTopOf="parent"
@@ -82,25 +82,75 @@
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:src="@drawable/camera"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:padding="@dimen/_1sdp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/project_info"
                 android:layout_marginEnd="@dimen/_10sdp"/>
 
+            <com.smart_blasting_drilling.android.utils.EditSpinner
+                android:id="@+id/spinnerRow"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:editable="false"
+                android:paddingEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:textColor="@color/_414346"
+                android:textSize="@dimen/_15ssp"
+                android:background="@null"
+                android:drawableTint="@color/black"
+                android:fontFamily="@font/inter_semi_bold"
+                app:dropDownDrawable="@drawable/downarro"
+                app:dropDownDrawableHeight="@dimen/_8sdp"
+                app:dropDownDrawableSpacing="15dp"
+                app:dropDownDrawableWidth="@dimen/_14ssp"
+                app:dropDownHeight="@dimen/_150sdp"
+                app:layout_constraintEnd_toStartOf="@id/project_info"/>
+
             <TextView
                 android:id="@+id/project_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_18sdp"
+                android:textSize="@dimen/_18ssp"
                 android:textColor="@color/black"
                 android:gravity="center"
                 android:fontFamily="@font/inter_bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/endIconContainer"
                 android:layout_marginEnd="@dimen/_10sdp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/endIconContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/refreshIcn"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:src="@mipmap/icn_refresh"
+                    android:visibility="visible"
+                    android:padding="@dimen/_1sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:indeterminateTint="@color/white"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

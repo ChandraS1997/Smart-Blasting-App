@@ -16,6 +16,8 @@ public class RestUtils {
             return Constants.IMAGE_VIDEO_BASE_URL;
         } else if (urlType.equalsIgnoreCase(Constants.API_UPLOAD_BASE_URL)) {
             return Constants.UPLOAD_BASE_URL;
+        } else if (urlType.equalsIgnoreCase(Constants.API_DRIMS_BASE_URL)) {
+            return Constants.DRIMS_BASE_URL;
         } else {
             return Constants.API_DEFAULT_URL;
         }

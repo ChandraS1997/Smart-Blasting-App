@@ -30,6 +30,9 @@ public interface ProjectHoleDetailRowColDao {
     @Query("DELETE FROM ProjectHoleDetailRowColEntity")
     void deleteAllProject();
 
+    @Query("UPDATE ProjectHoleDetailRowColEntity Set project_hole=:data WHERE designId=:designId")
+    void updateProject(String designId, String data);
+
     @Update
     void updateProject(ProjectHoleDetailRowColEntity data);
 

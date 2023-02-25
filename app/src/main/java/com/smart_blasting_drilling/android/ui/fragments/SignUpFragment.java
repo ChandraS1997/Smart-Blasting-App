@@ -16,12 +16,12 @@ import androidx.lifecycle.LifecycleOwner;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.ui.activity.AuthActivity;
-import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.SignupFragmentBinding;
+import com.smart_blasting_drilling.android.ui.activity.AuthActivity;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 import com.smart_blasting_drilling.android.utils.ValidationUtils;
 
@@ -30,9 +30,9 @@ import java.util.Map;
 
 import okhttp3.RequestBody;
 
-public class SignUpFragment extends BaseFragment implements View.OnClickListener
-{
+public class SignUpFragment extends BaseFragment implements View.OnClickListener {
     SignupFragmentBinding binding;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,22 +51,19 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-       // Navigation.findNavController(binding.getRoot()).navigate(R.id.loginFragment);
+        // Navigation.findNavController(binding.getRoot()).navigate(R.id.loginFragment);
         if (checkValidation()) {
             registerApiCaller();
         }
 
     }
 
-    private boolean checkValidation()
-    {
-        if (TextUtils.isEmpty(binding.nameEdt.getText().toString()))
-        {
+    private boolean checkValidation() {
+        if (TextUtils.isEmpty(binding.nameEdt.getText().toString())) {
             showSnackBar(binding.getRoot(), mContext.getString(R.string.entername));
             return false;
         }
-        if (TextUtils.isEmpty(binding.emailEdt.getText().toString()))
-        {
+        if (TextUtils.isEmpty(binding.emailEdt.getText().toString())) {
             showSnackBar(binding.getRoot(), mContext.getString(R.string.enter_emai));
             return false;
         }
@@ -74,8 +71,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             showSnackBar(binding.getRoot(), getString(R.string.enter_valid_email));
             return false;
         }
-        if (TextUtils.isEmpty(binding.phoneNumberEdt.getText().toString()))
-        {
+        if (TextUtils.isEmpty(binding.phoneNumberEdt.getText().toString())) {
             showSnackBar(binding.getRoot(), mContext.getString(R.string.enter_number));
             return false;
         }
@@ -83,22 +79,22 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
             showSnackBar(binding.getRoot(), getString(R.string.valid_number));
             return false;
         }
-        if (TextUtils.isEmpty(binding.companyEdt.getText().toString()))
-        {
+        if (TextUtils.isEmpty(binding.companyEdt.getText().toString())) {
             showSnackBar(binding.getRoot(), mContext.getString(R.string.entercompany));
             return false;
         }
-
-
-       /* if (TextUtils.isEmpty(binding.companyEdt.getText().toString()))
-        {
-            showSnackBar(binding.getRoot(), mContext.getString(R.string.enter_company));
+        if (TextUtils.isEmpty(binding.countryEdt.getTextView_selectedCountry().getText().toString())) {
+            showSnackBar(binding.getRoot(), mContext.getString(R.string.please_select_country));
             return false;
-        }*/
-        return  true;
+        }
+        if (TextUtils.isEmpty(binding.commentEdt.getText().toString())) {
+            showSnackBar(binding.getRoot(), mContext.getString(R.string.please_enter_comment));
+            return false;
+        }
+        return true;
     }
-    private void registerApiCaller()
-    {
+
+    private void registerApiCaller() {
 
         showLoader();
         Map<String, RequestBody> map = new HashMap<>();
@@ -106,7 +102,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         map.put("name", toRequestBody(StringUtill.getString(binding.nameEdt.getText().toString())));
         map.put("email", toRequestBody(StringUtill.getString(binding.emailEdt.getText().toString())));
         map.put("phoneno", toRequestBody(StringUtill.getString(binding.phoneNumberEdt.getText().toString())));
-        map.put("country", toRequestBody("india"));
+        map.put("country", toRequestBody(binding.countryEdt.getSelectedCountryName()));
         map.put("company", toRequestBody(StringUtill.getString(binding.companyEdt.getText().toString())));
         map.put("comment", toRequestBody(StringUtill.getString(binding.commentEdt.getText().toString())));
         MainService.RegisterApiCaller(mContext, map).observe((LifecycleOwner) mContext, responsesignup -> {
@@ -126,8 +122,7 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
                                 ResponseLoginData signupResponse = new Gson().fromJson(responsesignup, ResponseLoginData.class);
 
                                 showSnackBar(binding.getRoot(), StringUtill.getString(responsesignup.getAsJsonObject().get("Message").getAsString()));
-                               if (responsesignup.getAsJsonObject().has("response"))
-                                {
+                                if (responsesignup.getAsJsonObject().has("response")) {
 
                                     if (responsesignup.getAsJsonObject().get("response").getAsString().equals("fail")) {
                                         System.out.println("inside register api if if");

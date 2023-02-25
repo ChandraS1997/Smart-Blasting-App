@@ -2,13 +2,21 @@ package com.smart_blasting_drilling.android.api.apis.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseHoleDetailData{
+import java.io.Serializable;
+
+public class ResponseHoleDetailData implements Serializable {
+
+	@SerializedName("GeoStru")
+	private String geoStru;
 
 	@SerializedName("CompanyID")
 	private String companyID;
 
 	@SerializedName("inHoleDelayQty")
 	private int inHoleDelayQty;
+
+	@SerializedName("HoleStatus")
+	private String holeStatus;
 
 	@SerializedName("Magazine2")
 	private String magazine2;
@@ -18,6 +26,18 @@ public class ResponseHoleDetailData{
 
 	@SerializedName("Burden")
 	private Object burden;
+
+	@SerializedName("UnitBlastingCost")
+	private Object unitBlastingCost;
+
+	@SerializedName("Undersize")
+	private Object undersize;
+
+	@SerializedName("MuckForwardDistance")
+	private Object muckForwardDistance;
+
+	@SerializedName("BlastingQuality")
+	private Object blastingQuality;
 
 	@SerializedName("Density")
 	private Object density;
@@ -130,6 +150,9 @@ public class ResponseHoleDetailData{
 	@SerializedName("Y")
 	private Object y;
 
+	@SerializedName("Z")
+	private Object z;
+
 	@SerializedName("LicenseMagzine22")
 	private String licenseMagzine22;
 
@@ -223,6 +246,12 @@ public class ResponseHoleDetailData{
 	@SerializedName("Name")
 	private String name;
 
+	@SerializedName("GroundVibration")
+	private Object groundVibration;
+
+	@SerializedName("BoulderYield")
+	private Object boulderYield;
+
 	@SerializedName("Isvisible")
 	private int isvisible;
 
@@ -290,7 +319,7 @@ public class ResponseHoleDetailData{
 	private int mag2Unit2;
 
 	@SerializedName("NoOfDecks")
-	private Object noOfDecks;
+	private int noOfDecks;
 
 	@SerializedName("ColWt")
 	private Object colWt;
@@ -326,7 +355,7 @@ public class ResponseHoleDetailData{
 	private Object blockStartAt;
 
 	@SerializedName("HoleID")
-	private Object holeID;
+	private String holeID;
 
 	@SerializedName("Magazine11")
 	private Object magazine11;
@@ -400,6 +429,68 @@ public class ResponseHoleDetailData{
 	@SerializedName("DrillY")
 	private Object drillY;
 
+	@SerializedName("BlastingSafety")
+	private Object blastingSafety;
+
+	@SerializedName("StdDev")
+	private Object stdDev;
+
+	@SerializedName("DesiredFragmentationPercentage")
+	private Object desiredFragmentationPercentage;
+
+	@SerializedName("b")
+	private Object b;
+
+	@SerializedName("FloorCondition")
+	private Object floorCondition;
+
+	@SerializedName("AirVibration")
+	private Object airVibration;
+
+	@SerializedName("Flyrock")
+	private Object flyrock;
+
+	@SerializedName("BlastingCost")
+	private Object blastingCost;
+
+	@SerializedName("Backbreak")
+	private Object backbreak;
+
+	@SerializedName("PitCode")
+	private int pitCode;
+
+	@SerializedName("PowderFactor")
+	private Object powderFactor;
+
+	@SerializedName("k")
+	private Object k;
+
+	@SerializedName("CofCor")
+	private Object cofCor;
+
+	@SerializedName("MuckpileHeight")
+	private Object muckpileHeight;
+
+	@SerializedName("DrillFactor")
+	private Object drillFactor;
+
+	@SerializedName("ZoneCode")
+	private int zoneCode;
+
+	@SerializedName("Bedding")
+	private String bedding;
+
+	@SerializedName("Location")
+	private String location;
+
+	public String getHoleStatus() {
+		return holeStatus == null ? "Pending Holes" : holeStatus;
+	}
+
+	public void setHoleStatus(String holeStatus) {
+		this.holeStatus = holeStatus;
+	}
+
 	public void setCompanyID(String companyID){
 		this.companyID = companyID;
 	}
@@ -437,7 +528,7 @@ public class ResponseHoleDetailData{
 	}
 
 	public Object getBurden(){
-		return burden;
+		return burden == null ? "0.0" : burden;
 	}
 
 	public void setDensity(Object density){
@@ -453,7 +544,7 @@ public class ResponseHoleDetailData{
 	}
 
 	public Object getHoleType(){
-		return holeType;
+		return holeType != null ? "0.0" : holeType;
 	}
 
 	public void setBtmName(Object btmName){
@@ -510,6 +601,254 @@ public class ResponseHoleDetailData{
 
 	public Object getRee2(){
 		return ree2;
+	}
+
+	public String getGeoStru() {
+		return geoStru;
+	}
+
+	public void setGeoStru(String geoStru) {
+		this.geoStru = geoStru;
+	}
+
+	public Object getUnitBlastingCost() {
+		return unitBlastingCost;
+	}
+
+	public void setUnitBlastingCost(Object unitBlastingCost) {
+		this.unitBlastingCost = unitBlastingCost;
+	}
+
+	public Object getUndersize() {
+		return undersize;
+	}
+
+	public void setUndersize(Object undersize) {
+		this.undersize = undersize;
+	}
+
+	public Object getMuckForwardDistance() {
+		return muckForwardDistance;
+	}
+
+	public void setMuckForwardDistance(Object muckForwardDistance) {
+		this.muckForwardDistance = muckForwardDistance;
+	}
+
+	public Object getBlastingQuality() {
+		return blastingQuality;
+	}
+
+	public void setBlastingQuality(Object blastingQuality) {
+		this.blastingQuality = blastingQuality;
+	}
+
+	public Object getZ() {
+		return z == null ? "" : z;
+	}
+
+	public void setZ(Object z) {
+		this.z = z;
+	}
+
+	public Object getGroundVibration() {
+		return groundVibration;
+	}
+
+	public void setGroundVibration(Object groundVibration) {
+		this.groundVibration = groundVibration;
+	}
+
+	public Object getBoulderYield() {
+		return boulderYield;
+	}
+
+	public void setBoulderYield(Object boulderYield) {
+		this.boulderYield = boulderYield;
+	}
+
+	public Object getvOD() {
+		return vOD;
+	}
+
+	public void setvOD(Object vOD) {
+		this.vOD = vOD;
+	}
+
+	public int getrRDelay() {
+		return rRDelay;
+	}
+
+	public void setrRDelay(int rRDelay) {
+		this.rRDelay = rRDelay;
+	}
+
+	public Object getvOD1() {
+		return vOD1;
+	}
+
+	public void setvOD1(Object vOD1) {
+		this.vOD1 = vOD1;
+	}
+
+	public Object getvOD2() {
+		return vOD2;
+	}
+
+	public void setvOD2(Object vOD2) {
+		this.vOD2 = vOD2;
+	}
+
+	public int gethHDelay() {
+		return hHDelay;
+	}
+
+	public void sethHDelay(int hHDelay) {
+		this.hHDelay = hHDelay;
+	}
+
+	public Object getBlastingSafety() {
+		return blastingSafety;
+	}
+
+	public void setBlastingSafety(Object blastingSafety) {
+		this.blastingSafety = blastingSafety;
+	}
+
+	public Object getStdDev() {
+		return stdDev == null ? "0" : stdDev;
+	}
+
+	public void setStdDev(Object stdDev) {
+		this.stdDev = stdDev;
+	}
+
+	public Object getDesiredFragmentationPercentage() {
+		return desiredFragmentationPercentage;
+	}
+
+	public void setDesiredFragmentationPercentage(Object desiredFragmentationPercentage) {
+		this.desiredFragmentationPercentage = desiredFragmentationPercentage;
+	}
+
+	public Object getB() {
+		return b;
+	}
+
+	public void setB(Object b) {
+		this.b = b;
+	}
+
+	public Object getFloorCondition() {
+		return floorCondition;
+	}
+
+	public void setFloorCondition(Object floorCondition) {
+		this.floorCondition = floorCondition;
+	}
+
+	public Object getAirVibration() {
+		return airVibration;
+	}
+
+	public void setAirVibration(Object airVibration) {
+		this.airVibration = airVibration;
+	}
+
+	public Object getFlyrock() {
+		return flyrock;
+	}
+
+	public void setFlyrock(Object flyrock) {
+		this.flyrock = flyrock;
+	}
+
+	public Object getBlastingCost() {
+		return blastingCost;
+	}
+
+	public void setBlastingCost(Object blastingCost) {
+		this.blastingCost = blastingCost;
+	}
+
+	public Object getBackbreak() {
+		return backbreak;
+	}
+
+	public void setBackbreak(Object backbreak) {
+		this.backbreak = backbreak;
+	}
+
+	public int getPitCode() {
+		return pitCode;
+	}
+
+	public void setPitCode(int pitCode) {
+		this.pitCode = pitCode;
+	}
+
+	public Object getPowderFactor() {
+		return powderFactor;
+	}
+
+	public void setPowderFactor(Object powderFactor) {
+		this.powderFactor = powderFactor;
+	}
+
+	public Object getK() {
+		return k;
+	}
+
+	public void setK(Object k) {
+		this.k = k;
+	}
+
+	public Object getCofCor() {
+		return cofCor;
+	}
+
+	public void setCofCor(Object cofCor) {
+		this.cofCor = cofCor;
+	}
+
+	public Object getMuckpileHeight() {
+		return muckpileHeight;
+	}
+
+	public void setMuckpileHeight(Object muckpileHeight) {
+		this.muckpileHeight = muckpileHeight;
+	}
+
+	public Object getDrillFactor() {
+		return drillFactor;
+	}
+
+	public void setDrillFactor(Object drillFactor) {
+		this.drillFactor = drillFactor;
+	}
+
+	public int getZoneCode() {
+		return zoneCode;
+	}
+
+	public void setZoneCode(int zoneCode) {
+		this.zoneCode = zoneCode;
+	}
+
+	public String getBedding() {
+		return bedding;
+	}
+
+	public void setBedding(String bedding) {
+		this.bedding = bedding;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	public void setBsterWt(int bsterWt){
@@ -773,7 +1112,7 @@ public class ResponseHoleDetailData{
 	}
 
 	public Object getSpacing(){
-		return spacing;
+		return spacing != null ? "0.0" : spacing;
 	}
 
 	public void setBtmId(int btmId){
@@ -1160,11 +1499,11 @@ public class ResponseHoleDetailData{
 		return mag2Unit2;
 	}
 
-	public void setNoOfDecks(Object noOfDecks){
+	public void setNoOfDecks(int noOfDecks){
 		this.noOfDecks = noOfDecks;
 	}
 
-	public Object getNoOfDecks(){
+	public int getNoOfDecks(){
 		return noOfDecks;
 	}
 
@@ -1256,11 +1595,11 @@ public class ResponseHoleDetailData{
 		return blockStartAt;
 	}
 
-	public void setHoleID(Object holeID){
+	public void setHoleID(String holeID){
 		this.holeID = holeID;
 	}
 
-	public Object getHoleID(){
+	public String getHoleID(){
 		return holeID;
 	}
 

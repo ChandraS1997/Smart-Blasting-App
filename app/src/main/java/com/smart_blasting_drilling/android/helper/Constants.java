@@ -1,5 +1,9 @@
 package com.smart_blasting_drilling.android.helper;
 
+import android.content.Context;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.interfaces.OnDataEditTable;
@@ -18,10 +22,12 @@ public class Constants {
     public static String API_BLADES_URL = "blades";
     public static String API_IMAGE_VIDEO_BASE_URL = "imagevideo";
     public static String API_UPLOAD_BASE_URL = "upload";
+    public static String API_DRIMS_BASE_URL = "drims";
     public static final String LOGIN_BASE_URL = "https://www.mineexcellence.com/smartdrilling/";
-    public static final String BLADES_BASE_URL = "http://testblades.mineexcellence.com/BLADES_API/Service1.svc/";
+    public static final String BLADES_BASE_URL = "http://testblades.mineexcellence.com/";
     public static final String IMAGE_VIDEO_BASE_URL = "http://devsblastapi.mineexcellence.com/api/sblast/";
-    public static final String UPLOAD_BASE_URL = " https://centralbims.mineexcellence.com/";
+    public static final String UPLOAD_BASE_URL = "https://centralbims.mineexcellence.com/";
+    public static final String DRIMS_BASE_URL = "https://devdrims.mineexcellence.com/DRIMS_API/Service1.svc/";
 
     public static String getUserAuthToken() {
         String token = "";
@@ -52,6 +58,10 @@ public class Constants {
 
     public static <T> boolean isModelEmpty(T model) {
         return model == null;
+    }
+
+    public static ListAdapter getAdapter(Context mContext, String[] list) {
+        return new ArrayAdapter(mContext, android.R.layout.simple_spinner_dropdown_item, list);
     }
 
 }

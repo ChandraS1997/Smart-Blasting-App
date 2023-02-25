@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
@@ -25,6 +26,7 @@ import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 public class MapViewFragment extends BaseFragment {
     FragmentMapviewBinding binding;
@@ -36,7 +38,7 @@ public class MapViewFragment extends BaseFragment {
             @Override
             public void handleOnBackPressed() {
                 if (getView() != null)
-                    Navigation.findNavController(getView()).navigate(R.id.HoleDetailsTableViewFragment);
+                    Navigation.findNavController(getView()).navigateUp();
             }
         });
     }
@@ -47,6 +49,23 @@ public class MapViewFragment extends BaseFragment {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mapview, container, false);
 
             getMapHoleDataList();
+
+            ((HoleDetailActivity) mContext).mapViewDataUpdateLiveData.observe((LifecycleOwner) mContext, aBoolean -> {
+                if (aBoolean) {
+                    try {
+                        ((HoleDetailActivity) mContext).runOnUiThread(new TimerTask() {
+                            @Override
+                            public void run() {
+                                getMapHoleDataList();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.getLocalizedMessage();
+                    }
+                    ((HoleDetailActivity) mContext).mapViewDataUpdateLiveData.setValue(false);
+                }
+            });
+
         }
 
         return binding.getRoot();

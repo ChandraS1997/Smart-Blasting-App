@@ -27,9 +27,11 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginBottom="@dimen/_10sdp"
+            android:fillViewport="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/closeBtn">
+            app:layout_constraintTop_toBottomOf="@+id/closeBtn"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -70,7 +72,7 @@
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/HoleBtn"
+                    android:id="@+id/initiatingDeviceContainer"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_7sdp"
@@ -81,13 +83,13 @@
 
 
                     <TextView
-                        android:id="@+id/hole_detailTv"
+                        android:id="@+id/initiatingDeviceTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_20sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:fontFamily="@font/inter_semi_bold"
-                        android:text="@string/hole_detai"
+                        android:text="@string/initiating_device"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_17ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +100,7 @@
                         android:layout_height="0.9dp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="#15000000"
-                        app:layout_constraintTop_toBottomOf="@+id/hole_detailTv" />
+                        app:layout_constraintTop_toBottomOf="@id/initiatingDeviceContainer" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -111,7 +113,7 @@
                     android:background="@drawable/ripple_effect"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/HoleBtn">
+                    app:layout_constraintTop_toBottomOf="@+id/initiatingDeviceContainer">
 
                     <TextView
                         android:id="@+id/galleryTv"
