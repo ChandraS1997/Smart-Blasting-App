@@ -42,8 +42,6 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
 
     ResponseBladesRetrieveData bladesRetrieveData;
 
-    AppDatabase appDatabase;
-
     List<ResultsetItem> responseInitiatingDataList = new ArrayList<>();
 
     List<InitiatingDeviceModel> electronicDetonatorModelList = new ArrayList<>();
@@ -57,8 +55,6 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_initiating_device_view);
-
-        appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
 
         if (isBundleIntentNotEmpty()) {
             bladesRetrieveData = (ResponseBladesRetrieveData) getIntent().getExtras().getSerializable("blades_data");
@@ -161,7 +157,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
     }
 
     private void setDataList() {
-        InitiatingDataDao initiatingDataDao = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME).initiatingDataDao();
+        InitiatingDataDao initiatingDataDao = appDatabase.initiatingDataDao();
         List<InitiatingDataEntity> initiatingDataEntities = initiatingDataDao.getAllBladesProject();
         if (!Constants.isListEmpty(initiatingDataEntities)) {
             clearList();

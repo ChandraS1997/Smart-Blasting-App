@@ -53,7 +53,6 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
     AllTablesData allTablesData;
     List<ResponseHoleDetailData> holeDetailDataList = new ArrayList<>();
 
-    AppDatabase appDatabase;
     ProjectHoleDetailRowColDao entity;
 
     @Override
@@ -82,7 +81,6 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
             bladesRetrieveData = ((HoleDetailActivity) mContext).bladesRetrieveData;
             allTablesData = ((HoleDetailActivity) mContext).allTablesData;
 
-            appDatabase = BaseApplication.getAppDatabase(mContext, Constants.DATABASE_NAME);
             entity = appDatabase.projectHoleDetailRowColDao();
 
             Constants.onDataEditTable = this;

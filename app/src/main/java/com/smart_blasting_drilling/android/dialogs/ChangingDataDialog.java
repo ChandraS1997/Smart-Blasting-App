@@ -41,11 +41,9 @@ public class ChangingDataDialog extends BaseDialogFragment {
     public ResponseHoleDetailData updateHoleDetailData;
     ProjectInfoDialogListener mListener;
     ProjectHoleDetailRowColDao entity;
-    AppDatabase appDatabase;
 
     public ChangingDataDialog() {
         _self = this;
-        appDatabase = BaseApplication.getAppDatabase(mContext, Constants.DATABASE_NAME);
         entity = appDatabase.projectHoleDetailRowColDao();
     }
 
@@ -127,7 +125,6 @@ public class ChangingDataDialog extends BaseDialogFragment {
 
         binding.saveProceedBtn.setOnClickListener(view -> {
             UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
-            AppDatabase appDatabase = BaseApplication.getAppDatabase(mContext, Constants.DATABASE_NAME);
             UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
 
             updateHoleDetailData.setStemLngth(StringUtill.isEmpty(binding.spinnerStem.getText().toString()) ? 0 : Integer.parseInt(binding.spinnerStem.getText().toString()));

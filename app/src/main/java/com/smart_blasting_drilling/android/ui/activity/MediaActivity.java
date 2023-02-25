@@ -130,19 +130,25 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
     private void getAllImageFromGallery() {
         try {
             List<String> fileList = new ArrayList<>();
+            String selection = MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " = ?";
+            String[] selectionArgs = new String[] {
+                    "Camera"
+            };
             String[] projection = new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
-            Cursor cursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, "");
-            for (int i = 0; i < cursor.getCount(); i++) {
-                cursor.moveToPosition(i);
-                int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-                fileList.add(cursor.getString(dataColumnIndex));
+            try (Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, selectionArgs, "")) {
+                for (int i = 0; i < cursor.getCount(); i++) {
+                    cursor.moveToPosition(i);
+                    int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                    fileList.add(cursor.getString(dataColumnIndex));
+                }
             }
 
-            Cursor videoCursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, "");
-            for (int i = 0; i < videoCursor.getCount(); i++) {
-                videoCursor.moveToPosition(i);
-                int dataColumnIndex = videoCursor.getColumnIndex(MediaStore.Video.Media.DATA);
-                fileList.add(videoCursor.getString(dataColumnIndex));
+            try (Cursor videoCursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, "")) {
+                for (int i = 0; i < videoCursor.getCount(); i++) {
+                    videoCursor.moveToPosition(i);
+                    int dataColumnIndex = videoCursor.getColumnIndex(MediaStore.Video.Media.DATA);
+                    fileList.add(videoCursor.getString(dataColumnIndex));
+                }
             }
 
             Log.e("Image List :- ", new Gson().toJson(fileList));

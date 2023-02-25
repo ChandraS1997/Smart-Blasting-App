@@ -39,6 +39,7 @@ public class MainService {
     private static final APiInterface imageVideoApiService = BaseService.getAPIClient(Constants.API_IMAGE_VIDEO_BASE_URL).create(APiInterface.class);
     private static final APiInterface uplodeApiService = BaseService.getAPIClient(Constants.API_UPLOAD_BASE_URL).create(APiInterface.class);
     private static final APiInterface drimzApiService = BaseService.getAPIClient(Constants.API_DRIMS_BASE_URL).create(APiInterface.class);
+    private static final APiInterface blastSblastApiService = BaseService.getAPIClient(Constants.BLAST_S_BLAST_BASE_URL).create(APiInterface.class);
 
     public static JsonObject tokenExpiredResponse(String msg, int code, int errorCode) {
         JsonObject apiResponse = new JsonObject();
@@ -602,6 +603,31 @@ public class MainService {
             return data;
         }
         Call<JsonPrimitive> call = drimzApiService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(map);
+        call.enqueue(new Callback<JsonPrimitive>() {
+            @Override
+            public void onResponse(Call<JsonPrimitive> call, Response<JsonPrimitive> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonPrimitive> call, Throwable t) {
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonPrimitive> blastInsertSyncRecordApiCaller(final Context context, JsonObject map) {
+        final MutableLiveData<JsonPrimitive> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonPrimitive> call = blastSblastApiService.blastInsertSyncRecordApiCaller(map);
         call.enqueue(new Callback<JsonPrimitive>() {
             @Override
             public void onResponse(Call<JsonPrimitive> call, Response<JsonPrimitive> response) {

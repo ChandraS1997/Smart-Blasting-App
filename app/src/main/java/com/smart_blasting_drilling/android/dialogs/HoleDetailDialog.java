@@ -48,11 +48,9 @@ public class HoleDetailDialog extends BaseDialogFragment {
     public ResponseHoleDetailData updateHoleDetailData;
 
     ProjectHoleDetailRowColDao entity;
-    AppDatabase appDatabase;
 
     public HoleDetailDialog() {
         _self = this;
-        appDatabase = BaseApplication.getAppDatabase(mContext, Constants.DATABASE_NAME);
         entity = appDatabase.projectHoleDetailRowColDao();
     }
 
@@ -138,7 +136,6 @@ public class HoleDetailDialog extends BaseDialogFragment {
 
         binding.saveProceedBtn.setOnClickListener(view -> {
             UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
-            AppDatabase appDatabase = BaseApplication.getAppDatabase(mContext, Constants.DATABASE_NAME);
             UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
 
             updateHoleDetailData.setHoleDepth(StringUtill.isEmpty(binding.holeDepthEt.getText().toString()) ? 0 : Integer.parseInt(binding.holeDepthEt.getText().toString()));
@@ -153,10 +150,10 @@ public class HoleDetailDialog extends BaseDialogFragment {
 
             bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
             bladesEntity.setHoleId(holeDetailData.getHoleNo());
-            bladesEntity.setRowId(holeDetailData.getRowNo());
+            bladesEntity.setRowId((int) holeDetailData.getRowNo());
             bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
 
-            if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()), holeDetailData.getRowNo(), holeDetailData.getHoleNo())) {
+            if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()), (int) holeDetailData.getRowNo(), holeDetailData.getHoleNo())) {
                 updateProjectBladesDao.insertProject(bladesEntity);
             } else {
                 updateProjectBladesDao.updateProject(bladesEntity);
@@ -190,7 +187,7 @@ public class HoleDetailDialog extends BaseDialogFragment {
 
             AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(updateHoleDetailData.getDesignId()));
 
-            ((BaseActivity) mContext).setInsertUpdateHoleDetailSync(((HoleDetailActivity) mContext).bladesRetrieveData, updateHoleDetailData, modelEntity != null ? modelEntity.getProjectCode() : "0");
+//            ((BaseActivity) mContext).setInsertUpdateHoleDetailSync(((HoleDetailActivity) mContext).bladesRetrieveData, updateHoleDetailData, modelEntity != null ? modelEntity.getProjectCode() : "0");
 
             ProjectInfoDialogListener listener = getListener();
             if (listener != null) {

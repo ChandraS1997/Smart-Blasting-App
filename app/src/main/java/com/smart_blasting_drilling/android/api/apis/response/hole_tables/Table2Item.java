@@ -58,13 +58,13 @@ public class Table2Item implements Serializable {
 	private int verticalDip;
 
 	@SerializedName("BtmLength")
-	private int btmLength;
+	private Object btmLength;
 
 	@SerializedName("Ree2")
 	private Object ree2;
 
 	@SerializedName("BsterWt")
-	private int bsterWt;
+	private Object bsterWt;
 
 	@SerializedName("Make")
 	private String make;
@@ -558,7 +558,7 @@ public class Table2Item implements Serializable {
 	}
 
 	public int getBtmLength() {
-		return btmLength;
+		return btmLength != null ? (int) btmLength : 0;
 	}
 
 	public void setBtmLength(int btmLength) {
@@ -574,7 +574,7 @@ public class Table2Item implements Serializable {
 	}
 
 	public int getBsterWt() {
-		return bsterWt;
+		return bsterWt != null ? (int) bsterWt : 0;
 	}
 
 	public void setBsterWt(int bsterWt) {

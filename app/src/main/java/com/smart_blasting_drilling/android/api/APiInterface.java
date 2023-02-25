@@ -82,4 +82,7 @@ public interface APiInterface {
     @POST("insertUpdateAppHoleDetailsmultipleSync")
     Call<JsonPrimitive> insertUpdateAppHoleDetailsmultipleSyncApiCaller(@Body JsonObject map);
 
+    @POST("v6/InsertRecord")
+    Call<JsonPrimitive> blastInsertSyncRecordApiCaller(@Body JsonObject map);
+
 }

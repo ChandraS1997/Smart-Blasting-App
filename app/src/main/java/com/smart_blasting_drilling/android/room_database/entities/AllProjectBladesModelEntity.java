@@ -53,7 +53,7 @@ public class AllProjectBladesModelEntity {
     }
 
     public String getProjectCode() {
-        return projectCode == null ? "0" : projectCode;
+        return projectCode == null ? "" : projectCode;
     }
 
     public void setProjectCode(String projectCode) {

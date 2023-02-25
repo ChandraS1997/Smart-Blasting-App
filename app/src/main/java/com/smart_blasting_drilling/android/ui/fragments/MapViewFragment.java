@@ -87,7 +87,7 @@ public class MapViewFragment extends BaseFragment {
                     }
                 }
                 if (!isFound) {
-                    rowMapHoleDataModelList.add(new MapHoleDataModel(categoryList.getRowNo(), dataList));
+                    rowMapHoleDataModelList.add(new MapHoleDataModel((int) categoryList.getRowNo(), dataList));
                 }
             }
 

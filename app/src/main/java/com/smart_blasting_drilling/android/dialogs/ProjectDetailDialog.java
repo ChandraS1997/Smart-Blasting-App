@@ -3,6 +3,7 @@ package com.smart_blasting_drilling.android.dialogs;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -39,10 +40,12 @@ import com.smart_blasting_drilling.android.databinding.ProjectInfoLayoutBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
+import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdatedProjectDetailEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
+import com.smart_blasting_drilling.android.ui.activity.HomeActivity;
 import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
@@ -61,16 +64,15 @@ public class ProjectDetailDialog extends BaseDialogFragment {
     Dialog dialog;
     ProjectDetailDialog _self;
     private ProjectInfoDialogListener mListener;
+    private String from;
     public ResponseBladesRetrieveData bladesRetrieveData;
     public ResponseBladesRetrieveData updateBladesData;
-    AppDatabase appDatabase;
 
     int siteId, rigId, empId, drillTypeId, drillMaterialId, drillPatternId;
     String startDate, startTime, endTime, endDate;
 
     public ProjectDetailDialog() {
         _self = this;
-        appDatabase = BaseApplication.getAppDatabase(mContext, Constants.DATABASE_NAME);
     }
 
     public static ProjectDetailDialog getInstance(ResponseBladesRetrieveData bladesRetrieveData) {
@@ -79,6 +81,10 @@ public class ProjectDetailDialog extends BaseDialogFragment {
         bundle.putSerializable("bladesRetrieveData", bladesRetrieveData);
         frag.setArguments(bundle);
         return frag;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
     }
 
     public void setUpListener(ProjectInfoDialogListener listener) {
@@ -154,6 +160,18 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                     jsonObject.addProperty("end_date", binding.endDate.getText().toString());
                     jsonObject.addProperty("end_time", binding.endTime.getText().toString());
 
+                    AllTablesData allTablesData;
+
+                    if (!StringUtill.isEmpty(from)) {
+                        if (from.equals("Home")) {
+                            allTablesData = ((HomeActivity) mContext).allTablesData;
+                        } else {
+                            allTablesData = ((HoleDetailActivity) mContext).allTablesData;
+                        }
+                    } else {
+                        allTablesData = ((HoleDetailActivity) mContext).allTablesData;
+                    }
+
                     if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
                         appDatabase.updatedProjectDataDao().updateItem(bladesRetrieveData.getDesignId(), new Gson().toJson(jsonObject));
                         showSnackBar(binding.getRoot(), "Project updated successfully");
@@ -162,7 +180,24 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         showSnackBar(binding.getRoot(), "Project added successfully");
                     }
 
-                    ((BaseActivity) mContext).setJsonForSyncProjectData(((HoleDetailActivity) mContext).bladesRetrieveData, ((HoleDetailActivity) mContext).allTablesData.getTable2());
+                    if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                        ((BaseActivity) mContext).setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
+                    } else {
+                        AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+                        if (StringUtill.isEmpty(entity.getProjectCode())) {
+                            ((BaseActivity) mContext).setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
+                        }
+                    }
+                    if (!StringUtill.isEmpty(from)) {
+                        if (from.equals("Home")) {
+                            Intent i = new Intent(mContext, HoleDetailActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("all_table_Data", allTablesData);
+                            bundle.putSerializable("blades_data", bladesRetrieveData);
+                            i.putExtras(bundle);
+                            startActivity(i);
+                        }
+                    }
                 } catch (Exception e) {
                     e.getLocalizedMessage();
                 }

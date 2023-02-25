@@ -31,6 +31,7 @@ import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
+import com.smart_blasting_drilling.android.dialogs.SyncProjectOptionDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
@@ -38,6 +39,7 @@ import com.smart_blasting_drilling.android.room_database.entities.AllProjectBlad
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +76,16 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                     rowList.add("Row " + allTablesData.getTable2().get(i).getRowNo());
             }
 
-            setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
+            if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
+            } else {
+                AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+                if (StringUtill.isEmpty(entity.getProjectCode())) {
+                    setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
+                }
+            }
+
+//            setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
         }
         binding = DataBindingUtil.setContentView(this, R.layout.hole_detail_activity);
 
@@ -122,32 +133,54 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         binding.drawerLayout.initiatingDeviceContainer.setOnClickListener(this);
         binding.drawerLayout.closeBtn.setOnClickListener(view -> binding.mainDrawerLayout.closeDrawer(GravityCompat.START));
 
+        binding.drawerLayout.syncProjectContainer.setOnClickListener(view -> {
+            binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            SyncProjectOptionDialog infoDialogFragment = SyncProjectOptionDialog.getInstance(new SyncProjectOptionDialog.SyncProjectListener() {
+                @Override
+                public void syncWithDrims() {
+                    syncDataAPi();
+                }
+
+                @Override
+                public void syncWithBims() {
+
+                }
+
+                @Override
+                public void syncWithBlades() {
+
+                }
+            });
+            ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
+            ft.commitAllowingStateLoss();
+        });
+
         binding.headerLayHole.projectInfo.setOnClickListener(view -> {
             editTable();
         });
         binding.headerLayHole.editTable.setOnClickListener(this);
+        binding.headerLayHole.refreshIcn.setVisibility(View.GONE);
+        binding.headerLayHole.refreshIcn.setOnClickListener(view -> syncDataAPi());
+    }
 
-        binding.headerLayHole.refreshIcn.setOnClickListener(view -> {
-            binding.headerLayHole.progressBar.setVisibility(View.VISIBLE);
-            binding.headerLayHole.refreshIcn.setVisibility(View.GONE);
-            AllProjectBladesModelEntity modelEntity = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME).allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.getDesignId()));
-            setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), modelEntity != null ? modelEntity.getProjectCode() : "0").observe(this, new Observer<JsonPrimitive>() {
-                @Override
-                public void onChanged(JsonPrimitive response) {
-                    if (response == null) {
-                        Log.e(ERROR, SOMETHING_WENT_WRONG);
+    public void syncDataAPi() {
+        AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.getDesignId()));
+        setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "0").observe(this, new Observer<JsonPrimitive>() {
+            @Override
+            public void onChanged(JsonPrimitive response) {
+                if (response == null) {
+                    Log.e(ERROR, SOMETHING_WENT_WRONG);
+                } else {
+                    if (!(response.isJsonNull())) {
+                        showToast("Project Holes Sync Successfully");
                     } else {
-                        if (!(response.isJsonNull())) {
-                            showToast("Project Holes Sync Successfully");
-                        } else {
-                            showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
-                        }
+                        showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
                     }
-                    hideLoader();
-                    binding.headerLayHole.progressBar.setVisibility(View.GONE);
-                    binding.headerLayHole.refreshIcn.setVisibility(View.VISIBLE);
                 }
-            });
+                hideLoader();
+            }
         });
     }
 
@@ -189,7 +222,11 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.BlastPerformanceBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(new Intent(this, PerformanceActivity.class));
+                intent = new Intent(this, PerformanceActivity.class);
+                bundle.putSerializable("blades_data", bladesRetrieveData);
+                bundle.putSerializable("all_table_Data", allTablesData);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
             case R.id.switchBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
@@ -207,7 +244,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ProjectDetailDialog infoDialogFragment = ProjectDetailDialog.getInstance(bladesRetrieveData);
-                ft.add(infoDialogFragment, HoleDetailDialog.TAG);
+                ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
                 ft.commitAllowingStateLoss();
                 break;
             case R.id.logoutBtn:
@@ -249,7 +286,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void setLogOut() {
-        BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME).clearAllTables();
+        appDatabase.clearAllTables();
         manger.logoutUser();
     }
 
@@ -285,7 +322,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         HoleDetailDialog infoDialogFragment = HoleDetailDialog.getInstance(holeDetailData);
 
         infoDialogFragment.setUpListener((dialogFragment, designId) -> {
-            ProjectHoleDetailRowColDao dao = BaseApplication.getAppDatabase(HoleDetailActivity.this, Constants.DATABASE_NAME).projectHoleDetailRowColDao();
+            ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
             ProjectHoleDetailRowColEntity entity = dao.getAllBladesProject(designId);
             allTablesData = new Gson().fromJson(entity.getProjectHole(), AllTablesData.class);
 

@@ -119,13 +119,13 @@
     <string name="blasting_fumes">Blasting Fumes</string>
     <string name="not">NO</string>
     <string name="muck_profile">Muck Profile</string>
-    <string name="scattered">Scattered</string>
+    <string name="scattered">Staggered</string>
     <string name="heave_swell">Heave/Swell</string>
     <string name="good">Good</string>
     <string name="stemming_ejection">Stemming Ejection</string>
     <string name="backbreak_overbreak">BackBreak/OverBreak</string>
     <string name="backbreak">BackBreak</string>
-    <string name="bounder_count">Bounder Count</string>
+    <string name="bounder_count">Boulder Count</string>
 
     <string name="error_insertion">Error In Insertion</string>
     <string name="project_details">Project Details</string>
@@ -167,5 +167,9 @@
     <string name="down_the_hole">Down The Hole</string>
     <string name="tld_row_to_row">TLD(Row To Row)</string>
     <string name="tld_hole_to_hole">TLD(Hole To Hole)</string>
+    <string name="sync_with_drims">Sync with DRIMS</string>
+    <string name="sync_with_bims">Sync With BIMS</string>
+    <string name="sync_with_blades">Sync with BLADES</string>
+    <string name="yes">Yes</string>
 
 </resources>

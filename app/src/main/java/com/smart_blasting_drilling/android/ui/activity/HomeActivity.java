@@ -27,10 +27,13 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordDa
 import com.smart_blasting_drilling.android.api.apis.response.ResponseEmployeeData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
 import com.smart_blasting_drilling.android.api.apis.response.ResultsetItem;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.GetAllMinePitZoneBenchResult;
+import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApis;
+import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllMineInfoSurfaceInitiatorEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ExplosiveDataEntity;
@@ -72,10 +75,10 @@ public class HomeActivity extends BaseActivity {
     public NavController navController;
     public ActivityHomeBinding binding;
     int projectFragType = 0;
-    AppDatabase appDatabase;
     List<ResponseBladesRetrieveData> projectList = new ArrayList<>();
     ProjectLIstAdapter projectLIstAdapter;
     BaseApis baseApis;
+    public AllTablesData allTablesData;
 
     public static void openHomeActivity(Context context) {
         context.startActivity(new Intent(context, HomeActivity.class));
@@ -88,8 +91,6 @@ public class HomeActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 
         baseApis = new BaseApis(this);
-
-        appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
 
         callBaseApis();
 
@@ -160,6 +161,22 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
+    public void setJsonCodeIdData(ResponseProjectModelFromAllInfoApi infoApi, int zoneId, int benchId, int pitId, int mineId) {
+        try {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("zoneId", zoneId);
+            jsonObject.addProperty("benchId", benchId);
+            jsonObject.addProperty("pitId", pitId);
+            jsonObject.addProperty("MineId", mineId);
+
+            AppDelegate.getInstance().setCodeIdObject(jsonObject);
+            AppDelegate.getInstance().setProjectModelFromAllInfoApi(infoApi);
+
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
+    }
+
     private void setNavigationView() {
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
             if (navDestination.getId() == R.id.drillingFragment) {
@@ -222,7 +239,6 @@ public class HomeActivity extends BaseActivity {
 
     private void setApiData(ResponseBladesRetrieveData bladesRetrieveData) {
         this.bladesRetrieveData = bladesRetrieveData;
-        appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
         entity = appDatabase.projectHoleDetailRowColDao();
         if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
             getAllDesignInfoApiCaller(bladesRetrieveData.isIs3dBlade());
@@ -231,11 +247,15 @@ public class HomeActivity extends BaseActivity {
             AllTablesData tablesData = new AllTablesData();
             Type typeList = new TypeToken<List<ResponseHoleDetailData>>(){}.getType();
             tablesData = new Gson().fromJson(rowColEntity.projectHole, AllTablesData.class);
+
+            ResponseProjectModelFromAllInfoApi infoApi = new Gson().fromJson(new Gson().fromJson(rowColEntity.projectHole, JsonObject.class).get("Table").getAsJsonArray().get(0), ResponseProjectModelFromAllInfoApi.class);
+            setJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
             setHoleTableData(tablesData);
         }
     }
 
     private void setHoleTableData(AllTablesData tablesData) {
+        allTablesData = tablesData;
         String str = new Gson().toJson(tablesData);
         if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
             entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), str));
@@ -243,12 +263,22 @@ public class HomeActivity extends BaseActivity {
             entity.updateProject(bladesRetrieveData.getDesignId(), str);
         }
 
-        Intent i = new Intent(HomeActivity.this, HoleDetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("all_table_Data", tablesData);
-        bundle.putSerializable("blades_data", bladesRetrieveData);
-        i.putExtras(bundle);
-        startActivity(i);
+        if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+            Intent i = new Intent(HomeActivity.this, HoleDetailActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("all_table_Data", tablesData);
+            bundle.putSerializable("blades_data", bladesRetrieveData);
+            i.putExtras(bundle);
+            startActivity(i);
+        } else {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ProjectDetailDialog infoDialogFragment = ProjectDetailDialog.getInstance(bladesRetrieveData);
+            infoDialogFragment.setFrom("Home");
+            ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
+            ft.commitAllowingStateLoss();
+        }
+
     }
 
     public void getAllDesignInfoApiCaller(boolean is3D) {
@@ -267,6 +297,8 @@ public class HomeActivity extends BaseActivity {
                                 try {
                                     if (jsonObject.get("GetAllDesignInfoResult").getAsString().contains("Table2")) {
                                         AllTablesData tablesData = new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), AllTablesData.class);
+                                        ResponseProjectModelFromAllInfoApi infoApi = new Gson().fromJson(new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), JsonObject.class).get("Table").getAsJsonArray().get(0), ResponseProjectModelFromAllInfoApi.class);
+                                        setJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
                                         setHoleTableData(tablesData);
                                     }
                                 } catch (Exception e) {

@@ -3,603 +3,610 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <include
+            android:id="@+id/header_performance"
+            layout="@layout/header_lay_performance_activity" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:paddingBottom="@dimen/_20sdp"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@id/header_performance"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/toplay"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/saveBtn">
+                android:paddingBottom="@dimen/_10sdp"
+                android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:id="@+id/linflyrocks"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/toplay"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/saveBtn">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:id="@+id/linflyrocks"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <TextView
-                            android:id="@+id/flyRocksTv"
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:gravity="center"
-                            android:text="@string/flyrocks"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:layout_weight="1">
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/flyRocksTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:text="@string/flyrocks"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_performance_spinner"
-                        android:padding="@dimen/_1sdp">
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                        <EditText
-                            android:id="@+id/flyrocksEdt"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginRight="@dimen/_20sdp"
-                            android:background="@drawable/performanc_edittext_bg"
-                            android:fontFamily="@font/inter_regular"
-                            android:hint="0"
-                            android:imeOptions="flagNoExtractUi"
-                            android:inputType="text"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:textColorHint="@color/black"
-                            android:textSize="@dimen/_20ssp"
-                            app:layout_constraintEnd_toStartOf="@+id/flyrocksm"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="TextFields" />
-
-                        <TextView
-                            android:id="@+id/flyrocksm"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:background="@drawable/tvm_bg"
-                            android:fontFamily="@font/inter_regular"
-                            android:gravity="center"
-                            android:text="m"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toBottomOf="@+id/flyrocksEdt"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/flyrocksEdt"
-                            app:layout_constraintTop_toTopOf="@+id/flyrocksEdt" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/lindisplacement"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    app:layout_constraintTop_toBottomOf="@+id/linflyrocks">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/displaceTv"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:gravity="center"
-                            android:text="@string/displacement"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_performance_spinner"
-                        android:padding="@dimen/_1sdp">
-
-
-                        <EditText
-                            android:id="@+id/displaceEdt"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginRight="@dimen/_20sdp"
-                            android:background="@drawable/performanc_edittext_bg"
-                            android:fontFamily="@font/inter_regular"
-                            android:hint="0"
-                            android:imeOptions="flagNoExtractUi"
-                            android:inputType="text"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:paddingRight="@dimen/_10sdp"
-                            android:textColorHint="@color/black"
-                            android:textSize="@dimen/_20ssp"
-                            app:layout_constraintEnd_toStartOf="@+id/displacemTv"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="TextFields" />
-
-                        <TextView
-                            android:id="@+id/displacemTv"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:background="@drawable/tvm_bg"
-                            android:fontFamily="@font/inter_regular"
-                            android:gravity="center"
-                            android:text="m"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toBottomOf="@+id/displaceEdt"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/displaceEdt"
-                            app:layout_constraintTop_toTopOf="@+id/displaceEdt" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/linblasting"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    app:layout_constraintTop_toBottomOf="@+id/lindisplacement">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/blastingTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:gravity="center"
-                            android:text="@string/blasting_fumes"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/blastingFumeEdt"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_performance_spinner"
-                        android:padding="@dimen/_1sdp">
-
-                        <com.smart_blasting_drilling.android.helper.TextSpinner
-                            android:id="@+id/noEdtSpinner"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
                             android:layout_marginEnd="@dimen/_10sdp"
-                            android:background="@drawable/performance_spinner_bg"
-                            android:editable="false"
-                            android:fontFamily="@font/inter_regular"
-                            android:hint="@string/not"
-                            android:imeOptions="flagNoExtractUi"
-                            android:importantForAutofill="no"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:paddingRight="@dimen/_10sdp"
-                            android:textColorHint="@color/black"
-                            android:textCursorDrawable="@drawable/cursor_color"
-                            android:textSize="@dimen/_18ssp"
-                            app:dropDownDrawable="@drawable/down_arrow"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            tools:ignore="TextFields" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
+                            android:layout_weight="1"
+                            android:background="@drawable/border_performance_spinner"
+                            android:padding="@dimen/_1sdp">
 
 
-                <LinearLayout
-                    android:id="@+id/linMukProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    app:layout_constraintTop_toBottomOf="@+id/linblasting">
+                            <EditText
+                                android:id="@+id/flyrocksEdt"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_35sdp"
+                                android:paddingHorizontal="@dimen/_10sdp"
+                                android:background="@drawable/performanc_edittext_bg"
+                                android:fontFamily="@font/inter_regular"
+                                android:hint="0"
+                                android:imeOptions="flagNoExtractUi"
+                                android:inputType="numberDecimal"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_20ssp"
+                                app:layout_constraintEnd_toStartOf="@+id/flyrocksm"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="TextFields" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
+                            <TextView
+                                android:id="@+id/flyrocksm"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_35sdp"
+                                android:background="@drawable/tvm_bg"
+                                android:fontFamily="@font/inter_regular"
+                                android:gravity="center"
+                                android:text="m"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="@+id/flyrocksEdt"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/flyrocksEdt"
+                                app:layout_constraintTop_toTopOf="@+id/flyrocksEdt" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lindisplacement"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1">
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toBottomOf="@+id/linflyrocks">
 
-                        <TextView
-                            android:id="@+id/musckProfileTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:gravity="center"
-                            android:text="@string/muck_profile"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/mukProfileEdt"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_performance_spinner"
-                        android:padding="@dimen/_1sdp">
-
-                        <com.smart_blasting_drilling.android.helper.TextSpinner
-                            android:id="@+id/mukProfileSpinner"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:background="@drawable/performance_spinner_bg"
-                            android:editable="false"
-                            android:fontFamily="@font/inter_regular"
-                            android:hint="@string/scattered"
-                            android:imeOptions="flagNoExtractUi"
-                            android:importantForAutofill="no"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:paddingRight="@dimen/_10sdp"
-                            android:textColorHint="@color/black"
-                            android:textCursorDrawable="@drawable/cursor_color"
-                            android:textSize="@dimen/_18ssp"
-                            app:dropDownDrawable="@drawable/down_arrow"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="TextFields"
-                            app:layout_constraintBottom_toBottomOf="parent"/>
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linHeaveSwell"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    app:layout_constraintTop_toBottomOf="@+id/linMukProfile">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/heaveSwellTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:gravity="center"
-                            android:text="@string/heave_swell"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/heaveSwellEdt"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_performance_spinner"
-                        android:padding="@dimen/_1sdp">
-
-                        <com.smart_blasting_drilling.android.helper.TextSpinner
-                            android:id="@+id/heaveSwellSpinner"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:background="@drawable/performance_spinner_bg"
-                            android:editable="false"
-                            android:fontFamily="@font/inter_regular"
-                            android:hint="@string/good"
-                            android:imeOptions="flagNoExtractUi"
-                            android:importantForAutofill="no"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:paddingRight="@dimen/_10sdp"
-                            android:textColorHint="@color/black"
-                            android:textCursorDrawable="@drawable/cursor_color"
-                            android:textSize="@dimen/_18ssp"
-                            app:dropDownDrawable="@drawable/down_arrow"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            tools:ignore="TextFields" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linStremmingInjection"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    app:layout_constraintTop_toBottomOf="@+id/linHeaveSwell">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/stremingInjectionTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:gravity="center"
-                            android:text="@string/stemming_ejection"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/streamingInjectionEdt"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_performance_spinner"
-                        android:padding="@dimen/_1sdp">
-
-                        <com.smart_blasting_drilling.android.helper.TextSpinner
-                            android:id="@+id/streamingInjectionSpinner"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:background="@drawable/performance_spinner_bg"
-                            android:editable="false"
-                            android:fontFamily="@font/inter_regular"
-                            android:hint="@string/not"
-                            android:imeOptions="flagNoExtractUi"
-                            android:importantForAutofill="no"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:paddingRight="@dimen/_10sdp"
-                            android:textColorHint="@color/black"
-                            android:textCursorDrawable="@drawable/cursor_color"
-                            android:textSize="@dimen/_18ssp"
-                            app:dropDownDrawable="@drawable/down_arrow"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            tools:ignore="TextFields" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linBackBreak"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    app:layout_constraintTop_toBottomOf="@+id/linStremmingInjection">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/backbreakTv"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:gravity="center"
-                            android:text="@string/backbreak"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:layout_weight="1">
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <TextView
+                                android:id="@+id/displaceTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:text="@string/displacement"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_performance_spinner"
-                        android:padding="@dimen/_1sdp">
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                        <EditText
-                            android:id="@+id/bsckbreakEdt"
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_marginRight="@dimen/_20sdp"
-                            android:background="@drawable/performanc_edittext_bg"
-                            android:fontFamily="@font/inter_regular"
-                            android:hint="-1"
-                            android:imeOptions="flagNoExtractUi"
-                            android:inputType="text"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:paddingRight="@dimen/_10sdp"
-                            android:textColorHint="@color/black"
-                            android:textSize="@dimen/_20ssp"
-                            app:layout_constraintEnd_toStartOf="@+id/backbreakmTv"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="TextFields" />
-
-                        <TextView
-                            android:id="@+id/backbreakmTv"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:background="@drawable/tvm_bg"
-                            android:fontFamily="@font/inter_regular"
-                            android:gravity="center"
-                            android:text="m"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toBottomOf="@+id/bsckbreakEdt"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/bsckbreakEdt"
-                            app:layout_constraintTop_toTopOf="@+id/bsckbreakEdt" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linbounderCount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    app:layout_constraintTop_toBottomOf="@+id/linBackBreak">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:id="@+id/bounderCountTv"
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/inter_bold"
-                            android:gravity="center"
-                            android:text="@string/bounder_count"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_20sdp"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/border_performance_spinner"
-                        android:padding="@dimen/_1sdp">
-
-                        <EditText
-                            android:id="@+id/bounderCountEdt"
-                            android:layout_width="0dp"
-                            android:layout_height="@dimen/_35sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_marginRight="@dimen/_20sdp"
-                            android:background="@drawable/performanc_edittext_bg"
-                            android:fontFamily="@font/inter_regular"
-                            android:hint="-1"
-                            android:imeOptions="flagNoExtractUi"
-                            android:inputType="text"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:paddingRight="@dimen/_10sdp"
-                            android:textColorHint="@color/black"
-                            android:textSize="@dimen/_20ssp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="TextFields" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </LinearLayout>
+                            android:layout_weight="1"
+                            android:background="@drawable/border_performance_spinner"
+                            android:padding="@dimen/_1sdp">
 
 
+                            <EditText
+                                android:id="@+id/displaceEdt"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_35sdp"
+                                android:background="@drawable/performanc_edittext_bg"
+                                android:fontFamily="@font/inter_regular"
+                                android:hint="0"
+                                android:imeOptions="flagNoExtractUi"
+                                android:inputType="numberDecimal"
+                                android:paddingHorizontal="@dimen/_10sdp"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_20ssp"
+                                app:layout_constraintEnd_toStartOf="@+id/displacemTv"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="TextFields" />
 
+                            <TextView
+                                android:id="@+id/displacemTv"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_35sdp"
+                                android:background="@drawable/tvm_bg"
+                                android:fontFamily="@font/inter_regular"
+                                android:gravity="center"
+                                android:text="m"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="@+id/displaceEdt"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/displaceEdt"
+                                app:layout_constraintTop_toTopOf="@+id/displaceEdt" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/linblasting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toBottomOf="@+id/lindisplacement">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/blastingTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_35sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:text="@string/blasting_fumes"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/blastingFumeEdt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_performance_spinner"
+                            android:padding="@dimen/_1sdp">
+
+                            <com.smart_blasting_drilling.android.helper.TextSpinner
+                                android:id="@+id/noEdtSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:background="@drawable/performance_spinner_bg"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="@string/yes"
+                                android:imeOptions="flagNoExtractUi"
+                                android:importantForAutofill="no"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:textColorHint="@color/black"
+                                android:textCursorDrawable="@drawable/cursor_color"
+                                android:textSize="@dimen/_18ssp"
+                                app:dropDownDrawable="@drawable/down_arrow"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                tools:ignore="TextFields" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/linMukProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toBottomOf="@+id/linblasting">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/musckProfileTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_35sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:text="@string/muck_profile"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/mukProfileEdt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_performance_spinner"
+                            android:padding="@dimen/_1sdp">
+
+                            <com.smart_blasting_drilling.android.helper.TextSpinner
+                                android:id="@+id/mukProfileSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:background="@drawable/performance_spinner_bg"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="@string/scattered"
+                                android:imeOptions="flagNoExtractUi"
+                                android:importantForAutofill="no"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:textColorHint="@color/black"
+                                android:textCursorDrawable="@drawable/cursor_color"
+                                android:textSize="@dimen/_18ssp"
+                                app:dropDownDrawable="@drawable/down_arrow"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="TextFields"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linHeaveSwell"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toBottomOf="@+id/linMukProfile">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/heaveSwellTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_35sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:text="@string/heave_swell"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/heaveSwellEdt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_performance_spinner"
+                            android:padding="@dimen/_1sdp">
+
+                            <com.smart_blasting_drilling.android.helper.TextSpinner
+                                android:id="@+id/heaveSwellSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:background="@drawable/performance_spinner_bg"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="@string/good"
+                                android:imeOptions="flagNoExtractUi"
+                                android:importantForAutofill="no"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:textColorHint="@color/black"
+                                android:textCursorDrawable="@drawable/cursor_color"
+                                android:textSize="@dimen/_18ssp"
+                                app:dropDownDrawable="@drawable/down_arrow"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                tools:ignore="TextFields" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linStremmingInjection"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toBottomOf="@+id/linHeaveSwell">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/stremingInjectionTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_35sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:text="@string/stemming_ejection"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/streamingInjectionEdt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_performance_spinner"
+                            android:padding="@dimen/_1sdp">
+
+                            <com.smart_blasting_drilling.android.helper.TextSpinner
+                                android:id="@+id/streamingInjectionSpinner"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:background="@drawable/performance_spinner_bg"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_regular"
+                                android:text="@string/yes"
+                                android:imeOptions="flagNoExtractUi"
+                                android:importantForAutofill="no"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:textColorHint="@color/black"
+                                android:textCursorDrawable="@drawable/cursor_color"
+                                android:textSize="@dimen/_18ssp"
+                                app:dropDownDrawable="@drawable/down_arrow"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                tools:ignore="TextFields" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linBackBreak"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toBottomOf="@+id/linStremmingInjection">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/backbreakTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:text="@string/backbreak"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_performance_spinner"
+                            android:padding="@dimen/_1sdp">
+
+
+                            <EditText
+                                android:id="@+id/bsckbreakEdt"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_35sdp"
+                                android:paddingHorizontal="@dimen/_10sdp"
+                                android:background="@drawable/performanc_edittext_bg"
+                                android:fontFamily="@font/inter_regular"
+                                android:hint="-1"
+                                android:imeOptions="flagNoExtractUi"
+                                android:inputType="numberDecimal"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_20ssp"
+                                app:layout_constraintEnd_toStartOf="@+id/backbreakmTv"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="TextFields" />
+
+                            <TextView
+                                android:id="@+id/backbreakmTv"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_35sdp"
+                                android:background="@drawable/tvm_bg"
+                                android:fontFamily="@font/inter_regular"
+                                android:gravity="center"
+                                android:text="m"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="@+id/bsckbreakEdt"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/bsckbreakEdt"
+                                app:layout_constraintTop_toTopOf="@+id/bsckbreakEdt" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linbounderCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toBottomOf="@+id/linBackBreak">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/bounderCountTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/inter_bold"
+                                android:gravity="center"
+                                android:text="@string/bounder_count"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="visible"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/border_performance_spinner"
+                            android:padding="@dimen/_1sdp">
+
+                            <EditText
+                                android:id="@+id/bounderCountEdt"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_35sdp"
+                                android:background="@drawable/performanc_edittext_bg"
+                                android:fontFamily="@font/inter_regular"
+                                android:hint="-1"
+                                android:imeOptions="flagNoExtractUi"
+                                android:inputType="numberDecimal"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:paddingRight="@dimen/_10sdp"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_20ssp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="TextFields" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/saveBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:background="@drawable/login_btn_bg"
+                    android:text="@string/save"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_17ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toplay"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
-            <Button
-                android:id="@+id/saveBtn"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_36sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_50sdp"
-                android:background="@drawable/login_btn_bg"
-                android:text="@string/save"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_17ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toplay"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.core.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

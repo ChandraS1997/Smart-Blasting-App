@@ -30,8 +30,8 @@ public interface AllProjectBladesModelDao {
     @Query("DELETE FROM AllProjectBladesModelEntity")
     void deleteAllItem();
 
-    @Query("UPDATE AllProjectBladesModelEntity SET Blades=:data WHERE DesignId = :id")
-    void updateItem(String id, String data);
+    @Query("UPDATE AllProjectBladesModelEntity SET Blades=:data, ProjectCode=:projectCode WHERE DesignId = :id")
+    void updateItem(String id, String projectCode, String data);
 
     @Update
     void updateItem(AllProjectBladesModelEntity data);
