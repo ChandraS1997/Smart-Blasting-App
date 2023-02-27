@@ -20,6 +20,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailD
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.FragmentMapviewBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.adapter.MapHolePointAdapter;
 import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
@@ -73,35 +74,10 @@ public class MapViewFragment extends BaseFragment {
 
     void getMapHoleDataList() {
         List<ResponseHoleDetailData> holeDetailDataList = ((HoleDetailActivity) mContext).holeDetailDataList;
-        List<MapHoleDataModel> rowMapHoleDataModelList = new ArrayList<>();
         List<MapHoleDataModel> colHoleDetailDataList = new ArrayList<>();
 
         if (!Constants.isListEmpty(holeDetailDataList)) {
-            for (ResponseHoleDetailData categoryList : holeDetailDataList) {
-                boolean isFound = false;
-                List<ResponseHoleDetailData> dataList = new ArrayList<>();
-                for (MapHoleDataModel e : rowMapHoleDataModelList) {
-                    if (e.getRowId() == categoryList.getRowNo()) {
-                        isFound = true;
-                        break;
-                    }
-                }
-                if (!isFound) {
-                    rowMapHoleDataModelList.add(new MapHoleDataModel((int) categoryList.getRowNo(), dataList));
-                }
-            }
-
-            Log.e("Row Items : ", new Gson().toJson(rowMapHoleDataModelList));
-
-            for (MapHoleDataModel e : rowMapHoleDataModelList) {
-                List<ResponseHoleDetailData> dataList = new ArrayList<>();
-                for (ResponseHoleDetailData categoryList : holeDetailDataList) {
-                    if (e.getRowId() == categoryList.getRowNo()) {
-                        dataList.add(categoryList);
-                    }
-                }
-                colHoleDetailDataList.add(new MapHoleDataModel(e.getRowId(), dataList));
-            }
+            colHoleDetailDataList = ((BaseActivity) mContext).getRowWiseHoleList(holeDetailDataList);
 
             MapHolePointAdapter adapter = new MapHolePointAdapter(mContext, colHoleDetailDataList);
             binding.rowHolePoint.setAdapter(adapter);

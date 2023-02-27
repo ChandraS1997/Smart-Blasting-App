@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
@@ -36,7 +37,9 @@ import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
+import com.smart_blasting_drilling.android.room_database.entities.BlastCodeEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
+import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
@@ -145,7 +148,13 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
                 @Override
                 public void syncWithBims() {
-
+                    String blastCode = "";
+                    if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
+                        BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntity(1);
+                        if (blastCodeEntity != null)
+                            blastCode = blastCodeEntity.getBlastCode();
+                    }
+                    blastInsertSyncRecordApiCaller(bladesRetrieveData, allTablesData, getRowWiseHoleList(allTablesData.getTable2()).size(), 0, blastCode);
                 }
 
                 @Override
@@ -265,6 +274,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 startActivity(new Intent(this, MediaActivity.class));
                 break;
             case R.id.initiatingDeviceContainer:
+                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 bundle.putSerializable("blades_data", bladesRetrieveData);
                 intent = new Intent(this, InitiatingDeviceViewActivity.class);
                 intent.putExtras(bundle);

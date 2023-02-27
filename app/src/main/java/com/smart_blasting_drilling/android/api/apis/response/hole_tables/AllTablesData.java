@@ -4,11 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
 
 public class AllTablesData implements Serializable {
 
 	@SerializedName("Table")
-	private List<TableItem> table;
+	private List<ResponseProjectModelFromAllInfoApi> table;
 
 	@SerializedName("Table2")
 	private List<ResponseHoleDetailData> tableHoleData;
@@ -25,11 +26,66 @@ public class AllTablesData implements Serializable {
 	@SerializedName("Table1")
 	private List<Table1Item> table1;
 
-	public void setTable(List<TableItem> table){
+	@SerializedName("Table6")
+	private List<Table6Item> table6;
+
+	@SerializedName("Table10")
+	private List<Table10Item> table10;
+
+	@SerializedName("Table7")
+	private List<Table7Item> table7;
+
+	@SerializedName("Table8")
+	private List<Table8Item> table8;
+
+	@SerializedName("Table9")
+	private List<Table9Item> table9;
+
+	public void setTable6(List<Table6Item> table6){
+		this.table6 = table6;
+	}
+
+	public List<Table6Item> getTable6(){
+		return table6;
+	}
+
+	public void setTable10(List<Table10Item> table10){
+		this.table10 = table10;
+	}
+
+	public List<Table10Item> getTable10(){
+		return table10;
+	}
+
+	public void setTable7(List<Table7Item> table7){
+		this.table7 = table7;
+	}
+
+	public List<Table7Item> getTable7(){
+		return table7;
+	}
+
+	public void setTable8(List<Table8Item> table8){
+		this.table8 = table8;
+	}
+
+	public List<Table8Item> getTable8(){
+		return table8;
+	}
+
+	public void setTable9(List<Table9Item> table9){
+		this.table9 = table9;
+	}
+
+	public List<Table9Item> getTable9(){
+		return table9;
+	}
+
+	public void setTable(List<ResponseProjectModelFromAllInfoApi> table){
 		this.table = table;
 	}
 
-	public List<TableItem> getTable(){
+	public List<ResponseProjectModelFromAllInfoApi> getTable(){
 		return table;
 	}
 

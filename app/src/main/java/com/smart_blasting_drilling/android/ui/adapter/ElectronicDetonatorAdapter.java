@@ -116,6 +116,7 @@ public class ElectronicDetonatorAdapter extends BaseRecyclerAdapter {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    getInitiatingData(binding.typeSpinner.getText().toString());
                     if (responseInitiatingData != null)
                         addData(responseInitiatingData);
                 }
@@ -127,9 +128,18 @@ public class ElectronicDetonatorAdapter extends BaseRecyclerAdapter {
             });
         }
 
+        private void getInitiatingData(String val) {
+            for (int i = 0; i < typeList.length; i++) {
+                if (typeList[i].equals(val)) {
+                    responseInitiatingData = responseInitiatingDataList.get(i);
+                    break;
+                }
+            }
+        }
+
         public void addData(ResultsetItem data) {
             InitiatingDeviceModel deviceModel = new InitiatingDeviceModel();
-            deviceModel.setPageCount(data.getIniType());
+            deviceModel.setPageCount(data.getIniCode());
             deviceModel.setCost(String.valueOf(data.getUnitCost()));
             deviceModel.setQty(binding.qtyEt.getText().toString());
             deviceModel.setType(data.getName());

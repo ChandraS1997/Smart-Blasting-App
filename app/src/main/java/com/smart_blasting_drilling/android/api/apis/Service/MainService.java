@@ -622,15 +622,15 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonPrimitive> blastInsertSyncRecordApiCaller(final Context context, JsonObject map) {
-        final MutableLiveData<JsonPrimitive> data = new MutableLiveData<>();
+    public static LiveData<JsonObject> bimsInsertSyncRecordApiCaller(final Context context, JsonObject map) {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonPrimitive> call = blastSblastApiService.blastInsertSyncRecordApiCaller(map);
-        call.enqueue(new Callback<JsonPrimitive>() {
+        Call<JsonObject> call = blastSblastApiService.bimsInsertSyncRecordApiCaller(map);
+        call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<JsonPrimitive> call, Response<JsonPrimitive> response) {
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
@@ -639,7 +639,7 @@ public class MainService {
             }
 
             @Override
-            public void onFailure(Call<JsonPrimitive> call, Throwable t) {
+            public void onFailure(Call<JsonObject> call, Throwable t) {
                 data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }

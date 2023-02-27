@@ -83,11 +83,25 @@ public class SyncProjectOptionDialog extends BaseDialogFragment {
         binding.syncProjectWithDrims.setOnClickListener(view -> {
             SyncProjectListener listener = getListener();
             if (listener != null) {
-                dismiss();
                 listener.syncWithDrims();
-            } else {
-                dismiss();
             }
+            dismiss();
+        });
+
+        binding.syncProjectWithBims.setOnClickListener(view -> {
+            SyncProjectListener listener = getListener();
+            if (listener != null) {
+                listener.syncWithBims();
+            }
+            dismiss();
+        });
+
+        binding.syncProjectWithBlades.setOnClickListener(view -> {
+            SyncProjectListener listener = getListener();
+            if (listener != null) {
+                listener.syncWithBlades();
+            }
+            dismiss();
         });
 
     }

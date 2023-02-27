@@ -527,8 +527,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.burden = burden;
 	}
 
-	public Object getBurden(){
-		return burden == null ? "0.0" : burden;
+	public int getBurden(){
+		return burden != null ? ((Double) burden).intValue() : 0;
 	}
 
 	public void setDensity(Object density){
@@ -912,7 +912,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public Object getWaterDepth(){
-		return waterDepth;
+		return waterDepth == null ? "" : waterDepth;
 	}
 
 	public void setDeckLength3(int deckLength3){
@@ -1111,8 +1111,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.spacing = spacing;
 	}
 
-	public Object getSpacing(){
-		return spacing != null ? "0.0" : spacing;
+	public int getSpacing(){
+		return spacing != null ? ((Double) spacing).intValue() : 0;
 	}
 
 	public void setBtmId(int btmId){
@@ -1232,7 +1232,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public Object getStemLngth(){
-		return stemLngth;
+		return stemLngth != null ? stemLngth : "" ;
 	}
 
 	public void setHoleDiameter(int holeDiameter){

@@ -57,11 +57,14 @@ public class PerformanceActivity extends BaseActivity {
 
                 String data = new Gson().toJson(jsonObject);
                 BlastPerformanceEntity entity = new BlastPerformanceEntity();
+                entity.designId = bladesRetrieveData.getDesignId();
                 entity.setData(data);
                 if (!appDatabase.blastPerformanceDao().isExistItem(bladesRetrieveData.getDesignId())) {
                     appDatabase.blastPerformanceDao().insertItem(entity);
+                    showToast("Data added successfully");
                 } else {
                     appDatabase.blastPerformanceDao().updateItem(bladesRetrieveData.getDesignId(), data);
+                    showToast("Data insert successfully");
                 }
             }
         });

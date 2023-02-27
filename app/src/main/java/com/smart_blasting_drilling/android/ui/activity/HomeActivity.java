@@ -248,8 +248,10 @@ public class HomeActivity extends BaseActivity {
             Type typeList = new TypeToken<List<ResponseHoleDetailData>>(){}.getType();
             tablesData = new Gson().fromJson(rowColEntity.projectHole, AllTablesData.class);
 
-            ResponseProjectModelFromAllInfoApi infoApi = new Gson().fromJson(new Gson().fromJson(rowColEntity.projectHole, JsonObject.class).get("Table").getAsJsonArray().get(0), ResponseProjectModelFromAllInfoApi.class);
-            setJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
+            if (!Constants.isListEmpty(tablesData.getTable2())) {
+                ResponseProjectModelFromAllInfoApi infoApi = tablesData.getTable().get(0);
+                setJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
+            }
             setHoleTableData(tablesData);
         }
     }
@@ -581,7 +583,7 @@ public class HomeActivity extends BaseActivity {
                                 if (Constants.isListEmpty(appDatabase.drillMethodDao().getAllEntityDataList())) {
                                     appDatabase.drillMethodDao().insertItem(entity);
                                 } else {
-                                    appDatabase.drillMethodDao().updateItem(0, new Gson().toJson(entity));
+                                    appDatabase.drillMethodDao().updateItem(1, new Gson().toJson(entity));
                                 }
                             } catch (Exception e) {
                                 Log.e(NODATAFOUND, e.getMessage());

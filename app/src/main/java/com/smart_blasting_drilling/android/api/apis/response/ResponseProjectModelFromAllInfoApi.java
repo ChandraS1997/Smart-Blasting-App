@@ -2,7 +2,9 @@ package com.smart_blasting_drilling.android.api.apis.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseProjectModelFromAllInfoApi{
+import java.io.Serializable;
+
+public class ResponseProjectModelFromAllInfoApi implements Serializable {
 
 	@SerializedName("PitName")
 	private String pitName;
