@@ -1050,4 +1050,120 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void insertActualDesignChartSheetApiCaller() {
+        JsonArray mapObjectArray = new JsonArray();
+        JsonObject object = new JsonObject();
+        object.addProperty("BsterId", "");
+        object.addProperty("BsterLength", "");
+        object.addProperty("BsterWt", "");
+        object.addProperty("BtmBasePrcnt", "");
+        object.addProperty("BtmId", "");
+        object.addProperty("BtmLength", "");
+        object.addProperty("BtmWt", "");
+        object.addProperty("Burden", "");
+        object.addProperty("ColId", "");
+        object.addProperty("ColLength", "");
+        object.addProperty("ColWt", "");
+        object.addProperty("DeckLength", "");
+        object.addProperty("DeckLength1", "");
+        object.addProperty("DeckLength2", "");
+        object.addProperty("DeckLength3", "");
+        object.addProperty("DeckLength4", "");
+        object.addProperty("DeckLength5", "");
+        object.addProperty("DeckStartAt", "");
+        object.addProperty("DeckStartAt1", "");
+        object.addProperty("DeckStartAt2", "");
+        object.addProperty("DeckStartAt3", "");
+        object.addProperty("DeckStartAt4", "");
+        object.addProperty("DeckStartAt5", "");
+        object.addProperty("Delay", "");
+        object.addProperty("DesignId", "");
+        object.addProperty("DrillX", "");
+        object.addProperty("DrillY", "");
+        object.addProperty("HHDelay", "");
+        object.addProperty("HoleDepth", "");
+        object.addProperty("HoleID", "");
+        object.addProperty("HoleNo", "");
+        object.addProperty("HoleType", "");
+        object.addProperty("InHoleDelay", "");
+        object.addProperty("NoOfDecks", "");
+        object.addProperty("RRDelay", "");
+        object.addProperty("RowNo", "");
+        object.addProperty("Spacing", "");
+        object.addProperty("StemLngth", "");
+        object.addProperty("Subgrade", "");
+        object.addProperty("TopBasePrcnt", "");
+        object.addProperty("WaterDepth", "");
+        object.addProperty("X", "");
+        object.addProperty("Y", "");
+        object.addProperty("holeAngle", "");
+        object.addProperty("inHoleDelayQty", "");
+        mapObjectArray.add(object);
+
+        MainService.insertActualDesignChartSheetApiCaller(this, mapObjectArray).observe(this, new Observer<JsonObject>() {
+            @Override
+            public void onChanged(JsonObject jsonObject) {
+
+            }
+        });
+
+    }
+
+    public void insertUpdate3DActualDesignHoleDetailApiCaller() {
+        JsonArray mapObjectArray = new JsonArray();
+        JsonObject object = new JsonObject();
+        object.addProperty("Block", "");
+        object.addProperty("BlockLength", "");
+        object.addProperty("BottomX", "");
+        object.addProperty("BottomY", "");
+        object.addProperty("BottomZ", "");
+        object.addProperty("Burden", "");
+        object.addProperty("ChargeLength", "");
+
+        JsonArray chargeTypeArray = new JsonArray();
+        JsonObject chargeTypeObject = new JsonObject();
+        chargeTypeObject.addProperty("type","");
+        chargeTypeObject.addProperty("name","");
+        chargeTypeObject.addProperty("cost","");
+        chargeTypeObject.addProperty("weight","");
+        chargeTypeObject.addProperty("length","");
+        chargeTypeObject.addProperty("prodType","");
+        chargeTypeObject.addProperty("prodId","");
+        chargeTypeObject.addProperty("color","");
+        chargeTypeObject.addProperty("percentage","");
+        chargeTypeArray.add(chargeTypeObject);
+
+        object.add("ChargeTypeArray", chargeTypeArray);
+        object.addProperty("DeckLength", "");
+        object.addProperty("DesignId", "");
+        object.addProperty("HoleDelay", "");
+        object.addProperty("HoleDepth", "");
+        object.addProperty("HoleDiameter", "");
+        object.addProperty("HoleID", "");
+        object.addProperty("HoleNo", "");
+        object.addProperty("HoleType", "");
+        object.addProperty("InHoleDelay", "");
+        object.addProperty("RowNo", "");
+        object.addProperty("Spacing", "");
+        object.addProperty("StemmingLength", "");
+        object.addProperty("Subgrade", "");
+        object.addProperty("TielineId", "");
+        object.addProperty("TopX", "");
+        object.addProperty("TopY", "");
+        object.addProperty("TopZ", "");
+        object.addProperty("TotalCharge", "");
+        object.addProperty("VerticalDip", "");
+        object.addProperty("WaterDepth", "");
+
+        mapObjectArray.add(object);
+
+        MainService.insertUpdate3DActualDesignHoleDetailApiCaller(this, mapObjectArray).observe(this, new Observer<JsonObject>() {
+            @Override
+            public void onChanged(JsonObject jsonObject) {
+
+            }
+        });
+
+    }
+
 }

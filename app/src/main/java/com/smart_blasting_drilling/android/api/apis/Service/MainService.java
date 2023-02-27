@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -40,6 +41,7 @@ public class MainService {
     private static final APiInterface uplodeApiService = BaseService.getAPIClient(Constants.API_UPLOAD_BASE_URL).create(APiInterface.class);
     private static final APiInterface drimzApiService = BaseService.getAPIClient(Constants.API_DRIMS_BASE_URL).create(APiInterface.class);
     private static final APiInterface blastSblastApiService = BaseService.getAPIClient(Constants.BLAST_S_BLAST_BASE_URL).create(APiInterface.class);
+    private static final APiInterface testBlastSblastApiService = BaseService.getAPIClient(Constants.TEST_BLAST_S_BLAST_BASE_URL).create(APiInterface.class);
 
     public static JsonObject tokenExpiredResponse(String msg, int code, int errorCode) {
         JsonObject apiResponse = new JsonObject();
@@ -628,6 +630,56 @@ public class MainService {
             return data;
         }
         Call<JsonObject> call = blastSblastApiService.bimsInsertSyncRecordApiCaller(map);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonObject> insertActualDesignChartSheetApiCaller(final Context context, JsonArray map) {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonObject> call = testBlastSblastApiService.insertActualDesignChartSheetApiCaller(map);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonObject> insertUpdate3DActualDesignHoleDetailApiCaller(final Context context, JsonArray map) {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonObject> call = testBlastSblastApiService.insertUpdate3DActualDesignHoleDetailApiCaller(map);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

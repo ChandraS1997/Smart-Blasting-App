@@ -20,6 +20,8 @@ public class RestUtils {
             return Constants.DRIMS_BASE_URL;
         } else if (urlType.equalsIgnoreCase(Constants.BLAST_S_BLAST_BASE_URL)) {
             return Constants.BLAST_S_BLAST;
+        } else if (urlType.equalsIgnoreCase(Constants.TEST_BLAST_S_BLAST_BASE_URL)) {
+            return Constants.TEST_BLAST_S_BLAST;
         } else {
             return Constants.API_DEFAULT_URL;
         }
