@@ -543,8 +543,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.holeType = holeType;
 	}
 
-	public Object getHoleType(){
-		return holeType != null ? "0.0" : holeType;
+	public int getHoleType(){
+		return (holeType == null ? 0 : ((Double) holeType).intValue());
 	}
 
 	public void setBtmName(Object btmName){
@@ -887,8 +887,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.deckLength5 = deckLength5;
 	}
 
-	public Object getDeckLength5(){
-		return deckLength5;
+	public int getDeckLength5(){
+		return deckLength5 != null ? ((Double) deckLength5).intValue() : 0;
 	}
 
 	public void setLicenseMagzine11(Object licenseMagzine11){
@@ -903,8 +903,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.deckLength4 = deckLength4;
 	}
 
-	public Object getDeckLength4(){
-		return deckLength4;
+	public int getDeckLength4(){
+		return deckLength4 != null ? ((Double) deckLength4).intValue() : 0;
 	}
 
 	public void setWaterDepth(int waterDepth){
@@ -919,24 +919,24 @@ public class ResponseHoleDetailData implements Serializable {
 		this.deckLength3 = deckLength3;
 	}
 
-	public Object getDeckLength3(){
-		return deckLength3;
+	public int getDeckLength3(){
+		return deckLength3 != null ? ((Double) deckLength3).intValue() : 0;
 	}
 
 	public void setDeckLength2(int deckLength2){
 		this.deckLength2 = deckLength2;
 	}
 
-	public Object getDeckLength2(){
-		return deckLength2;
+	public int getDeckLength2(){
+		return deckLength2 != null ? ((Double) deckLength2).intValue() : 0;
 	}
 
 	public void setDeckLength1(int deckLength1){
 		this.deckLength1 = deckLength1;
 	}
 
-	public Object getDeckLength1(){
-		return deckLength1;
+	public int getDeckLength1(){
+		return deckLength1 != null ? ((Double) deckLength1).intValue() : 0;
 	}
 
 	public void setHoleAngle(int holeAngle){
@@ -951,48 +951,48 @@ public class ResponseHoleDetailData implements Serializable {
 		this.designId = designId;
 	}
 
-	public Object getDesignId(){
-		return designId;
+	public int getDesignId(){
+		return designId != null ? ((Double) designId).intValue() : 0;
 	}
 
 	public void setDeckStartAt2(int deckStartAt2){
 		this.deckStartAt2 = deckStartAt2;
 	}
 
-	public Object getDeckStartAt2(){
-		return deckStartAt2;
+	public int getDeckStartAt2(){
+		return deckStartAt2 != null ? ((Double) deckStartAt2).intValue() : 0;
 	}
 
 	public void setDeckStartAt3(int deckStartAt3){
 		this.deckStartAt3 = deckStartAt3;
 	}
 
-	public Object getDeckStartAt3(){
-		return deckStartAt3;
+	public int getDeckStartAt3(){
+		return deckStartAt3 != null ? ((Double) deckStartAt3).intValue() : 0;
 	}
 
 	public void setDeckStartAt1(int deckStartAt1){
 		this.deckStartAt1 = deckStartAt1;
 	}
 
-	public Object getDeckStartAt1(){
-		return deckStartAt1;
+	public int getDeckStartAt1(){
+		return deckStartAt1 != null ? ((Double) deckStartAt1).intValue() : 0;
 	}
 
 	public void setDeckStartAt4(int deckStartAt4){
 		this.deckStartAt4 = deckStartAt4;
 	}
 
-	public Object getDeckStartAt4(){
-		return deckStartAt4;
+	public int getDeckStartAt4(){
+		return deckStartAt4 != null ? ((Double) deckStartAt4).intValue() : 0;
 	}
 
 	public void setDeckStartAt5(int deckStartAt5){
 		this.deckStartAt5 = deckStartAt5;
 	}
 
-	public Object getDeckStartAt5(){
-		return deckStartAt5;
+	public int getDeckStartAt5(){
+		return deckStartAt5 != null ? ((Double) deckStartAt5).intValue() : 0;
 	}
 
 	public void setBasePercent1(int basePercent1){
@@ -1055,8 +1055,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.x = x;
 	}
 
-	public Object getX(){
-		return x;
+	public double getX(){
+		return x != null ? (double) x : 0.0;
 	}
 
 	public void setLicenseMagzine2(String licenseMagzine2){
@@ -1071,8 +1071,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.y = y;
 	}
 
-	public Object getY(){
-		return y;
+	public double getY(){
+		return y != null ? (double) y : 0;
 	}
 
 	public void setLicenseMagzine22(String licenseMagzine22){
@@ -1095,8 +1095,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.bsterId = bsterId;
 	}
 
-	public Object getBsterId(){
-		return bsterId;
+	public int getBsterId(){
+		return bsterId != null ? ((Double) bsterId).intValue() : 0;
 	}
 
 	public void setMag1Unit1(Object mag1Unit1){
@@ -1119,8 +1119,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.btmId = btmId;
 	}
 
-	public Object getBtmId(){
-		return btmId;
+	public int getBtmId(){
+		return btmId != null ? ((Double) btmId).intValue() : 0;
 	}
 
 	public void setBasePercent4(int basePercent4){
@@ -1199,8 +1199,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.colLength = colLength;
 	}
 
-	public Object getColLength(){
-		return colLength;
+	public int getColLength(){
+		return colLength != null ? ((Double) colLength).intValue() : 0;
 	}
 
 	public void setUnitCost1(Object unitCost1){
@@ -1215,8 +1215,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.colId = colId;
 	}
 
-	public Object getColId(){
-		return colId;
+	public int getColId(){
+		return colId != null ? ((Double) colId).intValue() : 0;
 	}
 
 	public void setUnitCost2(Object unitCost2){
@@ -1231,8 +1231,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.stemLngth = stemLngth;
 	}
 
-	public Object getStemLngth(){
-		return stemLngth != null ? stemLngth : "" ;
+	public String getStemLngth(){
+		return stemLngth != null ? String.valueOf(stemLngth) : "" ;
 	}
 
 	public void setHoleDiameter(int holeDiameter){
@@ -1303,8 +1303,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.delay = delay;
 	}
 
-	public Object getDelay(){
-		return delay;
+	public int getDelay(){
+		return delay != null ? ((Double) delay).intValue() : 0;
 	}
 
 	public void setMake2(String make2){
@@ -1503,24 +1503,24 @@ public class ResponseHoleDetailData implements Serializable {
 		this.noOfDecks = noOfDecks;
 	}
 
-	public Object getNoOfDecks(){
-		return noOfDecks;
+	public int getNoOfDecks(){
+		return noOfDecks != null ? ((Double) noOfDecks).intValue() : 0;
 	}
 
 	public void setColWt(Object colWt){
 		this.colWt = colWt;
 	}
 
-	public Object getColWt(){
-		return colWt;
+	public int getColWt(){
+		return colWt != null ? ((Double) colWt).intValue() : 0;
 	}
 
 	public void setRRDelay(int rRDelay){
 		this.rRDelay = rRDelay;
 	}
 
-	public Object getRRDelay(){
-		return rRDelay;
+	public int getRRDelay(){
+		return rRDelay != null ? ((Double) rRDelay).intValue() : 0;
 	}
 
 	public void setBlock(Object block){
@@ -1615,8 +1615,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.inHoleDelay = inHoleDelay;
 	}
 
-	public Object getInHoleDelay(){
-		return inHoleDelay;
+	public int getInHoleDelay(){
+		return inHoleDelay != null ? ((Double) inHoleDelay).intValue() : 0;
 	}
 
 	public void setMagazine12(String magazine12){
@@ -1671,8 +1671,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.subgrade = subgrade;
 	}
 
-	public Object getSubgrade(){
-		return subgrade;
+	public int getSubgrade(){
+		return subgrade != null ? ((Double) subgrade).intValue() : 0;
 	}
 
 	public void setComment(String comment){
@@ -1695,8 +1695,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.hHDelay = hHDelay;
 	}
 
-	public Object getHHDelay(){
-		return hHDelay;
+	public int getHHDelay(){
+		return hHDelay != null ? ((Double)hHDelay).intValue() : 0;
 	}
 
 	public void setHoleNo(int holeNo){
@@ -1783,15 +1783,15 @@ public class ResponseHoleDetailData implements Serializable {
 		this.drillX = drillX;
 	}
 
-	public Object getDrillX(){
-		return drillX;
+	public double getDrillX(){
+		return drillX != null ? (double) drillX : 0;
 	}
 
 	public void setDrillY(Object drillY){
 		this.drillY = drillY;
 	}
 
-	public Object getDrillY(){
-		return drillY;
+	public double getDrillY(){
+		return drillY != null ? (double) drillY : 0;
 	}
 }

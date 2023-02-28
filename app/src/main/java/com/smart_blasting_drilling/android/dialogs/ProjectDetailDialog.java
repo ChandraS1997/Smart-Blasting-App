@@ -38,6 +38,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseRigData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseSiteDetail;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.Table1Item;
+import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.ProjectInfoDialogBinding;
 import com.smart_blasting_drilling.android.databinding.ProjectInfoLayoutBinding;
@@ -213,13 +214,16 @@ public class ProjectDetailDialog extends BaseDialogFragment {
     }
 
     private void setNavigationOnHole(AllTablesData allTablesData) {
+        dismiss();
         if (!StringUtill.isEmpty(from)) {
             if (from.equals("Home")) {
                 Intent i = new Intent(mContext, HoleDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("all_table_Data", allTablesData);
-                bundle.putSerializable("blades_data", bladesRetrieveData);
-                i.putExtras(bundle);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("all_table_Data", allTablesData);
+//                bundle.putSerializable("blades_data", bladesRetrieveData);
+                AppDelegate.getInstance().setAllTablesData(allTablesData);
+                AppDelegate.getInstance().setBladesRetrieveData(bladesRetrieveData);
+//                i.putExtras(bundle);
                 startActivity(i);
             }
         }
@@ -334,11 +338,7 @@ public class ProjectDetailDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.drillMethodDao().getAllEntityDataList())) {
                 if (appDatabase.drillMethodDao().getAllEntityDataList().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseDrillMethodData>>(){}.getType();
-                    JsonArray jsonArr = new Gson().fromJson(appDatabase.drillMethodDao().getAllEntityDataList().get(0).getData(), JsonArray.class);
-                    List<ResponseDrillMethodData> drillMethodDataList = new ArrayList<>();
-                    for (JsonElement array : jsonArr) {
-                        drillMethodDataList.add(new Gson().fromJson(array, ResponseDrillMethodData.class));
-                    }
+                    List<ResponseDrillMethodData> drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillMethodDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
                     if (!Constants.isListEmpty(drillMethodDataList)) {
                         String[] drillMethodDataItem = new String[drillMethodDataList.size()];
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
@@ -360,7 +360,7 @@ public class ProjectDetailDialog extends BaseDialogFragment {
         if (!Constants.isListEmpty(appDatabase.projectHoleDetailRowColDao().getAllBladesProjectList())) {
             if (appDatabase.projectHoleDetailRowColDao().getAllBladesProjectList().get(0) != null) {
                 Type teamList = new TypeToken<List<Table1Item>>(){}.getType();
-                AllTablesData tablesData = new Gson().fromJson(appDatabase.projectHoleDetailRowColDao().getAllBladesProjectList().get(0).getProjectHole(), AllTablesData.class);
+                AllTablesData tablesData = new Gson().fromJson(appDatabase.projectHoleDetailRowColDao().getAllBladesProject(bladesRetrieveData.getDesignId()).getProjectHole(), AllTablesData.class);
                 List<Table1Item> drillPatternDataItemList = tablesData.getTable1();
                 if (!Constants.isListEmpty(drillPatternDataItemList)) {
                     String[] drillPatternDataItem = new String[drillPatternDataItemList.size()];

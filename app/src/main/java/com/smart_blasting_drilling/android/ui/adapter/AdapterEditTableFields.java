@@ -57,6 +57,16 @@ public class AdapterEditTableFields extends BaseRecyclerAdapter {
         return editModelArrayList;
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ViewTableEditFieldsBinding binding;
 

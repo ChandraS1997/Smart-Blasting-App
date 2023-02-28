@@ -1,7 +1,9 @@
 package com.smart_blasting_drilling.android.app;
 
 import com.google.gson.JsonObject;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
+import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,9 @@ public class AppDelegate {
 
     public JsonObject codeIdObject = new JsonObject();
     public ResponseProjectModelFromAllInfoApi projectModelFromAllInfoApi = new ResponseProjectModelFromAllInfoApi();
+
+    public AllTablesData allTablesData = new AllTablesData();
+    public ResponseBladesRetrieveData bladesRetrieveData = new ResponseBladesRetrieveData();
 
     public static AppDelegate getInstance() {
         if (instance == null) {
@@ -54,5 +59,21 @@ public class AppDelegate {
             imgList = new ArrayList<>();
         }
         imgList.add(filePath);
+    }
+
+    public AllTablesData getAllTablesData() {
+        return allTablesData;
+    }
+
+    public void setAllTablesData(AllTablesData allTablesData) {
+        this.allTablesData = allTablesData;
+    }
+
+    public ResponseBladesRetrieveData getBladesRetrieveData() {
+        return bladesRetrieveData;
+    }
+
+    public void setBladesRetrieveData(ResponseBladesRetrieveData bladesRetrieveData) {
+        this.bladesRetrieveData = bladesRetrieveData;
     }
 }

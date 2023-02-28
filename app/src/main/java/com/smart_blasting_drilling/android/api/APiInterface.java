@@ -87,7 +87,7 @@ public interface APiInterface {
     Call<JsonObject> bimsInsertSyncRecordApiCaller(@Body JsonObject map);
 
     @POST("insertActualDesignChartsheet/reset")
-    Call<JsonObject> insertActualDesignChartSheetApiCaller(@Body JsonArray map);
+    Call<JsonPrimitive> insertActualDesignChartSheetApiCaller(@Body JsonArray map);
 
     @POST("InsertUpdate3DActualDesignHoleDetail/reset")
     Call<JsonObject> insertUpdate3DActualDesignHoleDetailApiCaller(@Body JsonArray map);

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
@@ -93,6 +94,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         binding.headerMedia.backImg.setOnClickListener(view -> finish());
 
         getAllImageFromGallery();
+        Log.e("Abc : ", new Gson().toJson(getAllShownImagesPath(this)));
 
         binding.clickhereTv.setOnClickListener(view -> selectImage());
         pickiT = new PickiT(this, this, this);
@@ -127,15 +129,68 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         }
     }
 
+
+    private ArrayList<String> getAllShownImagesPath(AppCompatActivity activity) {
+        ArrayList<String> allImages = new ArrayList<>();
+        Uri uri;
+        Cursor cursor;
+        int column_index_data, column_index_folder_name;
+        ArrayList<String> listOfAllImages = new ArrayList<>();
+        String absolutePathOfImage = null;
+        uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+        String[] projection = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
+
+        cursor = activity.getContentResolver().query(uri, projection, null,
+                null, null);
+
+        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        column_index_folder_name = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+        while (cursor.moveToNext()) {
+            absolutePathOfImage = cursor.getString(column_index_data);
+
+            listOfAllImages.add(absolutePathOfImage);
+        }
+
+        ArrayList<String> newList = new ArrayList<>();
+        for (int i = listOfAllImages.size() - 1; i >= 0; i--) {
+            newList.add(listOfAllImages.get(i));
+        }
+
+        return newList;
+    }
+
     private void getAllImageFromGallery() {
         try {
+            ArrayList<String> galleryImageUrls;
+            final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};//get all columns of type images
+            final String orderBy = MediaStore.Images.Media.DATE_TAKEN;//order data by date
+
+            Cursor imagecursor = managedQuery(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
+                    null, orderBy + " DESC");//get all data in Cursor by sorting in DESC order
+
+            galleryImageUrls = new ArrayList<String>();
+
+            for (int i = 0; i < imagecursor.getCount(); i++) {
+                imagecursor.moveToPosition(i);
+                int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);//get column index
+                galleryImageUrls.add(imagecursor.getString(dataColumnIndex));//get Image from column index
+
+            }
+            Log.e("fatch in","images");
+
+            Log.e("Image List ans :- ", new Gson().toJson(galleryImageUrls));
+
             List<String> fileList = new ArrayList<>();
             String selection = MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " = ?";
             String[] selectionArgs = new String[] {
                     "Camera"
             };
             String[] projection = new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
-            try (Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, selectionArgs, "")) {
+            try (Cursor cursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, selectionArgs, "")) {
                 for (int i = 0; i < cursor.getCount(); i++) {
                     cursor.moveToPosition(i);
                     int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);

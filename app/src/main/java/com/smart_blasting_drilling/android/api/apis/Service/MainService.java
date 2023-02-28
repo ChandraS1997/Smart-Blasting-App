@@ -649,15 +649,15 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonObject> insertActualDesignChartSheetApiCaller(final Context context, JsonArray map) {
-        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+    public static LiveData<JsonPrimitive> insertActualDesignChartSheetApiCaller(final Context context, JsonArray map) {
+        final MutableLiveData<JsonPrimitive> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonObject> call = testBlastSblastApiService.insertActualDesignChartSheetApiCaller(map);
-        call.enqueue(new Callback<JsonObject>() {
+        Call<JsonPrimitive> call = testBlastSblastApiService.insertActualDesignChartSheetApiCaller(map);
+        call.enqueue(new Callback<JsonPrimitive>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<JsonPrimitive> call, Response<JsonPrimitive> response) {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
@@ -666,7 +666,7 @@ public class MainService {
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<JsonPrimitive> call, Throwable t) {
                 data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }

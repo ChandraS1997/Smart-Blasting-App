@@ -8,14 +8,14 @@
 
         <View
             android:id="@+id/startSpaceView"
-            android:layout_width="@dimen/_35sdp"
+            android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_40sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <View
             android:id="@+id/endSpaceView"
-            android:layout_width="@dimen/_35sdp"
+            android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_40sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

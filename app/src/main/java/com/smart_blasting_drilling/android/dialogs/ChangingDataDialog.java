@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.google.gson.Gson;
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.app.BaseApplication;
@@ -41,16 +42,18 @@ public class ChangingDataDialog extends BaseDialogFragment {
     public ResponseHoleDetailData updateHoleDetailData;
     ProjectInfoDialogListener mListener;
     ProjectHoleDetailRowColDao entity;
+    ResponseBladesRetrieveData bladesRetrieveData;
 
     public ChangingDataDialog() {
         _self = this;
         entity = appDatabase.projectHoleDetailRowColDao();
     }
 
-    public static ChangingDataDialog getInstance(ResponseHoleDetailData holeDetailData) {
+    public static ChangingDataDialog getInstance(ResponseHoleDetailData holeDetailData, ResponseBladesRetrieveData data) {
         ChangingDataDialog frag = new ChangingDataDialog();
         Bundle bundle = new Bundle();
         bundle.putSerializable("holeDetail", holeDetailData);
+        bundle.putSerializable("blades_data", data);
         frag.setArguments(bundle);
         return frag;
     }
@@ -80,6 +83,7 @@ public class ChangingDataDialog extends BaseDialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             holeDetailData = (ResponseHoleDetailData) getArguments().getSerializable("holeDetail");
+            bladesRetrieveData = (ResponseBladesRetrieveData) getArguments().getSerializable("blades_data");
             updateHoleDetailData = holeDetailData;
         }
     }
@@ -105,8 +109,8 @@ public class ChangingDataDialog extends BaseDialogFragment {
     public void loadData() {
         if (holeDetailData != null) {
             binding.spinnerColumn.setText(holeDetailData.getColName());
-            binding.columnLengthEt.setText(holeDetailData.getColLength() != null ? String.valueOf(holeDetailData.getColLength()) : "0");
-            binding.columnWeightEt.setText(holeDetailData.getColWt() != null ? String.valueOf(holeDetailData.getColWt()) : "0");
+            binding.columnLengthEt.setText(String.valueOf(holeDetailData.getColLength()));
+            binding.columnWeightEt.setText(String.valueOf(holeDetailData.getColWt()));
 
             binding.spinnerbottom.setText(String.valueOf(holeDetailData.getBtmName()));
             binding.bottomLengthEt.setText(String.valueOf(holeDetailData.getBtmLength()));
@@ -165,7 +169,7 @@ public class ChangingDataDialog extends BaseDialogFragment {
                     dataStr = new Gson().toJson(allTablesData);
 
                     if (!entity.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
-                        entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(updateHoleDetailData.getDesignId()), dataStr));
+                        entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(updateHoleDetailData.getDesignId()), false, dataStr));
                     } else {
                         entity.updateProject(String.valueOf(updateHoleDetailData.getDesignId()), dataStr);
                     }

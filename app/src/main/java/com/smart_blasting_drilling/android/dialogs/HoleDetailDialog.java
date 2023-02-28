@@ -46,18 +46,19 @@ public class HoleDetailDialog extends BaseDialogFragment {
     private HoleDetailDialog.ProjectInfoDialogListener mListener;
     public ResponseHoleDetailData holeDetailData;
     public ResponseHoleDetailData updateHoleDetailData;
+    ResponseBladesRetrieveData bladesRetrieveData;
 
     ProjectHoleDetailRowColDao entity;
 
     public HoleDetailDialog() {
         _self = this;
-        entity = appDatabase.projectHoleDetailRowColDao();
     }
 
-    public static HoleDetailDialog getInstance(ResponseHoleDetailData holeDetailData) {
+    public static HoleDetailDialog getInstance(ResponseHoleDetailData holeDetailData, ResponseBladesRetrieveData data) {
         HoleDetailDialog frag = new HoleDetailDialog();
         Bundle bundle = new Bundle();
         bundle.putSerializable("holeDetail", holeDetailData);
+        bundle.putSerializable("blades_data", data);
         frag.setArguments(bundle);
         return frag;
     }
@@ -87,6 +88,7 @@ public class HoleDetailDialog extends BaseDialogFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             holeDetailData = (ResponseHoleDetailData) getArguments().getSerializable("holeDetail");
+            bladesRetrieveData = (ResponseBladesRetrieveData) getArguments().getSerializable("blades_data");
             updateHoleDetailData = holeDetailData;
         }
     }
@@ -110,6 +112,7 @@ public class HoleDetailDialog extends BaseDialogFragment {
 
     @Override
     public void loadData() {
+        entity = appDatabase.projectHoleDetailRowColDao();
         if (holeDetailData != null) {
             binding.holeDepthEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDepth())));
             String[] status = new String[]{"Pending Hole", "Work in Progress", "Completed", "Deleted/ Blocked holes/ Do not blast"};
@@ -177,7 +180,7 @@ public class HoleDetailDialog extends BaseDialogFragment {
                     dataStr = new Gson().toJson(allTablesData);
 
                     if (!entity.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
-                        entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(updateHoleDetailData.getDesignId()), dataStr));
+                        entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(updateHoleDetailData.getDesignId()), bladesRetrieveData.isIs3dBlade(), dataStr));
                     } else {
                         entity.updateProject(String.valueOf(updateHoleDetailData.getDesignId()), dataStr);
                     }

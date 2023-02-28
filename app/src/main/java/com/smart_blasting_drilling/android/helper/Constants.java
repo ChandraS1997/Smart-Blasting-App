@@ -3,6 +3,9 @@ package com.smart_blasting_drilling.android.helper;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
@@ -74,6 +77,26 @@ public class Constants {
 
     public static ListAdapter getAdapter(Context mContext, String[] list) {
         return new ArrayAdapter(mContext, android.R.layout.simple_spinner_dropdown_item, list);
+    }
+
+    public static long getScreenWidthResolution(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        return width;
+    }
+
+    public static long getScreenHeightResolution(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        return height;
     }
 
 }

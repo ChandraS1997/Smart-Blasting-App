@@ -26,6 +26,7 @@ import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
 import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
@@ -61,12 +62,10 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
     public MutableLiveData<Boolean> mapViewDataUpdateLiveData = new MutableLiveData<>();
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (isBundleIntentNotEmpty()) {
-            bladesRetrieveData = (ResponseBladesRetrieveData) getIntent().getExtras().getSerializable("blades_data");
-            allTablesData = (AllTablesData) getIntent().getExtras().getSerializable("all_table_Data");
+    public void setDataFromBundle() {
+//        if (isBundleIntentNotEmpty()) {
+            bladesRetrieveData = AppDelegate.getInstance().getBladesRetrieveData();
+            allTablesData = AppDelegate.getInstance().getAllTablesData();
             for (int i = 0; i < allTablesData.getTable2().size(); i++) {
                 boolean isFound = false;
                 for (int j = 0; j < rowList.size(); j++) {
@@ -89,7 +88,13 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             }
 
 //            setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
-        }
+//        }
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setDataFromBundle();
         binding = DataBindingUtil.setContentView(this, R.layout.hole_detail_activity);
 
         String[] rowSpinnerList = new String[rowList.size()];
@@ -159,7 +164,8 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
                 @Override
                 public void syncWithBlades() {
-
+                    if (!bladesRetrieveData.isIs3dBlade())
+                        insertActualDesignChartSheetApiCaller(allTablesData, bladesRetrieveData);
                 }
             });
             ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
@@ -176,7 +182,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
     public void syncDataAPi() {
         AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.getDesignId()));
-        setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "0").observe(this, new Observer<JsonPrimitive>() {
+        setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "").observe(this, new Observer<JsonPrimitive>() {
             @Override
             public void onChanged(JsonPrimitive response) {
                 if (response == null) {
@@ -329,7 +335,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     public void openHoleDetailDialog(ResponseHoleDetailData holeDetailData) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        HoleDetailDialog infoDialogFragment = HoleDetailDialog.getInstance(holeDetailData);
+        HoleDetailDialog infoDialogFragment = HoleDetailDialog.getInstance(holeDetailData, bladesRetrieveData);
 
         infoDialogFragment.setUpListener((dialogFragment, designId) -> {
             ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
