@@ -528,7 +528,14 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getBurden(){
-		return burden != null ? ((Double) burden).intValue() : 0;
+		if (burden != null) {
+			if (burden instanceof String) {
+				return ((Double) Double.parseDouble(String.valueOf(burden))).intValue();
+			}
+			return ((Double) burden).intValue();
+		} else {
+			return 0;
+		}
 	}
 
 	public void setDensity(Object density){
@@ -1056,7 +1063,14 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public double getX(){
-		return x != null ? (double) x : 0.0;
+		if (x != null) {
+			if (x instanceof String) {
+				return ((Double) Double.parseDouble(String.valueOf(x)));
+			}
+			return ((Double) x);
+		} else {
+			return 0.0;
+		}
 	}
 
 	public void setLicenseMagzine2(String licenseMagzine2){
@@ -1072,7 +1086,14 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public double getY(){
-		return y != null ? (double) y : 0;
+		if (y != null) {
+			if (y instanceof String) {
+				return ((Double) Double.parseDouble(String.valueOf(y)));
+			}
+			return ((Double) y);
+		} else {
+			return 0.0;
+		}
 	}
 
 	public void setLicenseMagzine22(String licenseMagzine22){
@@ -1112,7 +1133,13 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getSpacing(){
-		return spacing != null ? ((Double) spacing).intValue() : 0;
+		if (spacing != null) {
+			if (spacing instanceof String) {
+				return ((Double) Double.parseDouble(String.valueOf(spacing))).intValue();
+			}
+			return ((Double) spacing).intValue();
+		}
+		return 0;
 	}
 
 	public void setBtmId(int btmId){

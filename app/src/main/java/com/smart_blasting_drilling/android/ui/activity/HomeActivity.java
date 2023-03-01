@@ -427,7 +427,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.mineTableDao().getAllBladesProject())) {
                                         appDatabase.mineTableDao().insertProject(mineTableEntity);
                                     } else {
-                                        appDatabase.mineTableDao().updateProject(0, new Gson().toJson(mineTableEntity));
+                                        appDatabase.mineTableDao().updateProject(1, new Gson().toJson(mineTableEntity));
                                     }
                                 } else if ("Pit".equals(allRecordData.getFieldInfo())) {
                                     ResponsePitTableEntity pitTableEntity = new ResponsePitTableEntity();
@@ -435,7 +435,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject())) {
                                         appDatabase.pitTableDao().insertProject(pitTableEntity);
                                     } else {
-                                        appDatabase.pitTableDao().updateProject(0, new Gson().toJson(pitTableEntity));
+                                        appDatabase.pitTableDao().updateProject(1, new Gson().toJson(pitTableEntity));
                                     }
                                 } else if ("Bench".equals(allRecordData.getFieldInfo())) {
                                     ResponseBenchTableEntity benchTableEntity = new ResponseBenchTableEntity();
@@ -443,7 +443,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.benchTableDao().getAllBladesProject())) {
                                         appDatabase.benchTableDao().insertProject(benchTableEntity);
                                     } else {
-                                        appDatabase.benchTableDao().updateProject(0, new Gson().toJson(benchTableEntity));
+                                        appDatabase.benchTableDao().updateProject(1, new Gson().toJson(benchTableEntity));
                                     }
                                 } else if ("Zone".equals(allRecordData.getFieldInfo())) {
                                     ResponseZoneTableEntity zoneTableEntity = new ResponseZoneTableEntity();
@@ -451,7 +451,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.zoneTableDao().getAllBladesProject())) {
                                         appDatabase.zoneTableDao().insertProject(zoneTableEntity);
                                     } else {
-                                        appDatabase.zoneTableDao().updateProject(0, new Gson().toJson(zoneTableEntity));
+                                        appDatabase.zoneTableDao().updateProject(1, new Gson().toJson(zoneTableEntity));
                                     }
                                 } else if ("Explosive".equals(allRecordData.getFieldInfo())) {
                                     ExplosiveDataEntity explosiveDataEntity = new ExplosiveDataEntity();
@@ -459,7 +459,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.explosiveDataDao().getAllBladesProject())) {
                                         appDatabase.explosiveDataDao().insertProject(explosiveDataEntity);
                                     } else {
-                                        appDatabase.explosiveDataDao().updateProject(0, new Gson().toJson(explosiveDataEntity));
+                                        appDatabase.explosiveDataDao().updateProject(1, new Gson().toJson(explosiveDataEntity));
                                     }
                                 } else if ("tld".equals(allRecordData.getFieldInfo())) {
                                     TldDataEntity tldDataEntity = new TldDataEntity();
@@ -467,7 +467,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.tldDataEntity().getAllBladesProject())) {
                                         appDatabase.tldDataEntity().insertProject(tldDataEntity);
                                     } else {
-                                        appDatabase.tldDataEntity().updateProject(0, new Gson().toJson(tldDataEntity));
+                                        appDatabase.tldDataEntity().updateProject(1, new Gson().toJson(tldDataEntity));
                                     }
                                 } else if ("initiating".equals(allRecordData.getFieldInfo())) {
                                     InitiatingDataEntity initiatingDataEntity = new InitiatingDataEntity();
@@ -475,7 +475,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.initiatingDataDao().getAllBladesProject())) {
                                         appDatabase.initiatingDataDao().insertProject(initiatingDataEntity);
                                     } else {
-                                        appDatabase.initiatingDataDao().updateProject(0, new Gson().toJson(initiatingDataEntity));
+                                        appDatabase.initiatingDataDao().updateProject(1, new Gson().toJson(initiatingDataEntity));
                                     }
                                 } else if ("rock".equals(allRecordData.getFieldInfo())) {
                                     RockDataEntity rockDataEntity = new RockDataEntity();
@@ -483,7 +483,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.rockDataDao().getAllBladesProject())) {
                                         appDatabase.rockDataDao().insertProject(rockDataEntity);
                                     } else {
-                                        appDatabase.rockDataDao().updateProject(0, new Gson().toJson(rockDataEntity));
+                                        appDatabase.rockDataDao().updateProject(1, new Gson().toJson(rockDataEntity));
                                     }
                                 }
                             }

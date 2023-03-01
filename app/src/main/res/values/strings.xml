@@ -59,6 +59,12 @@
     <string name="site_name"><font color='#CC252C'>*</font>Site Name</string>
     <string name="select_team"><font color='#CC252C'>*</font>Select Team</string>
     <string name="rig"><font color='#CC252C'>*</font>Rig</string>
+    <string name="mine_as"><font color='#CC252C'>*</font>Mine</string>
+    <string name="pit_as"><font color='#CC252C'>*</font>Pit</string>
+    <string name="bench_as"><font color='#CC252C'>*</font>Bench</string>
+    <string name="zone_as"><font color='#CC252C'>*</font>Zone</string>
+    <string name="explosive_as"><font color='#CC252C'>*</font>Explosive</string>
+    <string name="rock_as"><font color='#CC252C'>*</font>Rock</string>
     <string name="drilling_pattern"><font color='#CC252C'>*</font>Drilling Pattern</string>
     <string name="drilling_type"><font color='#CC252C'>*</font>Drilling Type</string>
     <string name="matterial_drilled"><font color='#CC252C'>*</font>Material Drilled</string>
@@ -171,5 +177,8 @@
     <string name="sync_with_bims">Sync With BIMS</string>
     <string name="sync_with_blades">Sync with BLADES</string>
     <string name="yes">Yes</string>
+    <string name="completed">Completed</string>
+    <string name="blocked">Blocked</string>
+    <string name="progress">In Progress</string>
 
 </resources>

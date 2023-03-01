@@ -323,7 +323,7 @@ public class BaseActivity extends AppCompatActivity {
                 drillDetailObject.addProperty("holeNo", String.valueOf(holeDetailData.get(0).getHoleNo()));
                 drillDetailObject.addProperty("holeName", String.format("R%s/H%s", holeDetailData.get(0).getRowNo(), holeDetailData.get(0).getHoleNo()));
                 drillDetailObject.addProperty("holeDiameter", String.valueOf(holeDetailData.get(0).getHoleDiameter()));
-                drillDetailObject.addProperty("burden", String.valueOf(holeDetailData.get(0).getBurden()));
+                drillDetailObject.addProperty("burden", String.valueOf(holeDetailData.get(0).getBurden() == 0 ? "" : holeDetailData.get(0).getBurden()));
                 drillDetailObject.addProperty("spacing", String.valueOf(holeDetailData.get(0).getSpacing()));
                 drillDetailObject.addProperty("holeAngle", String.valueOf(holeDetailData.get(0).getHoleAngle()));
                 drillDetailObject.addProperty("holeDeviation", String.valueOf(0));
@@ -333,8 +333,8 @@ public class BaseActivity extends AppCompatActivity {
                 drillDetailObject.addProperty("waterLevel", String.valueOf(holeDetailData.get(0).getWaterDepth()));
                 drillDetailObject.addProperty("drillerName", "1");
                 drillDetailObject.addProperty("drillMethod", "1");
-                drillDetailObject.addProperty("northing", String.valueOf(holeDetailData.get(0).getX()));
-                drillDetailObject.addProperty("easting", String.valueOf(holeDetailData.get(0).getY()));
+                drillDetailObject.addProperty("northing", String.valueOf(holeDetailData.get(0).getDrillX()));
+                drillDetailObject.addProperty("easting", String.valueOf(holeDetailData.get(0).getDrillY()));
             }
             drillDetailObject.addProperty("rlTop", String.valueOf(0));
             drillDetailObject.addProperty("rlBottom", String.valueOf(0));
@@ -364,8 +364,8 @@ public class BaseActivity extends AppCompatActivity {
                     holeDetailObject.addProperty("HoleAngle", holeDetail.getHoleAngle());
                     holeDetailObject.addProperty("HoleDeviation", 0);
                     holeDetailObject.addProperty("DrillDepth", holeDetail.getHoleDepth());
-                    holeDetailObject.addProperty("Northing", holeDetail.getX());
-                    holeDetailObject.addProperty("Easting", holeDetail.getY());
+                    holeDetailObject.addProperty("Northing", holeDetail.getDrillX());
+                    holeDetailObject.addProperty("Easting", holeDetail.getDrillY());
                     holeDetailObject.addProperty("RlTop", 0);
                     holeDetailObject.addProperty("RlBottom", 0);
                     holeDetailObject.addProperty("HoleStatus", 1);
@@ -388,9 +388,9 @@ public class BaseActivity extends AppCompatActivity {
                     logHoleSectionDetailObject.addProperty("HoleName", String.format("R%s/H%s", holeDetail.getRowNo(), holeDetail.getHoleNo()));
                     logHoleSectionDetailObject.addProperty("DepthStart", 0);
                     logHoleSectionDetailObject.addProperty("DepthEnd", holeDetail.getHoleDepth());
-                    logHoleSectionDetailObject.addProperty("RockType", 105);
-                    logHoleSectionDetailObject.addProperty("StartTime", "");
-                    logHoleSectionDetailObject.addProperty("EndTime", "");
+                    logHoleSectionDetailObject.addProperty("RockType", projectDetailJson != null ? projectDetailJson.get("rock_id").getAsString() : "0");
+                    logHoleSectionDetailObject.addProperty("StartTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    logHoleSectionDetailObject.addProperty("EndTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     logHoleSectionDetailObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
                     logHoleSectionDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
                     logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
@@ -627,15 +627,15 @@ public class BaseActivity extends AppCompatActivity {
             holeDetailObject.addProperty("RowNo", holeDetailData.getRowNo());
             holeDetailObject.addProperty("HoleNo", holeDetailData.getHoleNo());
             holeDetailObject.addProperty("HoleName", String.format("R%s/H%s", holeDetailData.getRowNo(), holeDetailData.getHoleNo()));
-            holeDetailObject.addProperty("UserDefineHoleName", holeDetailData.getName());
+            holeDetailObject.addProperty("UserDefineHoleName", String.format("R%sH%s", holeDetailData.getRowNo(), holeDetailData.getHoleNo()));
             holeDetailObject.addProperty("HoleDiameter", holeDetailData.getHoleDiameter());
-            holeDetailObject.addProperty("Burden", String.valueOf(holeDetailData.getBurden()));
+            holeDetailObject.addProperty("Burden", String.valueOf(holeDetailData.getBurden() == 0 ? "" : holeDetailData.getBurden()));
             holeDetailObject.addProperty("Spacing", String.valueOf(holeDetailData.getSpacing()));
             holeDetailObject.addProperty("HoleAngle", holeDetailData.getHoleAngle());
             holeDetailObject.addProperty("HoleDeviation", String.valueOf(0));
             holeDetailObject.addProperty("DrillDepth", holeDetailData.getHoleDepth());
-            holeDetailObject.addProperty("Northing", 20);
-            holeDetailObject.addProperty("Easting", 26);
+            holeDetailObject.addProperty("Northing", holeDetailData.getDrillX());
+            holeDetailObject.addProperty("Easting", holeDetailData.getDrillY());
             holeDetailObject.addProperty("RlTop", 0);
             holeDetailObject.addProperty("RlBottom", 0);
             holeDetailObject.addProperty("rockType", 11);
@@ -658,8 +658,8 @@ public class BaseActivity extends AppCompatActivity {
             logHoleSectionDetailObject.addProperty("DepthStart", 0);
             logHoleSectionDetailObject.addProperty("DepthEnd", holeDetailData.getHoleDepth());
             logHoleSectionDetailObject.addProperty("RockType", 105);
-            logHoleSectionDetailObject.addProperty("StartTime", "");
-            logHoleSectionDetailObject.addProperty("EndTime", "");
+            logHoleSectionDetailObject.addProperty("StartTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            logHoleSectionDetailObject.addProperty("EndTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             logHoleSectionDetailObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
             logHoleSectionDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
             logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
@@ -703,6 +703,13 @@ public class BaseActivity extends AppCompatActivity {
             JsonObject mapObject = new JsonObject();
             mapObject.addProperty("ProjectCode", Integer.parseInt(projectCode));
             JsonArray holeDetailArray = new JsonArray();
+
+            UpdatedProjectDetailEntity projectDetailEntity = new UpdatedProjectDetailEntity();
+            if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                projectDetailEntity = appDatabase.updatedProjectDataDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+            }
+            JsonObject projectDetailJson = new Gson().fromJson(projectDetailEntity.getData(), JsonObject.class);
+
             if (!Constants.isListEmpty(holeDetailData)) {
                 for (ResponseHoleDetailData detailData : holeDetailData) {
                     JsonObject holeDetailObject = new JsonObject();
@@ -710,9 +717,9 @@ public class BaseActivity extends AppCompatActivity {
                     holeDetailObject.addProperty("RowNo", detailData.getRowNo());
                     holeDetailObject.addProperty("HoleNo", detailData.getHoleNo());
                     holeDetailObject.addProperty("HoleName", String.format("R%s/H%s", detailData.getRowNo(), detailData.getHoleNo()));
-                    holeDetailObject.addProperty("UserDefineHoleName", detailData.getName());
+                    holeDetailObject.addProperty("UserDefineHoleName", String.format("R%sH%s", detailData.getRowNo(), detailData.getHoleNo()));
                     holeDetailObject.addProperty("HoleDiameter", detailData.getHoleDiameter());
-                    holeDetailObject.addProperty("Burden", String.valueOf(detailData.getBurden()));
+                    holeDetailObject.addProperty("Burden", String.valueOf(detailData.getBurden() == 0 ? "" : detailData.getBurden()));
                     holeDetailObject.addProperty("Spacing", String.valueOf(detailData.getSpacing()));
                     holeDetailObject.addProperty("HoleAngle", detailData.getHoleAngle());
                     holeDetailObject.addProperty("HoleDeviation", String.valueOf(0));
@@ -740,14 +747,14 @@ public class BaseActivity extends AppCompatActivity {
                     logHoleSectionDetailObject.addProperty("HoleName", String.format("R%s/H%s", detailData.getRowNo(), detailData.getHoleNo()));
                     logHoleSectionDetailObject.addProperty("DepthStart", 0);
                     logHoleSectionDetailObject.addProperty("DepthEnd", detailData.getHoleDepth());
-                    logHoleSectionDetailObject.addProperty("RockType", 105);
-                    logHoleSectionDetailObject.addProperty("StartTime", "");
-                    logHoleSectionDetailObject.addProperty("EndTime", "");
+                    logHoleSectionDetailObject.addProperty("RockType", projectDetailJson != null ? projectDetailJson.get("rock_id").getAsString() : "0");
+                    logHoleSectionDetailObject.addProperty("StartTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    logHoleSectionDetailObject.addProperty("EndTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     logHoleSectionDetailObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
                     logHoleSectionDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
                     logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     logHoleSectionDetailObject.addProperty("deviceType", "android");
-                    logHoleSectionDetailObject.addProperty("RigCode", 3);
+                    logHoleSectionDetailObject.addProperty("RigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsInt() : 0);
                     logHoleSectionDetailObject.addProperty("DrillerCode", 4);
                     logHoleSectionDetailObject.addProperty("DrillMethod", 1);
                     logHoleSectionDetailObject.addProperty("ShiftCode", 18);
@@ -864,7 +871,7 @@ public class BaseActivity extends AppCompatActivity {
                     chargeDetailsObject.addProperty("Weight2","0.4");
                     chargeDetailsObject.addProperty("ExpLength2","0");
                     chargeDetailsObject.addProperty("CostPerUnit2",String.valueOf(tablesData.getTable2().get(i).getCostUnit2()));
-                    chargeDetailsObject.addProperty("Burden",String.valueOf(tablesData.getTable2().get(i).getBurden()));
+                    chargeDetailsObject.addProperty("Burden",String.valueOf(tablesData.getTable2().get(i).getBurden() == 0 ? "" : tablesData.getTable2().get(i).getBurden()));
                     chargeDetailsObject.addProperty("Spacing",String.valueOf(tablesData.getTable2().get(i).getSpacing()));
                     chargeDetailsObject.addProperty("Delay1", "0");
                     chargeDetailsObject.addProperty("Delay2", String.valueOf(tablesData.getTable2().get(i).getDelay()));
@@ -986,7 +993,7 @@ public class BaseActivity extends AppCompatActivity {
             mapObject.addProperty("BenchHeight", "10");
             mapObject.addProperty("FaceLength", "40");
             if (!Constants.isListEmpty(tablesData.getTable2())) {
-                mapObject.addProperty("Burden", String.valueOf(tablesData.getTable2().get(0).getBurden()));
+                mapObject.addProperty("Burden", String.valueOf(tablesData.getTable2().get(0).getBurden() == 0 ? "" : tablesData.getTable2().get(0).getBurden()));
                 mapObject.addProperty("Spacing", String.valueOf(tablesData.getTable2().get(0).getSpacing()));
                 mapObject.addProperty("DrillPattern", "1");
             }
