@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -27,8 +28,14 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.GetAllMinePitZoneBenchResult;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable3DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable7DesignElementDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApis;
+import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllMineInfoSurfaceInitiatorEntity;
@@ -70,6 +77,12 @@ public class HomeActivity extends BaseActivity {
     ProjectLIstAdapter projectLIstAdapter;
     BaseApis baseApis;
     public AllTablesData allTablesData;
+
+    List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
+    List<Response3DTable2DataModel> response3DTable2DataModels = new ArrayList<>();
+    List<Response3DTable3DataModel> response3DTable3DataModels = new ArrayList<>();
+    List<Response3DTable4HoleChargingDataModel> response3DTable4HoleChargingDataModels = new ArrayList<>();
+    List<Response3DTable7DesignElementDataModel> response3DTable7DesignElementDataModels = new ArrayList<>();
 
     public static void openHomeActivity(Context context) {
         context.startActivity(new Intent(context, HomeActivity.class));
@@ -260,22 +273,34 @@ public class HomeActivity extends BaseActivity {
                         entity.updateProject(bladesRetrieveData.getDesignId(), str);
                     }
 
-                    if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
-                        Intent i = new Intent(HomeActivity.this, HoleDetailActivity.class);
-                   /* Bundle bundle = new Bundle();
-                    bundle.putSerializable("all_table_Data", tablesData);
-                    bundle.putSerializable("blades_data", bladesRetrieveData);
-                    i.putExtras(bundle);*/
-                        AppDelegate.getInstance().setAllTablesData(tablesData);
-                        AppDelegate.getInstance().setBladesRetrieveData(bladesRetrieveData);
-                        startActivity(i);
+                    if (is3D) {
+                        if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                            Intent i = new Intent(HomeActivity.this, HoleDetail3DModelActivity.class);
+                            AppDelegate.getInstance().setAllTablesData(tablesData);
+                            AppDelegate.getInstance().setBladesRetrieveData(bladesRetrieveData);
+                            startActivity(i);
+                        } else {
+                            /*FragmentManager fm = getSupportFragmentManager();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            ProjectDetail3DDataDialog infoDialogFragment = ProjectDetail3DDataDialog.getInstance(bladesRetrieveData);
+                            infoDialogFragment.setFrom("Home");
+                            ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
+                            ft.commitAllowingStateLoss();*/
+                        }
                     } else {
-                        FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        ProjectDetailDialog infoDialogFragment = ProjectDetailDialog.getInstance(bladesRetrieveData);
-                        infoDialogFragment.setFrom("Home");
-                        ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
-                        ft.commitAllowingStateLoss();
+                        if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                            Intent i = new Intent(HomeActivity.this, HoleDetailActivity.class);
+                            AppDelegate.getInstance().setAllTablesData(tablesData);
+                            AppDelegate.getInstance().setBladesRetrieveData(bladesRetrieveData);
+                            startActivity(i);
+                        } else {
+                            FragmentManager fm = getSupportFragmentManager();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            ProjectDetailDialog infoDialogFragment = ProjectDetailDialog.getInstance(bladesRetrieveData);
+                            infoDialogFragment.setFrom("Home");
+                            ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
+                            ft.commitAllowingStateLoss();
+                        }
                     }
                 } catch (Exception e) {
                     e.getLocalizedMessage();
@@ -295,24 +320,44 @@ public class HomeActivity extends BaseActivity {
                 } else {
                     if (!(response.isJsonNull())) {
                         try {
-                            JsonObject jsonObject = response.getAsJsonObject();
-                            if (jsonObject != null) {
+                            if (is3D) {
                                 try {
-                                    if (jsonObject.get("GetAllDesignInfoResult").getAsString().contains("Table2")) {
-                                        AllTablesData tablesData = new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), AllTablesData.class);
-                                        ResponseProjectModelFromAllInfoApi infoApi = new Gson().fromJson(new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), JsonObject.class).get("Table").getAsJsonArray().get(0), ResponseProjectModelFromAllInfoApi.class);
-                                        setJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
-                                        setHoleTableData(tablesData, is3D);
+                                    JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
+                                        response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
                                     }
-                                    if (jsonObject.has("GetAll3DDesignInfoResult")) {
-//                                        jsonObject.get("GetAll3DDesignInfoResult")
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(1), String.class), JsonArray.class)) {
+                                        response3DTable2DataModels.add(new Gson().fromJson(element, Response3DTable2DataModel.class));
                                     }
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(2), String.class), JsonArray.class)) {
+                                        response3DTable3DataModels.add(new Gson().fromJson(element, Response3DTable3DataModel.class));
+                                    }
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
+                                        response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
+                                    }
+                                    AppDelegate.getInstance().setHoleChargingDataModel(response3DTable4HoleChargingDataModels);
+                                    AppDelegate.getInstance().setResponse3DTable1DataModel(response3DTable1DataModels);
+                                    AppDelegate.getInstance().setResponse3DTable2DataModel(response3DTable2DataModels);
+                                    AppDelegate.getInstance().setResponse3DTable3DataModel(response3DTable3DataModels);
                                 } catch (Exception e) {
-                                    Log.e(NODATAFOUND, e.getMessage());
+                                    e.getLocalizedMessage();
                                 }
-
                             } else {
-                                showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                                JsonObject jsonObject = response.getAsJsonObject();
+                                if (jsonObject != null) {
+                                    try {
+                                        if (jsonObject.get("GetAllDesignInfoResult").getAsString().contains("Table2")) {
+                                            AllTablesData tablesData = new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), AllTablesData.class);
+                                            ResponseProjectModelFromAllInfoApi infoApi = new Gson().fromJson(new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), JsonObject.class).get("Table").getAsJsonArray().get(0), ResponseProjectModelFromAllInfoApi.class);
+                                            setJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
+                                            setHoleTableData(tablesData, is3D);
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e(NODATAFOUND, e.getMessage());
+                                    }
+                                } else {
+                                    showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                                }
                             }
                         } catch (Exception e) {
                             Log.e(NODATAFOUND, e.getMessage());

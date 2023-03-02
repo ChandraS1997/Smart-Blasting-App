@@ -9,6 +9,7 @@ import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Res
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable3DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable7DesignElementDataModel;
+import com.smart_blasting_drilling.android.helper.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +29,11 @@ public class AppDelegate {
     public AllTablesData allTablesData = new AllTablesData();
     public ResponseBladesRetrieveData bladesRetrieveData = new ResponseBladesRetrieveData();
 
-    public Response3DTable4HoleChargingDataModel holeChargingDataModel = new Response3DTable4HoleChargingDataModel();
-    public Response3DTable1DataModel response3DTable1DataModel = new Response3DTable1DataModel();
-    public Response3DTable2DataModel response3DTable2DataModel = new Response3DTable2DataModel();
-    public Response3DTable3DataModel response3DTable3DataModel = new Response3DTable3DataModel();
-    public Response3DTable7DesignElementDataModel designElementDataModel = new Response3DTable7DesignElementDataModel();
+    public List<Response3DTable4HoleChargingDataModel> holeChargingDataModel = new ArrayList<>();
+    public List<Response3DTable1DataModel> response3DTable1DataModel = new ArrayList<>();
+    public List<Response3DTable2DataModel> response3DTable2DataModel = new ArrayList<>();
+    public List<Response3DTable3DataModel> response3DTable3DataModel = new ArrayList<>();
+    public List<Response3DTable7DesignElementDataModel> designElementDataModel = new ArrayList<>();
 
     public static AppDelegate getInstance() {
         if (instance == null) {
@@ -88,43 +89,64 @@ public class AppDelegate {
         this.bladesRetrieveData = bladesRetrieveData;
     }
 
-    public Response3DTable4HoleChargingDataModel getHoleChargingDataModel() {
+    public List<Response3DTable4HoleChargingDataModel> getHoleChargingDataModel() {
         return holeChargingDataModel;
     }
 
-    public void setHoleChargingDataModel(Response3DTable4HoleChargingDataModel holeChargingDataModel) {
+    public void setHoleChargingDataModel(List<Response3DTable4HoleChargingDataModel> holeChargingDataModel) {
         this.holeChargingDataModel = holeChargingDataModel;
     }
 
-    public Response3DTable1DataModel getResponse3DTable1DataModel() {
+    public void addHoleChargingDataModel(Response3DTable4HoleChargingDataModel holeChargingDataModel) {
+        if (Constants.isListEmpty(getHoleChargingDataModel())) {
+            this.holeChargingDataModel = new ArrayList<>();
+            this.holeChargingDataModel.add(holeChargingDataModel);
+            setHoleChargingDataModel(this.holeChargingDataModel);
+        } else {
+            this.holeChargingDataModel.add(holeChargingDataModel);
+        }
+    }
+
+    public List<Response3DTable1DataModel> getResponse3DTable1DataModel() {
         return response3DTable1DataModel;
     }
 
-    public void setResponse3DTable1DataModel(Response3DTable1DataModel response3DTable1DataModel) {
+    public void setResponse3DTable1DataModel(List<Response3DTable1DataModel> response3DTable1DataModel) {
         this.response3DTable1DataModel = response3DTable1DataModel;
     }
 
-    public Response3DTable2DataModel getResponse3DTable2DataModel() {
+    public void addResponse3DTable1DataModel(Response3DTable1DataModel holeChargingDataModel) {
+        if (Constants.isListEmpty(getHoleChargingDataModel())) {
+            this.response3DTable1DataModel = new ArrayList<>();
+            this.response3DTable1DataModel.add(holeChargingDataModel);
+            setResponse3DTable1DataModel(this.response3DTable1DataModel);
+        } else {
+            this.response3DTable1DataModel.add(holeChargingDataModel);
+        }
+    }
+
+
+    public List<Response3DTable2DataModel> getResponse3DTable2DataModel() {
         return response3DTable2DataModel;
     }
 
-    public void setResponse3DTable2DataModel(Response3DTable2DataModel response3DTable2DataModel) {
+    public void setResponse3DTable2DataModel(List<Response3DTable2DataModel> response3DTable2DataModel) {
         this.response3DTable2DataModel = response3DTable2DataModel;
     }
 
-    public Response3DTable3DataModel getResponse3DTable3DataModel() {
+    public List<Response3DTable3DataModel> getResponse3DTable3DataModel() {
         return response3DTable3DataModel;
     }
 
-    public void setResponse3DTable3DataModel(Response3DTable3DataModel response3DTable3DataModel) {
+    public void setResponse3DTable3DataModel(List<Response3DTable3DataModel> response3DTable3DataModel) {
         this.response3DTable3DataModel = response3DTable3DataModel;
     }
 
-    public Response3DTable7DesignElementDataModel getDesignElementDataModel() {
+    public List<Response3DTable7DesignElementDataModel> getDesignElementDataModel() {
         return designElementDataModel;
     }
 
-    public void setDesignElementDataModel(Response3DTable7DesignElementDataModel designElementDataModel) {
+    public void setDesignElementDataModel(List<Response3DTable7DesignElementDataModel> designElementDataModel) {
         this.designElementDataModel = designElementDataModel;
     }
 }

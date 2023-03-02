@@ -7,15 +7,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,8 +21,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
@@ -35,7 +30,6 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetri
 import com.smart_blasting_drilling.android.api.apis.response.ResponseDrillMaterialData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseDrillMethodData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseEmployeeData;
-import com.smart_blasting_drilling.android.api.apis.response.ResponseExplosiveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseExplosiveDataModel;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseMineTable;
 import com.smart_blasting_drilling.android.api.apis.response.ResponsePitTable;
@@ -45,17 +39,16 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseSiteDetail;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseZoneTable;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.Table1Item;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApplication;
-import com.smart_blasting_drilling.android.databinding.ProjectInfoDialogBinding;
 import com.smart_blasting_drilling.android.databinding.ProjectInfoLayoutBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
-import com.smart_blasting_drilling.android.room_database.AppDatabase;
-import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
-import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdatedProjectDetailEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.activity.HomeActivity;
 import com.smart_blasting_drilling.android.utils.DateUtils;
@@ -65,30 +58,29 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ProjectDetailDialog extends BaseDialogFragment {
+public class ProjectDetail3DDataDialog extends BaseDialogFragment {
 
     ProjectInfoLayoutBinding binding;
-    public static final String TAG = "ProjectDetailDialog";
+    public static final String TAG = "ProjectDetail3DDataDialog";
     Dialog dialog;
-    ProjectDetailDialog _self;
-    private ProjectInfoDialogListener mListener;
+    ProjectDetail3DDataDialog _self;
+    private ProjectDetail3DDataDialog.ProjectInfoDialogListener mListener;
     private String from;
-    public ResponseBladesRetrieveData bladesRetrieveData;
-    public ResponseBladesRetrieveData updateBladesData;
+    public Response3DTable1DataModel bladesRetrieveData;
+    public Response3DTable1DataModel updateBladesData;
 
     int siteId, rigId, empId, drillTypeId, drillMaterialId, drillPatternId, mineCode, zoneCode, rockCode, benchCode, expCode, pitCode;
     String startDate, startTime, endTime, endDate;
 
-    public ProjectDetailDialog() {
+    public ProjectDetail3DDataDialog() {
         _self = this;
     }
 
-    public static ProjectDetailDialog getInstance(ResponseBladesRetrieveData bladesRetrieveData) {
-        ProjectDetailDialog frag = new ProjectDetailDialog();
+    public static ProjectDetail3DDataDialog getInstance(Response3DTable1DataModel bladesRetrieveData) {
+        ProjectDetail3DDataDialog frag = new ProjectDetail3DDataDialog();
         Bundle bundle = new Bundle();
         bundle.putSerializable("bladesRetrieveData", bladesRetrieveData);
         frag.setArguments(bundle);
@@ -99,7 +91,7 @@ public class ProjectDetailDialog extends BaseDialogFragment {
         this.from = from;
     }
 
-    public void setUpListener(ProjectInfoDialogListener listener) {
+    public void setUpListener(ProjectDetail3DDataDialog.ProjectInfoDialogListener listener) {
         this.mListener = listener;
     }
 
@@ -123,7 +115,7 @@ public class ProjectDetailDialog extends BaseDialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            bladesRetrieveData = (ResponseBladesRetrieveData) getArguments().getSerializable("bladesRetrieveData");
+            bladesRetrieveData = (Response3DTable1DataModel) getArguments().getSerializable("bladesRetrieveData");
             updateBladesData = bladesRetrieveData;
         }
     }
@@ -184,16 +176,16 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                     jsonObject.addProperty("end_date", binding.endDate.getText().toString());
                     jsonObject.addProperty("end_time", binding.endTime.getText().toString());
 
-                    AllTablesData allTablesData;
+                    List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
 
                     if (!StringUtill.isEmpty(from)) {
                         if (from.equals("Home")) {
-                            allTablesData = ((HomeActivity) mContext).allTablesData;
+//                            allTablesData = ((HomeActivity) mContext).allTablesData;
                         } else {
-                            allTablesData = ((HoleDetailActivity) mContext).allTablesData;
+                            allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
                         }
                     } else {
-                        allTablesData = ((HoleDetailActivity) mContext).allTablesData;
+                        allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
                     }
 
                     if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
@@ -236,17 +228,13 @@ public class ProjectDetailDialog extends BaseDialogFragment {
 
     }
 
-    private void setNavigationOnHole(AllTablesData allTablesData) {
+    private void setNavigationOnHole(List<Response3DTable4HoleChargingDataModel> allTablesData) {
         dismiss();
         if (!StringUtill.isEmpty(from)) {
             if (from.equals("Home")) {
-                Intent i = new Intent(mContext, HoleDetailActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("all_table_Data", allTablesData);
-//                bundle.putSerializable("blades_data", bladesRetrieveData);
-                AppDelegate.getInstance().setAllTablesData(allTablesData);
-                AppDelegate.getInstance().setBladesRetrieveData(bladesRetrieveData);
-//                i.putExtras(bundle);
+                Intent i = new Intent(mContext, HoleDetail3DModelActivity.class);
+                AppDelegate.getInstance().addResponse3DTable1DataModel(bladesRetrieveData);
+                AppDelegate.getInstance().setHoleChargingDataModel(allTablesData);
                 startActivity(i);
             }
         }
@@ -549,22 +537,22 @@ public class ProjectDetailDialog extends BaseDialogFragment {
 
     }
 
-    private ProjectInfoDialogListener getListener() {
-        ProjectInfoDialogListener listener = mListener;
+    private ProjectDetail3DDataDialog.ProjectInfoDialogListener getListener() {
+        ProjectDetail3DDataDialog.ProjectInfoDialogListener listener = mListener;
 
-        if (listener == null && getTargetFragment() != null && getTargetFragment() instanceof ProjectInfoDialogListener)
-            listener = (ProjectInfoDialogListener) getTargetFragment();
+        if (listener == null && getTargetFragment() != null && getTargetFragment() instanceof ProjectDetail3DDataDialog.ProjectInfoDialogListener)
+            listener = (ProjectDetail3DDataDialog.ProjectInfoDialogListener) getTargetFragment();
 
-        if (listener == null && getActivity() != null && getActivity() instanceof ProjectInfoDialogListener)
-            listener = (ProjectInfoDialogListener) getActivity();
+        if (listener == null && getActivity() != null && getActivity() instanceof ProjectDetail3DDataDialog.ProjectInfoDialogListener)
+            listener = (ProjectDetail3DDataDialog.ProjectInfoDialogListener) getActivity();
 
         return listener;
     }
 
     public interface ProjectInfoDialogListener {
-        void onOk(ProjectDetailDialog dialogFragment);
+        void onOk(ProjectDetail3DDataDialog dialogFragment);
 
-        default void onCancel(ProjectDetailDialog dialogFragment) {
+        default void onCancel(ProjectDetail3DDataDialog dialogFragment) {
         }
     }
 

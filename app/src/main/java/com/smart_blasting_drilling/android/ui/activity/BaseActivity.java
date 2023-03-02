@@ -30,13 +30,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
-import com.smart_blasting_drilling.android.api.apis.response.ResultsetItem;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.NoInternetBinding;
@@ -524,6 +524,7 @@ public class BaseActivity extends AppCompatActivity {
             map.addProperty("projectName", bladesRetrieveData.getDesignName());
             map.addProperty("siteCode", projectDetailJson != null ? projectDetailJson.get("site_id").getAsInt() : 0);
             map.addProperty("pitCode", AppDelegate.getInstance().getCodeIdObject().get("pitId").getAsInt());
+            map.addProperty("mineCode", AppDelegate.getInstance().getCodeIdObject().get("MineId").getAsInt());
             map.addProperty("zoneCode", AppDelegate.getInstance().getCodeIdObject().get("zoneId").getAsInt());
             map.addProperty("benchCode", AppDelegate.getInstance().getCodeIdObject().get("benchId").getAsString());
 
@@ -1143,7 +1144,7 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
-    public void insertUpdate3DActualDesignHoleDetailApiCaller() {
+    public void insertUpdate3DActualDesignHoleDetailApiCaller(List<Response3DTable4HoleChargingDataModel> allTablesData, List<Response3DTable1DataModel> bladesRetrieveData) {
         JsonArray mapObjectArray = new JsonArray();
         JsonObject object = new JsonObject();
         object.addProperty("Block", "");

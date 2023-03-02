@@ -238,8 +238,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.BlastPerformanceBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 intent = new Intent(this, PerformanceActivity.class);
-                bundle.putSerializable("blades_data", bladesRetrieveData);
-                bundle.putSerializable("all_table_Data", allTablesData);
+                bundle.putString("blades_data", bladesRetrieveData.getDesignId());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
@@ -249,7 +248,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.galleryBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                bundle.putSerializable("blades_data", bladesRetrieveData);
+                bundle.putString("blades_data", bladesRetrieveData.getDesignId());
                 intent = new Intent(this, MediaActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -281,7 +280,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.initiatingDeviceContainer:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                bundle.putSerializable("blades_data", bladesRetrieveData);
+                bundle.putString("blades_data", bladesRetrieveData.getDesignId());
                 intent = new Intent(this, InitiatingDeviceViewActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

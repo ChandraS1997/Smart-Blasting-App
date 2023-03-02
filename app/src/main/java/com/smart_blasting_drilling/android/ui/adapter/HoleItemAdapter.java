@@ -1,9 +1,11 @@
 package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -23,11 +25,13 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
     Context context;
     List<ResponseHoleDetailData> holeDetailDataList;
     int spaceVal;
+    String patternType = "Rectangular/Square";
 
-    public HoleItemAdapter(Context context, List<ResponseHoleDetailData> holeDetailDataList, int spaceVal) {
+    public HoleItemAdapter(Context context, List<ResponseHoleDetailData> holeDetailDataList, int spaceVal, String patternType) {
         this.context = context;
         this.holeDetailDataList = holeDetailDataList;
         this.spaceVal = spaceVal;
+        this.patternType = patternType;
     }
 
     @Override
@@ -62,12 +66,17 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
         }
 
         void setDataBind(ResponseHoleDetailData detailData) {
-            if (spaceVal == 1) {
+            if (patternType.equals("Staggered")) {
+                if (spaceVal == 1) {
+                    binding.startSpaceView.setVisibility(View.GONE);
+                    binding.endSpaceView.setVisibility(View.VISIBLE);
+                } else {
+                    binding.startSpaceView.setVisibility(View.VISIBLE);
+                    binding.endSpaceView.setVisibility(View.GONE);
+                }
+            } else if (patternType.equals("Rectangular/Square"))  {
                 binding.startSpaceView.setVisibility(View.GONE);
                 binding.endSpaceView.setVisibility(View.VISIBLE);
-            } else {
-                binding.startSpaceView.setVisibility(View.VISIBLE);
-                binding.endSpaceView.setVisibility(View.GONE);
             }
 
             binding.holeStatusTxt.setVisibility(View.GONE);
@@ -98,6 +107,25 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
             itemView.setOnClickListener(view -> {
                 ((HoleDetailActivity) context).openHoleDetailDialog(detailData);
             });
+
+            try {
+                ViewTreeObserver vto = binding.mainContainerView.getViewTreeObserver();
+                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+
+                        if (binding.mainContainerView.getMeasuredHeight() > 0) {
+                            binding.mainContainerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            int width = binding.mainContainerView.getMeasuredWidth();
+                            int height = binding.mainContainerView.getMeasuredHeight();
+
+                            Log.e("Width" + width, "  ->  Hieght" + height);
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.getLocalizedMessage();
+            }
 
         }
 

@@ -9,11 +9,22 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.hole_tables.Table1Item;
+import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.MapHoleColunmItemBinding;
+import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.room_database.AppDatabase;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class MapHolePointAdapter extends BaseRecyclerAdapter {
@@ -64,7 +75,31 @@ public class MapHolePointAdapter extends BaseRecyclerAdapter {
             } else {
                 spaceVal = 0;
             }
-            HoleItemAdapter adapter = new HoleItemAdapter(context, mapHoleDataModel.getHoleDetailDataList(), spaceVal);
+
+            AppDatabase appDatabase = ((BaseActivity) context).appDatabase;
+            String patternType = "Staggered";
+
+            try {
+                if (!Constants.isListEmpty(appDatabase.projectHoleDetailRowColDao().getAllBladesProjectList())) {
+                    if (appDatabase.projectHoleDetailRowColDao().getAllBladesProjectList().get(0) != null) {
+                        Type teamList = new TypeToken<List<Table1Item>>() {
+                        }.getType();
+                        AllTablesData tablesData = new Gson().fromJson(appDatabase.projectHoleDetailRowColDao().getAllBladesProject(((HoleDetailActivity) context).bladesRetrieveData.getDesignId()).getProjectHole(), AllTablesData.class);
+                        List<Table1Item> drillPatternDataItemList = tablesData.getTable1();
+                        if (!Constants.isListEmpty(drillPatternDataItemList)) {
+                            String[] drillPatternDataItem = new String[drillPatternDataItemList.size()];
+                            for (int i = 0; i < drillPatternDataItemList.size(); i++) {
+                                drillPatternDataItem[i] = drillPatternDataItemList.get(i).getPatternType();
+                            }
+                            patternType = drillPatternDataItem[0];
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.getLocalizedMessage();
+            }
+
+            HoleItemAdapter adapter = new HoleItemAdapter(context, mapHoleDataModel.getHoleDetailDataList(), spaceVal, patternType);
             binding.rowHolePoint.setAdapter(adapter);
         }
 

@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.FragmentMapviewBinding;
@@ -74,6 +75,7 @@ public class MapViewFragment extends BaseFragment {
 
     void getMapHoleDataList() {
         List<ResponseHoleDetailData> holeDetailDataList = ((HoleDetailActivity) mContext).holeDetailDataList;
+        ResponseBladesRetrieveData bladesRetrieveData = ((HoleDetailActivity) mContext).bladesRetrieveData;
         List<MapHoleDataModel> colHoleDetailDataList = new ArrayList<>();
 
         if (!Constants.isListEmpty(holeDetailDataList)) {

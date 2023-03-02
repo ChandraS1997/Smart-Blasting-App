@@ -18,7 +18,7 @@ import com.smart_blasting_drilling.android.utils.StringUtill;
 public class PerformanceActivity extends BaseActivity {
     PerformancFragmentBinding binding;
     ResponseBladesRetrieveData bladesRetrieveData;
-    AllTablesData allTablesData;
+    String designId = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,8 +26,7 @@ public class PerformanceActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.performanc_fragment);
 
         if (isBundleIntentNotEmpty()) {
-            bladesRetrieveData = (ResponseBladesRetrieveData) getIntent().getExtras().getSerializable("blades_data");
-            allTablesData = (AllTablesData) getIntent().getExtras().getSerializable("all_table_Data");
+            designId = getIntent().getExtras().getString("blades_data");
         }
 
         binding.headerPerformance.perfrmanceTitle.setText(getString(R.string.performance));
@@ -57,13 +56,13 @@ public class PerformanceActivity extends BaseActivity {
 
                 String data = new Gson().toJson(jsonObject);
                 BlastPerformanceEntity entity = new BlastPerformanceEntity();
-                entity.designId = bladesRetrieveData.getDesignId();
+                entity.designId = designId;
                 entity.setData(data);
-                if (!appDatabase.blastPerformanceDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                if (!appDatabase.blastPerformanceDao().isExistItem(designId)) {
                     appDatabase.blastPerformanceDao().insertItem(entity);
                     showToast("Data added successfully");
                 } else {
-                    appDatabase.blastPerformanceDao().updateItem(bladesRetrieveData.getDesignId(), data);
+                    appDatabase.blastPerformanceDao().updateItem(designId, data);
                     showToast("Data insert successfully");
                 }
             }

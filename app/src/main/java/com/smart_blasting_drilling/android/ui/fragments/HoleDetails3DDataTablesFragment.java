@@ -23,6 +23,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailD
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.api.apis.response.TableFieldItemModel;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.FragmentHoleDetailsTableBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
@@ -73,8 +74,8 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
         if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hole_details_table, container, false);
 
-            bladesRetrieveData = ((HoleDetail3DModelActivity) mContext).bladesRetrieveData;
-            allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
+//            bladesRetrieveData = ((HoleDetail3DModelActivity) mContext).bladesRetrieveData;
+//            allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
 
             entity = appDatabase.projectHoleDetailRowColDao();
 
@@ -248,7 +249,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
     }
 
     @Override
-    public void setRowOfTable(int rowNo, AllTablesData allTablesData) {
-        setTableData(allTablesData);
+    public void setRowOfTable(int rowNo, List<Response3DTable4HoleChargingDataModel> allTablesData) {
+//        setTableData(allTablesData);
     }
 }

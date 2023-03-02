@@ -1,5 +1,6 @@
 package com.smart_blasting_drilling.android.api.apis.response.table_3d_models;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -22,6 +23,8 @@ public class Response3DTable2DataModel implements Serializable {
 	private String holesPerRow;
 
 	@SerializedName("Position")
+	private String positionStr;
+
 	private Position position;
 
 	@SerializedName("BenchHeight")
@@ -37,6 +40,8 @@ public class Response3DTable2DataModel implements Serializable {
 	private String burden;
 
 	@SerializedName("Rotation")
+	private String rotationStr;
+
 	private Rotation rotation;
 
 	@SerializedName("HoleAngle")
@@ -91,11 +96,13 @@ public class Response3DTable2DataModel implements Serializable {
 		return holesPerRow;
 	}
 
-	public void setPosition(Position position){
-		this.position = position;
+	public void setPosition(String positionStr){
+		this.positionStr = positionStr;
+		this.position = new Gson().fromJson(positionStr, Position.class);
 	}
 
 	public Position getPosition(){
+		this.position = new Gson().fromJson(positionStr, Position.class);
 		return position;
 	}
 
@@ -131,11 +138,13 @@ public class Response3DTable2DataModel implements Serializable {
 		return burden;
 	}
 
-	public void setRotation(Rotation rotation){
-		this.rotation = rotation;
+	public void setRotation(String rotationStr){
+		this.rotationStr = rotationStr;
+		this.rotation = new Gson().fromJson(rotationStr, Rotation.class);
 	}
 
 	public Rotation getRotation(){
+		this.rotation = new Gson().fromJson(rotationStr, Rotation.class);
 		return rotation;
 	}
 

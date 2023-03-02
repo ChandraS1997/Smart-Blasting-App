@@ -2,7 +2,10 @@ package com.smart_blasting_drilling.android.api.apis.response.table_3d_models;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
 public class Response3DTable4HoleChargingDataModel implements Serializable {
 
@@ -28,6 +31,8 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 	private String chargeLength;
 
 	@SerializedName("ChargeTypeArray")
+	private String chargeTypeArrayStr;
+
 	private List<ChargeTypeArrayItem> chargeTypeArray;
 
 	@SerializedName("HoleType")
@@ -146,11 +151,13 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 		return chargeLength;
 	}
 
-	public void setChargeTypeArray(List<ChargeTypeArrayItem> chargeTypeArray){
-		this.chargeTypeArray = chargeTypeArray;
+	public void setChargeTypeArray(String chargeTypeArrayStr){
+		this.chargeTypeArrayStr = chargeTypeArrayStr;
+		this.chargeTypeArray = new Gson().fromJson(chargeTypeArrayStr, new TypeToken<List<ChargeTypeArrayItem>>(){}.getType());
 	}
 
 	public List<ChargeTypeArrayItem> getChargeTypeArray(){
+		this.chargeTypeArray = new Gson().fromJson(chargeTypeArrayStr, new TypeToken<List<ChargeTypeArrayItem>>(){}.getType());
 		return chargeTypeArray;
 	}
 

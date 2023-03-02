@@ -9,6 +9,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
@@ -40,7 +43,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
     TldRowToRowAdapter tldRowToRowAdapter;
     TldHoleToHoleAdapter tldHoleToHoleAdapter;
 
-    ResponseBladesRetrieveData bladesRetrieveData;
+    String designId = "";
 
     List<ResultsetItem> responseInitiatingDataList = new ArrayList<>();
 
@@ -57,7 +60,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_initiating_device_view);
 
         if (isBundleIntentNotEmpty()) {
-            bladesRetrieveData = (ResponseBladesRetrieveData) getIntent().getExtras().getSerializable("blades_data");
+            designId = getIntent().getExtras().getString("blades_data");
         }
 
         StatusBarUtils.statusBarColor(this, R.color._FFA722);
@@ -161,7 +164,11 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
         List<InitiatingDataEntity> initiatingDataEntities = initiatingDataDao.getAllBladesProject();
         if (!Constants.isListEmpty(initiatingDataEntities)) {
             clearList();
-            responseInitiatingDataList.addAll(new Gson().fromJson(initiatingDataEntities.get(0).getData(), new TypeToken<List<ResultsetItem>>(){}.getType()));
+            JsonArray array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonObject.class).get("data"), String.class), JsonArray.class);
+            for (JsonElement jsonElement : array) {
+                responseInitiatingDataList.add(new Gson().fromJson(new Gson().fromJson(jsonElement, JsonObject.class), ResultsetItem.class));
+            }
+//            responseInitiatingDataList.addAll(new Gson().fromJson(initiatingDataEntities.get(0).getData(), new TypeToken<List<ResultsetItem>>(){}.getType()));
         }
 
         electronicDetonatorAdapter = new ElectronicDetonatorAdapter(this, electronicDetonatorModelList, responseInitiatingDataList);
@@ -242,14 +249,12 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
             }
         }
 
-        Log.e("Data : ", new Gson().toJson(selectionModelList));
-
-        if (appDatabase.initiatingDeviceDao().isExistItem(bladesRetrieveData.getDesignId())) {
-            appDatabase.initiatingDeviceDao().updateItem(bladesRetrieveData.getDesignId(), new Gson().toJson(selectionModelList));
+        if (appDatabase.initiatingDeviceDao().isExistItem(designId)) {
+            appDatabase.initiatingDeviceDao().updateItem(designId, new Gson().toJson(selectionModelList));
         } else {
             InitiatingDeviceDataEntity entity = new InitiatingDeviceDataEntity();
             entity.setData(new Gson().toJson(selectionModelList));
-            entity.setDesignId(bladesRetrieveData.getDesignId());
+            entity.setDesignId(designId);
             appDatabase.initiatingDeviceDao().insertItem(entity);
         }
 

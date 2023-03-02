@@ -6,6 +6,9 @@ import java.io.Serializable;
 
 public class Response3DTable1DataModel implements Serializable {
 
+	@SerializedName("BladesType")
+	boolean is3dBlade;
+
 	@SerializedName("PitName")
 	private String pitName;
 
@@ -65,6 +68,14 @@ public class Response3DTable1DataModel implements Serializable {
 
 	@SerializedName("RockName")
 	private String rockName;
+
+	public boolean isIs3dBlade() {
+		return is3dBlade;
+	}
+
+	public void setIs3dBlade(boolean is3dBlade) {
+		this.is3dBlade = is3dBlade;
+	}
 
 	public void setPitName(String pitName){
 		this.pitName = pitName;

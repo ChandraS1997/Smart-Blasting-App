@@ -75,6 +75,8 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
     ResponseBladesRetrieveData bladesRetrieveData;
     private Bitmap mResultsBitmap;
 
+    String designId = "";
+
     MediaViewModel viewModel;
 
     @Override
@@ -88,7 +90,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         binding.headerMedia.mediaTitle.setText(getString(R.string.media));
 
         if (isBundleIntentNotEmpty()) {
-            bladesRetrieveData = (ResponseBladesRetrieveData) getIntent().getExtras().getSerializable("blades_data");
+            designId = getIntent().getExtras().getString("blades_data");
         }
 
         binding.headerMedia.backImg.setOnClickListener(view -> finish());
@@ -370,7 +372,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         if (!file.exists()) {
             file.mkdir();
         }
-        insertMediaApiCaller(contentUri, extension, bladesRetrieveData.getDesignId(), "5");
+        insertMediaApiCaller(contentUri, extension, designId, "5");
     }
 
     private void insertMediaApiCaller(Uri imgPath, String extension, String blastCode, String blastNo) {

@@ -20,13 +20,15 @@ import androidx.navigation.Navigation;
 import com.google.gson.Gson;
 import com.google.gson.JsonPrimitive;
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
 import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDialog;
+import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.SyncProjectOptionDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
@@ -45,8 +47,8 @@ import java.util.List;
 public class HoleDetail3DModelActivity extends BaseActivity implements View.OnClickListener, OnHoleClickListener {
     public NavController navController;
     HoleDetailActivityBinding binding;
-    public AllTablesData allTablesData;
-    public ResponseBladesRetrieveData bladesRetrieveData;
+    public List<Response3DTable4HoleChargingDataModel> allTablesData;
+    public List<Response3DTable1DataModel> bladesRetrieveData;
     public boolean isTableHeaderFirstTimeLoad = true;
 
     public List<ResponseHoleDetailData> holeDetailDataList = new ArrayList<>();
@@ -57,27 +59,29 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     public MutableLiveData<Boolean> mapViewDataUpdateLiveData = new MutableLiveData<>();
 
     public void setDataFromBundle() {
-        bladesRetrieveData = AppDelegate.getInstance().getBladesRetrieveData();
-        allTablesData = AppDelegate.getInstance().getAllTablesData();
-        for (int i = 0; i < allTablesData.getTable2().size(); i++) {
-            boolean isFound = false;
-            for (int j = 0; j < rowList.size(); j++) {
-                if (rowList.get(j).replace("Row ", "").equals(String.valueOf(allTablesData.getTable2().get(i).getRowNo()))) {
-                    isFound = true;
-                    break;
+        bladesRetrieveData = AppDelegate.getInstance().getResponse3DTable1DataModel();
+        allTablesData = AppDelegate.getInstance().getHoleChargingDataModel();
+        if (!Constants.isListEmpty(bladesRetrieveData) && !Constants.isListEmpty(allTablesData)) {
+            for (int i = 0; i < allTablesData.size(); i++) {
+                boolean isFound = false;
+                for (int j = 0; j < rowList.size(); j++) {
+                    if (rowList.get(j).replace("Row ", "").equals(String.valueOf(allTablesData.get(i).getRowNo()))) {
+                        isFound = true;
+                        break;
+                    }
                 }
+                if (!isFound)
+                    rowList.add("Row " + allTablesData.get(i).getRowNo());
             }
-            if (!isFound)
-                rowList.add("Row " + allTablesData.getTable2().get(i).getRowNo());
-        }
 
-        if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
-            setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
-        } else {
-            AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
-            if (StringUtill.isEmpty(entity.getProjectCode())) {
-                setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
-            }
+            /*if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.get(0).getDesignId())) {
+                setJsonForSyncProjectData(bladesRetrieveData, allTablesData);
+            } else {
+                AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+                if (StringUtill.isEmpty(entity.getProjectCode())) {
+                    setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
+                }
+            }*/
         }
 
     }
@@ -139,24 +143,18 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             SyncProjectOptionDialog infoDialogFragment = SyncProjectOptionDialog.getInstance(new SyncProjectOptionDialog.SyncProjectListener() {
                 @Override
                 public void syncWithDrims() {
-                    syncDataAPi();
+
                 }
 
                 @Override
                 public void syncWithBims() {
-                    String blastCode = "";
-                    if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                        BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntity(1);
-                        if (blastCodeEntity != null)
-                            blastCode = blastCodeEntity.getBlastCode();
-                    }
-                    blastInsertSyncRecordApiCaller(bladesRetrieveData, allTablesData, getRowWiseHoleList(allTablesData.getTable2()).size(), 0, blastCode);
+
                 }
 
                 @Override
                 public void syncWithBlades() {
-                    if (!bladesRetrieveData.isIs3dBlade())
-                        insertActualDesignChartSheetApiCaller(allTablesData, bladesRetrieveData);
+                    if (!bladesRetrieveData.get(0).isIs3dBlade())
+                        insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, bladesRetrieveData);
                 }
             });
             ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
@@ -168,26 +166,6 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         });
         binding.headerLayHole.editTable.setOnClickListener(this);
         binding.headerLayHole.refreshIcn.setVisibility(View.GONE);
-        binding.headerLayHole.refreshIcn.setOnClickListener(view -> syncDataAPi());
-    }
-
-    public void syncDataAPi() {
-        AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.getDesignId()));
-        setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "").observe(this, new Observer<JsonPrimitive>() {
-            @Override
-            public void onChanged(JsonPrimitive response) {
-                if (response == null) {
-                    Log.e(ERROR, SOMETHING_WENT_WRONG);
-                } else {
-                    if (!(response.isJsonNull())) {
-                        showToast("Project Holes Sync Successfully");
-                    } else {
-                        showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
-                    }
-                }
-                hideLoader();
-            }
-        });
     }
 
     public List<TableEditModel> getTableModel() {
@@ -226,7 +204,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     }
 
     public interface RowItemDetail {
-        void setRowOfTable(int rowNo, AllTablesData allTablesData);
+        void setRowOfTable(int rowNo, List<Response3DTable4HoleChargingDataModel> allTablesData);
     }
 
     @Override
@@ -241,8 +219,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             case R.id.BlastPerformanceBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 intent = new Intent(this, PerformanceActivity.class);
-                bundle.putSerializable("blades_data", bladesRetrieveData);
-                bundle.putSerializable("all_table_Data", allTablesData);
+                bundle.putString("blades_data", bladesRetrieveData.get(0).getDesignId());
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
@@ -252,7 +229,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.galleryBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                bundle.putSerializable("blades_data", bladesRetrieveData);
+                bundle.putString("blades_data", bladesRetrieveData.get(0).getDesignId());
                 intent = new Intent(this, MediaActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -261,8 +238,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
-                ProjectDetailDialog infoDialogFragment = ProjectDetailDialog.getInstance(bladesRetrieveData);
-                ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
+                ProjectDetail3DDataDialog infoDialogFragment = ProjectDetail3DDataDialog.getInstance(bladesRetrieveData.get(0));
+                ft.add(infoDialogFragment, ProjectDetail3DDataDialog.TAG);
                 ft.commitAllowingStateLoss();
                 break;
             case R.id.logoutBtn:
@@ -284,7 +261,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.initiatingDeviceContainer:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                bundle.putSerializable("blades_data", bladesRetrieveData);
+                bundle.putString("blades_data", bladesRetrieveData.get(0).getDesignId());
                 intent = new Intent(this, InitiatingDeviceViewActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
