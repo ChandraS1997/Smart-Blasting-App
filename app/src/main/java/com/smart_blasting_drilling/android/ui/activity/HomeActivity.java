@@ -78,11 +78,11 @@ public class HomeActivity extends BaseActivity {
     BaseApis baseApis;
     public AllTablesData allTablesData;
 
-    List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
-    List<Response3DTable2DataModel> response3DTable2DataModels = new ArrayList<>();
-    List<Response3DTable3DataModel> response3DTable3DataModels = new ArrayList<>();
-    List<Response3DTable4HoleChargingDataModel> response3DTable4HoleChargingDataModels = new ArrayList<>();
-    List<Response3DTable7DesignElementDataModel> response3DTable7DesignElementDataModels = new ArrayList<>();
+    public List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
+    public List<Response3DTable2DataModel> response3DTable2DataModels = new ArrayList<>();
+    public List<Response3DTable3DataModel> response3DTable3DataModels = new ArrayList<>();
+    public List<Response3DTable4HoleChargingDataModel> response3DTable4HoleChargingDataModels = new ArrayList<>();
+    public List<Response3DTable7DesignElementDataModel> response3DTable7DesignElementDataModels = new ArrayList<>();
 
     public static void openHomeActivity(Context context) {
         context.startActivity(new Intent(context, HomeActivity.class));
@@ -274,18 +274,43 @@ public class HomeActivity extends BaseActivity {
                     }
 
                     if (is3D) {
+                        /*try {
+                            JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
+                                response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
+                            }
+                            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(1), String.class), JsonArray.class)) {
+                                response3DTable2DataModels.add(new Gson().fromJson(element, Response3DTable2DataModel.class));
+                            }
+                            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(2), String.class), JsonArray.class)) {
+                                response3DTable3DataModels.add(new Gson().fromJson(element, Response3DTable3DataModel.class));
+                            }
+                            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
+                                response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
+                            }
+                            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(6), String.class), JsonArray.class)) {
+                                response3DTable7DesignElementDataModels.add(new Gson().fromJson(element, Response3DTable7DesignElementDataModel.class));
+                            }
+                            AppDelegate.getInstance().setHoleChargingDataModel(response3DTable4HoleChargingDataModels);
+                            AppDelegate.getInstance().setResponse3DTable1DataModel(response3DTable1DataModels);
+                            AppDelegate.getInstance().setResponse3DTable2DataModel(response3DTable2DataModels);
+                            AppDelegate.getInstance().setResponse3DTable3DataModel(response3DTable3DataModels);
+                            AppDelegate.getInstance().setDesignElementDataModel(response3DTable7DesignElementDataModels);
+                        } catch (Exception e) {
+                            e.getLocalizedMessage();
+                        }*/
                         if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
                             Intent i = new Intent(HomeActivity.this, HoleDetail3DModelActivity.class);
                             AppDelegate.getInstance().setAllTablesData(tablesData);
                             AppDelegate.getInstance().setBladesRetrieveData(bladesRetrieveData);
                             startActivity(i);
                         } else {
-                            /*FragmentManager fm = getSupportFragmentManager();
+                            FragmentManager fm = getSupportFragmentManager();
                             FragmentTransaction ft = fm.beginTransaction();
                             ProjectDetail3DDataDialog infoDialogFragment = ProjectDetail3DDataDialog.getInstance(bladesRetrieveData);
                             infoDialogFragment.setFrom("Home");
                             ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
-                            ft.commitAllowingStateLoss();*/
+                            ft.commitAllowingStateLoss();
                         }
                     } else {
                         if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
@@ -335,10 +360,14 @@ public class HomeActivity extends BaseActivity {
                                     for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
                                         response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
                                     }
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(6), String.class), JsonArray.class)) {
+                                        response3DTable7DesignElementDataModels.add(new Gson().fromJson(element, Response3DTable7DesignElementDataModel.class));
+                                    }
                                     AppDelegate.getInstance().setHoleChargingDataModel(response3DTable4HoleChargingDataModels);
                                     AppDelegate.getInstance().setResponse3DTable1DataModel(response3DTable1DataModels);
                                     AppDelegate.getInstance().setResponse3DTable2DataModel(response3DTable2DataModels);
                                     AppDelegate.getInstance().setResponse3DTable3DataModel(response3DTable3DataModels);
+                                    AppDelegate.getInstance().setDesignElementDataModel(response3DTable7DesignElementDataModels);
                                 } catch (Exception e) {
                                     e.getLocalizedMessage();
                                 }

@@ -180,7 +180,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
 
                     if (!StringUtill.isEmpty(from)) {
                         if (from.equals("Home")) {
-//                            allTablesData = ((HomeActivity) mContext).allTablesData;
+                            allTablesData = ((HomeActivity) mContext).response3DTable4HoleChargingDataModels;
                         } else {
                             allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
                         }
@@ -198,19 +198,21 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
 
                     if (BaseApplication.getInstance().isInternetConnected(mContext)) {
                         if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
-                            ((BaseActivity) mContext).setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2()).observe((LifecycleOwner) mContext, new Observer<JsonPrimitive>() {
+                            List<Response3DTable4HoleChargingDataModel> finalAllTablesData = allTablesData;
+                            ((BaseActivity) mContext).setJsonForSyncProject3DData(bladesRetrieveData, allTablesData).observe((LifecycleOwner) mContext, new Observer<JsonPrimitive>() {
                                 @Override
                                 public void onChanged(JsonPrimitive jsonPrimitive) {
-                                    setNavigationOnHole(allTablesData);
+                                    setNavigationOnHole(finalAllTablesData);
                                 }
                             });
                         } else {
                             AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
                             if (StringUtill.isEmpty(entity.getProjectCode())) {
-                                ((BaseActivity) mContext).setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2()).observe((LifecycleOwner) mContext, new Observer<JsonPrimitive>() {
+                                List<Response3DTable4HoleChargingDataModel> finalAllTablesData1 = allTablesData;
+                                ((BaseActivity) mContext).setJsonForSyncProject3DData(bladesRetrieveData, allTablesData).observe((LifecycleOwner) mContext, new Observer<JsonPrimitive>() {
                                     @Override
                                     public void onChanged(JsonPrimitive jsonPrimitive) {
-                                        setNavigationOnHole(allTablesData);
+                                        setNavigationOnHole(finalAllTablesData1);
                                     }
                                 });
                             } else {
