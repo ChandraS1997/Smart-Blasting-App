@@ -17,13 +17,13 @@ import com.smart_blasting_drilling.android.databinding.TableViewBinding;
 
 import java.util.List;
 
-public class TableViewAdapter extends BaseRecyclerAdapter {
+public class TableView3dAdapter extends BaseRecyclerAdapter {
 
     Context context;
     List<TableFieldItemModel> editModelArrayList;
-    List<ResponseHoleDetailData> holeDetailDataList;
+    List<Response3DTable4HoleChargingDataModel> holeDetailDataList;
 
-    public TableViewAdapter(Context ctx, List<TableFieldItemModel> arrayList, List<ResponseHoleDetailData> holeDetailDataList) {
+    public TableView3dAdapter(Context ctx, List<TableFieldItemModel> arrayList, List<Response3DTable4HoleChargingDataModel> holeDetailDataList) {
         this.context = ctx;
         this.editModelArrayList = arrayList;
         this.holeDetailDataList = holeDetailDataList;
@@ -32,7 +32,7 @@ public class TableViewAdapter extends BaseRecyclerAdapter {
     @Override
     public RecyclerView.ViewHolder getViewHolder(LayoutInflater inflater, ViewGroup group) {
         TableViewBinding binding = DataBindingUtil.inflate(inflater, R.layout.table_view, group, false);
-        return new TableViewAdapter.ViewHolder(binding);
+        return new ViewHolder(binding);
     }
 
     @NonNull
@@ -70,10 +70,10 @@ public class TableViewAdapter extends BaseRecyclerAdapter {
             binding = itemView;
         }
 
-        void setDataBind(ResponseHoleDetailData holeDetailData) {
+        void setDataBind(Response3DTable4HoleChargingDataModel holeDetailData) {
             boolean isHeader = holeDetailData == null && getAdapterPosition() == 0;
 
-            HoleTableColumnViewAdapter columnViewAdapter = new HoleTableColumnViewAdapter(context, editModelArrayList.get(getAdapterPosition()).getTableEditModelList(), isHeader);
+            Hole3dTableColumnViewAdapter columnViewAdapter = new Hole3dTableColumnViewAdapter(context, editModelArrayList.get(getAdapterPosition()).getTableEditModelList(), isHeader);
             binding.columnList.setAdapter(columnViewAdapter);
 
         }

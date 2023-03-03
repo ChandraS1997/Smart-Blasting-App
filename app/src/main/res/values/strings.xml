@@ -165,6 +165,13 @@
     <string name="x">X</string>
     <string name="y">Y</string>
     <string name="z">Z</string>
+
+    <string name="top_x">Top X</string>
+    <string name="top_y">Top Y</string>
+    <string name="top_z">Top Z</string>
+    <string name="bottom_x">Bottom X</string>
+    <string name="bottom_y">Bottom Y</string>
+    <string name="bottom_z">Bottom Z</string>
     <string name="stem_length">Stem Length</string>
     <string name="electronic_electric_detonator">Electronic/Electric Detonator</string>
     <string name="initiating_device">Initiating Device</string>
@@ -180,5 +187,16 @@
     <string name="completed">Completed</string>
     <string name="blocked">Blocked</string>
     <string name="progress">In Progress</string>
+    <string name="vertical_dip">Vertical Dip</string>
+    <string name="water_depth">Water Depth</string>
+    <string name="subgrade">Subgrade</string>
+    <string name="total_charge">Total Charge</string>
+    <string name="charge_length">Charge Length</string>
+    <string name="stemming_length">Stemming Length</string>
+    <string name="deck_length">Deck Length</string>
+    <string name="block">Block</string>
+    <string name="block_length">Block Length</string>
+    <string name="hole_delay">Hole Delay</string>
+    <string name="in_hole_delay">In Hole Delay</string>
 
 </resources>

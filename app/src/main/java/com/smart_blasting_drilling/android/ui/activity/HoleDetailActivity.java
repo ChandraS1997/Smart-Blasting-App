@@ -301,7 +301,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void setLogOut() {
-        appDatabase.clearAllTables();
+//        appDatabase.clearAllTables();
         manger.logoutUser();
     }
 

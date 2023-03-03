@@ -1,5 +1,6 @@
 package com.smart_blasting_drilling.android.app;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
@@ -25,6 +26,7 @@ public class AppDelegate {
 
     public JsonObject codeIdObject = new JsonObject();
     public ResponseProjectModelFromAllInfoApi projectModelFromAllInfoApi = new ResponseProjectModelFromAllInfoApi();
+    public Response3DTable1DataModel project3DModelFromAllInfoApi = new Response3DTable1DataModel();
 
     public AllTablesData allTablesData = new AllTablesData();
     public ResponseBladesRetrieveData bladesRetrieveData = new ResponseBladesRetrieveData();
@@ -34,6 +36,8 @@ public class AppDelegate {
     public List<Response3DTable2DataModel> response3DTable2DataModel = new ArrayList<>();
     public List<Response3DTable3DataModel> response3DTable3DataModel = new ArrayList<>();
     public List<Response3DTable7DesignElementDataModel> designElementDataModel = new ArrayList<>();
+
+    public JsonElement hole3DDataElement;
 
     public static AppDelegate getInstance() {
         if (instance == null) {
@@ -56,6 +60,14 @@ public class AppDelegate {
 
     public void setProjectModelFromAllInfoApi(ResponseProjectModelFromAllInfoApi projectModelFromAllInfoApi) {
         this.projectModelFromAllInfoApi = projectModelFromAllInfoApi;
+    }
+
+    public Response3DTable1DataModel getProject3DModelFromAllInfoApi() {
+        return project3DModelFromAllInfoApi;
+    }
+
+    public void setProject3DModelFromAllInfoApi(Response3DTable1DataModel project3DModelFromAllInfoApi) {
+        this.project3DModelFromAllInfoApi = project3DModelFromAllInfoApi;
     }
 
     public List<String> getImgList() {
@@ -148,5 +160,13 @@ public class AppDelegate {
 
     public void setDesignElementDataModel(List<Response3DTable7DesignElementDataModel> designElementDataModel) {
         this.designElementDataModel = designElementDataModel;
+    }
+
+    public JsonElement getHole3DDataElement() {
+        return hole3DDataElement;
+    }
+
+    public void setHole3DDataElement(JsonElement hole3DDataElement) {
+        this.hole3DDataElement = hole3DDataElement;
     }
 }

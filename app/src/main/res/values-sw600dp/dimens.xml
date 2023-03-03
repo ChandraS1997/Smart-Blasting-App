@@ -782,6 +782,7 @@
     <dimen name="_1700sdp">2550.00dp</dimen>
     <dimen name="_1800sdp">2700.00dp</dimen>
     <dimen name="_2000sdp">3000.00dp</dimen>
+    <dimen name="_2500sdp">3750.00dp</dimen>
 
     <dimen name="_1380sdp">2070.00dp</dimen>
     <dimen name="_1375sdp">2062.50dp</dimen>

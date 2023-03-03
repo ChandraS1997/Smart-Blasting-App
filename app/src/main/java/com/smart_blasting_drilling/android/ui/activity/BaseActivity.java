@@ -35,6 +35,7 @@ import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
@@ -56,6 +57,7 @@ import com.smart_blasting_drilling.android.room_database.entities.ResponseZoneTa
 import com.smart_blasting_drilling.android.room_database.entities.UpdatedProjectDetailEntity;
 import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceAllTypeModel;
 import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceModel;
+import com.smart_blasting_drilling.android.ui.models.MapHole3DDataModel;
 import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
 import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
@@ -213,6 +215,36 @@ public class BaseActivity extends AppCompatActivity {
         return colHoleDetailDataList;
     }
 
+    public List<MapHole3DDataModel> getRowWiseHoleIn3dList(List<Response3DTable4HoleChargingDataModel> holeDetailDataList) {
+        List<MapHole3DDataModel> rowMapHoleDataModelList = new ArrayList<>();
+        List<MapHole3DDataModel> colHoleDetailDataList = new ArrayList<>();
+
+        for (Response3DTable4HoleChargingDataModel categoryList : holeDetailDataList) {
+            boolean isFound = false;
+            List<Response3DTable4HoleChargingDataModel> dataList = new ArrayList<>();
+            for (MapHole3DDataModel e : rowMapHoleDataModelList) {
+                if (categoryList.getRowNo().equals(String.valueOf(e.getRowId()))) {
+                    isFound = true;
+                    break;
+                }
+            }
+            if (!isFound) {
+                rowMapHoleDataModelList.add(new MapHole3DDataModel(categoryList.getRowNo(), dataList));
+            }
+        }
+
+        for (MapHole3DDataModel e : rowMapHoleDataModelList) {
+            List<Response3DTable4HoleChargingDataModel> dataList = new ArrayList<>();
+            for (Response3DTable4HoleChargingDataModel categoryList : holeDetailDataList) {
+                if (e.getRowId().equals(categoryList.getRowNo())) {
+                    dataList.add(categoryList);
+                }
+            }
+            colHoleDetailDataList.add(new MapHole3DDataModel(e.getRowId(), dataList));
+        }
+        return colHoleDetailDataList;
+    }
+
     public void noInternetDialog() {
         if(!noInternetdialog.isShowing())
         {
@@ -293,7 +325,7 @@ public class BaseActivity extends AppCompatActivity {
 
             JsonArray rowDetailArray = new JsonArray();
             if (!Constants.isListEmpty(holeDetailData)) {
-                List<MapHoleDataModel> mapHoleDataModels = getRowWiseHoleList(holeDetailData);
+                List<MapHole3DDataModel> mapHoleDataModels = getRowWiseHoleIn3dList(holeDetailData);
                 for (int i = 0; i < mapHoleDataModels.size(); i++) {
                     JsonObject rowObject = new JsonObject();
                     rowObject.addProperty("rowNo", String.valueOf(i + 1));
@@ -323,9 +355,9 @@ public class BaseActivity extends AppCompatActivity {
                 drillDetailObject.addProperty("holeNo", String.valueOf(holeDetailData.get(0).getHoleNo()));
                 drillDetailObject.addProperty("holeName", String.format("R%s/H%s", holeDetailData.get(0).getRowNo(), holeDetailData.get(0).getHoleNo()));
                 drillDetailObject.addProperty("holeDiameter", String.valueOf(holeDetailData.get(0).getHoleDiameter()));
-                drillDetailObject.addProperty("burden", String.valueOf(holeDetailData.get(0).getBurden() == 0 ? "" : holeDetailData.get(0).getBurden()));
+                drillDetailObject.addProperty("burden", String.valueOf(StringUtill.isEmpty(holeDetailData.get(0).getBurden()) ? "" : holeDetailData.get(0).getBurden()));
                 drillDetailObject.addProperty("spacing", String.valueOf(holeDetailData.get(0).getSpacing()));
-                drillDetailObject.addProperty("holeAngle", String.valueOf(holeDetailData.get(0).getHoleAngle()));
+                drillDetailObject.addProperty("holeAngle", String.valueOf(holeDetailData.get(0).getVerticalDip()));
                 drillDetailObject.addProperty("holeDeviation", String.valueOf(0));
                 drillDetailObject.addProperty("drillDepth", String.valueOf(holeDetailData.get(0).getHoleDepth()));
                 drillDetailObject.addProperty("depthStart", "0");
@@ -333,8 +365,8 @@ public class BaseActivity extends AppCompatActivity {
                 drillDetailObject.addProperty("waterLevel", String.valueOf(holeDetailData.get(0).getWaterDepth()));
                 drillDetailObject.addProperty("drillerName", "1");
                 drillDetailObject.addProperty("drillMethod", "1");
-                drillDetailObject.addProperty("northing", String.valueOf(holeDetailData.get(0).getDrillX()));
-                drillDetailObject.addProperty("easting", String.valueOf(holeDetailData.get(0).getDrillY()));
+                drillDetailObject.addProperty("northing", String.valueOf(holeDetailData.get(0).getTopX()));
+                drillDetailObject.addProperty("easting", String.valueOf(holeDetailData.get(0).getTopY()));
             }
             drillDetailObject.addProperty("rlTop", String.valueOf(0));
             drillDetailObject.addProperty("rlBottom", String.valueOf(0));
@@ -354,18 +386,18 @@ public class BaseActivity extends AppCompatActivity {
 
             JsonArray holeDetailArray = new JsonArray();
             if (!Constants.isListEmpty(holeDetailData)) {
-                for (ResponseHoleDetailData holeDetail : holeDetailData) {
+                for (Response3DTable4HoleChargingDataModel holeDetail : holeDetailData) {
                     JsonObject holeDetailObject = new JsonObject();
                     holeDetailObject.addProperty("ProjectCode", 0);
                     holeDetailObject.addProperty("HoleName", String.format("R%s/H%s", holeDetail.getRowNo(), holeDetail.getHoleNo()));
                     holeDetailObject.addProperty("UserDefineHoleName", String.format("R%sH%s", holeDetail.getRowNo(), holeDetail.getHoleNo()));
                     holeDetailObject.addProperty("RowNo", holeDetail.getRowNo());
                     holeDetailObject.addProperty("HoleNo", holeDetail.getHoleNo());
-                    holeDetailObject.addProperty("HoleAngle", holeDetail.getHoleAngle());
+                    holeDetailObject.addProperty("HoleAngle", holeDetail.getVerticalDip());
                     holeDetailObject.addProperty("HoleDeviation", 0);
                     holeDetailObject.addProperty("DrillDepth", holeDetail.getHoleDepth());
-                    holeDetailObject.addProperty("Northing", holeDetail.getDrillX());
-                    holeDetailObject.addProperty("Easting", holeDetail.getDrillY());
+                    holeDetailObject.addProperty("Northing", holeDetail.getTopX());
+                    holeDetailObject.addProperty("Easting", holeDetail.getTopY());
                     holeDetailObject.addProperty("RlTop", 0);
                     holeDetailObject.addProperty("RlBottom", 0);
                     holeDetailObject.addProperty("HoleStatus", 1);
@@ -1162,13 +1194,13 @@ public class BaseActivity extends AppCompatActivity {
                     holeDetailObject.addProperty("HoleName", String.format("R%s/H%s", detailData.getRowNo(), detailData.getHoleNo()));
                     holeDetailObject.addProperty("UserDefineHoleName", String.format("R%sH%s", detailData.getRowNo(), detailData.getHoleNo()));
                     holeDetailObject.addProperty("HoleDiameter", detailData.getHoleDiameter());
-                    holeDetailObject.addProperty("Burden", String.valueOf(detailData.getBurden() == 0 ? "" : detailData.getBurden()));
+                    holeDetailObject.addProperty("Burden", String.valueOf(StringUtill.isEmpty(detailData.getBurden()) ? "" : detailData.getBurden()));
                     holeDetailObject.addProperty("Spacing", String.valueOf(detailData.getSpacing()));
-                    holeDetailObject.addProperty("HoleAngle", detailData.getHoleAngle());
+                    holeDetailObject.addProperty("HoleAngle", detailData.getVerticalDip());
                     holeDetailObject.addProperty("HoleDeviation", String.valueOf(0));
                     holeDetailObject.addProperty("DrillDepth", detailData.getHoleDepth());
-                    holeDetailObject.addProperty("Northing", detailData.getX());
-                    holeDetailObject.addProperty("Easting", detailData.getY());
+                    holeDetailObject.addProperty("Northing", detailData.getTopX());
+                    holeDetailObject.addProperty("Easting", detailData.getTopY());
                     holeDetailObject.addProperty("RlTop", 0);
                     holeDetailObject.addProperty("RlBottom", 0);
                     holeDetailObject.addProperty("rockType", 11);
@@ -1513,7 +1545,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void blastInsertSyncRecord3DApiCaller(Response3DTable1DataModel bladesRetrieveData, Response3DTable4HoleChargingDataModel tablesData, int rowCount, int holeCount, String blastCode) {
+    public void blastInsertSyncRecord3DApiCaller(Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> tablesData, int rowCount, int holeCount, String blastCode) {
         try {
             showLoader();
             // Blast Performance Data
@@ -1538,36 +1570,18 @@ public class BaseActivity extends AppCompatActivity {
             // ExpUsedDetails Array
             JsonArray expUsedDetailArray = new JsonArray();
 
-            if (!Constants.isListEmpty(tablesData.getTable2())) {
-                if (!Constants.isListEmpty(tablesData.getTable9())) {
-                    if (tablesData.getTable9().size() >= 3) {
-                        JsonObject expUsedDetailObject = new JsonObject();
-                        expUsedDetailObject.addProperty("expcode", String.valueOf(tablesData.getTable9().get(2).getProdId()));
-                        expUsedDetailObject.addProperty("qty", String.valueOf(tablesData.getTable9().get(2).getProdQty()));
-                        expUsedDetailArray.add(expUsedDetailObject);
-                    }
-
-                    if (tablesData.getTable9().size() >= 4) {
-                        JsonObject expUsedDetailObject = new JsonObject();
-                        expUsedDetailObject.addProperty("expcode1", String.valueOf(tablesData.getTable9().get(3).getProdId()));
-                        expUsedDetailObject.addProperty("qty", String.valueOf(tablesData.getTable9().get(3).getProdQty()));
-                        expUsedDetailArray.add(expUsedDetailObject);
-                    }
-
-                    if (tablesData.getTable9().size() >= 5) {
-                        JsonObject expUsedDetailObject = new JsonObject();
-                        expUsedDetailObject.addProperty("expcode2", String.valueOf(tablesData.getTable9().get(4).getProdId()));
-                        expUsedDetailObject.addProperty("qty", String.valueOf(tablesData.getTable9().get(4).getProdQty()));
-                        expUsedDetailArray.add(expUsedDetailObject);
-                    }
-                }
+            for (int j = 0; j < tablesData.get(0).getChargeTypeArray().size(); j++) {
+                JsonObject expUsedDetailObject = new JsonObject();
+                expUsedDetailObject.addProperty("expcode"+(j == 0 ? "" : j), String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getProdId()));
+                expUsedDetailObject.addProperty("qty"+(j == 0 ? "" : j), /*String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getProdQty())*/0);
+                expUsedDetailArray.add(expUsedDetailObject);
             }
 
             // RowDetails Array
             JsonArray rowDetailsArray = new JsonArray();
             JsonObject rowDetailsObject = new JsonObject();
-            if (!Constants.isListEmpty(tablesData.getTable2())) {
-                List<MapHoleDataModel> mapHoleDataModels = getRowWiseHoleList(tablesData.getTable2());
+            if (!Constants.isListEmpty(tablesData)) {
+                List<MapHole3DDataModel> mapHoleDataModels = getRowWiseHoleIn3dList(tablesData);
                 for (int i = 0; i < mapHoleDataModels.size(); i++) {
                     rowDetailsObject.addProperty("rowno", String.valueOf(i + 1));
                     if (!Constants.isListEmpty(mapHoleDataModels.get(i).getHoleDetailDataList()))
@@ -1580,43 +1594,39 @@ public class BaseActivity extends AppCompatActivity {
 
             // Charge Details Array
             JsonArray chargeDetailsArray = new JsonArray();
-            if (!Constants.isListEmpty(tablesData.getTable2())) {
-                for (int i = 0; i < tablesData.getTable2().size(); i++) {
+            if (!Constants.isListEmpty(tablesData)) {
+                for (int i = 0; i < tablesData.size(); i++) {
                     JsonObject chargeDetailsObject = new JsonObject();
                     chargeDetailsObject.addProperty("BlastCode", blastCode);
-                    chargeDetailsObject.addProperty("RowNo",String.valueOf(tablesData.getTable2().get(i).getRowNo()));
-                    chargeDetailsObject.addProperty("HoleNo", String.valueOf(tablesData.getTable2().get(i).getHoleNo()));
-                    chargeDetailsObject.addProperty("HoleName",String.format("R%sH%s",  tablesData.getTable2().get(i).getRowNo(), tablesData.getTable2().get(i).getHoleNo()));
+                    chargeDetailsObject.addProperty("RowNo",String.valueOf(tablesData.get(i).getRowNo()));
+                    chargeDetailsObject.addProperty("HoleNo", String.valueOf(tablesData.get(i).getHoleNo()));
+                    chargeDetailsObject.addProperty("HoleName",String.format("R%sH%s",  tablesData.get(i).getRowNo(), tablesData.get(i).getHoleNo()));
                     chargeDetailsObject.addProperty("RowType","Production");
-                    chargeDetailsObject.addProperty("HoleDia", String.valueOf(tablesData.getTable2().get(i).getHoleDiameter()));
-                    chargeDetailsObject.addProperty("ExpCode", String.valueOf(tablesData.getTable2().get(i).getExpCode()));
-                    chargeDetailsObject.addProperty("Weight", "30");
-                    chargeDetailsObject.addProperty("ExpLength", "4");
-                    chargeDetailsObject.addProperty("CostPerUnit", String.valueOf(tablesData.getTable2().get(i).getCostUnit()));
-                    chargeDetailsObject.addProperty("ExpCode1",String.valueOf(tablesData.getTable2().get(i).getExpCode1()));
-                    chargeDetailsObject.addProperty("Weight1","20");
-                    chargeDetailsObject.addProperty("ExpLength1","4");
-                    chargeDetailsObject.addProperty("CostPerUnit1",String.valueOf(tablesData.getTable2().get(i).getCostUnit1()));
-                    chargeDetailsObject.addProperty("ExpCode2",String.valueOf(tablesData.getTable2().get(i).getExpCode2()));
-                    chargeDetailsObject.addProperty("Weight2","0.4");
-                    chargeDetailsObject.addProperty("ExpLength2","0");
-                    chargeDetailsObject.addProperty("CostPerUnit2",String.valueOf(tablesData.getTable2().get(i).getCostUnit2()));
-                    chargeDetailsObject.addProperty("Burden",String.valueOf(tablesData.getTable2().get(i).getBurden() == 0 ? "" : tablesData.getTable2().get(i).getBurden()));
-                    chargeDetailsObject.addProperty("Spacing",String.valueOf(tablesData.getTable2().get(i).getSpacing()));
+                    chargeDetailsObject.addProperty("HoleDia", String.valueOf(tablesData.get(i).getHoleDiameter()));
+
+                    for (int j = 0; j < tablesData.get(i).getChargeTypeArray().size(); j++) {
+                        chargeDetailsObject.addProperty("ExpCode"+(j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getProdId()));
+                        chargeDetailsObject.addProperty("Weight"+(j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getWeight()));
+                        chargeDetailsObject.addProperty("ExpLength"+(j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getLength()));
+                        chargeDetailsObject.addProperty("CostPerUnit"+(j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getCost()));
+                    }
+
+                    chargeDetailsObject.addProperty("Burden",String.valueOf(StringUtill.isEmpty(tablesData.get(i).getBurden()) ? "" : tablesData.get(i).getBurden()));
+                    chargeDetailsObject.addProperty("Spacing",String.valueOf(tablesData.get(i).getSpacing()));
                     chargeDetailsObject.addProperty("Delay1", "0");
-                    chargeDetailsObject.addProperty("Delay2", String.valueOf(tablesData.getTable2().get(i).getDelay()));
+                    chargeDetailsObject.addProperty("Delay2", String.valueOf(tablesData.get(i).getHoleDelay()));
                     chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
                     chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
                     chargeDetailsObject.addProperty("DeckDepth","");
                     chargeDetailsObject.addProperty("DeckStart","");
-                    chargeDetailsObject.addProperty("SteamLen", String.valueOf(tablesData.getTable2().get(i).getStemLngth()));
-                    chargeDetailsObject.addProperty("WaterDepth", String.valueOf(tablesData.getTable2().get(i).getWaterDepth()));
-                    chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.getTable2().get(i).getHoleDepth()));
-                    chargeDetailsObject.addProperty("Subgrade", String.valueOf(tablesData.getTable2().get(i).getSubgrade() == 0 ? "" : tablesData.getTable2().get(i).getSubgrade()));
+                    chargeDetailsObject.addProperty("SteamLen", String.valueOf(tablesData.get(i).getStemmingLength()));
+                    chargeDetailsObject.addProperty("WaterDepth", String.valueOf(tablesData.get(i).getWaterDepth()));
+                    chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.get(i).getHoleDepth()));
+                    chargeDetailsObject.addProperty("Subgrade", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getSubgrade()) ? "" : tablesData.get(i).getSubgrade()));
                     chargeDetailsObject.addProperty("IsHoleBlock","");
                     chargeDetailsObject.addProperty("HoleBlockLength","");
-                    chargeDetailsObject.addProperty("HoleAngle", String.valueOf(tablesData.getTable2().get(i).getHoleAngle()));
-                    chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(tablesData.getTable2().get(i).getInHoleDelay()));
+                    chargeDetailsObject.addProperty("HoleAngle", String.valueOf(tablesData.get(i).getVerticalDip()));
+                    chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(tablesData.get(i).getInHoleDelay()));
                     chargeDetailsArray.add(chargeDetailsObject);
                 }
             }
@@ -1722,15 +1732,15 @@ public class BaseActivity extends AppCompatActivity {
             mapObject.addProperty("blastTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
             mapObject.addProperty("BenchHeight", "10");
             mapObject.addProperty("FaceLength", "40");
-            if (!Constants.isListEmpty(tablesData.getTable2())) {
-                mapObject.addProperty("Burden", String.valueOf(tablesData.getTable2().get(0).getBurden() == 0 ? "" : tablesData.getTable2().get(0).getBurden()));
-                mapObject.addProperty("Spacing", String.valueOf(tablesData.getTable2().get(0).getSpacing()));
+            if (!Constants.isListEmpty(tablesData)) {
+                mapObject.addProperty("Burden", String.valueOf(StringUtill.isEmpty(tablesData.get(0).getBurden()) ? "" : tablesData.get(0).getBurden()));
+                mapObject.addProperty("Spacing", String.valueOf(tablesData.get(0).getSpacing()));
                 mapObject.addProperty("DrillPattern", "1");
             }
             mapObject.addProperty("HoleDelay", "17");
             mapObject.addProperty("RowDelay", "25");
             mapObject.addProperty("Rows", String.valueOf(rowCount));
-            mapObject.addProperty("TotalHoles", String.valueOf(tablesData.getTable2().size()));
+            mapObject.addProperty("TotalHoles", String.valueOf(tablesData.size()));
             mapObject.addProperty("CreationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));
             mapObject.addProperty("ModificationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));
             mapObject.addProperty("SyncDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));

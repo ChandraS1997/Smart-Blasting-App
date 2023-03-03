@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hole_nav"
+    app:startDestination="@id/holeDetailsTableViewFragment">
+
+    <fragment
+        android:id="@+id/holeDetailsTableViewFragment"
+        android:name="com.smart_blasting_drilling.android.ui.fragments.HoleDetails3DDataTablesFragment"
+        android:label="HoleDetailsTableViewFragment"
+        tools:layout="@layout/fragment_hole_details_table" />
+
+    <fragment
+        android:id="@+id/mapViewFrament"
+        android:name="com.smart_blasting_drilling.android.ui.fragments.MapView3dDataFragment"
+        android:label="MapViewFrament"
+        tools:layout="@layout/fragment_mapview" />
+
+</navigation>

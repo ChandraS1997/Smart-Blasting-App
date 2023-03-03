@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 public class Response3DTable4HoleChargingDataModel implements Serializable {
 
@@ -17,6 +18,9 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 
 	@SerializedName("HoleDepth")
 	private String holeDepth;
+
+	@SerializedName("Hole Status")
+	private String holeStatus;
 
 	@SerializedName("HoleDelay")
 	private String holeDelay;
@@ -214,7 +218,7 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 	}
 
 	public String getTopZ(){
-		return topZ;
+		return StringUtill.isEmpty(topZ) ? "0.0" : topZ;
 	}
 
 	public void setVerticalDip(String verticalDip){
@@ -230,7 +234,7 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 	}
 
 	public String getTopY(){
-		return topY;
+		return StringUtill.isEmpty(topY) ? "0.0" : topY;
 	}
 
 	public void setTopX(String topX){
@@ -238,7 +242,7 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 	}
 
 	public String getTopX(){
-		return topX;
+		return StringUtill.isEmpty(topX) ? String.valueOf(0.0) : topX;
 	}
 
 	public void setHoleNo(String holeNo){
@@ -286,7 +290,7 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 	}
 
 	public String getBottomY(){
-		return bottomY;
+		return StringUtill.isEmpty(bottomY) ? "0.0" : bottomY;
 	}
 
 	public void setBottomZ(String bottomZ){
@@ -294,7 +298,7 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 	}
 
 	public String getBottomZ(){
-		return bottomZ;
+		return StringUtill.isEmpty(bottomZ) ? "0.0" : bottomZ;
 	}
 
 	public void setBottomX(String bottomX){
@@ -302,7 +306,7 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 	}
 
 	public String getBottomX(){
-		return bottomX;
+		return StringUtill.isEmpty(bottomX) ? "0.0" : bottomX;
 	}
 
 	public void setBlock(String block){
@@ -319,5 +323,25 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 
 	public String getWaterDepth(){
 		return waterDepth;
+	}
+
+	public String getHoleStatus() {
+		return holeStatus;
+	}
+
+	public void setHoleStatus(String holeStatus) {
+		this.holeStatus = holeStatus;
+	}
+
+	public String getChargeTypeArrayStr() {
+		return chargeTypeArrayStr;
+	}
+
+	public void setChargeTypeArrayStr(String chargeTypeArrayStr) {
+		this.chargeTypeArrayStr = chargeTypeArrayStr;
+	}
+
+	public void setChargeTypeArray(List<ChargeTypeArrayItem> chargeTypeArray) {
+		this.chargeTypeArray = chargeTypeArray;
 	}
 }

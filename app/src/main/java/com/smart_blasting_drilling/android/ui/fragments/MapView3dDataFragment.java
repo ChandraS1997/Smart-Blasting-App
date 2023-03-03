@@ -14,12 +14,16 @@ import androidx.navigation.Navigation;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.BaseFragment;
+import com.smart_blasting_drilling.android.databinding.FragmentMapview3dBinding;
 import com.smart_blasting_drilling.android.databinding.FragmentMapviewBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
+import com.smart_blasting_drilling.android.ui.adapter.MapHolePoint3dAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.MapHolePointAdapter;
+import com.smart_blasting_drilling.android.ui.models.MapHole3DDataModel;
 import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
 
 import java.util.ArrayList;
@@ -27,7 +31,7 @@ import java.util.List;
 import java.util.TimerTask;
 
 public class MapView3dDataFragment extends BaseFragment {
-    FragmentMapviewBinding binding;
+    FragmentMapview3dBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +48,7 @@ public class MapView3dDataFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (binding == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mapview, container, false);
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mapview_3d, container, false);
 
             getMapHoleDataList();
 
@@ -70,13 +74,13 @@ public class MapView3dDataFragment extends BaseFragment {
     }
 
     void getMapHoleDataList() {
-        List<ResponseHoleDetailData> holeDetailDataList = ((HoleDetail3DModelActivity) mContext).holeDetailDataList;
-        List<MapHoleDataModel> colHoleDetailDataList = new ArrayList<>();
+        List<Response3DTable4HoleChargingDataModel> holeDetailDataList = ((HoleDetail3DModelActivity) mContext).holeDetailDataList;
+        List<MapHole3DDataModel> colHoleDetailDataList = new ArrayList<>();
 
         if (!Constants.isListEmpty(holeDetailDataList)) {
-            colHoleDetailDataList = ((BaseActivity) mContext).getRowWiseHoleList(holeDetailDataList);
+            colHoleDetailDataList = ((BaseActivity) mContext).getRowWiseHoleIn3dList(holeDetailDataList);
 
-            MapHolePointAdapter adapter = new MapHolePointAdapter(mContext, colHoleDetailDataList);
+            MapHolePoint3dAdapter adapter = new MapHolePoint3dAdapter(mContext, colHoleDetailDataList);
             binding.rowHolePoint.setAdapter(adapter);
         }
     }

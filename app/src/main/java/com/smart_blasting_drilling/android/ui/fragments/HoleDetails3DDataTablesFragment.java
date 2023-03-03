@@ -14,6 +14,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.smart_blasting_drilling.android.R;
@@ -23,8 +24,14 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailD
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.api.apis.response.TableFieldItemModel;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable3DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable7DesignElementDataModel;
+import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseFragment;
+import com.smart_blasting_drilling.android.databinding.FragmentHoleDetails3dTableBinding;
 import com.smart_blasting_drilling.android.databinding.FragmentHoleDetailsTableBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.OnDataEditTable;
@@ -32,7 +39,7 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectH
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
-import com.smart_blasting_drilling.android.ui.adapter.TableViewAdapter;
+import com.smart_blasting_drilling.android.ui.adapter.TableView3dAdapter;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
@@ -41,13 +48,20 @@ import java.util.List;
 
 public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnDataEditTable, HoleDetail3DModelActivity.RowItemDetail {
 
-    FragmentHoleDetailsTableBinding binding;
-    TableViewAdapter tableViewAdapter;
+    FragmentHoleDetails3dTableBinding binding;
+    TableView3dAdapter tableViewAdapter;
     List<TableFieldItemModel> tableFieldItemModelList = new ArrayList<>();
     List<TableEditModel> tableEditModelArrayList = new ArrayList<>();
-    ResponseBladesRetrieveData bladesRetrieveData;
-    AllTablesData allTablesData;
-    List<ResponseHoleDetailData> holeDetailDataList = new ArrayList<>();
+
+    List<Response3DTable1DataModel> bladesRetrieveData;
+    List<Response3DTable4HoleChargingDataModel> allTablesData;
+    public List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
+    public List<Response3DTable2DataModel> response3DTable2DataModels = new ArrayList<>();
+    public List<Response3DTable3DataModel> response3DTable3DataModels = new ArrayList<>();
+    public List<Response3DTable4HoleChargingDataModel> response3DTable4HoleChargingDataModels = new ArrayList<>();
+    public List<Response3DTable7DesignElementDataModel> response3DTable7DesignElementDataModels = new ArrayList<>();
+
+    List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
 
     ProjectHoleDetailRowColDao entity;
 
@@ -72,10 +86,10 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (binding == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hole_details_table, container, false);
-
-//            bladesRetrieveData = ((HoleDetail3DModelActivity) mContext).bladesRetrieveData;
-//            allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hole_details_3d_table, container, false);
+            clearTable();
+            bladesRetrieveData = ((HoleDetail3DModelActivity) mContext).bladesRetrieveData;
+            allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
 
             entity = appDatabase.projectHoleDetailRowColDao();
 
@@ -87,11 +101,11 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
 
             holeDetailDataList.add(null);
 
-            tableViewAdapter = new TableViewAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
+            tableViewAdapter = new TableView3dAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
             binding.tableRv.setAdapter(tableViewAdapter);
 
             if (allTablesData == null) {
-                getAllDesignInfoApiCaller(bladesRetrieveData.isIs3dBlade());
+                getAllDesignInfoApiCaller(bladesRetrieveData.get(0).isIs3dBlade());
             } else {
                 /*ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
                 AllTablesData tablesData = new AllTablesData();
@@ -105,22 +119,22 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
         return binding.getRoot();
     }
 
-    private void setTableData(AllTablesData tablesData) {
+    private void setTableData(List<Response3DTable4HoleChargingDataModel> tablesData) {
         if (tablesData != null) {
-            if (!Constants.isListEmpty(tablesData.getTable2())) {
+            if (!Constants.isListEmpty(tablesData)) {
                 binding.noHoleDataAvailableMsg.setVisibility(View.GONE);
                 binding.horizontalScrollView.setVisibility(View.VISIBLE);
-                List<ResponseHoleDetailData> holeDetailData = new ArrayList<>();
-                for (int i = 0; i < tablesData.getTable2().size(); i++) {
-                    if (tablesData.getTable2().get(i).getRowNo() == ((HoleDetail3DModelActivity) mContext).rowPageVal) {
-                        holeDetailData.add(tablesData.getTable2().get(i));
+                List<Response3DTable4HoleChargingDataModel> holeDetailData = new ArrayList<>();
+                for (int i = 0; i < tablesData.size(); i++) {
+                    if (tablesData.get(i).getRowNo().equals(String.valueOf(((HoleDetail3DModelActivity) mContext).rowPageVal))) {
+                        holeDetailData.add(tablesData.get(i));
                     }
                 }
                 holeDetailDataList.clear();
                 holeDetailDataList.add(null);
                 holeDetailDataList.addAll(holeDetailData);
                 ((HoleDetail3DModelActivity) mContext).holeDetailDataList.clear();
-                ((HoleDetail3DModelActivity) mContext).holeDetailDataList.addAll(tablesData.getTable2());
+                ((HoleDetail3DModelActivity) mContext).holeDetailDataList.addAll(tablesData);
                 setDataNotifyList(true);
             } else {
                 binding.noHoleDataAvailableMsg.setVisibility(View.VISIBLE);
@@ -149,7 +163,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
     public void getAllDesignInfoApiCaller(boolean is3d) {
         showLoader();
         ResponseLoginData loginData = manger.getUserDetails();
-        MainService.getAll2D_3DDesignInfoApiCaller(mContext, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.getDesignId(), "dev_centralmineinfo", 0, is3d).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
+        MainService.getAll2D_3DDesignInfoApiCaller(mContext, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.get(0).getDesignId(), "dev_centralmineinfo", 0, is3d).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
             @Override
             public void onChanged(JsonElement response) {
                 if (response == null) {
@@ -160,18 +174,34 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                             JsonObject jsonObject = response.getAsJsonObject();
                             if (jsonObject != null) {
                                 try {
-                                    if (jsonObject.get("GetAllDesignInfoResult").getAsString().contains("Table2")) {
-                                        AllTablesData tablesData = new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), AllTablesData.class);
-                                        holeDetailDataList.clear();
-                                        holeDetailDataList.add(null);
-                                        allTablesData = tablesData;
-                                        setTableData(tablesData);
-                                        setDataIntoDb(tablesData);
+                                    clearTable();
+                                    JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
+                                        response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
                                     }
-                                } catch (Exception e) {
-                                    Log.e(NODATAFOUND, e.getMessage());
-                                }
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(1), String.class), JsonArray.class)) {
+                                        response3DTable2DataModels.add(new Gson().fromJson(element, Response3DTable2DataModel.class));
+                                    }
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(2), String.class), JsonArray.class)) {
+                                        response3DTable3DataModels.add(new Gson().fromJson(element, Response3DTable3DataModel.class));
+                                    }
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
+                                        response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
+                                    }
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(6), String.class), JsonArray.class)) {
+                                        response3DTable7DesignElementDataModels.add(new Gson().fromJson(element, Response3DTable7DesignElementDataModel.class));
+                                    }
+                                    AppDelegate.getInstance().setHoleChargingDataModel(response3DTable4HoleChargingDataModels);
+                                    AppDelegate.getInstance().setResponse3DTable1DataModel(response3DTable1DataModels);
+                                    AppDelegate.getInstance().setResponse3DTable2DataModel(response3DTable2DataModels);
+                                    AppDelegate.getInstance().setResponse3DTable3DataModel(response3DTable3DataModels);
+                                    AppDelegate.getInstance().setDesignElementDataModel(response3DTable7DesignElementDataModels);
 
+                                    setTableData(response3DTable4HoleChargingDataModels);
+                                    setDataIntoDb(response);
+                                } catch (Exception e) {
+                                    e.getLocalizedMessage();
+                                }
                             } else {
                                 ((BaseActivity) requireActivity()).showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
                             }
@@ -186,12 +216,20 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
         });
     }
 
-    private void setDataIntoDb(AllTablesData tablesData) {
-        String str = new Gson().toJson(tablesData);
-        if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
-            entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), bladesRetrieveData.isIs3dBlade(), str));
+    private void clearTable() {
+        response3DTable1DataModels.clear();
+        response3DTable2DataModels.clear();
+        response3DTable3DataModels.clear();
+        response3DTable4HoleChargingDataModels.clear();
+        response3DTable7DesignElementDataModels.clear();
+    }
+
+    private void setDataIntoDb(JsonElement element) {
+        String str = new Gson().toJson(element);
+        if (!entity.isExistProject(bladesRetrieveData.get(0).getDesignId())) {
+            entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.get(0).getDesignId(), bladesRetrieveData.get(0).isIs3dBlade(), str));
         } else {
-            entity.updateProject(bladesRetrieveData.getDesignId(), str);
+            entity.updateProject(bladesRetrieveData.get(0).getDesignId(), str);
         }
     }
 
@@ -202,33 +240,31 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
             if (!Constants.isListEmpty(holeDetailDataList)) {
                 for (int i = 1; i < holeDetailDataList.size(); i++) {
                     List<TableEditModel> editModelArrayList = new ArrayList<>();
-                    ResponseHoleDetailData holeDetailData = holeDetailDataList.get(i);
+                    Response3DTable4HoleChargingDataModel holeDetailData = holeDetailDataList.get(i);
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getRowNo()), tableEditModelArrayList.get(0).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleNo()), tableEditModelArrayList.get(1).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleID()), tableEditModelArrayList.get(2).isSelected(), update));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleDepth()), tableEditModelArrayList.get(3).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(StringUtill.isEmpty(holeDetailData.getHoleDepth()) ? "" : holeDetailData.getHoleDepth()), tableEditModelArrayList.get(3).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleStatus()), tableEditModelArrayList.get(4).isSelected(), update));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleAngle()), tableEditModelArrayList.get(5).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getVerticalDip()), tableEditModelArrayList.get(5).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleDiameter()), tableEditModelArrayList.get(6).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBurden()), tableEditModelArrayList.get(7).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getSpacing()), tableEditModelArrayList.get(8).isSelected(), update));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getX() == 0.0 ? "" : holeDetailData.getX()), tableEditModelArrayList.get(9).isSelected(), update));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getY() == 0.0 ? "" : holeDetailData.getY()), tableEditModelArrayList.get(10).isSelected(), update));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getZ()), tableEditModelArrayList.get(11).isSelected(), update));
-                    int chargingCount = 0;
-                    if (!StringUtill.isEmpty(holeDetailData.getColName())) {
-                        chargingCount = chargingCount + 1;
-                    }
-                    if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getBtmName()))) {
-                        chargingCount = chargingCount + 1;
-                    }
-                    if (!StringUtill.isEmpty(holeDetailData.getBsterName())) {
-                        chargingCount = chargingCount + 1;
-                    }
-                    if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getStemLngth()))) {
-                        chargingCount = chargingCount + 1;
-                    }
-                    editModelArrayList.add(new TableEditModel(String.valueOf(chargingCount), tableEditModelArrayList.get(12).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopX().equals("0.0") ? "" : holeDetailData.getTopX()), tableEditModelArrayList.get(9).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopY().equals("0.0") ? "" : holeDetailData.getTopY()), tableEditModelArrayList.get(10).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopZ().equals("0.0") ? "" : holeDetailData.getTopZ()), tableEditModelArrayList.get(11).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomX().equals("0.0") ? "" : holeDetailData.getBottomX()), tableEditModelArrayList.get(12).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomY().equals("0.0") ? "" : holeDetailData.getBottomY()), tableEditModelArrayList.get(13).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomZ().equals("0.0") ? "" : holeDetailData.getBottomZ()), tableEditModelArrayList.get(14).isSelected(), update));
+
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTotalCharge()), tableEditModelArrayList.get(15).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getChargeLength()), tableEditModelArrayList.get(16).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getStemmingLength()), tableEditModelArrayList.get(17).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getDeckLength()), tableEditModelArrayList.get(18).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBlock()), tableEditModelArrayList.get(19).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBlockLength()), tableEditModelArrayList.get(20).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getInHoleDelay()), tableEditModelArrayList.get(21).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getChargeTypeArray().size()), tableEditModelArrayList.get(22).isSelected(), update));
 
                     if (!update) {
                         if (tableFieldItemModelList.size() > i) {
@@ -241,7 +277,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                     }
                 }
             }
-            tableViewAdapter = new TableViewAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
+            tableViewAdapter = new TableView3dAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
             binding.tableRv.setAdapter(tableViewAdapter);
         } catch (Exception e) {
             e.printStackTrace();

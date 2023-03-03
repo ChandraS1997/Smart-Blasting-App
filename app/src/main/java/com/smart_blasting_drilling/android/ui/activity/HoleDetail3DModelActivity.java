@@ -18,14 +18,20 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
+import com.smart_blasting_drilling.android.databinding.HoleDetail3dActivityBinding;
 import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
+import com.smart_blasting_drilling.android.dialogs.HoleDetail3dDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
@@ -46,12 +52,13 @@ import java.util.List;
 
 public class HoleDetail3DModelActivity extends BaseActivity implements View.OnClickListener, OnHoleClickListener {
     public NavController navController;
-    HoleDetailActivityBinding binding;
-    public List<Response3DTable4HoleChargingDataModel> allTablesData;
-    public List<Response3DTable1DataModel> bladesRetrieveData;
+    HoleDetail3dActivityBinding binding;
+    public List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
+    public List<Response3DTable1DataModel> bladesRetrieveData = new ArrayList<>();
     public boolean isTableHeaderFirstTimeLoad = true;
+    public JsonElement element;
 
-    public List<ResponseHoleDetailData> holeDetailDataList = new ArrayList<>();
+    public List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
     public int rowPageVal = 1;
     public RowItemDetail rowItemDetail;
     List<String> rowList = new ArrayList<>();
@@ -90,7 +97,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setDataFromBundle();
-        binding = DataBindingUtil.setContentView(this, R.layout.hole_detail_activity);
+        binding = DataBindingUtil.setContentView(this, R.layout.hole_detail_3d_activity);
 
         String[] rowSpinnerList = new String[rowList.size()];
         for (int i = 0; i < rowList.size(); i++) {
@@ -143,18 +150,23 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             SyncProjectOptionDialog infoDialogFragment = SyncProjectOptionDialog.getInstance(new SyncProjectOptionDialog.SyncProjectListener() {
                 @Override
                 public void syncWithDrims() {
-
+                    syncDataAPi();
                 }
 
                 @Override
                 public void syncWithBims() {
-
+                    String blastCode = "";
+                    if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
+                        BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntity(1);
+                        if (blastCodeEntity != null)
+                            blastCode = blastCodeEntity.getBlastCode();
+                    }
+                    blastInsertSyncRecord3DApiCaller(bladesRetrieveData.get(0), allTablesData, getRowWiseHoleIn3dList(allTablesData).size(), 0, blastCode);
                 }
 
                 @Override
                 public void syncWithBlades() {
-                    if (!bladesRetrieveData.get(0).isIs3dBlade())
-                        insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, bladesRetrieveData);
+                    insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, bladesRetrieveData);
                 }
             });
             ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
@@ -166,6 +178,25 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         });
         binding.headerLayHole.editTable.setOnClickListener(this);
         binding.headerLayHole.refreshIcn.setVisibility(View.GONE);
+    }
+
+    public void syncDataAPi() {
+        AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.get(0).getDesignId()));
+        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), allTablesData, (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "").observe(this, new Observer<JsonPrimitive>() {
+            @Override
+            public void onChanged(JsonPrimitive response) {
+                if (response == null) {
+                    Log.e(ERROR, SOMETHING_WENT_WRONG);
+                } else {
+                    if (!(response.isJsonNull())) {
+                        showToast("Project Holes Sync Successfully");
+                    } else {
+                        showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                    }
+                }
+                hideLoader();
+            }
+        });
     }
 
     public List<TableEditModel> getTableModel() {
@@ -282,7 +313,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     }
 
     private void setLogOut() {
-        appDatabase.clearAllTables();
+//        appDatabase.clearAllTables();
         manger.logoutUser();
     }
 
@@ -312,23 +343,35 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
     }
 
-    public void openHoleDetailDialog(ResponseHoleDetailData holeDetailData) {
+    public void openHoleDetailDialog(Response3DTable4HoleChargingDataModel holeDetailData) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        HoleDetailDialog infoDialogFragment = HoleDetailDialog.getInstance(holeDetailData, bladesRetrieveData);
+        HoleDetail3dDialog infoDialogFragment = HoleDetail3dDialog.getInstance(holeDetailData, bladesRetrieveData.get(0));
 
         infoDialogFragment.setUpListener((dialogFragment, designId) -> {
-            ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
-            ProjectHoleDetailRowColEntity entity = dao.getAllBladesProject(designId);
-            allTablesData = new Gson().fromJson(entity.getProjectHole(), AllTablesData.class);
+            try {
+                ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
+                ProjectHoleDetailRowColEntity entity = dao.getAllBladesProject(designId);
 
-            if (rowItemDetail != null)
-                rowItemDetail.setRowOfTable(rowPageVal, allTablesData);
+                JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) new Gson().fromJson(entity.getProjectHole(), JsonElement.class)).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
+                for (JsonElement e : new Gson().fromJson(array.get(3), JsonArray.class)) {
+                    holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
+                }
 
-            if (mapViewDataUpdateLiveData != null)
-                mapViewDataUpdateLiveData.setValue(true);
+                allTablesData = holeDetailDataList;
 
-            dialogFragment.dismiss();
+                if (rowItemDetail != null)
+                    rowItemDetail.setRowOfTable(rowPageVal, holeDetailDataList);
+
+                if (mapViewDataUpdateLiveData != null)
+                    mapViewDataUpdateLiveData.setValue(true);
+
+                dialogFragment.dismiss();
+            } catch (Exception e) {
+                e.getLocalizedMessage();
+            }
+
         });
 
         ft.add(infoDialogFragment, HoleDetailDialog.TAG);
