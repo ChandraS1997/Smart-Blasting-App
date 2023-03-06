@@ -31,6 +31,7 @@ import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Res
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.databinding.HoleDetail3dActivityBinding;
 import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
+import com.smart_blasting_drilling.android.dialogs.Hole3dEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleDetail3dDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDialog;
@@ -200,9 +201,9 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     }
 
     public List<TableEditModel> getTableModel() {
-        if (!Constants.isListEmpty(manger.getTableField())) {
+        if (!Constants.isListEmpty(manger.get3dTableField())) {
             isTableHeaderFirstTimeLoad = false;
-            return manger.getTableField();
+            return manger.get3dTableField();
         }
 
         List<TableEditModel> editModelArrayList = new ArrayList<>();
@@ -315,13 +316,15 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     private void setLogOut() {
 //        appDatabase.clearAllTables();
         manger.logoutUser();
+        startActivity(new Intent(this, AuthActivity.class));
+        finishAffinity();
     }
 
     public void editTable() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        HoleEditTableFieldSelectionDialog infoDialogFragment = HoleEditTableFieldSelectionDialog.getInstance();
-        ft.add(infoDialogFragment, HoleEditTableFieldSelectionDialog.TAG);
+        Hole3dEditTableFieldSelectionDialog infoDialogFragment = Hole3dEditTableFieldSelectionDialog.getInstance();
+        ft.add(infoDialogFragment, Hole3dEditTableFieldSelectionDialog.TAG);
         ft.commitAllowingStateLoss();
     }
 

@@ -1,9 +1,11 @@
 package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -94,6 +96,25 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
             }
 
             binding.holeIdVal.setLayoutParams(layoutParams);
+
+            try {
+                ViewTreeObserver vto = binding.mainContainerView.getViewTreeObserver();
+                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+
+                        if (binding.mainContainerView.getMeasuredHeight() > 0) {
+                            binding.mainContainerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            int width = binding.mainContainerView.getMeasuredWidth();
+                            int height = binding.mainContainerView.getMeasuredHeight();
+
+                            Log.e("Width" + width, "  ->  Hieght" + height);
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                e.getLocalizedMessage();
+            }
 
         }
 

@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.smart_blasting_drilling.android.R;
@@ -24,6 +25,7 @@ import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.adapter.MapHolePointAdapter;
+import com.smart_blasting_drilling.android.ui.models.MapHole3DDataModel;
 import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
 
 import java.util.ArrayList;
@@ -83,6 +85,17 @@ public class MapViewFragment extends BaseFragment {
 
             MapHolePointAdapter adapter = new MapHolePointAdapter(mContext, colHoleDetailDataList);
             binding.rowHolePoint.setAdapter(adapter);
+
+            int dp2px = 0;
+
+            for (MapHoleDataModel model : colHoleDetailDataList) {
+                if (model.getHoleDetailDataList().size() > dp2px) {
+                    dp2px = model.getHoleDetailDataList().size();
+                }
+            }
+
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px, RecyclerView.LayoutParams.WRAP_CONTENT);
+            binding.rowHolePoint.setLayoutParams(layoutParams);
         }
     }
 

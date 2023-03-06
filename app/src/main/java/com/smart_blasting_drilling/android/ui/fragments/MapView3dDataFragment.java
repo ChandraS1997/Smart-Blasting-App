@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
@@ -82,6 +83,17 @@ public class MapView3dDataFragment extends BaseFragment {
 
             MapHolePoint3dAdapter adapter = new MapHolePoint3dAdapter(mContext, colHoleDetailDataList);
             binding.rowHolePoint.setAdapter(adapter);
+
+            int dp2px = 0;
+
+            for (MapHole3DDataModel model : colHoleDetailDataList) {
+                if (model.getHoleDetailDataList().size() > dp2px) {
+                    dp2px = model.getHoleDetailDataList().size();
+                }
+            }
+
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px, RecyclerView.LayoutParams.WRAP_CONTENT);
+            binding.rowHolePoint.setLayoutParams(layoutParams);
         }
     }
 

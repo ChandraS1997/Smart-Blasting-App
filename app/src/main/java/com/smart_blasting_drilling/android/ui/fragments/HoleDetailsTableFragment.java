@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -32,6 +33,7 @@ import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.adapter.TableViewAdapter;
 import com.smart_blasting_drilling.android.app.BaseFragment;
@@ -105,6 +107,17 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                 holeDetailDataList.add(null);
                 setTableData(allTablesData);
             }
+
+            int count = 0;
+            for (int i = 0; i < ((HoleDetailActivity) mContext).getTableModel().size(); i++) {
+                if (((HoleDetailActivity) mContext).getTableModel().get(i).isSelected()) {
+                    count++;
+                }
+            }
+            if (((HoleDetailActivity) mContext).isTableHeaderFirstTimeLoad) {
+                count = ((HoleDetailActivity) mContext).getTableModel().size();
+            }
+            setWidthOfRv(count);
         }
         return binding.getRoot();
     }
@@ -140,14 +153,25 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
     public void editDataTable(List<TableEditModel> arrayList) {
         List<TableEditModel> models = manger.getTableField();
         if (!Constants.isListEmpty(models)) {
+            int selectedCount = 0;
             for (int i = 0; i < models.size(); i++) {
                 TableEditModel tableEditModel = models.get(i);
                 tableEditModel.setSelected(models.get(i).isSelected());
+
+                if (models.get(i).isSelected())
+                    selectedCount++;
 //                tableEditModel.setFirstTime(false);
                 tableEditModelArrayList.set(i, tableEditModel);
             }
             setDataNotifyList(false);
+            setWidthOfRv(selectedCount);
         }
+    }
+
+    private void setWidthOfRv(int size) {
+        int dp2px = dp2px(mContext.getResources(),((HoleDetailActivity) mContext).getTableModel().size() * 300);
+        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(size * 300, RecyclerView.LayoutParams.WRAP_CONTENT);
+        binding.tableRv.setLayoutParams(layoutParams);
     }
 
     public void getAllDesignInfoApiCaller(boolean is3d) {

@@ -303,6 +303,8 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     private void setLogOut() {
 //        appDatabase.clearAllTables();
         manger.logoutUser();
+        startActivity(new Intent(this, AuthActivity.class));
+        finishAffinity();
     }
 
     public void editTable() {
