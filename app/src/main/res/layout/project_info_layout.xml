@@ -274,10 +274,293 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/drillingPatternDataContainer"
+                            android:id="@+id/mineDataContainer"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_45sdp"
                             app:layout_constraintTop_toBottomOf="@id/rigDataContainer">
+
+                            <TextView
+                                android:id="@+id/mineTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/mine_as"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerMine"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineMine"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/zoneDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/mineDataContainer">
+
+                            <TextView
+                                android:id="@+id/zoneTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/zone_as"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerZone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineZone"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/rockDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/zoneDataContainer">
+
+                            <TextView
+                                android:id="@+id/rockTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/rock_as"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerRock"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineRock"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/benchDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/rockDataContainer">
+
+                            <TextView
+                                android:id="@+id/benchTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/bench_as"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerBench"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineBench"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/explosiveDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/benchDataContainer">
+
+                            <TextView
+                                android:id="@+id/explosiveTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/explosive_as"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerExplosive"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineExplosive"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/pitDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/explosiveDataContainer">
+
+                            <TextView
+                                android:id="@+id/pitTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/pit_as"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent"/>
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerPit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textColorHint="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLinePit"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/drillingPatternDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/pitDataContainer">
 
                             <TextView
                                 android:id="@+id/drillingPatternTitle"

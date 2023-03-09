@@ -70,6 +70,38 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/syncProjectContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:background="@drawable/ripple_effect"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/BlastPerformanceBtn">
+
+                    <TextView
+                        android:id="@+id/syncProjectTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="Sync Project"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_17ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/syncView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.9dp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="#15000000"
+                        app:layout_constraintTop_toBottomOf="@id/syncProjectTxt" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/initiatingDeviceContainer"
@@ -177,7 +209,7 @@
                     android:background="@drawable/ripple_effect"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/BlastPerformanceBtn">
+                    app:layout_constraintTop_toBottomOf="@+id/syncProjectContainer">
 
                     <TextView
                         android:id="@+id/switchTv"

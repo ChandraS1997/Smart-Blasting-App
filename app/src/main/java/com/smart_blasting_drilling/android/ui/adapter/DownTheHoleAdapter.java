@@ -122,7 +122,7 @@ public class DownTheHoleAdapter extends BaseRecyclerAdapter {
 
         public void addData(ResultsetItem data) {
             InitiatingDeviceModel deviceModel = new InitiatingDeviceModel();
-            deviceModel.setPageCount(data.getIniType());
+            deviceModel.setPageCount(data.getIniCode());
             deviceModel.setCost(String.valueOf(data.getUnitCost()));
             deviceModel.setQty(binding.qtyEt.getText().toString());
             deviceModel.setType(data.getName());

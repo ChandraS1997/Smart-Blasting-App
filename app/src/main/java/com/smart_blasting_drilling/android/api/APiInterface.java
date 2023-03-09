@@ -1,5 +1,6 @@
 package com.smart_blasting_drilling.android.api;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -81,5 +82,14 @@ public interface APiInterface {
 
     @POST("insertUpdateAppHoleDetailsmultipleSync")
     Call<JsonPrimitive> insertUpdateAppHoleDetailsmultipleSyncApiCaller(@Body JsonObject map);
+
+    @POST("v6/InsertRecord")
+    Call<JsonObject> bimsInsertSyncRecordApiCaller(@Body JsonObject map);
+
+    @POST("insertActualDesignChartsheet/reset")
+    Call<JsonPrimitive> insertActualDesignChartSheetApiCaller(@Body JsonArray map);
+
+    @POST("InsertUpdate3DActualDesignHoleDetail/reset")
+    Call<JsonObject> insertUpdate3DActualDesignHoleDetailApiCaller(@Body JsonArray map);
 
 }

@@ -77,7 +77,7 @@ public class ProjectLIstAdapter extends BaseRecyclerAdapter {
             binding.zone.setText(StringUtill.getString(data.getZoneName()));
 //            binding.StatusTv.setText(StringUtill.getString(data.get()));
             binding.Bench.setText(StringUtill.getString(data.getBenchName()));
-            binding.CreatedDateval.setText(StringUtill.getString(DateUtils.getFormattedTime(data.getDesignDateTime(), "dd/MM/yyyy HH:mm:ss a", "dd/MM/yyyy")));
+            binding.CreatedDateval.setText(StringUtill.getString(DateUtils.getFormattedTime(data.getDesignDateTime(), "MM/dd/yyyy HH:mm:ss a", "dd/MM/yyyy")));
 
             itemView.setOnClickListener(view -> {
                 if (itemClickCallBack != null)

@@ -1,6 +1,11 @@
 package com.smart_blasting_drilling.android.helper;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.provider.Settings;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
@@ -23,11 +28,21 @@ public class Constants {
     public static String API_IMAGE_VIDEO_BASE_URL = "imagevideo";
     public static String API_UPLOAD_BASE_URL = "upload";
     public static String API_DRIMS_BASE_URL = "drims";
+    public static String BLAST_S_BLAST_BASE_URL = "blast_s_blast";
+    public static String TEST_BLAST_S_BLAST_BASE_URL = "test_blast_s_blast";
     public static final String LOGIN_BASE_URL = "https://www.mineexcellence.com/smartdrilling/";
     public static final String BLADES_BASE_URL = "http://testblades.mineexcellence.com/";
     public static final String IMAGE_VIDEO_BASE_URL = "http://devsblastapi.mineexcellence.com/api/sblast/";
     public static final String UPLOAD_BASE_URL = "https://centralbims.mineexcellence.com/";
     public static final String DRIMS_BASE_URL = "https://devdrims.mineexcellence.com/DRIMS_API/Service1.svc/";
+    public static final String BLAST_S_BLAST = "https://devsblastapi.mineexcellence.com/api/sblast/";
+    public static final String TEST_BLAST_S_BLAST = "http://testblades.mineexcellence.com/BLADES_API/Service1.svc/";
+
+
+    @SuppressLint("HardwareIds")
+    public static String getDeviceId(Context context) {
+        return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+    }
 
     public static String getUserAuthToken() {
         String token = "";
@@ -62,6 +77,26 @@ public class Constants {
 
     public static ListAdapter getAdapter(Context mContext, String[] list) {
         return new ArrayAdapter(mContext, android.R.layout.simple_spinner_dropdown_item, list);
+    }
+
+    public static long getScreenWidthResolution(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        return width;
+    }
+
+    public static long getScreenHeightResolution(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        return height;
     }
 
 }

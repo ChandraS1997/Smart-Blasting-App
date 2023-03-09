@@ -61,13 +61,13 @@ public class ResponseHoleDetailData implements Serializable {
 	private int verticalDip;
 
 	@SerializedName("BtmLength")
-	private int btmLength;
+	private Object btmLength;
 
 	@SerializedName("Ree2")
 	private Object ree2;
 
 	@SerializedName("BsterWt")
-	private int bsterWt;
+	private Object bsterWt;
 
 	@SerializedName("Make")
 	private String make;
@@ -79,58 +79,58 @@ public class ResponseHoleDetailData implements Serializable {
 	private String licenseMagzine12;
 
 	@SerializedName("DeckLength5")
-	private int deckLength5;
+	private Object deckLength5;
 
 	@SerializedName("LicenseMagzine11")
 	private Object licenseMagzine11;
 
 	@SerializedName("DeckLength4")
-	private int deckLength4;
+	private Object deckLength4;
 
 	@SerializedName("WaterDepth")
-	private int waterDepth;
+	private Object waterDepth;
 
 	@SerializedName("DeckLength3")
-	private int deckLength3;
+	private Object deckLength3;
 
 	@SerializedName("DeckLength2")
-	private int deckLength2;
+	private Object deckLength2;
 
 	@SerializedName("DeckLength1")
-	private int deckLength1;
+	private Object deckLength1;
 
 	@SerializedName("holeAngle")
-	private int holeAngle;
+	private Object holeAngle;
 
 	@SerializedName("DesignId")
-	private int designId;
+	private Object designId;
 
 	@SerializedName("DeckStartAt2")
-	private int deckStartAt2;
+	private Object deckStartAt2;
 
 	@SerializedName("DeckStartAt3")
-	private int deckStartAt3;
+	private Object deckStartAt3;
 
 	@SerializedName("DeckStartAt1")
-	private int deckStartAt1;
+	private Object deckStartAt1;
 
 	@SerializedName("DeckStartAt4")
-	private int deckStartAt4;
+	private Object deckStartAt4;
 
 	@SerializedName("DeckStartAt5")
-	private int deckStartAt5;
+	private Object deckStartAt5;
 
 	@SerializedName("BasePercent1")
-	private int basePercent1;
+	private Object basePercent1;
 
 	@SerializedName("BasePercent2")
-	private int basePercent2;
+	private Object basePercent2;
 
 	@SerializedName("BasePercent3")
-	private int basePercent3;
+	private Object basePercent3;
 
 	@SerializedName("Isvisible2")
-	private int isvisible2;
+	private Object isvisible2;
 
 	@SerializedName("Isvisible1")
 	private Object isvisible1;
@@ -160,7 +160,7 @@ public class ResponseHoleDetailData implements Serializable {
 	private String licenseMagzine1;
 
 	@SerializedName("BsterId")
-	private int bsterId;
+	private Object bsterId;
 
 	@SerializedName("Mag1Unit1")
 	private Object mag1Unit1;
@@ -169,34 +169,34 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object spacing;
 
 	@SerializedName("BtmId")
-	private int btmId;
+	private Object btmId;
 
 	@SerializedName("BasePercent4")
-	private int basePercent4;
+	private Object basePercent4;
 
 	@SerializedName("BasePercent5")
-	private int basePercent5;
+	private Object basePercent5;
 
 	@SerializedName("Type")
-	private int type;
+	private Object type;
 
 	@SerializedName("Ree")
 	private Object ree;
 
 	@SerializedName("ExplosiveDia2")
-	private int explosiveDia2;
+	private Object explosiveDia2;
 
 	@SerializedName("ExplosiveDia1")
 	private Object explosiveDia1;
 
 	@SerializedName("ExpCode2")
-	private int expCode2;
+	private Object expCode2;
 
 	@SerializedName("ExpCode1")
 	private Object expCode1;
 
 	@SerializedName("Mag1Unit2")
-	private int mag1Unit2;
+	private Object mag1Unit2;
 
 	@SerializedName("ColLength")
 	private Object colLength;
@@ -205,7 +205,7 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object unitCost1;
 
 	@SerializedName("ColId")
-	private int colId;
+	private Object colId;
 
 	@SerializedName("UnitCost2")
 	private Object unitCost2;
@@ -214,10 +214,10 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object stemLngth;
 
 	@SerializedName("HoleDiameter")
-	private int holeDiameter;
+	private Object holeDiameter;
 
 	@SerializedName("ExplosiveDia")
-	private int explosiveDia;
+	private Object explosiveDia;
 
 	@SerializedName("Make1")
 	private Object make1;
@@ -226,13 +226,13 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object density1;
 
 	@SerializedName("HoleDepth")
-	private int holeDepth;
+	private Object holeDepth;
 
 	@SerializedName("Density2")
 	private Object density2;
 
 	@SerializedName("CostUnit2")
-	private int costUnit2;
+	private Object costUnit2;
 
 	@SerializedName("CostUnit1")
 	private Object costUnit1;
@@ -253,22 +253,22 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object boulderYield;
 
 	@SerializedName("Isvisible")
-	private int isvisible;
+	private Object isvisible;
 
 	@SerializedName("Mag1Class1")
 	private Object mag1Class1;
 
 	@SerializedName("Mag1Unit")
-	private int mag1Unit;
+	private Object mag1Unit;
 
 	@SerializedName("ExpCode")
-	private int expCode;
+	private Object expCode;
 
 	@SerializedName("CostUnit")
-	private int costUnit;
+	private Object costUnit;
 
 	@SerializedName("Mag1Class2")
-	private int mag1Class2;
+	private Object mag1Class2;
 
 	@SerializedName("Name1")
 	private Object name1;
@@ -277,10 +277,10 @@ public class ResponseHoleDetailData implements Serializable {
 	private String name2;
 
 	@SerializedName("BtmWt")
-	private int btmWt;
+	private Object btmWt;
 
 	@SerializedName("DipAzimuthError")
-	private int dipAzimuthError;
+	private Object dipAzimuthError;
 
 	@SerializedName("Color")
 	private String color;
@@ -289,7 +289,7 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object vOD;
 
 	@SerializedName("RowNo")
-	private int rowNo;
+	private Object rowNo;
 
 	@SerializedName("Class1")
 	private Object class1;
@@ -301,7 +301,7 @@ public class ResponseHoleDetailData implements Serializable {
 	private String class2;
 
 	@SerializedName("ExpType2")
-	private int expType2;
+	private Object expType2;
 
 	@SerializedName("CompanyID2")
 	private String companyID2;
@@ -313,19 +313,19 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object companyID1;
 
 	@SerializedName("Mag1Class")
-	private int mag1Class;
+	private Object mag1Class;
 
 	@SerializedName("Mag2Unit2")
-	private int mag2Unit2;
+	private Object mag2Unit2;
 
 	@SerializedName("NoOfDecks")
-	private int noOfDecks;
+	private Object noOfDecks;
 
 	@SerializedName("ColWt")
 	private Object colWt;
 
 	@SerializedName("RRDelay")
-	private int rRDelay;
+	private Object rRDelay;
 
 	@SerializedName("Block")
 	private Object block;
@@ -349,7 +349,7 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object vOD2;
 
 	@SerializedName("BsterLength")
-	private int bsterLength;
+	private Object bsterLength;
 
 	@SerializedName("BlockStartAt")
 	private Object blockStartAt;
@@ -361,7 +361,7 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object magazine11;
 
 	@SerializedName("InHoleDelay")
-	private int inHoleDelay;
+	private Object inHoleDelay;
 
 	@SerializedName("Magazine12")
 	private String magazine12;
@@ -379,22 +379,22 @@ public class ResponseHoleDetailData implements Serializable {
 	private String userID2;
 
 	@SerializedName("VerticalDipError")
-	private int verticalDipError;
+	private Object verticalDipError;
 
 	@SerializedName("Subgrade")
-	private int subgrade;
+	private Object subgrade;
 
 	@SerializedName("Comment")
 	private String comment;
 
 	@SerializedName("Mag2Class")
-	private int mag2Class;
+	private Object mag2Class;
 
 	@SerializedName("HHDelay")
-	private int hHDelay;
+	private Object hHDelay;
 
 	@SerializedName("HoleNo")
-	private int holeNo;
+	private Object holeNo;
 
 	@SerializedName("Color2")
 	private String color2;
@@ -412,13 +412,13 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object unitCost;
 
 	@SerializedName("ExpType")
-	private int expType;
+	private Object expType;
 
 	@SerializedName("Mag2Class1")
 	private Object mag2Class1;
 
 	@SerializedName("Mag2Class2")
-	private int mag2Class2;
+	private Object mag2Class2;
 
 	@SerializedName("Magazine21")
 	private Object magazine21;
@@ -475,7 +475,7 @@ public class ResponseHoleDetailData implements Serializable {
 	private Object drillFactor;
 
 	@SerializedName("ZoneCode")
-	private int zoneCode;
+	private Object zoneCode;
 
 	@SerializedName("Bedding")
 	private String bedding;
@@ -527,8 +527,15 @@ public class ResponseHoleDetailData implements Serializable {
 		this.burden = burden;
 	}
 
-	public Object getBurden(){
-		return burden == null ? "0.0" : burden;
+	public int getBurden(){
+		if (burden != null) {
+			if (burden instanceof String) {
+				return ((Double) Double.parseDouble(String.valueOf(burden))).intValue();
+			}
+			return ((Double) burden).intValue();
+		} else {
+			return 0;
+		}
 	}
 
 	public void setDensity(Object density){
@@ -543,8 +550,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.holeType = holeType;
 	}
 
-	public Object getHoleType(){
-		return holeType != null ? "0.0" : holeType;
+	public int getHoleType(){
+		return (holeType == null ? 0 : ((Double) holeType).intValue());
 	}
 
 	public void setBtmName(Object btmName){
@@ -592,7 +599,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getBtmLength(){
-		return btmLength;
+		return btmLength != null ? ((Double) btmLength).intValue() : 0;
 	}
 
 	public void setRee2(Object ree2){
@@ -675,7 +682,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.vOD = vOD;
 	}
 
-	public int getrRDelay() {
+	public Object getrRDelay() {
 		return rRDelay;
 	}
 
@@ -699,7 +706,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.vOD2 = vOD2;
 	}
 
-	public int gethHDelay() {
+	public Object gethHDelay() {
 		return hHDelay;
 	}
 
@@ -827,7 +834,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.drillFactor = drillFactor;
 	}
 
-	public int getZoneCode() {
+	public Object getZoneCode() {
 		return zoneCode;
 	}
 
@@ -851,12 +858,12 @@ public class ResponseHoleDetailData implements Serializable {
 		this.location = location;
 	}
 
-	public void setBsterWt(int bsterWt){
+	public void setBsterWt(Object bsterWt){
 		this.bsterWt = bsterWt;
 	}
 
 	public int getBsterWt(){
-		return bsterWt;
+		return bsterWt != null ? ((Double) bsterWt).intValue() : 0;
 	}
 
 	public void setMake(String make){
@@ -888,7 +895,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDeckLength5(){
-		return deckLength5;
+		return deckLength5 != null ? ((Double) deckLength5).intValue() : 0;
 	}
 
 	public void setLicenseMagzine11(Object licenseMagzine11){
@@ -904,15 +911,15 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDeckLength4(){
-		return deckLength4;
+		return deckLength4 != null ? ((Double) deckLength4).intValue() : 0;
 	}
 
 	public void setWaterDepth(int waterDepth){
 		this.waterDepth = waterDepth;
 	}
 
-	public int getWaterDepth(){
-		return waterDepth;
+	public Object getWaterDepth(){
+		return waterDepth == null ? "" : waterDepth;
 	}
 
 	public void setDeckLength3(int deckLength3){
@@ -920,7 +927,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDeckLength3(){
-		return deckLength3;
+		return deckLength3 != null ? ((Double) deckLength3).intValue() : 0;
 	}
 
 	public void setDeckLength2(int deckLength2){
@@ -928,7 +935,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDeckLength2(){
-		return deckLength2;
+		return deckLength2 != null ? ((Double) deckLength2).intValue() : 0;
 	}
 
 	public void setDeckLength1(int deckLength1){
@@ -936,7 +943,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDeckLength1(){
-		return deckLength1;
+		return deckLength1 != null ? ((Double) deckLength1).intValue() : 0;
 	}
 
 	public void setHoleAngle(int holeAngle){
@@ -944,7 +951,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getHoleAngle(){
-		return holeAngle;
+		return holeAngle != null ? ((Double)holeAngle).intValue() : 0;
 	}
 
 	public void setDesignId(int designId){
@@ -952,7 +959,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDesignId(){
-		return designId;
+		return designId != null ? ((Double) designId).intValue() : 0;
 	}
 
 	public void setDeckStartAt2(int deckStartAt2){
@@ -960,7 +967,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDeckStartAt2(){
-		return deckStartAt2;
+		return deckStartAt2 != null ? ((Double) deckStartAt2).intValue() : 0;
 	}
 
 	public void setDeckStartAt3(int deckStartAt3){
@@ -968,7 +975,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDeckStartAt3(){
-		return deckStartAt3;
+		return deckStartAt3 != null ? ((Double) deckStartAt3).intValue() : 0;
 	}
 
 	public void setDeckStartAt1(int deckStartAt1){
@@ -976,7 +983,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDeckStartAt1(){
-		return deckStartAt1;
+		return deckStartAt1 != null ? ((Double) deckStartAt1).intValue() : 0;
 	}
 
 	public void setDeckStartAt4(int deckStartAt4){
@@ -984,7 +991,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDeckStartAt4(){
-		return deckStartAt4;
+		return deckStartAt4 != null ? ((Double) deckStartAt4).intValue() : 0;
 	}
 
 	public void setDeckStartAt5(int deckStartAt5){
@@ -992,14 +999,14 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getDeckStartAt5(){
-		return deckStartAt5;
+		return deckStartAt5 != null ? ((Double) deckStartAt5).intValue() : 0;
 	}
 
 	public void setBasePercent1(int basePercent1){
 		this.basePercent1 = basePercent1;
 	}
 
-	public int getBasePercent1(){
+	public Object getBasePercent1(){
 		return basePercent1;
 	}
 
@@ -1007,7 +1014,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.basePercent2 = basePercent2;
 	}
 
-	public int getBasePercent2(){
+	public Object getBasePercent2(){
 		return basePercent2;
 	}
 
@@ -1015,7 +1022,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.basePercent3 = basePercent3;
 	}
 
-	public int getBasePercent3(){
+	public Object getBasePercent3(){
 		return basePercent3;
 	}
 
@@ -1023,7 +1030,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.isvisible2 = isvisible2;
 	}
 
-	public int getIsvisible2(){
+	public Object getIsvisible2(){
 		return isvisible2;
 	}
 
@@ -1055,8 +1062,15 @@ public class ResponseHoleDetailData implements Serializable {
 		this.x = x;
 	}
 
-	public Object getX(){
-		return x;
+	public double getX(){
+		if (x != null) {
+			if (x instanceof String) {
+				return ((Double) Double.parseDouble(String.valueOf(x)));
+			}
+			return ((Double) x);
+		} else {
+			return 0.0;
+		}
 	}
 
 	public void setLicenseMagzine2(String licenseMagzine2){
@@ -1071,8 +1085,15 @@ public class ResponseHoleDetailData implements Serializable {
 		this.y = y;
 	}
 
-	public Object getY(){
-		return y;
+	public double getY(){
+		if (y != null) {
+			if (y instanceof String) {
+				return ((Double) Double.parseDouble(String.valueOf(y)));
+			}
+			return ((Double) y);
+		} else {
+			return 0.0;
+		}
 	}
 
 	public void setLicenseMagzine22(String licenseMagzine22){
@@ -1096,7 +1117,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getBsterId(){
-		return bsterId;
+		return bsterId != null ? ((Double) bsterId).intValue() : 0;
 	}
 
 	public void setMag1Unit1(Object mag1Unit1){
@@ -1111,8 +1132,14 @@ public class ResponseHoleDetailData implements Serializable {
 		this.spacing = spacing;
 	}
 
-	public Object getSpacing(){
-		return spacing != null ? "0.0" : spacing;
+	public int getSpacing(){
+		if (spacing != null) {
+			if (spacing instanceof String) {
+				return ((Double) Double.parseDouble(String.valueOf(spacing))).intValue();
+			}
+			return ((Double) spacing).intValue();
+		}
+		return 0;
 	}
 
 	public void setBtmId(int btmId){
@@ -1120,14 +1147,14 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getBtmId(){
-		return btmId;
+		return btmId != null ? ((Double) btmId).intValue() : 0;
 	}
 
 	public void setBasePercent4(int basePercent4){
 		this.basePercent4 = basePercent4;
 	}
 
-	public int getBasePercent4(){
+	public Object getBasePercent4(){
 		return basePercent4;
 	}
 
@@ -1135,7 +1162,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.basePercent5 = basePercent5;
 	}
 
-	public int getBasePercent5(){
+	public Object getBasePercent5(){
 		return basePercent5;
 	}
 
@@ -1144,7 +1171,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getType(){
-		return type;
+		return type != null ? ((Double) type).intValue() : 0;
 	}
 
 	public void setRee(Object ree){
@@ -1159,7 +1186,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.explosiveDia2 = explosiveDia2;
 	}
 
-	public int getExplosiveDia2(){
+	public Object getExplosiveDia2(){
 		return explosiveDia2;
 	}
 
@@ -1175,7 +1202,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.expCode2 = expCode2;
 	}
 
-	public int getExpCode2(){
+	public Object getExpCode2(){
 		return expCode2;
 	}
 
@@ -1191,7 +1218,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.mag1Unit2 = mag1Unit2;
 	}
 
-	public int getMag1Unit2(){
+	public Object getMag1Unit2(){
 		return mag1Unit2;
 	}
 
@@ -1199,8 +1226,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.colLength = colLength;
 	}
 
-	public Object getColLength(){
-		return colLength;
+	public int getColLength(){
+		return colLength != null ? ((Double) colLength).intValue() : 0;
 	}
 
 	public void setUnitCost1(Object unitCost1){
@@ -1216,7 +1243,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getColId(){
-		return colId;
+		return colId != null ? ((Double) colId).intValue() : 0;
 	}
 
 	public void setUnitCost2(Object unitCost2){
@@ -1231,8 +1258,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.stemLngth = stemLngth;
 	}
 
-	public Object getStemLngth(){
-		return stemLngth;
+	public String getStemLngth(){
+		return stemLngth != null ? String.valueOf(stemLngth) : "" ;
 	}
 
 	public void setHoleDiameter(int holeDiameter){
@@ -1240,14 +1267,14 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getHoleDiameter(){
-		return holeDiameter;
+		return holeDiameter != null ? ((Double) holeDiameter).intValue() : 0;
 	}
 
 	public void setExplosiveDia(int explosiveDia){
 		this.explosiveDia = explosiveDia;
 	}
 
-	public int getExplosiveDia(){
+	public Object getExplosiveDia(){
 		return explosiveDia;
 	}
 
@@ -1272,7 +1299,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getHoleDepth(){
-		return holeDepth;
+		return holeDepth != null ? ((Double) holeDepth).intValue() : 0;
 	}
 
 	public void setDensity2(Object density2){
@@ -1287,7 +1314,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.costUnit2 = costUnit2;
 	}
 
-	public int getCostUnit2(){
+	public Object getCostUnit2(){
 		return costUnit2;
 	}
 
@@ -1303,8 +1330,8 @@ public class ResponseHoleDetailData implements Serializable {
 		this.delay = delay;
 	}
 
-	public Object getDelay(){
-		return delay;
+	public int getDelay(){
+		return delay != null ? ((Double) delay).intValue() : 0;
 	}
 
 	public void setMake2(String make2){
@@ -1327,7 +1354,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.isvisible = isvisible;
 	}
 
-	public int getIsvisible(){
+	public Object getIsvisible(){
 		return isvisible;
 	}
 
@@ -1343,7 +1370,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.mag1Unit = mag1Unit;
 	}
 
-	public int getMag1Unit(){
+	public Object getMag1Unit(){
 		return mag1Unit;
 	}
 
@@ -1351,7 +1378,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.expCode = expCode;
 	}
 
-	public int getExpCode(){
+	public Object getExpCode(){
 		return expCode;
 	}
 
@@ -1359,7 +1386,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.costUnit = costUnit;
 	}
 
-	public int getCostUnit(){
+	public Object getCostUnit(){
 		return costUnit;
 	}
 
@@ -1367,7 +1394,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.mag1Class2 = mag1Class2;
 	}
 
-	public int getMag1Class2(){
+	public Object getMag1Class2(){
 		return mag1Class2;
 	}
 
@@ -1392,14 +1419,14 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getBtmWt(){
-		return btmWt;
+		return btmWt != null ? ((Double) btmWt).intValue() : 0;
 	}
 
 	public void setDipAzimuthError(int dipAzimuthError){
 		this.dipAzimuthError = dipAzimuthError;
 	}
 
-	public int getDipAzimuthError(){
+	public Object getDipAzimuthError(){
 		return dipAzimuthError;
 	}
 
@@ -1424,7 +1451,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getRowNo(){
-		return rowNo;
+		return rowNo != null ? ((Double) rowNo).intValue() : 0;
 	}
 
 	public void setClass1(Object class1){
@@ -1455,7 +1482,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.expType2 = expType2;
 	}
 
-	public int getExpType2(){
+	public Object getExpType2(){
 		return expType2;
 	}
 
@@ -1487,7 +1514,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.mag1Class = mag1Class;
 	}
 
-	public int getMag1Class(){
+	public Object getMag1Class(){
 		return mag1Class;
 	}
 
@@ -1495,7 +1522,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.mag2Unit2 = mag2Unit2;
 	}
 
-	public int getMag2Unit2(){
+	public Object getMag2Unit2(){
 		return mag2Unit2;
 	}
 
@@ -1504,15 +1531,15 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getNoOfDecks(){
-		return noOfDecks;
+		return noOfDecks != null ? ((Double) noOfDecks).intValue() : 0;
 	}
 
 	public void setColWt(Object colWt){
 		this.colWt = colWt;
 	}
 
-	public Object getColWt(){
-		return colWt;
+	public int getColWt(){
+		return colWt != null ? ((Double) colWt).intValue() : 0;
 	}
 
 	public void setRRDelay(int rRDelay){
@@ -1520,7 +1547,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getRRDelay(){
-		return rRDelay;
+		return rRDelay != null ? ((Double) rRDelay).intValue() : 0;
 	}
 
 	public void setBlock(Object block){
@@ -1584,7 +1611,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getBsterLength(){
-		return bsterLength;
+		return bsterLength != null ? ((Double) bsterLength).intValue() : 0;
 	}
 
 	public void setBlockStartAt(Object blockStartAt){
@@ -1616,7 +1643,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getInHoleDelay(){
-		return inHoleDelay;
+		return inHoleDelay != null ? ((Double) inHoleDelay).intValue() : 0;
 	}
 
 	public void setMagazine12(String magazine12){
@@ -1663,7 +1690,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.verticalDipError = verticalDipError;
 	}
 
-	public int getVerticalDipError(){
+	public Object getVerticalDipError(){
 		return verticalDipError;
 	}
 
@@ -1672,7 +1699,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getSubgrade(){
-		return subgrade;
+		return subgrade != null ? ((Double) subgrade).intValue() : 0;
 	}
 
 	public void setComment(String comment){
@@ -1687,7 +1714,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.mag2Class = mag2Class;
 	}
 
-	public int getMag2Class(){
+	public Object getMag2Class(){
 		return mag2Class;
 	}
 
@@ -1696,7 +1723,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getHHDelay(){
-		return hHDelay;
+		return hHDelay != null ? ((Double)hHDelay).intValue() : 0;
 	}
 
 	public void setHoleNo(int holeNo){
@@ -1704,7 +1731,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public int getHoleNo(){
-		return holeNo;
+		return holeNo != null ? ((Double) holeNo).intValue() : 0;
 	}
 
 	public void setColor2(String color2){
@@ -1751,7 +1778,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.expType = expType;
 	}
 
-	public int getExpType(){
+	public Object getExpType(){
 		return expType;
 	}
 
@@ -1767,7 +1794,7 @@ public class ResponseHoleDetailData implements Serializable {
 		this.mag2Class2 = mag2Class2;
 	}
 
-	public int getMag2Class2(){
+	public Object getMag2Class2(){
 		return mag2Class2;
 	}
 
@@ -1783,15 +1810,15 @@ public class ResponseHoleDetailData implements Serializable {
 		this.drillX = drillX;
 	}
 
-	public Object getDrillX(){
-		return drillX;
+	public double getDrillX(){
+		return drillX != null ? (double) drillX : 0;
 	}
 
 	public void setDrillY(Object drillY){
 		this.drillY = drillY;
 	}
 
-	public Object getDrillY(){
-		return drillY;
+	public double getDrillY(){
+		return drillY != null ? (double) drillY : 0;
 	}
 }

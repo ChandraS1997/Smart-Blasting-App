@@ -57,9 +57,10 @@ public class HoleEditTableFieldSelectionDialog extends BaseDialogFragment {
     public void setupClickListener() {
         binding.saveBtn.setOnClickListener(view -> {
             dismiss();
+            ((HoleDetailActivity) mContext).isTableHeaderFirstTimeLoad = false;
             if (Constants.onDataEditTable != null && adapterEditTableFields != null) {
                 manger.setTableField(adapterEditTableFields.getSelectedData());
-                Constants.onDataEditTable.editDataTable(adapterEditTableFields.getSelectedData());
+                Constants.onDataEditTable.editDataTable(manger.getTableField());
             }
         });
         binding.cancelBtn.setOnClickListener(view -> dismiss());
@@ -73,6 +74,8 @@ public class HoleEditTableFieldSelectionDialog extends BaseDialogFragment {
         binding.headerLayHole.camIcon.setVisibility(View.GONE);
         binding.headerLayHole.homeBtn.setVisibility(View.GONE);
         binding.headerLayHole.editTable.setVisibility(View.GONE);
+        binding.headerLayHole.refreshIcn.setVisibility(View.GONE);
+        binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
 
         editModelArrayList.clear();
         editModelArrayList.addAll(((HoleDetailActivity) mContext).getTableModel());

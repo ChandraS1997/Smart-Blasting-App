@@ -13,7 +13,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
-import androidx.room.migration.Migration;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -24,13 +23,20 @@ import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseAllRecordDataItem;
-import com.smart_blasting_drilling.android.api.apis.response.ResponseEmployeeData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
-import com.smart_blasting_drilling.android.api.apis.response.ResultsetItem;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.GetAllMinePitZoneBenchResult;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable3DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable7DesignElementDataModel;
+import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApis;
+import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
+import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllMineInfoSurfaceInitiatorEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ExplosiveDataEntity;
@@ -47,14 +53,11 @@ import com.smart_blasting_drilling.android.room_database.entities.ResponseTypeTa
 import com.smart_blasting_drilling.android.room_database.entities.ResponseZoneTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.RockDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.TldDataEntity;
-import com.smart_blasting_drilling.android.room_database.entities.UpdatedProjectDetailEntity;
 import com.smart_blasting_drilling.android.ui.adapter.ProjectLIstAdapter;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
-import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.ActivityHomeBinding;
 import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
-import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 import com.smart_blasting_drilling.android.utils.TextUtil;
@@ -62,20 +65,27 @@ import com.smart_blasting_drilling.android.utils.ViewUtil;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
 
 public class HomeActivity extends BaseActivity {
     public NavController navController;
     public ActivityHomeBinding binding;
     int projectFragType = 0;
-    AppDatabase appDatabase;
     List<ResponseBladesRetrieveData> projectList = new ArrayList<>();
     ProjectLIstAdapter projectLIstAdapter;
     BaseApis baseApis;
+    public AllTablesData allTablesData;
+
+    public JsonElement element;
+
+    public List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
+    public List<Response3DTable2DataModel> response3DTable2DataModels = new ArrayList<>();
+    public List<Response3DTable3DataModel> response3DTable3DataModels = new ArrayList<>();
+    public List<Response3DTable4HoleChargingDataModel> response3DTable4HoleChargingDataModels = new ArrayList<>();
+    public List<Response3DTable7DesignElementDataModel> response3DTable7DesignElementDataModels = new ArrayList<>();
 
     public static void openHomeActivity(Context context) {
         context.startActivity(new Intent(context, HomeActivity.class));
@@ -88,8 +98,6 @@ public class HomeActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 
         baseApis = new BaseApis(this);
-
-        appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
 
         callBaseApis();
 
@@ -160,6 +168,38 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
+    public void setJsonCodeIdData(ResponseProjectModelFromAllInfoApi infoApi, int zoneId, int benchId, int pitId, int mineId) {
+        try {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("zoneId", zoneId);
+            jsonObject.addProperty("benchId", benchId);
+            jsonObject.addProperty("pitId", pitId);
+            jsonObject.addProperty("MineId", mineId);
+
+            AppDelegate.getInstance().setCodeIdObject(jsonObject);
+            AppDelegate.getInstance().setProjectModelFromAllInfoApi(infoApi);
+
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
+    }
+
+    public void set3dJsonCodeIdData(Response3DTable1DataModel infoApi, String zoneId, String benchId, String pitId, String mineId) {
+        try {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("zoneId", Integer.parseInt(StringUtill.isEmpty(zoneId) ? "0" : zoneId));
+            jsonObject.addProperty("benchId", Integer.parseInt(StringUtill.isEmpty(benchId) ? "0" : benchId));
+            jsonObject.addProperty("pitId", Integer.parseInt(StringUtill.isEmpty(pitId) ? "0" : pitId));
+            jsonObject.addProperty("MineId", Integer.parseInt(StringUtill.isEmpty(mineId) ? "0" : mineId));
+
+            AppDelegate.getInstance().setCodeIdObject(jsonObject);
+            AppDelegate.getInstance().setProject3DModelFromAllInfoApi(infoApi);
+
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
+    }
+
     private void setNavigationView() {
         navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
             if (navDestination.getId() == R.id.drillingFragment) {
@@ -221,34 +261,142 @@ public class HomeActivity extends BaseActivity {
     ResponseBladesRetrieveData bladesRetrieveData;
 
     private void setApiData(ResponseBladesRetrieveData bladesRetrieveData) {
-        this.bladesRetrieveData = bladesRetrieveData;
-        appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
-        entity = appDatabase.projectHoleDetailRowColDao();
-        if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
-            getAllDesignInfoApiCaller(bladesRetrieveData.isIs3dBlade());
-        } else {
-            ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
-            AllTablesData tablesData = new AllTablesData();
-            Type typeList = new TypeToken<List<ResponseHoleDetailData>>(){}.getType();
-            tablesData = new Gson().fromJson(rowColEntity.projectHole, AllTablesData.class);
-            setHoleTableData(tablesData);
+        try {
+            this.bladesRetrieveData = bladesRetrieveData;
+            entity = appDatabase.projectHoleDetailRowColDao();
+            if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
+                getAllDesignInfoApiCaller(bladesRetrieveData.isIs3dBlade());
+            } else {
+                ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
+                HomeActivity.this.element = new Gson().fromJson(rowColEntity.projectHole, JsonElement.class);
+                AppDelegate.getInstance().setHole3DDataElement(element);
+                if (rowColEntity.getIs3DBlades()) {
+                    List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
+                    JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
+                        response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
+                    }
+
+                    Response3DTable1DataModel infoApi = response3DTable1DataModels.get(0);
+                    set3dJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
+
+                    set3dHoleTableData(element, rowColEntity.getIs3DBlades());
+                } else {
+                    AllTablesData tablesData = new AllTablesData();
+                    Type typeList = new TypeToken<List<ResponseHoleDetailData>>(){}.getType();
+                    tablesData = new Gson().fromJson(rowColEntity.projectHole, AllTablesData.class);
+
+                    if (!Constants.isListEmpty(tablesData.getTable2())) {
+                        ResponseProjectModelFromAllInfoApi infoApi = tablesData.getTable().get(0);
+                        setJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
+                    }
+                    setHoleTableData(tablesData, rowColEntity.getIs3DBlades());
+                }
+            }
+        } catch (Exception e) {
+            e.getLocalizedMessage();
         }
     }
 
-    private void setHoleTableData(AllTablesData tablesData) {
-        String str = new Gson().toJson(tablesData);
-        if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
-            entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), str));
-        } else {
-            entity.updateProject(bladesRetrieveData.getDesignId(), str);
-        }
+    private void setHoleTableData(AllTablesData tablesData, boolean is3D) {
+        Executors.newSingleThreadExecutor().execute(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    allTablesData = tablesData;
+                    String str = new Gson().toJson(tablesData);
+                    if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
+                        entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), is3D, str));
+                    } else {
+                        entity.updateProject(bladesRetrieveData.getDesignId(), str);
+                    }
 
-        Intent i = new Intent(HomeActivity.this, HoleDetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("all_table_Data", tablesData);
-        bundle.putSerializable("blades_data", bladesRetrieveData);
-        i.putExtras(bundle);
-        startActivity(i);
+                    if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                        Intent i = new Intent(HomeActivity.this, HoleDetailActivity.class);
+                        AppDelegate.getInstance().setAllTablesData(tablesData);
+                        AppDelegate.getInstance().setBladesRetrieveData(bladesRetrieveData);
+                        startActivity(i);
+                    } else {
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        ProjectDetailDialog infoDialogFragment = ProjectDetailDialog.getInstance(bladesRetrieveData);
+                        infoDialogFragment.setFrom("Home");
+                        ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
+                        ft.commitAllowingStateLoss();
+                    }
+                } catch (Exception e) {
+                    e.getLocalizedMessage();
+                }
+            }
+        });
+    }
+
+    private void set3dHoleTableData(JsonElement response, boolean is3D) {
+        Executors.newSingleThreadExecutor().execute(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    String str = new Gson().toJson(response);
+                    if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
+                        entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), is3D, str));
+                    } else {
+                        entity.updateProject(bladesRetrieveData.getDesignId(), str);
+                    }
+
+                    convertList3dDataList(response);
+                    if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                        Intent i = new Intent(HomeActivity.this, HoleDetail3DModelActivity.class);
+                        startActivity(i);
+                    } else {
+                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        ProjectDetail3DDataDialog infoDialogFragment = ProjectDetail3DDataDialog.getInstance(response3DTable1DataModels.get(0));
+                        infoDialogFragment.setFrom("Home");
+                        ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
+                        ft.commitAllowingStateLoss();
+                    }
+                } catch (Exception e) {
+                    e.getLocalizedMessage();
+                }
+            }
+        });
+    }
+
+    private void clearTable() {
+        response3DTable1DataModels.clear();
+        response3DTable2DataModels.clear();
+        response3DTable3DataModels.clear();
+        response3DTable4HoleChargingDataModels.clear();
+        response3DTable7DesignElementDataModels.clear();
+    }
+
+    private void convertList3dDataList(JsonElement response) {
+        try {
+            clearTable();
+            JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
+                response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
+            }
+            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(1), String.class), JsonArray.class)) {
+                response3DTable2DataModels.add(new Gson().fromJson(element, Response3DTable2DataModel.class));
+            }
+            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(2), String.class), JsonArray.class)) {
+                response3DTable3DataModels.add(new Gson().fromJson(element, Response3DTable3DataModel.class));
+            }
+            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
+                response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
+            }
+            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(6), String.class), JsonArray.class)) {
+                response3DTable7DesignElementDataModels.add(new Gson().fromJson(element, Response3DTable7DesignElementDataModel.class));
+            }
+            AppDelegate.getInstance().setHoleChargingDataModel(response3DTable4HoleChargingDataModels);
+            AppDelegate.getInstance().setResponse3DTable1DataModel(response3DTable1DataModels);
+            AppDelegate.getInstance().setResponse3DTable2DataModel(response3DTable2DataModels);
+            AppDelegate.getInstance().setResponse3DTable3DataModel(response3DTable3DataModels);
+            AppDelegate.getInstance().setDesignElementDataModel(response3DTable7DesignElementDataModels);
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
     }
 
     public void getAllDesignInfoApiCaller(boolean is3D) {
@@ -262,19 +410,38 @@ public class HomeActivity extends BaseActivity {
                 } else {
                     if (!(response.isJsonNull())) {
                         try {
-                            JsonObject jsonObject = response.getAsJsonObject();
-                            if (jsonObject != null) {
+                            if (is3D) {
                                 try {
-                                    if (jsonObject.get("GetAllDesignInfoResult").getAsString().contains("Table2")) {
-                                        AllTablesData tablesData = new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), AllTablesData.class);
-                                        setHoleTableData(tablesData);
+                                    List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
+                                    JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
+                                        response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
                                     }
-                                } catch (Exception e) {
-                                    Log.e(NODATAFOUND, e.getMessage());
-                                }
+                                    HomeActivity.this.element = response;
+                                    AppDelegate.getInstance().setHole3DDataElement(element);
+                                    Response3DTable1DataModel infoApi = response3DTable1DataModels.get(0);
+                                    set3dJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
 
+                                    set3dHoleTableData(response, is3D);
+                                } catch (Exception e) {
+                                    e.getLocalizedMessage();
+                                }
                             } else {
-                                showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                                JsonObject jsonObject = response.getAsJsonObject();
+                                if (jsonObject != null) {
+                                    try {
+                                        if (jsonObject.get("GetAllDesignInfoResult").getAsString().contains("Table2")) {
+                                            AllTablesData tablesData = new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), AllTablesData.class);
+                                            ResponseProjectModelFromAllInfoApi infoApi = new Gson().fromJson(new Gson().fromJson(jsonObject.get("GetAllDesignInfoResult").getAsString(), JsonObject.class).get("Table").getAsJsonArray().get(0), ResponseProjectModelFromAllInfoApi.class);
+                                            setJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
+                                            setHoleTableData(tablesData, is3D);
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e(NODATAFOUND, e.getMessage());
+                                    }
+                                } else {
+                                    showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                                }
                             }
                         } catch (Exception e) {
                             Log.e(NODATAFOUND, e.getMessage());
@@ -389,7 +556,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.mineTableDao().getAllBladesProject())) {
                                         appDatabase.mineTableDao().insertProject(mineTableEntity);
                                     } else {
-                                        appDatabase.mineTableDao().updateProject(0, new Gson().toJson(mineTableEntity));
+                                        appDatabase.mineTableDao().updateProject(1, new Gson().toJson(mineTableEntity));
                                     }
                                 } else if ("Pit".equals(allRecordData.getFieldInfo())) {
                                     ResponsePitTableEntity pitTableEntity = new ResponsePitTableEntity();
@@ -397,7 +564,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject())) {
                                         appDatabase.pitTableDao().insertProject(pitTableEntity);
                                     } else {
-                                        appDatabase.pitTableDao().updateProject(0, new Gson().toJson(pitTableEntity));
+                                        appDatabase.pitTableDao().updateProject(1, new Gson().toJson(pitTableEntity));
                                     }
                                 } else if ("Bench".equals(allRecordData.getFieldInfo())) {
                                     ResponseBenchTableEntity benchTableEntity = new ResponseBenchTableEntity();
@@ -405,7 +572,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.benchTableDao().getAllBladesProject())) {
                                         appDatabase.benchTableDao().insertProject(benchTableEntity);
                                     } else {
-                                        appDatabase.benchTableDao().updateProject(0, new Gson().toJson(benchTableEntity));
+                                        appDatabase.benchTableDao().updateProject(1, new Gson().toJson(benchTableEntity));
                                     }
                                 } else if ("Zone".equals(allRecordData.getFieldInfo())) {
                                     ResponseZoneTableEntity zoneTableEntity = new ResponseZoneTableEntity();
@@ -413,7 +580,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.zoneTableDao().getAllBladesProject())) {
                                         appDatabase.zoneTableDao().insertProject(zoneTableEntity);
                                     } else {
-                                        appDatabase.zoneTableDao().updateProject(0, new Gson().toJson(zoneTableEntity));
+                                        appDatabase.zoneTableDao().updateProject(1, new Gson().toJson(zoneTableEntity));
                                     }
                                 } else if ("Explosive".equals(allRecordData.getFieldInfo())) {
                                     ExplosiveDataEntity explosiveDataEntity = new ExplosiveDataEntity();
@@ -421,7 +588,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.explosiveDataDao().getAllBladesProject())) {
                                         appDatabase.explosiveDataDao().insertProject(explosiveDataEntity);
                                     } else {
-                                        appDatabase.explosiveDataDao().updateProject(0, new Gson().toJson(explosiveDataEntity));
+                                        appDatabase.explosiveDataDao().updateProject(1, new Gson().toJson(explosiveDataEntity));
                                     }
                                 } else if ("tld".equals(allRecordData.getFieldInfo())) {
                                     TldDataEntity tldDataEntity = new TldDataEntity();
@@ -429,7 +596,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.tldDataEntity().getAllBladesProject())) {
                                         appDatabase.tldDataEntity().insertProject(tldDataEntity);
                                     } else {
-                                        appDatabase.tldDataEntity().updateProject(0, new Gson().toJson(tldDataEntity));
+                                        appDatabase.tldDataEntity().updateProject(1, new Gson().toJson(tldDataEntity));
                                     }
                                 } else if ("initiating".equals(allRecordData.getFieldInfo())) {
                                     InitiatingDataEntity initiatingDataEntity = new InitiatingDataEntity();
@@ -437,7 +604,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.initiatingDataDao().getAllBladesProject())) {
                                         appDatabase.initiatingDataDao().insertProject(initiatingDataEntity);
                                     } else {
-                                        appDatabase.initiatingDataDao().updateProject(0, new Gson().toJson(initiatingDataEntity));
+                                        appDatabase.initiatingDataDao().updateProject(1, new Gson().toJson(initiatingDataEntity));
                                     }
                                 } else if ("rock".equals(allRecordData.getFieldInfo())) {
                                     RockDataEntity rockDataEntity = new RockDataEntity();
@@ -445,7 +612,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.rockDataDao().getAllBladesProject())) {
                                         appDatabase.rockDataDao().insertProject(rockDataEntity);
                                     } else {
-                                        appDatabase.rockDataDao().updateProject(0, new Gson().toJson(rockDataEntity));
+                                        appDatabase.rockDataDao().updateProject(1, new Gson().toJson(rockDataEntity));
                                     }
                                 }
                             }
@@ -549,7 +716,7 @@ public class HomeActivity extends BaseActivity {
                                 if (Constants.isListEmpty(appDatabase.drillMethodDao().getAllEntityDataList())) {
                                     appDatabase.drillMethodDao().insertItem(entity);
                                 } else {
-                                    appDatabase.drillMethodDao().updateItem(0, new Gson().toJson(entity));
+                                    appDatabase.drillMethodDao().updateItem(1, new Gson().toJson(entity));
                                 }
                             } catch (Exception e) {
                                 Log.e(NODATAFOUND, e.getMessage());

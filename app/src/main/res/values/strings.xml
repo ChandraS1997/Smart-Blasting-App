@@ -59,6 +59,12 @@
     <string name="site_name"><font color='#CC252C'>*</font>Site Name</string>
     <string name="select_team"><font color='#CC252C'>*</font>Select Team</string>
     <string name="rig"><font color='#CC252C'>*</font>Rig</string>
+    <string name="mine_as"><font color='#CC252C'>*</font>Mine</string>
+    <string name="pit_as"><font color='#CC252C'>*</font>Pit</string>
+    <string name="bench_as"><font color='#CC252C'>*</font>Bench</string>
+    <string name="zone_as"><font color='#CC252C'>*</font>Zone</string>
+    <string name="explosive_as"><font color='#CC252C'>*</font>Explosive</string>
+    <string name="rock_as"><font color='#CC252C'>*</font>Rock</string>
     <string name="drilling_pattern"><font color='#CC252C'>*</font>Drilling Pattern</string>
     <string name="drilling_type"><font color='#CC252C'>*</font>Drilling Type</string>
     <string name="matterial_drilled"><font color='#CC252C'>*</font>Material Drilled</string>
@@ -119,13 +125,13 @@
     <string name="blasting_fumes">Blasting Fumes</string>
     <string name="not">NO</string>
     <string name="muck_profile">Muck Profile</string>
-    <string name="scattered">Scattered</string>
+    <string name="scattered">Staggered</string>
     <string name="heave_swell">Heave/Swell</string>
     <string name="good">Good</string>
     <string name="stemming_ejection">Stemming Ejection</string>
     <string name="backbreak_overbreak">BackBreak/OverBreak</string>
     <string name="backbreak">BackBreak</string>
-    <string name="bounder_count">Bounder Count</string>
+    <string name="bounder_count">Boulder Count</string>
 
     <string name="error_insertion">Error In Insertion</string>
     <string name="project_details">Project Details</string>
@@ -159,6 +165,13 @@
     <string name="x">X</string>
     <string name="y">Y</string>
     <string name="z">Z</string>
+
+    <string name="top_x">Top X</string>
+    <string name="top_y">Top Y</string>
+    <string name="top_z">Top Z</string>
+    <string name="bottom_x">Bottom X</string>
+    <string name="bottom_y">Bottom Y</string>
+    <string name="bottom_z">Bottom Z</string>
     <string name="stem_length">Stem Length</string>
     <string name="electronic_electric_detonator">Electronic/Electric Detonator</string>
     <string name="initiating_device">Initiating Device</string>
@@ -167,5 +180,23 @@
     <string name="down_the_hole">Down The Hole</string>
     <string name="tld_row_to_row">TLD(Row To Row)</string>
     <string name="tld_hole_to_hole">TLD(Hole To Hole)</string>
+    <string name="sync_with_drims">Sync with DRIMS</string>
+    <string name="sync_with_bims">Sync With BIMS</string>
+    <string name="sync_with_blades">Sync with BLADES</string>
+    <string name="yes">Yes</string>
+    <string name="completed">Completed</string>
+    <string name="blocked">Blocked</string>
+    <string name="progress">In Progress</string>
+    <string name="vertical_dip">Vertical Dip</string>
+    <string name="water_depth">Water Depth</string>
+    <string name="subgrade">Subgrade</string>
+    <string name="total_charge">Total Charge</string>
+    <string name="charge_length">Charge Length</string>
+    <string name="stemming_length">Stemming Length</string>
+    <string name="deck_length">Deck Length</string>
+    <string name="block">Block</string>
+    <string name="block_length">Block Length</string>
+    <string name="hole_delay">Hole Delay</string>
+    <string name="in_hole_delay">In Hole Delay</string>
 
 </resources>

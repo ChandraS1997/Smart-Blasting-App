@@ -10,6 +10,8 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
 import com.smart_blasting_drilling.android.dialogs.AppProgressBar;
@@ -36,11 +38,14 @@ public class BaseFragment extends Fragment {
     public static final String NODATAFOUND = "Nothing to show here yet!";
     public static final String SESSION_EXPIRED_TEXT = "Session expired,Please Login Again.";
 
+    public AppDatabase appDatabase;
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
         manger = ((BaseActivity) context).manger;
+        appDatabase = ((BaseActivity) context).appDatabase;
     }
 
     public void showToast(String msg) {

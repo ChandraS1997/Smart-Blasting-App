@@ -11,11 +11,13 @@ import androidx.fragment.app.DialogFragment;
 
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.helper.PreferenceManger;
+import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 
 public abstract class BaseDialogFragment extends DialogFragment {
 
     Context mContext;
+    public AppDatabase appDatabase;
     public PreferenceManger manger;
 
     public BaseDialogFragment() {
@@ -26,6 +28,7 @@ public abstract class BaseDialogFragment extends DialogFragment {
         super.onAttach(context);
         this.mContext = context;
         this.manger = BaseApplication.getPreferenceManger();
+        this.appDatabase = ((BaseActivity) context).appDatabase;
     }
 
     @Override

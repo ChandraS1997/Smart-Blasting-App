@@ -91,7 +91,7 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
                         ((BaseActivity) context).runOnUiThread(new TimerTask() {
                             @Override
                             public void run() {
-                                AppDatabase appDatabase = BaseApplication.getAppDatabase(context, DATABASE_NAME);
+                                AppDatabase appDatabase = ((BaseActivity) context).appDatabase;
                                 if (is3DBlades) {
                                     Project3DBladesDao bladesDao = appDatabase.project3DBladesDao();
                                     Project3DBladesEntity entity = new Gson().fromJson(new Gson().toJson(data), Project3DBladesEntity.class);
@@ -118,7 +118,7 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
                                 if (!appDatabase.allProjectBladesModelDao().isExistItem(data.getDesignId())) {
                                     appDatabase.allProjectBladesModelDao().insertItem(allProjectBladesModelEntity);
                                 } else {
-                                    appDatabase.allProjectBladesModelDao().updateItem(data.getDesignId(), new Gson().toJson(data));
+                                    appDatabase.allProjectBladesModelDao().updateItem(data.getDesignId(), "0", new Gson().toJson(data));
                                 }
 
                                 ((BaseActivity) context).hideLoader();

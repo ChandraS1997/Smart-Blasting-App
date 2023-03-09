@@ -30,12 +30,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
-import com.smart_blasting_drilling.android.api.apis.response.ResultsetItem;
+import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
+import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.NoInternetBinding;
 import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
@@ -45,16 +48,24 @@ import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.helper.PreferenceManger;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
+import com.smart_blasting_drilling.android.room_database.entities.BlastCodeEntity;
+import com.smart_blasting_drilling.android.room_database.entities.BlastPerformanceEntity;
+import com.smart_blasting_drilling.android.room_database.entities.InitiatingDeviceDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseBenchTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponsePitTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseZoneTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdatedProjectDetailEntity;
+import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceAllTypeModel;
+import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceModel;
+import com.smart_blasting_drilling.android.ui.models.MapHole3DDataModel;
+import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
 import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,10 +87,13 @@ public class BaseActivity extends AppCompatActivity {
     public static final String NODATAFOUND = "Nothing to show here yet!";
     public static final String SESSION_EXPIRED_TEXT = "Session expired,Please Login Again.";
 
+    public AppDatabase appDatabase;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         noInternetdialog = new Dialog(this);
+        appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
 
         receiver = ConnectivityReceiver.getInstance();
         manger = BaseApplication.getPreferenceManger();
@@ -171,6 +185,66 @@ public class BaseActivity extends AppCompatActivity {
         showLoader();
     }
 
+    public List<MapHoleDataModel> getRowWiseHoleList(List<ResponseHoleDetailData> holeDetailDataList) {
+        List<MapHoleDataModel> rowMapHoleDataModelList = new ArrayList<>();
+        List<MapHoleDataModel> colHoleDetailDataList = new ArrayList<>();
+
+        for (ResponseHoleDetailData categoryList : holeDetailDataList) {
+            boolean isFound = false;
+            List<ResponseHoleDetailData> dataList = new ArrayList<>();
+            for (MapHoleDataModel e : rowMapHoleDataModelList) {
+                if (e.getRowId() == categoryList.getRowNo()) {
+                    isFound = true;
+                    break;
+                }
+            }
+            if (!isFound) {
+                rowMapHoleDataModelList.add(new MapHoleDataModel((int) categoryList.getRowNo(), dataList));
+            }
+        }
+
+        for (MapHoleDataModel e : rowMapHoleDataModelList) {
+            List<ResponseHoleDetailData> dataList = new ArrayList<>();
+            for (ResponseHoleDetailData categoryList : holeDetailDataList) {
+                if (e.getRowId() == categoryList.getRowNo()) {
+                    dataList.add(categoryList);
+                }
+            }
+            colHoleDetailDataList.add(new MapHoleDataModel(e.getRowId(), dataList));
+        }
+        return colHoleDetailDataList;
+    }
+
+    public List<MapHole3DDataModel> getRowWiseHoleIn3dList(List<Response3DTable4HoleChargingDataModel> holeDetailDataList) {
+        List<MapHole3DDataModel> rowMapHoleDataModelList = new ArrayList<>();
+        List<MapHole3DDataModel> colHoleDetailDataList = new ArrayList<>();
+
+        for (Response3DTable4HoleChargingDataModel categoryList : holeDetailDataList) {
+            boolean isFound = false;
+            List<Response3DTable4HoleChargingDataModel> dataList = new ArrayList<>();
+            for (MapHole3DDataModel e : rowMapHoleDataModelList) {
+                if (categoryList.getRowNo().equals(String.valueOf(e.getRowId()))) {
+                    isFound = true;
+                    break;
+                }
+            }
+            if (!isFound) {
+                rowMapHoleDataModelList.add(new MapHole3DDataModel(categoryList.getRowNo(), dataList));
+            }
+        }
+
+        for (MapHole3DDataModel e : rowMapHoleDataModelList) {
+            List<Response3DTable4HoleChargingDataModel> dataList = new ArrayList<>();
+            for (Response3DTable4HoleChargingDataModel categoryList : holeDetailDataList) {
+                if (e.getRowId().equals(categoryList.getRowNo())) {
+                    dataList.add(categoryList);
+                }
+            }
+            colHoleDetailDataList.add(new MapHole3DDataModel(e.getRowId(), dataList));
+        }
+        return colHoleDetailDataList;
+    }
+
     public void noInternetDialog() {
         if(!noInternetdialog.isShowing())
         {
@@ -221,11 +295,11 @@ public class BaseActivity extends AppCompatActivity {
         return File.createTempFile(imageFileName, ".mp4", storageDir);
     }
 
-    public void setJsonForSyncProjectData(ResponseBladesRetrieveData bladesRetrieveData, List<ResponseHoleDetailData> holeDetailData) {
+    public MutableLiveData<JsonPrimitive> setJsonForSyncProject3DData(Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> holeDetailData) {
+        MutableLiveData<JsonPrimitive> jsonPrimitiveMutableLiveData = new MutableLiveData<>();
         try {
             showLoader();
 
-            AppDatabase appDatabase = BaseApplication.getAppDatabase(this, Constants.DATABASE_NAME);
             JsonObject map = new JsonObject();
 
             UpdatedProjectDetailEntity projectDetailEntity = new UpdatedProjectDetailEntity();
@@ -251,11 +325,16 @@ public class BaseActivity extends AppCompatActivity {
 
             JsonArray rowDetailArray = new JsonArray();
             if (!Constants.isListEmpty(holeDetailData)) {
-                JsonObject rowObject = new JsonObject();
-                rowObject.addProperty("rowNo", String.valueOf(holeDetailData.get(0).getRowNo()));
-                rowObject.addProperty("holeNo", String.valueOf(holeDetailData.get(0).getHoleNo()));
-                rowObject.addProperty("HoleType", "Production");
-                rowDetailArray.add(rowObject);
+                List<MapHole3DDataModel> mapHoleDataModels = getRowWiseHoleIn3dList(holeDetailData);
+                for (int i = 0; i < mapHoleDataModels.size(); i++) {
+                    JsonObject rowObject = new JsonObject();
+                    rowObject.addProperty("rowNo", String.valueOf(i + 1));
+                    if (!Constants.isListEmpty(mapHoleDataModels.get(i).getHoleDetailDataList()))
+                        rowObject.addProperty("holeNo", String.valueOf(mapHoleDataModels.get(i).getHoleDetailDataList().size()));
+                    else rowObject.addProperty("holeNo", String.valueOf(0));
+                    rowObject.addProperty("HoleType", "Production");
+                    rowDetailArray.add(rowObject);
+                }
             }
 
         /*Type empList = new TypeToken<List<ResponseEmployeeData>>(){}.getType();
@@ -276,19 +355,19 @@ public class BaseActivity extends AppCompatActivity {
                 drillDetailObject.addProperty("holeNo", String.valueOf(holeDetailData.get(0).getHoleNo()));
                 drillDetailObject.addProperty("holeName", String.format("R%s/H%s", holeDetailData.get(0).getRowNo(), holeDetailData.get(0).getHoleNo()));
                 drillDetailObject.addProperty("holeDiameter", String.valueOf(holeDetailData.get(0).getHoleDiameter()));
-                drillDetailObject.addProperty("burden", String.valueOf((int) Double.parseDouble(holeDetailData.get(0).getBurden().toString())));
-                drillDetailObject.addProperty("spacing", String.valueOf((int) Double.parseDouble(holeDetailData.get(0).getSpacing().toString())));
-                drillDetailObject.addProperty("holeAngle", String.valueOf(holeDetailData.get(0).getHoleAngle()));
+                drillDetailObject.addProperty("burden", String.valueOf(StringUtill.isEmpty(holeDetailData.get(0).getBurden()) ? "" : holeDetailData.get(0).getBurden()));
+                drillDetailObject.addProperty("spacing", String.valueOf(holeDetailData.get(0).getSpacing()));
+                drillDetailObject.addProperty("holeAngle", String.valueOf(holeDetailData.get(0).getVerticalDip()));
                 drillDetailObject.addProperty("holeDeviation", String.valueOf(0));
                 drillDetailObject.addProperty("drillDepth", String.valueOf(holeDetailData.get(0).getHoleDepth()));
                 drillDetailObject.addProperty("depthStart", "0");
                 drillDetailObject.addProperty("depthEnd", String.valueOf(holeDetailData.get(0).getHoleDepth()));
                 drillDetailObject.addProperty("waterLevel", String.valueOf(holeDetailData.get(0).getWaterDepth()));
+                drillDetailObject.addProperty("drillerName", "1");
+                drillDetailObject.addProperty("drillMethod", "1");
+                drillDetailObject.addProperty("northing", String.valueOf(holeDetailData.get(0).getTopX()));
+                drillDetailObject.addProperty("easting", String.valueOf(holeDetailData.get(0).getTopY()));
             }
-            drillDetailObject.addProperty("drillerName", "1");
-            drillDetailObject.addProperty("drillMethod", "1");
-            drillDetailObject.addProperty("northing", String.valueOf(20));
-            drillDetailObject.addProperty("easting", String.valueOf(26));
             drillDetailObject.addProperty("rlTop", String.valueOf(0));
             drillDetailObject.addProperty("rlBottom", String.valueOf(0));
             drillDetailObject.addProperty("rockType", String.valueOf(11));
@@ -307,18 +386,18 @@ public class BaseActivity extends AppCompatActivity {
 
             JsonArray holeDetailArray = new JsonArray();
             if (!Constants.isListEmpty(holeDetailData)) {
-                for (ResponseHoleDetailData holeDetail : holeDetailData) {
+                for (Response3DTable4HoleChargingDataModel holeDetail : holeDetailData) {
                     JsonObject holeDetailObject = new JsonObject();
                     holeDetailObject.addProperty("ProjectCode", 0);
                     holeDetailObject.addProperty("HoleName", String.format("R%s/H%s", holeDetail.getRowNo(), holeDetail.getHoleNo()));
                     holeDetailObject.addProperty("UserDefineHoleName", String.format("R%sH%s", holeDetail.getRowNo(), holeDetail.getHoleNo()));
                     holeDetailObject.addProperty("RowNo", holeDetail.getRowNo());
                     holeDetailObject.addProperty("HoleNo", holeDetail.getHoleNo());
-                    holeDetailObject.addProperty("HoleAngle", holeDetail.getHoleAngle());
+                    holeDetailObject.addProperty("HoleAngle", holeDetail.getVerticalDip());
                     holeDetailObject.addProperty("HoleDeviation", 0);
                     holeDetailObject.addProperty("DrillDepth", holeDetail.getHoleDepth());
-                    holeDetailObject.addProperty("Northing", "20");
-                    holeDetailObject.addProperty("Easting", "26");
+                    holeDetailObject.addProperty("Northing", holeDetail.getTopX());
+                    holeDetailObject.addProperty("Easting", holeDetail.getTopY());
                     holeDetailObject.addProperty("RlTop", 0);
                     holeDetailObject.addProperty("RlBottom", 0);
                     holeDetailObject.addProperty("HoleStatus", 1);
@@ -329,9 +408,9 @@ public class BaseActivity extends AppCompatActivity {
                     holeDetailObject.addProperty("DeviceType", "android");
                     holeDetailObject.addProperty("UserRole", 0);
                     holeDetailObject.addProperty("HoleDiameter", holeDetail.getHoleDiameter());
-                    holeDetailObject.addProperty("Burden", (int) Double.parseDouble(holeDetail.getBurden().toString()));
-                    holeDetailObject.addProperty("Spacing", (int) Double.parseDouble(holeDetail.getSpacing().toString()));
-                    holeDetailObject.addProperty("HoleType", (int) Double.parseDouble(holeDetail.getHoleType().toString()));
+                    holeDetailObject.addProperty("Burden", holeDetail.getBurden());
+                    holeDetailObject.addProperty("Spacing", holeDetail.getSpacing());
+                    holeDetailObject.addProperty("HoleType", holeDetail.getHoleType());
                     holeDetailObject.addProperty("CalculateDrillPenetration", 0);
                     holeDetailObject.addProperty("DrillPenetrationRate", 0);
                     holeDetailObject.addProperty("TotalDrillTime", 0);
@@ -341,9 +420,9 @@ public class BaseActivity extends AppCompatActivity {
                     logHoleSectionDetailObject.addProperty("HoleName", String.format("R%s/H%s", holeDetail.getRowNo(), holeDetail.getHoleNo()));
                     logHoleSectionDetailObject.addProperty("DepthStart", 0);
                     logHoleSectionDetailObject.addProperty("DepthEnd", holeDetail.getHoleDepth());
-                    logHoleSectionDetailObject.addProperty("RockType", 105);
-                    logHoleSectionDetailObject.addProperty("StartTime", "");
-                    logHoleSectionDetailObject.addProperty("EndTime", "");
+                    logHoleSectionDetailObject.addProperty("RockType", projectDetailJson != null ? projectDetailJson.get("rock_id").getAsString() : "0");
+                    logHoleSectionDetailObject.addProperty("StartTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    logHoleSectionDetailObject.addProperty("EndTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     logHoleSectionDetailObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
                     logHoleSectionDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
                     logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
@@ -476,60 +555,27 @@ public class BaseActivity extends AppCompatActivity {
             map.addProperty("projectNumber", bladesRetrieveData.getDesignCode());
             map.addProperty("projectName", bladesRetrieveData.getDesignName());
             map.addProperty("siteCode", projectDetailJson != null ? projectDetailJson.get("site_id").getAsInt() : 0);
-
-            if (!Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject())) {
-                pitTableEntity = appDatabase.pitTableDao().getAllBladesProject(1);
-            } else {
-                map.addProperty("pitCode", 0);
-            }
-            List<ResultsetItem> pitResultItemList = new Gson().fromJson(pitTableEntity.getData(), new TypeToken<List<ResultsetItem>>() {}.getType());
-            for (ResultsetItem resultsetItem : pitResultItemList) {
-                if (resultsetItem.getName().equals(StringUtill.getString(bladesRetrieveData.getPitName()))) {
-                    map.addProperty("pitCode", resultsetItem.getPitCode());
-                    break;
-                } else {
-                    map.addProperty("pitCode", 0);
-                }
-            }
-
-            if (!Constants.isListEmpty(appDatabase.zoneTableDao().getAllBladesProject())) {
-                zoneTableEntity = appDatabase.zoneTableDao().getAllBladesProject(1);
-            } else {
-                map.addProperty("zoneCode", 0);
-            }
-            List<ResultsetItem> zoneResultItem = new Gson().fromJson(zoneTableEntity.getData(), new TypeToken<List<ResultsetItem>>() {}.getType());
-            for (ResultsetItem resultsetItem : zoneResultItem) {
-                if (resultsetItem.getName().equals(StringUtill.getString(bladesRetrieveData.getZoneName()))) {
-                    map.addProperty("zoneCode", resultsetItem.getZoneCode());
-                    break;
-                } else {
-                    map.addProperty("zoneCode", 0);
-                }
-            }
-
-            if (!Constants.isListEmpty(appDatabase.benchTableDao().getAllBladesProject())) {
-                benchTableEntity = appDatabase.benchTableDao().getAllBladesProject(1);
-            } else {
-                map.addProperty("benchCode", 0);
-            }
-            List<ResultsetItem> benchResultList = new Gson().fromJson(benchTableEntity.getData(), new TypeToken<List<ResultsetItem>>() {}.getType());
-            for (ResultsetItem resultsetItem : benchResultList) {
-                if (resultsetItem.getName().equals(StringUtill.getString(bladesRetrieveData.getPitName()))) {
-                    map.addProperty("benchCode", resultsetItem.getPitCode());
-                    break;
-                } else {
-                    map.addProperty("benchCode", 0);
-                }
-            }
+            map.addProperty("pitCode", AppDelegate.getInstance().getCodeIdObject().get("pitId").getAsInt());
+            map.addProperty("mineCode", AppDelegate.getInstance().getCodeIdObject().get("MineId").getAsInt());
+            map.addProperty("zoneCode", AppDelegate.getInstance().getCodeIdObject().get("zoneId").getAsInt());
+            map.addProperty("benchCode", AppDelegate.getInstance().getCodeIdObject().get("benchId").getAsString());
 
             map.addProperty("rigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsString() : "0");
             map.addProperty("drillingTypeId", projectDetailJson != null ? projectDetailJson.get("drill_type_id").getAsInt() : 0);
             map.addProperty("materialTypeId", projectDetailJson != null ? projectDetailJson.get("drill_material_id").getAsInt() : 0);
-            map.addProperty("startTime", projectDetailJson != null ? String.format("%s %s", projectDetailJson.get("start_date").getAsString().replace("/", "-"), projectDetailJson.get("start_time").getAsString()) : DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
-            map.addProperty("endTime", projectDetailJson != null ?String.format("%s %s", projectDetailJson.get("end_date").getAsString().replace("/", "-"), projectDetailJson.get("end_time").getAsString()) : DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
-            map.addProperty("drillPattern", projectDetailJson != null ? projectDetailJson.get("drill_pattern").getAsString() : "Staggered");
+            map.addProperty("startTime", DateUtils.getDate(System.currentTimeMillis(),"yyyy-MM-dd hh:mm a"));
+            map.addProperty("endTime", "");
+            if (projectDetailJson != null) {
+                if (projectDetailJson.get("drill_pattern").getAsString().equals("Rectangular/Square")) {
+                    map.addProperty("drillPattern", "Square");
+                } else {
+                    map.addProperty("drillPattern", projectDetailJson.get("drill_pattern").getAsString());
+                }
+            } else {
+                map.addProperty("drillPattern", "Square");
+            }
             map.addProperty("clientName", projectDetailJson != null ? projectDetailJson.get("client_name").getAsString() : "");
-            map.addProperty("creationDate", DateUtils.getPrettyDate(bladesRetrieveData.getDesignDateTime(), "dd/MM/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm a"));
+            map.addProperty("creationDate", DateUtils.getDate(System.currentTimeMillis(),"yyyy-MM-dd hh:mm a"));
             map.addProperty("companyId", manger.getUserDetails().getCompanyid());
             map.addProperty("userId", manger.getUserDetails().getUserid());
             map.addProperty("projectStatus", projectDetailJson != null ? projectDetailJson.get("project_status").getAsString() : "Open");
@@ -562,19 +608,23 @@ public class BaseActivity extends AppCompatActivity {
                                 JsonObject jsonObject = new Gson().fromJson(response.getAsString(), JsonElement.class).getAsJsonObject();
                                 if (jsonObject != null) {
                                     try {
-                                        AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
-                                        if (modelEntity == null) {
-                                            modelEntity = new AllProjectBladesModelEntity();
-                                            modelEntity.setDesignId(bladesRetrieveData.getDesignId());
-                                            modelEntity.setData(new Gson().toJson(bladesRetrieveData));
-                                            modelEntity.setIs2dBlade(bladesRetrieveData.isIs3dBlade());
-                                        }
-                                        modelEntity.setProjectCode(jsonObject.get("projectCode").getAsString());
-
-                                        if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
-                                            appDatabase.allProjectBladesModelDao().insertItem(modelEntity);
+                                        if (jsonObject.get("response").getAsString().equalsIgnoreCase("fail")) {
+                                            showToast(StringUtill.getString(jsonObject.get("message").getAsString()));
                                         } else {
-                                            appDatabase.allProjectBladesModelDao().updateItem(bladesRetrieveData.getDesignId(), new Gson().toJson(bladesRetrieveData));
+                                            AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+                                            if (modelEntity == null) {
+                                                modelEntity = new AllProjectBladesModelEntity();
+                                                modelEntity.setDesignId(bladesRetrieveData.getDesignId());
+                                                modelEntity.setData(new Gson().toJson(bladesRetrieveData));
+                                                modelEntity.setIs2dBlade(bladesRetrieveData.isIs3dBlade());
+                                            }
+                                            modelEntity.setProjectCode(jsonObject.get("projectCode").getAsString());
+
+                                            if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                                                appDatabase.allProjectBladesModelDao().insertItem(modelEntity);
+                                            } else {
+                                                appDatabase.allProjectBladesModelDao().updateItem(bladesRetrieveData.getDesignId(), modelEntity.getProjectCode(), new Gson().toJson(bladesRetrieveData));
+                                            }
                                         }
 //                                   setInsertUpdateHoleDetailSync(bladesRetrieveData, holeDetailData, jsonObject.get("projectCode").getAsString());
                                     } catch (Exception e) {
@@ -591,30 +641,390 @@ public class BaseActivity extends AppCompatActivity {
                         }
                     }
                     hideLoader();
+                    jsonPrimitiveMutableLiveData.setValue(response);
                 }
             });
         } catch (Exception e) {
+            hideLoader();
             e.printStackTrace();
         }
+        return jsonPrimitiveMutableLiveData;
+    }
+
+    public MutableLiveData<JsonPrimitive> setJsonForSyncProjectData(ResponseBladesRetrieveData bladesRetrieveData, List<ResponseHoleDetailData> holeDetailData) {
+        MutableLiveData<JsonPrimitive> jsonPrimitiveMutableLiveData = new MutableLiveData<>();
+        try {
+            showLoader();
+
+            JsonObject map = new JsonObject();
+
+            UpdatedProjectDetailEntity projectDetailEntity = new UpdatedProjectDetailEntity();
+            ResponsePitTableEntity pitTableEntity = new ResponsePitTableEntity();
+            ResponseZoneTableEntity zoneTableEntity = new ResponseZoneTableEntity();
+            ResponseBenchTableEntity benchTableEntity = new ResponseBenchTableEntity();
+
+            if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                projectDetailEntity = appDatabase.updatedProjectDataDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+            }
+            JsonObject projectDetailJson = new Gson().fromJson(projectDetailEntity.getData(), JsonObject.class);
+
+            JsonArray projectTeamArray = new JsonArray();
+            JsonObject teamObject = new JsonObject();
+            teamObject.addProperty("srNo", 1);
+
+            if (projectDetailJson != null) {
+                teamObject.addProperty("employeeCode", projectDetailJson.get("team_id").getAsInt());
+            } else {
+                teamObject.addProperty("employeeCode", 1);
+            }
+            projectTeamArray.add(teamObject);
+
+            JsonArray rowDetailArray = new JsonArray();
+            if (!Constants.isListEmpty(holeDetailData)) {
+                List<MapHoleDataModel> mapHoleDataModels = getRowWiseHoleList(holeDetailData);
+                for (int i = 0; i < mapHoleDataModels.size(); i++) {
+                    JsonObject rowObject = new JsonObject();
+                    rowObject.addProperty("rowNo", String.valueOf(i + 1));
+                    if (!Constants.isListEmpty(mapHoleDataModels.get(i).getHoleDetailDataList()))
+                        rowObject.addProperty("holeNo", String.valueOf(mapHoleDataModels.get(i).getHoleDetailDataList().size()));
+                    else rowObject.addProperty("holeNo", String.valueOf(0));
+                    rowObject.addProperty("HoleType", "Production");
+                    rowDetailArray.add(rowObject);
+                }
+            }
+
+        /*Type empList = new TypeToken<List<ResponseEmployeeData>>(){}.getType();
+        List<ResponseEmployeeData> employeeDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("Table6"), empList);
+        for (ResponseEmployeeData employeeData : employeeDataList) {
+            if (String.valueOf(employeeData.getEmployeeCode()).equals(projectDetailJson.get("team_id").getAsString())) {
+
+            }
+        }*/
+
+            JsonArray rowHoleDetailArray = new JsonArray();
+            rowHoleDetailArray.add(new Gson().toJson(holeDetailData));
+
+            JsonArray drillDetailArray = new JsonArray();
+            JsonObject drillDetailObject = new JsonObject();
+            if (!Constants.isListEmpty(holeDetailData)) {
+                drillDetailObject.addProperty("rowNo", String.valueOf(holeDetailData.get(0).getRowNo()));
+                drillDetailObject.addProperty("holeNo", String.valueOf(holeDetailData.get(0).getHoleNo()));
+                drillDetailObject.addProperty("holeName", String.format("R%s/H%s", holeDetailData.get(0).getRowNo(), holeDetailData.get(0).getHoleNo()));
+                drillDetailObject.addProperty("holeDiameter", String.valueOf(holeDetailData.get(0).getHoleDiameter()));
+                drillDetailObject.addProperty("burden", String.valueOf(holeDetailData.get(0).getBurden() == 0 ? "" : holeDetailData.get(0).getBurden()));
+                drillDetailObject.addProperty("spacing", String.valueOf(holeDetailData.get(0).getSpacing()));
+                drillDetailObject.addProperty("holeAngle", String.valueOf(holeDetailData.get(0).getHoleAngle()));
+                drillDetailObject.addProperty("holeDeviation", String.valueOf(0));
+                drillDetailObject.addProperty("drillDepth", String.valueOf(holeDetailData.get(0).getHoleDepth()));
+                drillDetailObject.addProperty("depthStart", "0");
+                drillDetailObject.addProperty("depthEnd", String.valueOf(holeDetailData.get(0).getHoleDepth()));
+                drillDetailObject.addProperty("waterLevel", String.valueOf(holeDetailData.get(0).getWaterDepth()));
+                drillDetailObject.addProperty("drillerName", "1");
+                drillDetailObject.addProperty("drillMethod", "1");
+                drillDetailObject.addProperty("northing", String.valueOf(holeDetailData.get(0).getDrillX()));
+                drillDetailObject.addProperty("easting", String.valueOf(holeDetailData.get(0).getDrillY()));
+            }
+            drillDetailObject.addProperty("rlTop", String.valueOf(0));
+            drillDetailObject.addProperty("rlBottom", String.valueOf(0));
+            drillDetailObject.addProperty("rockType", String.valueOf(11));
+            drillDetailObject.addProperty("holeStatus", String.valueOf(1));
+            drillDetailObject.addProperty("operationalSummary", "");
+            drillDetailObject.addProperty("rigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsString() : "0");
+            drillDetailObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
+            drillDetailObject.addProperty("userId", manger.getUserDetails().getUserid());
+            drillDetailObject.addProperty("dailyActivityDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            drillDetailObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            drillDetailObject.addProperty("syncDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            drillDetailObject.addProperty("deviceType", "android");
+            drillDetailObject.addProperty("shiftCode", 18);
+            drillDetailArray.add(drillDetailObject);
+
+
+            JsonArray holeDetailArray = new JsonArray();
+            if (!Constants.isListEmpty(holeDetailData)) {
+                for (ResponseHoleDetailData holeDetail : holeDetailData) {
+                    JsonObject holeDetailObject = new JsonObject();
+                    holeDetailObject.addProperty("ProjectCode", 0);
+                    holeDetailObject.addProperty("HoleName", String.format("R%s/H%s", holeDetail.getRowNo(), holeDetail.getHoleNo()));
+                    holeDetailObject.addProperty("UserDefineHoleName", String.format("R%sH%s", holeDetail.getRowNo(), holeDetail.getHoleNo()));
+                    holeDetailObject.addProperty("RowNo", holeDetail.getRowNo());
+                    holeDetailObject.addProperty("HoleNo", holeDetail.getHoleNo());
+                    holeDetailObject.addProperty("HoleAngle", holeDetail.getHoleAngle());
+                    holeDetailObject.addProperty("HoleDeviation", 0);
+                    holeDetailObject.addProperty("DrillDepth", holeDetail.getHoleDepth());
+                    holeDetailObject.addProperty("Northing", holeDetail.getDrillX());
+                    holeDetailObject.addProperty("Easting", holeDetail.getDrillY());
+                    holeDetailObject.addProperty("RlTop", 0);
+                    holeDetailObject.addProperty("RlBottom", 0);
+                    holeDetailObject.addProperty("HoleStatus", 1);
+                    holeDetailObject.addProperty("OperationalSummary", "");
+                    holeDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    holeDetailObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
+                    holeDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
+                    holeDetailObject.addProperty("DeviceType", "android");
+                    holeDetailObject.addProperty("UserRole", 0);
+                    holeDetailObject.addProperty("HoleDiameter", holeDetail.getHoleDiameter());
+                    holeDetailObject.addProperty("Burden", holeDetail.getBurden());
+                    holeDetailObject.addProperty("Spacing", holeDetail.getSpacing());
+                    holeDetailObject.addProperty("HoleType", holeDetail.getHoleType());
+                    holeDetailObject.addProperty("CalculateDrillPenetration", 0);
+                    holeDetailObject.addProperty("DrillPenetrationRate", 0);
+                    holeDetailObject.addProperty("TotalDrillTime", 0);
+
+                    JsonObject logHoleSectionDetailObject = new JsonObject();
+                    logHoleSectionDetailObject.addProperty("ProjectCode", 0);
+                    logHoleSectionDetailObject.addProperty("HoleName", String.format("R%s/H%s", holeDetail.getRowNo(), holeDetail.getHoleNo()));
+                    logHoleSectionDetailObject.addProperty("DepthStart", 0);
+                    logHoleSectionDetailObject.addProperty("DepthEnd", holeDetail.getHoleDepth());
+                    logHoleSectionDetailObject.addProperty("RockType", projectDetailJson != null ? projectDetailJson.get("rock_id").getAsString() : "0");
+                    logHoleSectionDetailObject.addProperty("StartTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    logHoleSectionDetailObject.addProperty("EndTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    logHoleSectionDetailObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
+                    logHoleSectionDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
+                    logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    logHoleSectionDetailObject.addProperty("DeviceType", "android");
+                    logHoleSectionDetailObject.addProperty("RigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsInt() : 0);
+                    logHoleSectionDetailObject.addProperty("DrillerCode", 4);
+                    logHoleSectionDetailObject.addProperty("DrillMethod", 1);
+                    logHoleSectionDetailObject.addProperty("ShiftCode", 18);
+                    logHoleSectionDetailObject.addProperty("DrillLogActivityDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+
+                    holeDetailObject.add("LogHoleSectionDetails", logHoleSectionDetailObject);
+                    holeDetailArray.add(holeDetailObject);
+                }
+            }
+
+            JsonArray basicInformationArray = new JsonArray();
+            JsonObject basicInformationObject = new JsonObject();
+            basicInformationObject.addProperty("employeeCode", projectDetailJson != null ? projectDetailJson.get("team_id").getAsString() : "0");
+            basicInformationObject.addProperty("designation", "4");
+            basicInformationObject.addProperty("costperHour", "0");
+            basicInformationObject.addProperty("workingHours", "0");
+            basicInformationObject.addProperty("totalCost", "40");
+            basicInformationObject.addProperty("dailyActivityDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            basicInformationObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            basicInformationObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
+            basicInformationObject.addProperty("userId", manger.getUserDetails().getUserid());
+            basicInformationObject.addProperty("shiftCode", 18);
+            basicInformationArray.add(basicInformationObject);
+
+            JsonArray visitorDetailsArray = new JsonArray();
+            JsonObject visitorDetailsObject = new JsonObject();
+            visitorDetailsObject.addProperty("name", "");
+            visitorDetailsObject.addProperty("designation", "");
+            visitorDetailsObject.addProperty("companyName", "");
+            visitorDetailsObject.addProperty("timeIn", "");
+            visitorDetailsObject.addProperty("timeOut", "");
+            visitorDetailsObject.addProperty("dailyActivityDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            visitorDetailsObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            visitorDetailsObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
+            visitorDetailsObject.addProperty("userId", manger.getUserDetails().getUserid());
+            visitorDetailsObject.addProperty("shiftCode", 18);
+            visitorDetailsArray.add(visitorDetailsObject);
+
+            JsonArray preStartCheckListArray = new JsonArray();
+            JsonObject preStartCheckListObject = new JsonObject();
+            preStartCheckListObject.addProperty("preStartCode",0);
+            preStartCheckListObject.addProperty("result",0);
+            preStartCheckListObject.addProperty("issuesDiscussed",0);
+            preStartCheckListObject.addProperty("dailyActivityDate",DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            preStartCheckListObject.addProperty("modificationDate",DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            preStartCheckListObject.addProperty("companyId",manger.getUserDetails().getCompanyid());
+            preStartCheckListObject.addProperty("userId",manger.getUserDetails().getUserid());
+            preStartCheckListObject.addProperty("shiftCode",18);
+            preStartCheckListArray.add(preStartCheckListObject);
+
+            JsonArray activityDetailArray = new JsonArray();
+            JsonObject activityDetailsObject = new JsonObject();
+            activityDetailsObject.addProperty("activityCode", 0);
+            activityDetailsObject.addProperty("startTime", 0);
+            activityDetailsObject.addProperty("endTime", 0);
+            activityDetailsObject.addProperty("comments", 0);
+            activityDetailsObject.addProperty("dailyActivityDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            activityDetailsObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            activityDetailsObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
+            activityDetailsObject.addProperty("userId", manger.getUserDetails().getUserid());
+            activityDetailsObject.addProperty("shiftCode", 18);
+            activityDetailArray.add(activityDetailsObject);
+
+            JsonArray drillAccessoriesDetailArray = new JsonArray();
+            JsonObject drillAccessoriesDetailObject = new JsonObject();
+            drillAccessoriesDetailObject.addProperty("categoryCode", 0);
+            drillAccessoriesDetailObject.addProperty("categoryItemCode", 0);
+            drillAccessoriesDetailObject.addProperty("cost", 0);
+            drillAccessoriesDetailObject.addProperty("size", 0);
+            drillAccessoriesDetailObject.addProperty("qty", 0);
+            drillAccessoriesDetailObject.addProperty("meters", 0);
+            drillAccessoriesDetailObject.addProperty("assestNo", 0);
+            drillAccessoriesDetailObject.addProperty("SerialNo", 0);
+            drillAccessoriesDetailObject.addProperty("dailyActivityDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            drillAccessoriesDetailObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            drillAccessoriesDetailObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
+            drillAccessoriesDetailObject.addProperty("userId", manger.getUserDetails().getUserid());
+            drillAccessoriesDetailObject.addProperty("shiftCode", 18);
+            drillAccessoriesDetailObject.addProperty("KG", 0);
+            drillAccessoriesDetailObject.addProperty("Leter", 0);
+            drillAccessoriesDetailObject.addProperty("TotalCost", 0);
+            drillAccessoriesDetailArray.add(drillAccessoriesDetailObject);
+
+            JsonArray hazardDetailsArray = new JsonArray();
+            JsonObject hazardDetailsObject = new JsonObject();
+            hazardDetailsObject.addProperty("hazardAssessment", "");
+            hazardDetailsObject.addProperty("risk", "");
+            hazardDetailsObject.addProperty("significant", "");
+            hazardDetailsObject.addProperty("eliminateIsolateMinimise", "");
+            hazardDetailsObject.addProperty("whatControlstoReduceRisk", "");
+            hazardDetailsObject.addProperty("actionedBy", "");
+            hazardDetailsObject.addProperty("dailyActivityDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            hazardDetailsObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            hazardDetailsObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
+            hazardDetailsObject.addProperty("userId", manger.getUserDetails().getUserid());
+            hazardDetailsObject.addProperty("shiftCode", 18);
+
+            hazardDetailsArray.add(hazardDetailsObject);
+
+            JsonArray rigInspectionDetailArray = new JsonArray();
+            JsonObject rigInspectionObject = new JsonObject();
+            rigInspectionObject.addProperty("rigInspectionCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsString() : "0");
+            rigInspectionObject.addProperty("rigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsString() : "0");
+            rigInspectionObject.addProperty("result", "10");
+            rigInspectionObject.addProperty("dailyActivityDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            rigInspectionObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            rigInspectionObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
+            rigInspectionObject.addProperty("userId", manger.getUserDetails().getUserid());
+            rigInspectionObject.addProperty("shiftCode", 18);
+            rigInspectionDetailArray.add(rigInspectionObject);
+
+            JsonArray confirmationFormDetailArray = new JsonArray();
+            JsonObject confirmationFormDetailObject = new JsonObject();
+            confirmationFormDetailObject.addProperty("drillerName", projectDetailJson != null ? projectDetailJson.get("team_name").getAsString() : "");
+            confirmationFormDetailObject.addProperty("dailyActivityDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            confirmationFormDetailObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            confirmationFormDetailObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
+            confirmationFormDetailObject.addProperty("userId", manger.getUserDetails().getUserid());
+            confirmationFormDetailObject.addProperty("shiftCode", 18);
+            confirmationFormDetailArray.add(confirmationFormDetailObject);
+
+
+            // Setup Map Data
+
+            map.addProperty("projectNumber", bladesRetrieveData.getDesignCode());
+            map.addProperty("projectName", bladesRetrieveData.getDesignName());
+            map.addProperty("siteCode", projectDetailJson != null ? projectDetailJson.get("site_id").getAsInt() : 0);
+            map.addProperty("pitCode", AppDelegate.getInstance().getCodeIdObject().get("pitId").getAsInt());
+            map.addProperty("mineCode", AppDelegate.getInstance().getCodeIdObject().get("MineId").getAsInt());
+            map.addProperty("zoneCode", AppDelegate.getInstance().getCodeIdObject().get("zoneId").getAsInt());
+            map.addProperty("benchCode", AppDelegate.getInstance().getCodeIdObject().get("benchId").getAsString());
+
+            map.addProperty("rigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsString() : "0");
+            map.addProperty("drillingTypeId", projectDetailJson != null ? projectDetailJson.get("drill_type_id").getAsInt() : 0);
+            map.addProperty("materialTypeId", projectDetailJson != null ? projectDetailJson.get("drill_material_id").getAsInt() : 0);
+            map.addProperty("startTime", DateUtils.getDate(System.currentTimeMillis(),"yyyy-MM-dd hh:mm a"));
+            map.addProperty("endTime", "");
+            if (projectDetailJson != null) {
+                if (projectDetailJson.get("drill_pattern").getAsString().equals("Rectangular/Square")) {
+                    map.addProperty("drillPattern", "Square");
+                } else {
+                    map.addProperty("drillPattern", projectDetailJson.get("drill_pattern").getAsString());
+                }
+            } else {
+                map.addProperty("drillPattern", "Square");
+            }
+            map.addProperty("clientName", projectDetailJson != null ? projectDetailJson.get("client_name").getAsString() : "");
+            map.addProperty("creationDate", DateUtils.getDate(System.currentTimeMillis(),"yyyy-MM-dd hh:mm a"));
+            map.addProperty("companyId", manger.getUserDetails().getCompanyid());
+            map.addProperty("userId", manger.getUserDetails().getUserid());
+            map.addProperty("projectStatus", projectDetailJson != null ? projectDetailJson.get("project_status").getAsString() : "Open");
+            map.addProperty("modificationDate", projectDetailJson != null ? String.format("%s %s", projectDetailJson.get("start_date").getAsString().replace("/", "-"), projectDetailJson.get("start_time").getAsString()) : DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            map.addProperty("deviceType", "android");
+            map.addProperty("projectSource", "");
+            map.add("projectTeamDetails", projectTeamArray);
+            map.add("rowDetails", rowDetailArray);
+            map.add("basicInformation", /*basicInformationArray*/ new JsonArray());
+            map.add("hazardDetails", /*hazardDetailsArray*/ new JsonArray());
+            map.add("visitorDetails", /*visitorDetailsArray*/ new JsonArray());
+            map.add("preStartCheckListDetails", /*preStartCheckListArray*/new JsonArray());
+            map.add("drillDetails", drillDetailArray);
+            map.add("activityDetails", /*activityDetailArray*/ new JsonArray());
+            map.add("drillAccessoriesDetails", /*drillAccessoriesDetailArray*/new JsonArray());
+            map.add("rigInspectionDetails", /*rigInspectionDetailArray*/new JsonArray());
+            map.add("confirmationFormDetails", confirmationFormDetailArray);
+            map.add("holeDetails", holeDetailArray);
+
+            Log.e("Response Data : ", new Gson().toJson(map));
+
+            MainService.insertUpdateAppSyncDetailsApiCaller(this, map).observe(this, new Observer<JsonPrimitive>() {
+                @Override
+                public void onChanged(JsonPrimitive response) {
+                    if (response == null) {
+                        Log.e(ERROR, SOMETHING_WENT_WRONG);
+                    } else {
+                        if (!(response.isJsonNull())) {
+                            try {
+                                JsonObject jsonObject = new Gson().fromJson(response.getAsString(), JsonElement.class).getAsJsonObject();
+                                if (jsonObject != null) {
+                                    try {
+                                        if (jsonObject.get("response").getAsString().equalsIgnoreCase("fail")) {
+                                            showToast(StringUtill.getString(jsonObject.get("message").getAsString()));
+                                        } else {
+                                            AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+                                            if (modelEntity == null) {
+                                                modelEntity = new AllProjectBladesModelEntity();
+                                                modelEntity.setDesignId(bladesRetrieveData.getDesignId());
+                                                modelEntity.setData(new Gson().toJson(bladesRetrieveData));
+                                                modelEntity.setIs2dBlade(bladesRetrieveData.isIs3dBlade());
+                                            }
+                                            modelEntity.setProjectCode(jsonObject.get("projectCode").getAsString());
+
+                                            if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                                                appDatabase.allProjectBladesModelDao().insertItem(modelEntity);
+                                            } else {
+                                                appDatabase.allProjectBladesModelDao().updateItem(bladesRetrieveData.getDesignId(), modelEntity.getProjectCode(), new Gson().toJson(bladesRetrieveData));
+                                            }
+                                        }
+//                                   setInsertUpdateHoleDetailSync(bladesRetrieveData, holeDetailData, jsonObject.get("projectCode").getAsString());
+                                    } catch (Exception e) {
+                                        Log.e(NODATAFOUND, e.getMessage());
+                                    }
+
+                                } else {
+                                    showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                                }
+                            } catch (Exception e) {
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }
+                            hideLoader();
+                        }
+                    }
+                    hideLoader();
+                    jsonPrimitiveMutableLiveData.setValue(response);
+                }
+            });
+        } catch (Exception e) {
+            hideLoader();
+            e.printStackTrace();
+        }
+        return jsonPrimitiveMutableLiveData;
     }
 
     public void setInsertUpdateHoleDetailSync(ResponseBladesRetrieveData bladesRetrieveData, ResponseHoleDetailData holeDetailData, String projectCode) {
         try {
+            showLoader();
             JsonArray holeDetailArray = new JsonArray();
             JsonObject holeDetailObject = new JsonObject();
             holeDetailObject.addProperty("ProjectCode", Integer.parseInt(projectCode));
             holeDetailObject.addProperty("RowNo", holeDetailData.getRowNo());
             holeDetailObject.addProperty("HoleNo", holeDetailData.getHoleNo());
             holeDetailObject.addProperty("HoleName", String.format("R%s/H%s", holeDetailData.getRowNo(), holeDetailData.getHoleNo()));
-            holeDetailObject.addProperty("UserDefineHoleName", holeDetailData.getName());
+            holeDetailObject.addProperty("UserDefineHoleName", String.format("R%sH%s", holeDetailData.getRowNo(), holeDetailData.getHoleNo()));
             holeDetailObject.addProperty("HoleDiameter", holeDetailData.getHoleDiameter());
-            holeDetailObject.addProperty("Burden", String.valueOf((int) Double.parseDouble(holeDetailData.getBurden().toString())));
-            holeDetailObject.addProperty("Spacing", String.valueOf((int) Double.parseDouble(holeDetailData.getSpacing().toString())));
+            holeDetailObject.addProperty("Burden", String.valueOf(holeDetailData.getBurden() == 0 ? "" : holeDetailData.getBurden()));
+            holeDetailObject.addProperty("Spacing", String.valueOf(holeDetailData.getSpacing()));
             holeDetailObject.addProperty("HoleAngle", holeDetailData.getHoleAngle());
             holeDetailObject.addProperty("HoleDeviation", String.valueOf(0));
             holeDetailObject.addProperty("DrillDepth", holeDetailData.getHoleDepth());
-            holeDetailObject.addProperty("Northing", 20);
-            holeDetailObject.addProperty("Easting", 26);
+            holeDetailObject.addProperty("Northing", holeDetailData.getDrillX());
+            holeDetailObject.addProperty("Easting", holeDetailData.getDrillY());
             holeDetailObject.addProperty("RlTop", 0);
             holeDetailObject.addProperty("RlBottom", 0);
             holeDetailObject.addProperty("rockType", 11);
@@ -637,8 +1047,8 @@ public class BaseActivity extends AppCompatActivity {
             logHoleSectionDetailObject.addProperty("DepthStart", 0);
             logHoleSectionDetailObject.addProperty("DepthEnd", holeDetailData.getHoleDepth());
             logHoleSectionDetailObject.addProperty("RockType", 105);
-            logHoleSectionDetailObject.addProperty("StartTime", "");
-            logHoleSectionDetailObject.addProperty("EndTime", "");
+            logHoleSectionDetailObject.addProperty("StartTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+            logHoleSectionDetailObject.addProperty("EndTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             logHoleSectionDetailObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
             logHoleSectionDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
             logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
@@ -670,6 +1080,7 @@ public class BaseActivity extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {
+            hideLoader();
             e.printStackTrace();
         }
     }
@@ -677,9 +1088,17 @@ public class BaseActivity extends AppCompatActivity {
     public MutableLiveData<JsonPrimitive> setInsertUpdateHoleDetailMultipleSync(ResponseBladesRetrieveData bladesRetrieveData, List<ResponseHoleDetailData> holeDetailData, String projectCode) {
         MutableLiveData<JsonPrimitive> jsonObjectMutableLiveData = new MutableLiveData<>();
         try {
+            showLoader();
             JsonObject mapObject = new JsonObject();
             mapObject.addProperty("ProjectCode", Integer.parseInt(projectCode));
             JsonArray holeDetailArray = new JsonArray();
+
+            UpdatedProjectDetailEntity projectDetailEntity = new UpdatedProjectDetailEntity();
+            if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                projectDetailEntity = appDatabase.updatedProjectDataDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+            }
+            JsonObject projectDetailJson = new Gson().fromJson(projectDetailEntity.getData(), JsonObject.class);
+
             if (!Constants.isListEmpty(holeDetailData)) {
                 for (ResponseHoleDetailData detailData : holeDetailData) {
                     JsonObject holeDetailObject = new JsonObject();
@@ -687,15 +1106,15 @@ public class BaseActivity extends AppCompatActivity {
                     holeDetailObject.addProperty("RowNo", detailData.getRowNo());
                     holeDetailObject.addProperty("HoleNo", detailData.getHoleNo());
                     holeDetailObject.addProperty("HoleName", String.format("R%s/H%s", detailData.getRowNo(), detailData.getHoleNo()));
-                    holeDetailObject.addProperty("UserDefineHoleName", detailData.getName());
+                    holeDetailObject.addProperty("UserDefineHoleName", String.format("R%sH%s", detailData.getRowNo(), detailData.getHoleNo()));
                     holeDetailObject.addProperty("HoleDiameter", detailData.getHoleDiameter());
-                    holeDetailObject.addProperty("Burden", String.valueOf((int) Double.parseDouble(detailData.getBurden().toString())));
-                    holeDetailObject.addProperty("Spacing", String.valueOf((int) Double.parseDouble(detailData.getSpacing().toString())));
+                    holeDetailObject.addProperty("Burden", String.valueOf(detailData.getBurden() == 0 ? "" : detailData.getBurden()));
+                    holeDetailObject.addProperty("Spacing", String.valueOf(detailData.getSpacing()));
                     holeDetailObject.addProperty("HoleAngle", detailData.getHoleAngle());
                     holeDetailObject.addProperty("HoleDeviation", String.valueOf(0));
                     holeDetailObject.addProperty("DrillDepth", detailData.getHoleDepth());
-                    holeDetailObject.addProperty("Northing", 20);
-                    holeDetailObject.addProperty("Easting", 26);
+                    holeDetailObject.addProperty("Northing", detailData.getX());
+                    holeDetailObject.addProperty("Easting", detailData.getY());
                     holeDetailObject.addProperty("RlTop", 0);
                     holeDetailObject.addProperty("RlBottom", 0);
                     holeDetailObject.addProperty("rockType", 11);
@@ -717,14 +1136,14 @@ public class BaseActivity extends AppCompatActivity {
                     logHoleSectionDetailObject.addProperty("HoleName", String.format("R%s/H%s", detailData.getRowNo(), detailData.getHoleNo()));
                     logHoleSectionDetailObject.addProperty("DepthStart", 0);
                     logHoleSectionDetailObject.addProperty("DepthEnd", detailData.getHoleDepth());
-                    logHoleSectionDetailObject.addProperty("RockType", 105);
-                    logHoleSectionDetailObject.addProperty("StartTime", "");
-                    logHoleSectionDetailObject.addProperty("EndTime", "");
+                    logHoleSectionDetailObject.addProperty("RockType", projectDetailJson != null ? projectDetailJson.get("rock_id").getAsString() : "0");
+                    logHoleSectionDetailObject.addProperty("StartTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    logHoleSectionDetailObject.addProperty("EndTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     logHoleSectionDetailObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
                     logHoleSectionDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
                     logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     logHoleSectionDetailObject.addProperty("deviceType", "android");
-                    logHoleSectionDetailObject.addProperty("RigCode", 3);
+                    logHoleSectionDetailObject.addProperty("RigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsInt() : 0);
                     logHoleSectionDetailObject.addProperty("DrillerCode", 4);
                     logHoleSectionDetailObject.addProperty("DrillMethod", 1);
                     logHoleSectionDetailObject.addProperty("ShiftCode", 18);
@@ -745,9 +1164,781 @@ public class BaseActivity extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {
+            hideLoader();
             e.printStackTrace();
         }
         return jsonObjectMutableLiveData;
+    }
+
+
+    public MutableLiveData<JsonPrimitive> setInsertUpdateHoleDetailMultipleSync3D(Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> holeDetailData, String projectCode) {
+        MutableLiveData<JsonPrimitive> jsonObjectMutableLiveData = new MutableLiveData<>();
+        try {
+            showLoader();
+            JsonObject mapObject = new JsonObject();
+            mapObject.addProperty("ProjectCode", Integer.parseInt(projectCode));
+            JsonArray holeDetailArray = new JsonArray();
+
+            UpdatedProjectDetailEntity projectDetailEntity = new UpdatedProjectDetailEntity();
+            if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                projectDetailEntity = appDatabase.updatedProjectDataDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+            }
+            JsonObject projectDetailJson = new Gson().fromJson(projectDetailEntity.getData(), JsonObject.class);
+
+            if (!Constants.isListEmpty(holeDetailData)) {
+                for (Response3DTable4HoleChargingDataModel detailData : holeDetailData) {
+                    JsonObject holeDetailObject = new JsonObject();
+                    holeDetailObject.addProperty("ProjectCode", projectCode);
+                    holeDetailObject.addProperty("RowNo", detailData.getRowNo());
+                    holeDetailObject.addProperty("HoleNo", detailData.getHoleNo());
+                    holeDetailObject.addProperty("HoleName", String.format("R%s/H%s", detailData.getRowNo(), detailData.getHoleNo()));
+                    holeDetailObject.addProperty("UserDefineHoleName", String.format("R%sH%s", detailData.getRowNo(), detailData.getHoleNo()));
+                    holeDetailObject.addProperty("HoleDiameter", detailData.getHoleDiameter());
+                    holeDetailObject.addProperty("Burden", String.valueOf(StringUtill.isEmpty(detailData.getBurden()) ? "" : detailData.getBurden()));
+                    holeDetailObject.addProperty("Spacing", String.valueOf(detailData.getSpacing()));
+                    holeDetailObject.addProperty("HoleAngle", detailData.getVerticalDip());
+                    holeDetailObject.addProperty("HoleDeviation", String.valueOf(0));
+                    holeDetailObject.addProperty("DrillDepth", detailData.getHoleDepth());
+                    holeDetailObject.addProperty("Northing", detailData.getTopX());
+                    holeDetailObject.addProperty("Easting", detailData.getTopY());
+                    holeDetailObject.addProperty("RlTop", 0);
+                    holeDetailObject.addProperty("RlBottom", 0);
+                    holeDetailObject.addProperty("rockType", 11);
+                    holeDetailObject.addProperty("HoleStatus", 1);
+                    holeDetailObject.addProperty("OperationalSummary", "");
+                    holeDetailObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
+                    holeDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
+                    holeDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    holeDetailObject.addProperty("DeviceType", 0);
+                    holeDetailObject.addProperty("shiftCode", 18);
+                    holeDetailObject.addProperty("UserRole", 0);
+                    holeDetailObject.addProperty("HoleType", String.valueOf(detailData.getHoleType()));
+                    holeDetailObject.addProperty("CalculateDrillPenetration", 0);
+                    holeDetailObject.addProperty("DrillPenetrationRate", 0);
+                    holeDetailObject.addProperty("TotalDrillTime", 0);
+
+                    JsonObject logHoleSectionDetailObject = new JsonObject();
+                    logHoleSectionDetailObject.addProperty("ProjectCode", projectCode);
+                    logHoleSectionDetailObject.addProperty("HoleName", String.format("R%s/H%s", detailData.getRowNo(), detailData.getHoleNo()));
+                    logHoleSectionDetailObject.addProperty("DepthStart", 0);
+                    logHoleSectionDetailObject.addProperty("DepthEnd", detailData.getHoleDepth());
+                    logHoleSectionDetailObject.addProperty("RockType", projectDetailJson != null ? projectDetailJson.get("rock_id").getAsString() : "0");
+                    logHoleSectionDetailObject.addProperty("StartTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    logHoleSectionDetailObject.addProperty("EndTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    logHoleSectionDetailObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
+                    logHoleSectionDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
+                    logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+                    logHoleSectionDetailObject.addProperty("deviceType", "android");
+                    logHoleSectionDetailObject.addProperty("RigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsInt() : 0);
+                    logHoleSectionDetailObject.addProperty("DrillerCode", 4);
+                    logHoleSectionDetailObject.addProperty("DrillMethod", 1);
+                    logHoleSectionDetailObject.addProperty("ShiftCode", 18);
+                    logHoleSectionDetailObject.addProperty("DrillLogActivityDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+
+                    holeDetailObject.add("LogHoleSectionDetails", logHoleSectionDetailObject);
+                    holeDetailArray.add(holeDetailObject);
+                }
+            }
+
+            mapObject.add("HoleDetails", holeDetailArray);
+
+            MainService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(this, mapObject).observe(this, new Observer<JsonPrimitive>() {
+                @Override
+                public void onChanged(JsonPrimitive response) {
+                    jsonObjectMutableLiveData.setValue(response);
+                    hideLoader();
+                }
+            });
+        } catch (Exception e) {
+            hideLoader();
+            e.printStackTrace();
+        }
+        return jsonObjectMutableLiveData;
+    }
+
+
+    // Bims Insert Sync
+    public void blastInsertSyncRecordApiCaller(ResponseBladesRetrieveData bladesRetrieveData, AllTablesData tablesData, int rowCount, int holeCount, String blastCode) {
+        try {
+            showLoader();
+            // Blast Performance Data
+            BlastPerformanceEntity blastPerformanceEntity = appDatabase.blastPerformanceDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+            String blastPerformanceStr = "";
+            JsonObject blastPerformanceObject = new JsonObject();
+            if (blastPerformanceEntity != null) {
+                blastPerformanceStr = blastPerformanceEntity.getData();
+                blastPerformanceObject = new Gson().fromJson(blastPerformanceStr, JsonObject.class);
+            }
+
+            // Blast Performance Data
+            InitiatingDeviceDataEntity initiatingDeviceDataEntity = appDatabase.initiatingDeviceDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+            String initiatingDeviceDataStr = "";
+            JsonArray initiatingDeviceDataObject = new JsonArray();
+            if (initiatingDeviceDataEntity != null) {
+                initiatingDeviceDataStr = initiatingDeviceDataEntity.getData();
+                initiatingDeviceDataObject = new Gson().fromJson(initiatingDeviceDataStr, JsonArray.class);
+            }
+
+
+            // ExpUsedDetails Array
+            JsonArray expUsedDetailArray = new JsonArray();
+
+            if (!Constants.isListEmpty(tablesData.getTable2())) {
+                if (!Constants.isListEmpty(tablesData.getTable9())) {
+                    if (tablesData.getTable9().size() >= 3) {
+                        JsonObject expUsedDetailObject = new JsonObject();
+                        expUsedDetailObject.addProperty("expcode", String.valueOf(tablesData.getTable9().get(2).getProdId()));
+                        expUsedDetailObject.addProperty("qty", String.valueOf(tablesData.getTable9().get(2).getProdQty()));
+                        expUsedDetailArray.add(expUsedDetailObject);
+                    }
+
+                    if (tablesData.getTable9().size() >= 4) {
+                        JsonObject expUsedDetailObject = new JsonObject();
+                        expUsedDetailObject.addProperty("expcode1", String.valueOf(tablesData.getTable9().get(3).getProdId()));
+                        expUsedDetailObject.addProperty("qty", String.valueOf(tablesData.getTable9().get(3).getProdQty()));
+                        expUsedDetailArray.add(expUsedDetailObject);
+                    }
+
+                    if (tablesData.getTable9().size() >= 5) {
+                        JsonObject expUsedDetailObject = new JsonObject();
+                        expUsedDetailObject.addProperty("expcode2", String.valueOf(tablesData.getTable9().get(4).getProdId()));
+                        expUsedDetailObject.addProperty("qty", String.valueOf(tablesData.getTable9().get(4).getProdQty()));
+                        expUsedDetailArray.add(expUsedDetailObject);
+                    }
+                }
+            }
+
+            // RowDetails Array
+            JsonArray rowDetailsArray = new JsonArray();
+            JsonObject rowDetailsObject = new JsonObject();
+            if (!Constants.isListEmpty(tablesData.getTable2())) {
+                List<MapHoleDataModel> mapHoleDataModels = getRowWiseHoleList(tablesData.getTable2());
+                for (int i = 0; i < mapHoleDataModels.size(); i++) {
+                    rowDetailsObject.addProperty("rowno", String.valueOf(i + 1));
+                    if (!Constants.isListEmpty(mapHoleDataModels.get(i).getHoleDetailDataList()))
+                        rowDetailsObject.addProperty("holeno", String.valueOf(mapHoleDataModels.get(i).getHoleDetailDataList().size()));
+                    else rowDetailsObject.addProperty("holeno", String.valueOf(0));
+                    rowDetailsObject.addProperty("rowtype", String.valueOf(1));
+                    rowDetailsArray.add(rowDetailsObject);
+                }
+            }
+
+            // Charge Details Array
+            JsonArray chargeDetailsArray = new JsonArray();
+            if (!Constants.isListEmpty(tablesData.getTable2())) {
+                for (int i = 0; i < tablesData.getTable2().size(); i++) {
+                    JsonObject chargeDetailsObject = new JsonObject();
+                    chargeDetailsObject.addProperty("BlastCode", blastCode);
+                    chargeDetailsObject.addProperty("RowNo",String.valueOf(tablesData.getTable2().get(i).getRowNo()));
+                    chargeDetailsObject.addProperty("HoleNo", String.valueOf(tablesData.getTable2().get(i).getHoleNo()));
+                    chargeDetailsObject.addProperty("HoleName",String.format("R%sH%s",  tablesData.getTable2().get(i).getRowNo(), tablesData.getTable2().get(i).getHoleNo()));
+                    chargeDetailsObject.addProperty("RowType","Production");
+                    chargeDetailsObject.addProperty("HoleDia", String.valueOf(tablesData.getTable2().get(i).getHoleDiameter()));
+                    chargeDetailsObject.addProperty("ExpCode", String.valueOf(tablesData.getTable2().get(i).getExpCode()));
+                    chargeDetailsObject.addProperty("Weight", "30");
+                    chargeDetailsObject.addProperty("ExpLength", "4");
+                    chargeDetailsObject.addProperty("CostPerUnit", String.valueOf(tablesData.getTable2().get(i).getCostUnit()));
+                    chargeDetailsObject.addProperty("ExpCode1",String.valueOf(tablesData.getTable2().get(i).getExpCode1()));
+                    chargeDetailsObject.addProperty("Weight1","20");
+                    chargeDetailsObject.addProperty("ExpLength1","4");
+                    chargeDetailsObject.addProperty("CostPerUnit1",String.valueOf(tablesData.getTable2().get(i).getCostUnit1()));
+                    chargeDetailsObject.addProperty("ExpCode2",String.valueOf(tablesData.getTable2().get(i).getExpCode2()));
+                    chargeDetailsObject.addProperty("Weight2","0.4");
+                    chargeDetailsObject.addProperty("ExpLength2","0");
+                    chargeDetailsObject.addProperty("CostPerUnit2",String.valueOf(tablesData.getTable2().get(i).getCostUnit2()));
+                    chargeDetailsObject.addProperty("Burden",String.valueOf(tablesData.getTable2().get(i).getBurden() == 0 ? "" : tablesData.getTable2().get(i).getBurden()));
+                    chargeDetailsObject.addProperty("Spacing",String.valueOf(tablesData.getTable2().get(i).getSpacing()));
+                    chargeDetailsObject.addProperty("Delay1", "0");
+                    chargeDetailsObject.addProperty("Delay2", String.valueOf(tablesData.getTable2().get(i).getDelay()));
+                    chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
+                    chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
+                    chargeDetailsObject.addProperty("DeckDepth","");
+                    chargeDetailsObject.addProperty("DeckStart","");
+                    chargeDetailsObject.addProperty("SteamLen", String.valueOf(tablesData.getTable2().get(i).getStemLngth()));
+                    chargeDetailsObject.addProperty("WaterDepth", String.valueOf(tablesData.getTable2().get(i).getWaterDepth()));
+                    chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.getTable2().get(i).getHoleDepth()));
+                    chargeDetailsObject.addProperty("Subgrade", String.valueOf(tablesData.getTable2().get(i).getSubgrade() == 0 ? "" : tablesData.getTable2().get(i).getSubgrade()));
+                    chargeDetailsObject.addProperty("IsHoleBlock","");
+                    chargeDetailsObject.addProperty("HoleBlockLength","");
+                    chargeDetailsObject.addProperty("HoleAngle", String.valueOf(tablesData.getTable2().get(i).getHoleAngle()));
+                    chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(tablesData.getTable2().get(i).getInHoleDelay()));
+                    chargeDetailsArray.add(chargeDetailsObject);
+                }
+            }
+            JsonArray edDetailsArray = new JsonArray();
+            JsonArray dthDetailsArray = new JsonArray();
+            JsonArray tldDetailsHoleToHoleArray = new JsonArray();
+            JsonArray tldDetailsRowToRowArray = new JsonArray();
+
+            if (initiatingDeviceDataObject != null) {
+                if (initiatingDeviceDataObject.size() > 0) {
+                    for (int i = 0; i < initiatingDeviceDataObject.size(); i++) {
+                        InitiatingDeviceAllTypeModel model = new Gson().fromJson(initiatingDeviceDataObject.get(i).getAsJsonObject(), InitiatingDeviceAllTypeModel.class);
+                        if (model.getDeviceName().equals("Electronic/Electric Detonator")) {
+                            // EDDetails Array
+                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
+                                JsonObject edDetailsObject = new JsonObject();
+                                edDetailsObject.addProperty("BlastCode", blastCode);
+                                edDetailsObject.addProperty("EDCode", String.valueOf(deviceModel.getPageCount()));
+                                edDetailsObject.addProperty("EDName", deviceModel.getType());
+                                edDetailsObject.addProperty("EDCost", deviceModel.getCost());
+                                edDetailsObject.addProperty("EDQty", deviceModel.getQty());
+                                edDetailsArray.add(edDetailsObject);
+                            }
+                        }
+
+                        if (model.getDeviceName().equals("Down The Hole")) {
+                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
+                                // DTHDetails Array
+                                JsonObject dthDetailsObject = new JsonObject();
+                                dthDetailsObject.addProperty("BlastCode", blastCode);
+                                dthDetailsObject.addProperty("DTHCode", String.valueOf(deviceModel.getPageCount()));
+                                dthDetailsObject.addProperty("DTHName", deviceModel.getType());
+                                dthDetailsObject.addProperty("DTHCost",  deviceModel.getCost());
+                                dthDetailsObject.addProperty("DTHQty", deviceModel.getQty());
+                                dthDetailsArray.add(dthDetailsObject);
+                            }
+                        }
+
+                        if (model.getDeviceName().equals("TLD(Row To Row)")) {
+                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
+                                // TLDDetailsRowToRow Array
+                                JsonObject tldDetailsRowToRowObject = new JsonObject();
+                                tldDetailsRowToRowObject.addProperty("BlastCode", blastCode);
+                                tldDetailsRowToRowObject.addProperty("TldCode", String.valueOf(deviceModel.getPageCount()));
+                                tldDetailsRowToRowObject.addProperty("TldName", deviceModel.getType());
+                                tldDetailsRowToRowObject.addProperty("TldCost", deviceModel.getCost());
+                                tldDetailsRowToRowObject.addProperty("TldQty", deviceModel.getQty());
+                                tldDetailsRowToRowArray.add(tldDetailsRowToRowObject);
+                            }
+                        }
+
+                        if (model.getDeviceName().equals("TLD(Hole To Hole)")) {
+                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
+                                // TLDDetailsHoletoHole Array
+                                JsonObject tldDetailsHoletoHoleObject = new JsonObject();
+                                tldDetailsHoletoHoleObject.addProperty("BlastCode", blastCode);
+                                tldDetailsHoletoHoleObject.addProperty("TldCode", String.valueOf(deviceModel.getPageCount()));
+                                tldDetailsHoletoHoleObject.addProperty("TldName", deviceModel.getType());
+                                tldDetailsHoletoHoleObject.addProperty("TldCost", deviceModel.getCost());
+                                tldDetailsHoletoHoleObject.addProperty("TldQty", deviceModel.getQty());
+                                tldDetailsHoleToHoleArray.add(tldDetailsHoletoHoleObject);
+                            }
+                        }
+                    }
+
+
+
+                }
+            }
+
+            // HolePoints Array
+            JsonArray holepointsArray = new JsonArray();
+            JsonObject holepointsObject = new JsonObject();
+            holepointsObject.addProperty("BlastCode", blastCode);
+            holepointsObject.addProperty("HoleNumber", "");
+            holepointsObject.addProperty("HoleDelay", "");
+            holepointsObject.addProperty("x", "");
+            holepointsObject.addProperty("y", "");
+            holepointsObject.addProperty("lat", "");
+            holepointsObject.addProperty("lng", "");
+            holepointsObject.addProperty("rltop", "");
+            holepointsObject.addProperty("rlbottom", "");
+            holepointsObject.addProperty("HoleName", "");
+            holepointsObject.addProperty("InHoleDelay", "");
+            holepointsArray.add(holepointsObject);
+
+            // All Map Data
+            JsonObject mapObject = new JsonObject();
+            mapObject.addProperty("BlastCode", blastCode);
+            mapObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
+            mapObject.addProperty("UserId", manger.getUserDetails().getUserid());
+            mapObject.addProperty("DeviceType", "Android");
+            mapObject.addProperty("DeviceId", Constants.getDeviceId(this));
+            mapObject.addProperty("blastno", "NAR275201913155677");
+
+            mapObject.addProperty("mineCode", AppDelegate.getInstance().getCodeIdObject().get("MineId").getAsString());
+            mapObject.addProperty("pitCode", AppDelegate.getInstance().getCodeIdObject().get("pitId").getAsString());
+            mapObject.addProperty("zoneCode", AppDelegate.getInstance().getCodeIdObject().get("zoneId").getAsString());
+            mapObject.addProperty("benchCode", AppDelegate.getInstance().getCodeIdObject().get("benchId").getAsString());
+            mapObject.addProperty("rockCode", "8");
+            mapObject.addProperty("rockDensity", "2.5");
+            mapObject.addProperty("blastDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
+            mapObject.addProperty("blastTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
+            mapObject.addProperty("BenchHeight", "10");
+            mapObject.addProperty("FaceLength", "40");
+            if (!Constants.isListEmpty(tablesData.getTable2())) {
+                mapObject.addProperty("Burden", String.valueOf(tablesData.getTable2().get(0).getBurden() == 0 ? "" : tablesData.getTable2().get(0).getBurden()));
+                mapObject.addProperty("Spacing", String.valueOf(tablesData.getTable2().get(0).getSpacing()));
+                mapObject.addProperty("DrillPattern", "1");
+            }
+            mapObject.addProperty("HoleDelay", "17");
+            mapObject.addProperty("RowDelay", "25");
+            mapObject.addProperty("Rows", String.valueOf(rowCount));
+            mapObject.addProperty("TotalHoles", String.valueOf(tablesData.getTable2().size()));
+            mapObject.addProperty("CreationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));
+            mapObject.addProperty("ModificationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));
+            mapObject.addProperty("SyncDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
+            mapObject.addProperty("UpdatedBy", manger.getUserDetails().getUserid());
+            mapObject.addProperty("ProdVol", "140000");
+            mapObject.addProperty("Prodton", "400");
+            mapObject.addProperty("TotExp", "15000");
+            mapObject.addProperty("TotColChrge", "400");
+            mapObject.addProperty("TotBasechrge", "200");
+            mapObject.addProperty("PowderFactor", "15");
+            mapObject.addProperty("DrillFactor", "10");
+            mapObject.addProperty("TonRecover", "10");
+            mapObject.addProperty("TotCharge", "10");
+            mapObject.addProperty("TotSteam", "10");
+            mapObject.addProperty("DrillMtr", "10");
+            mapObject.addProperty("FlyRock", (blastPerformanceObject != null && blastPerformanceObject.has("FlyRock")) ? blastPerformanceObject.get("FlyRock").getAsString() : "");
+            mapObject.addProperty("Heavy",  1);
+            mapObject.addProperty("BoulderCount",  (blastPerformanceObject != null && blastPerformanceObject.has("BounderCount")) ? blastPerformanceObject.get("BounderCount").getAsString() : "");
+            mapObject.addProperty("Displacement",  (blastPerformanceObject != null && blastPerformanceObject.has("DisPlace")) ? blastPerformanceObject.get("DisPlace").getAsString() : "");
+            mapObject.addProperty("StemEject", 1);
+            mapObject.addProperty("Muck",  1);
+            mapObject.addProperty("BlastFumes",  1);
+            mapObject.addProperty("OverBlock", (blastPerformanceObject != null && blastPerformanceObject.has("BackBreak")) ? blastPerformanceObject.get("BackBreak").getAsString() : "");
+            mapObject.add("ExpUsedDetails", expUsedDetailArray);
+            mapObject.add("RowDetails", rowDetailsArray);
+            mapObject.add("chargedetails", chargeDetailsArray);
+            mapObject.add("EDDetails", edDetailsArray);
+            mapObject.add("DthDetails", dthDetailsArray);
+            mapObject.add("TLDDetailsHoletoHole", tldDetailsHoleToHoleArray);
+            mapObject.add("TLDDetailsRowToRow", tldDetailsRowToRowArray);
+            mapObject.addProperty("Drillcostpermeter", "0.0");
+            mapObject.addProperty("Latcord", "20");
+            mapObject.addProperty("longcord", "30");
+            mapObject.add("Holepoints", holepointsArray);
+            mapObject.addProperty("Facepoints", "");
+
+            Log.e("Record : ", new Gson().toJson(mapObject));
+            MainService.bimsInsertSyncRecordApiCaller(this, mapObject).observe(this, new Observer<JsonObject>() {
+                @Override
+                public void onChanged(JsonObject response) {
+                    if (response == null) {
+                        Log.e(ERROR, SOMETHING_WENT_WRONG);
+                    } else {
+                        if (!(response.isJsonNull())) {
+                            JsonObject jsonObject;
+                            if (response.isJsonObject()) {
+                                jsonObject = response.getAsJsonObject();
+                            } else {
+                                jsonObject = new Gson().fromJson(response, JsonObject.class);
+                            }
+                            String blastCode = jsonObject.get("ReturnObject").getAsString();
+                            if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
+                                appDatabase.blastCodeDao().updateItem(0, blastCode);
+                            } else {
+                                BlastCodeEntity blastCodeEntity = new BlastCodeEntity();
+                                blastCodeEntity.setBlastCode(blastCode);
+                                appDatabase.blastCodeDao().insertItem(blastCodeEntity);
+                            }
+                        }
+                    }
+                    hideLoader();
+                }
+            });
+        } catch (Exception e) {
+            hideLoader();
+            e.printStackTrace();
+        }
+    }
+
+    public void blastInsertSyncRecord3DApiCaller(Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> tablesData, int rowCount, int holeCount, String blastCode) {
+        try {
+            showLoader();
+            // Blast Performance Data
+            BlastPerformanceEntity blastPerformanceEntity = appDatabase.blastPerformanceDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+            String blastPerformanceStr = "";
+            JsonObject blastPerformanceObject = new JsonObject();
+            if (blastPerformanceEntity != null) {
+                blastPerformanceStr = blastPerformanceEntity.getData();
+                blastPerformanceObject = new Gson().fromJson(blastPerformanceStr, JsonObject.class);
+            }
+
+            // Blast Performance Data
+            InitiatingDeviceDataEntity initiatingDeviceDataEntity = appDatabase.initiatingDeviceDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+            String initiatingDeviceDataStr = "";
+            JsonArray initiatingDeviceDataObject = new JsonArray();
+            if (initiatingDeviceDataEntity != null) {
+                initiatingDeviceDataStr = initiatingDeviceDataEntity.getData();
+                initiatingDeviceDataObject = new Gson().fromJson(initiatingDeviceDataStr, JsonArray.class);
+            }
+
+
+            // ExpUsedDetails Array
+            JsonArray expUsedDetailArray = new JsonArray();
+
+            for (int j = 0; j < tablesData.get(0).getChargeTypeArray().size(); j++) {
+                JsonObject expUsedDetailObject = new JsonObject();
+                expUsedDetailObject.addProperty("expcode"+(j == 0 ? "" : j), String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getProdId()));
+                expUsedDetailObject.addProperty("qty"+(j == 0 ? "" : j), /*String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getProdQty())*/0);
+                expUsedDetailArray.add(expUsedDetailObject);
+            }
+
+            // RowDetails Array
+            JsonArray rowDetailsArray = new JsonArray();
+            JsonObject rowDetailsObject = new JsonObject();
+            if (!Constants.isListEmpty(tablesData)) {
+                List<MapHole3DDataModel> mapHoleDataModels = getRowWiseHoleIn3dList(tablesData);
+                for (int i = 0; i < mapHoleDataModels.size(); i++) {
+                    rowDetailsObject.addProperty("rowno", String.valueOf(i + 1));
+                    if (!Constants.isListEmpty(mapHoleDataModels.get(i).getHoleDetailDataList()))
+                        rowDetailsObject.addProperty("holeno", String.valueOf(mapHoleDataModels.get(i).getHoleDetailDataList().size()));
+                    else rowDetailsObject.addProperty("holeno", String.valueOf(0));
+                    rowDetailsObject.addProperty("rowtype", String.valueOf(1));
+                    rowDetailsArray.add(rowDetailsObject);
+                }
+            }
+
+            // Charge Details Array
+            JsonArray chargeDetailsArray = new JsonArray();
+            if (!Constants.isListEmpty(tablesData)) {
+                for (int i = 0; i < tablesData.size(); i++) {
+                    JsonObject chargeDetailsObject = new JsonObject();
+                    chargeDetailsObject.addProperty("BlastCode", blastCode);
+                    chargeDetailsObject.addProperty("RowNo",String.valueOf(tablesData.get(i).getRowNo()));
+                    chargeDetailsObject.addProperty("HoleNo", String.valueOf(tablesData.get(i).getHoleNo()));
+                    chargeDetailsObject.addProperty("HoleName",String.format("R%sH%s",  tablesData.get(i).getRowNo(), tablesData.get(i).getHoleNo()));
+                    chargeDetailsObject.addProperty("RowType","Production");
+                    chargeDetailsObject.addProperty("HoleDia", String.valueOf(tablesData.get(i).getHoleDiameter()));
+
+                    for (int j = 0; j < tablesData.get(i).getChargeTypeArray().size(); j++) {
+                        chargeDetailsObject.addProperty("ExpCode"+(j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getProdId()));
+                        chargeDetailsObject.addProperty("Weight"+(j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getWeight()));
+                        chargeDetailsObject.addProperty("ExpLength"+(j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getLength()));
+                        chargeDetailsObject.addProperty("CostPerUnit"+(j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getCost()));
+                    }
+
+                    chargeDetailsObject.addProperty("Burden",String.valueOf(StringUtill.isEmpty(tablesData.get(i).getBurden()) ? "" : tablesData.get(i).getBurden()));
+                    chargeDetailsObject.addProperty("Spacing",String.valueOf(tablesData.get(i).getSpacing()));
+                    chargeDetailsObject.addProperty("Delay1", "0");
+                    chargeDetailsObject.addProperty("Delay2", String.valueOf(tablesData.get(i).getHoleDelay()));
+                    chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
+                    chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
+                    chargeDetailsObject.addProperty("DeckDepth","");
+                    chargeDetailsObject.addProperty("DeckStart","");
+                    chargeDetailsObject.addProperty("SteamLen", String.valueOf(tablesData.get(i).getStemmingLength()));
+                    chargeDetailsObject.addProperty("WaterDepth", String.valueOf(tablesData.get(i).getWaterDepth()));
+                    chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.get(i).getHoleDepth()));
+                    chargeDetailsObject.addProperty("Subgrade", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getSubgrade()) ? "" : tablesData.get(i).getSubgrade()));
+                    chargeDetailsObject.addProperty("IsHoleBlock","");
+                    chargeDetailsObject.addProperty("HoleBlockLength","");
+                    chargeDetailsObject.addProperty("HoleAngle", String.valueOf(tablesData.get(i).getVerticalDip()));
+                    chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(tablesData.get(i).getInHoleDelay()));
+                    chargeDetailsArray.add(chargeDetailsObject);
+                }
+            }
+            JsonArray edDetailsArray = new JsonArray();
+            JsonArray dthDetailsArray = new JsonArray();
+            JsonArray tldDetailsHoleToHoleArray = new JsonArray();
+            JsonArray tldDetailsRowToRowArray = new JsonArray();
+
+            if (initiatingDeviceDataObject != null) {
+                if (initiatingDeviceDataObject.size() > 0) {
+                    for (int i = 0; i < initiatingDeviceDataObject.size(); i++) {
+                        InitiatingDeviceAllTypeModel model = new Gson().fromJson(initiatingDeviceDataObject.get(i).getAsJsonObject(), InitiatingDeviceAllTypeModel.class);
+                        if (model.getDeviceName().equals("Electronic/Electric Detonator")) {
+                            // EDDetails Array
+                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
+                                JsonObject edDetailsObject = new JsonObject();
+                                edDetailsObject.addProperty("BlastCode", blastCode);
+                                edDetailsObject.addProperty("EDCode", String.valueOf(deviceModel.getPageCount()));
+                                edDetailsObject.addProperty("EDName", deviceModel.getType());
+                                edDetailsObject.addProperty("EDCost", deviceModel.getCost());
+                                edDetailsObject.addProperty("EDQty", deviceModel.getQty());
+                                edDetailsArray.add(edDetailsObject);
+                            }
+                        }
+
+                        if (model.getDeviceName().equals("Down The Hole")) {
+                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
+                                // DTHDetails Array
+                                JsonObject dthDetailsObject = new JsonObject();
+                                dthDetailsObject.addProperty("BlastCode", blastCode);
+                                dthDetailsObject.addProperty("DTHCode", String.valueOf(deviceModel.getPageCount()));
+                                dthDetailsObject.addProperty("DTHName", deviceModel.getType());
+                                dthDetailsObject.addProperty("DTHCost",  deviceModel.getCost());
+                                dthDetailsObject.addProperty("DTHQty", deviceModel.getQty());
+                                dthDetailsArray.add(dthDetailsObject);
+                            }
+                        }
+
+                        if (model.getDeviceName().equals("TLD(Row To Row)")) {
+                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
+                                // TLDDetailsRowToRow Array
+                                JsonObject tldDetailsRowToRowObject = new JsonObject();
+                                tldDetailsRowToRowObject.addProperty("BlastCode", blastCode);
+                                tldDetailsRowToRowObject.addProperty("TldCode", String.valueOf(deviceModel.getPageCount()));
+                                tldDetailsRowToRowObject.addProperty("TldName", deviceModel.getType());
+                                tldDetailsRowToRowObject.addProperty("TldCost", deviceModel.getCost());
+                                tldDetailsRowToRowObject.addProperty("TldQty", deviceModel.getQty());
+                                tldDetailsRowToRowArray.add(tldDetailsRowToRowObject);
+                            }
+                        }
+
+                        if (model.getDeviceName().equals("TLD(Hole To Hole)")) {
+                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
+                                // TLDDetailsHoletoHole Array
+                                JsonObject tldDetailsHoletoHoleObject = new JsonObject();
+                                tldDetailsHoletoHoleObject.addProperty("BlastCode", blastCode);
+                                tldDetailsHoletoHoleObject.addProperty("TldCode", String.valueOf(deviceModel.getPageCount()));
+                                tldDetailsHoletoHoleObject.addProperty("TldName", deviceModel.getType());
+                                tldDetailsHoletoHoleObject.addProperty("TldCost", deviceModel.getCost());
+                                tldDetailsHoletoHoleObject.addProperty("TldQty", deviceModel.getQty());
+                                tldDetailsHoleToHoleArray.add(tldDetailsHoletoHoleObject);
+                            }
+                        }
+                    }
+
+
+
+                }
+            }
+
+            // HolePoints Array
+            JsonArray holepointsArray = new JsonArray();
+            JsonObject holepointsObject = new JsonObject();
+            holepointsObject.addProperty("BlastCode", blastCode);
+            holepointsObject.addProperty("HoleNumber", "");
+            holepointsObject.addProperty("HoleDelay", "");
+            holepointsObject.addProperty("x", "");
+            holepointsObject.addProperty("y", "");
+            holepointsObject.addProperty("lat", "");
+            holepointsObject.addProperty("lng", "");
+            holepointsObject.addProperty("rltop", "");
+            holepointsObject.addProperty("rlbottom", "");
+            holepointsObject.addProperty("HoleName", "");
+            holepointsObject.addProperty("InHoleDelay", "");
+            holepointsArray.add(holepointsObject);
+
+            // All Map Data
+            JsonObject mapObject = new JsonObject();
+            mapObject.addProperty("BlastCode", blastCode);
+            mapObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
+            mapObject.addProperty("UserId", manger.getUserDetails().getUserid());
+            mapObject.addProperty("DeviceType", "Android");
+            mapObject.addProperty("DeviceId", Constants.getDeviceId(this));
+            mapObject.addProperty("blastno", "NAR275201913155677");
+
+            mapObject.addProperty("mineCode", AppDelegate.getInstance().getCodeIdObject().get("MineId").getAsString());
+            mapObject.addProperty("pitCode", AppDelegate.getInstance().getCodeIdObject().get("pitId").getAsString());
+            mapObject.addProperty("zoneCode", AppDelegate.getInstance().getCodeIdObject().get("zoneId").getAsString());
+            mapObject.addProperty("benchCode", AppDelegate.getInstance().getCodeIdObject().get("benchId").getAsString());
+            mapObject.addProperty("rockCode", "8");
+            mapObject.addProperty("rockDensity", "2.5");
+            mapObject.addProperty("blastDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
+            mapObject.addProperty("blastTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
+            mapObject.addProperty("BenchHeight", "10");
+            mapObject.addProperty("FaceLength", "40");
+            if (!Constants.isListEmpty(tablesData)) {
+                mapObject.addProperty("Burden", String.valueOf(StringUtill.isEmpty(tablesData.get(0).getBurden()) ? "" : tablesData.get(0).getBurden()));
+                mapObject.addProperty("Spacing", String.valueOf(tablesData.get(0).getSpacing()));
+                mapObject.addProperty("DrillPattern", "1");
+            }
+            mapObject.addProperty("HoleDelay", "17");
+            mapObject.addProperty("RowDelay", "25");
+            mapObject.addProperty("Rows", String.valueOf(rowCount));
+            mapObject.addProperty("TotalHoles", String.valueOf(tablesData.size()));
+            mapObject.addProperty("CreationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));
+            mapObject.addProperty("ModificationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));
+            mapObject.addProperty("SyncDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
+            mapObject.addProperty("UpdatedBy", manger.getUserDetails().getUserid());
+            mapObject.addProperty("ProdVol", "140000");
+            mapObject.addProperty("Prodton", "400");
+            mapObject.addProperty("TotExp", "15000");
+            mapObject.addProperty("TotColChrge", "400");
+            mapObject.addProperty("TotBasechrge", "200");
+            mapObject.addProperty("PowderFactor", "15");
+            mapObject.addProperty("DrillFactor", "10");
+            mapObject.addProperty("TonRecover", "10");
+            mapObject.addProperty("TotCharge", "10");
+            mapObject.addProperty("TotSteam", "10");
+            mapObject.addProperty("DrillMtr", "10");
+            mapObject.addProperty("FlyRock", (blastPerformanceObject != null && blastPerformanceObject.has("FlyRock")) ? blastPerformanceObject.get("FlyRock").getAsString() : "");
+            mapObject.addProperty("Heavy",  1);
+            mapObject.addProperty("BoulderCount",  (blastPerformanceObject != null && blastPerformanceObject.has("BounderCount")) ? blastPerformanceObject.get("BounderCount").getAsString() : "");
+            mapObject.addProperty("Displacement",  (blastPerformanceObject != null && blastPerformanceObject.has("DisPlace")) ? blastPerformanceObject.get("DisPlace").getAsString() : "");
+            mapObject.addProperty("StemEject", 1);
+            mapObject.addProperty("Muck",  1);
+            mapObject.addProperty("BlastFumes",  1);
+            mapObject.addProperty("OverBlock", (blastPerformanceObject != null && blastPerformanceObject.has("BackBreak")) ? blastPerformanceObject.get("BackBreak").getAsString() : "");
+            mapObject.add("ExpUsedDetails", expUsedDetailArray);
+            mapObject.add("RowDetails", rowDetailsArray);
+            mapObject.add("chargedetails", chargeDetailsArray);
+            mapObject.add("EDDetails", edDetailsArray);
+            mapObject.add("DthDetails", dthDetailsArray);
+            mapObject.add("TLDDetailsHoletoHole", tldDetailsHoleToHoleArray);
+            mapObject.add("TLDDetailsRowToRow", tldDetailsRowToRowArray);
+            mapObject.addProperty("Drillcostpermeter", "0.0");
+            mapObject.addProperty("Latcord", "20");
+            mapObject.addProperty("longcord", "30");
+            mapObject.add("Holepoints", holepointsArray);
+            mapObject.addProperty("Facepoints", "");
+
+            Log.e("Record : ", new Gson().toJson(mapObject));
+            MainService.bimsInsertSyncRecordApiCaller(this, mapObject).observe(this, new Observer<JsonObject>() {
+                @Override
+                public void onChanged(JsonObject response) {
+                    if (response == null) {
+                        Log.e(ERROR, SOMETHING_WENT_WRONG);
+                    } else {
+                        if (!(response.isJsonNull())) {
+                            JsonObject jsonObject;
+                            if (response.isJsonObject()) {
+                                jsonObject = response.getAsJsonObject();
+                            } else {
+                                jsonObject = new Gson().fromJson(response, JsonObject.class);
+                            }
+                            String blastCode = jsonObject.get("ReturnObject").getAsString();
+                            if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
+                                appDatabase.blastCodeDao().updateItem(0, blastCode);
+                            } else {
+                                BlastCodeEntity blastCodeEntity = new BlastCodeEntity();
+                                blastCodeEntity.setBlastCode(blastCode);
+                                appDatabase.blastCodeDao().insertItem(blastCodeEntity);
+                            }
+                        }
+                    }
+                    hideLoader();
+                }
+            });
+        } catch (Exception e) {
+            hideLoader();
+            e.printStackTrace();
+        }
+    }
+
+    public void insertActualDesignChartSheetApiCaller(AllTablesData tablesData, ResponseBladesRetrieveData bladesRetrieveData) {
+        try {
+            showLoader();
+            JsonArray mapObjectArray = new JsonArray();
+            if (!Constants.isListEmpty(tablesData.getTable2())) {
+                for (ResponseHoleDetailData detailData : tablesData.getTable2()) {
+                    JsonObject object = new JsonObject();
+                    object.addProperty("BsterId", detailData.getBsterId());
+                    object.addProperty("BsterLength", detailData.getBsterLength());
+                    object.addProperty("BsterWt", detailData.getBsterWt());
+                    object.addProperty("BtmBasePrcnt", "");
+                    object.addProperty("BtmId", detailData.getBtmId());
+                    object.addProperty("BtmLength", detailData.getBtmLength());
+                    object.addProperty("BtmWt", detailData.getBtmWt());
+                    object.addProperty("Burden", detailData.getBurden());
+                    object.addProperty("ColId", detailData.getColId());
+                    object.addProperty("ColLength", detailData.getColLength());
+                    object.addProperty("ColWt", detailData.getColWt());
+                    object.addProperty("DeckLength", 0);
+                    object.addProperty("DeckLength1", detailData.getDeckLength1());
+                    object.addProperty("DeckLength2", detailData.getDeckLength2());
+                    object.addProperty("DeckLength3", detailData.getDeckLength3());
+                    object.addProperty("DeckLength4", detailData.getDeckLength4());
+                    object.addProperty("DeckLength5", detailData.getDeckLength5());
+                    object.addProperty("DeckStartAt", 0);
+                    object.addProperty("DeckStartAt1", detailData.getDeckStartAt1());
+                    object.addProperty("DeckStartAt2", detailData.getDeckStartAt2());
+                    object.addProperty("DeckStartAt3", detailData.getDeckStartAt3());
+                    object.addProperty("DeckStartAt4", detailData.getDeckStartAt4());
+                    object.addProperty("DeckStartAt5", detailData.getDeckStartAt5());
+                    object.addProperty("Delay", detailData.getDelay());
+                    object.addProperty("DesignId", detailData.getDesignId());
+                    object.addProperty("DrillX", detailData.getDrillX());
+                    object.addProperty("DrillY", detailData.getDrillY());
+                    object.addProperty("HHDelay", detailData.getHHDelay());
+                    object.addProperty("HoleDepth", detailData.getHoleDepth());
+                    object.addProperty("HoleID", detailData.getHoleID());
+                    object.addProperty("HoleNo", detailData.getHoleNo());
+                    object.addProperty("HoleType", detailData.getHoleType());
+                    object.addProperty("InHoleDelay", detailData.getInHoleDelay());
+                    object.addProperty("NoOfDecks", detailData.getNoOfDecks());
+                    object.addProperty("RRDelay", detailData.getRRDelay());
+                    object.addProperty("RowNo", detailData.getRowNo());
+                    object.addProperty("Spacing", detailData.getSpacing());
+                    object.addProperty("StemLngth", StringUtill.isEmpty(detailData.getStemLngth()) ?  0.0 : Double.parseDouble(detailData.getStemLngth()));
+                    object.addProperty("Subgrade", detailData.getSubgrade());
+                    object.addProperty("TopBasePrcnt", 100);
+                    object.addProperty("WaterDepth", String.valueOf(StringUtill.isEmpty(String.valueOf(detailData.getWaterDepth())) ? 0 : detailData.getWaterDepth()));
+                    object.addProperty("X", detailData.getX());
+                    object.addProperty("Y", detailData.getY());
+                    object.addProperty("holeAngle", detailData.getHoleAngle());
+                    object.addProperty("inHoleDelayQty", detailData.getInHoleDelayQty());
+                    mapObjectArray.add(object);
+                }
+            }
+
+            MainService.insertActualDesignChartSheetApiCaller(this, mapObjectArray).observe(this, new Observer<JsonPrimitive>() {
+                @Override
+                public void onChanged(JsonPrimitive jsonObject) {
+                    if (jsonObject.isString()) {
+                        Log.e("Abd : ", jsonObject.getAsString());
+                    }
+                    showToast("Project Sync Successfully");
+                    hideLoader();
+                }
+            });
+        } catch (Exception e) {
+            hideLoader();
+            e.getLocalizedMessage();
+        }
+
+    }
+
+    public void insertUpdate3DActualDesignHoleDetailApiCaller(List<Response3DTable4HoleChargingDataModel> allTablesData, List<Response3DTable1DataModel> bladesRetrieveData) {
+        JsonArray mapObjectArray = new JsonArray();
+        JsonObject object = new JsonObject();
+        object.addProperty("Block", "");
+        object.addProperty("BlockLength", "");
+        object.addProperty("BottomX", "");
+        object.addProperty("BottomY", "");
+        object.addProperty("BottomZ", "");
+        object.addProperty("Burden", "");
+        object.addProperty("ChargeLength", "");
+
+        JsonArray chargeTypeArray = new JsonArray();
+        JsonObject chargeTypeObject = new JsonObject();
+        chargeTypeObject.addProperty("type","");
+        chargeTypeObject.addProperty("name","");
+        chargeTypeObject.addProperty("cost","");
+        chargeTypeObject.addProperty("weight","");
+        chargeTypeObject.addProperty("length","");
+        chargeTypeObject.addProperty("prodType","");
+        chargeTypeObject.addProperty("prodId","");
+        chargeTypeObject.addProperty("color","");
+        chargeTypeObject.addProperty("percentage","");
+        chargeTypeArray.add(chargeTypeObject);
+
+        object.add("ChargeTypeArray", chargeTypeArray);
+
+        object.addProperty("DeckLength", "");
+        object.addProperty("DesignId", "");
+        object.addProperty("HoleDelay", "");
+        object.addProperty("HoleDepth", "");
+        object.addProperty("HoleDiameter", "");
+        object.addProperty("HoleID", "");
+        object.addProperty("HoleNo", "");
+        object.addProperty("HoleType", "");
+        object.addProperty("InHoleDelay", "");
+        object.addProperty("RowNo", "");
+        object.addProperty("Spacing", "");
+        object.addProperty("StemmingLength", "");
+        object.addProperty("Subgrade", "");
+        object.addProperty("TielineId", "");
+        object.addProperty("TopX", "");
+        object.addProperty("TopY", "");
+        object.addProperty("TopZ", "");
+        object.addProperty("TotalCharge", "");
+        object.addProperty("VerticalDip", "");
+        object.addProperty("WaterDepth", "");
+
+        mapObjectArray.add(object);
+
+        MainService.insertUpdate3DActualDesignHoleDetailApiCaller(this, mapObjectArray).observe(this, new Observer<JsonObject>() {
+            @Override
+            public void onChanged(JsonObject jsonObject) {
+
+            }
+        });
+
     }
 
 }

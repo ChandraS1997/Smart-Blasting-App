@@ -19,6 +19,7 @@ public class PreferenceManger {
     public final String CHECK_USER_IS_LOGGED_IN = "user_logged_in";
     private final SharedPreferences mSharedPreferences;
     private static final String TABLE_FIELD = "table_field";
+    private static final String TABLE_FIELD_3D = "table_field_3d";
 
     public PreferenceManger(SharedPreferences mSharedPreferences) {
         this.mSharedPreferences = mSharedPreferences;
@@ -119,6 +120,20 @@ public class PreferenceManger {
     public List<TableEditModel> getTableField() {
         Gson gson = new Gson();
         String json = getStringValue(TABLE_FIELD);
+        Type typeToken = new TypeToken<List<TableEditModel>>(){}.getType();
+        return new Gson().fromJson(json, typeToken);
+    }
+
+
+    public void set3dTableField(List<TableEditModel> tableField) {
+        Gson gson = new Gson();
+        String json = gson.toJson(tableField);
+        putString(TABLE_FIELD_3D, json);
+    }
+
+    public List<TableEditModel> get3dTableField() {
+        Gson gson = new Gson();
+        String json = getStringValue(TABLE_FIELD_3D);
         Type typeToken = new TypeToken<List<TableEditModel>>(){}.getType();
         return new Gson().fromJson(json, typeToken);
     }
