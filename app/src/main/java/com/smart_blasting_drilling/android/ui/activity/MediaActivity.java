@@ -62,6 +62,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
 
     private final int PICK_IMAGE_CAMERA = 1;
     private final int PICK_VIDEO_CAMERA = 2;
+    List<String> fileList = new ArrayList<>();
     ActivityMediaBinding binding;
     MediaAdapter mediaAdapter;
     File file = null;
@@ -129,7 +130,6 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
 
     private void getAllImageFromGallery() {
         try {
-            List<String> fileList = new ArrayList<>();
             String[] projection = new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
             Cursor cursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, "");
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -222,8 +222,9 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
             imgPath = file.getAbsolutePath();
             Uri fileUri = FileProvider.getUriForFile(this, getPackageName() + ".App.fileprovider", file);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+            //takePictureIntent.putExtra(String.valueOf(MediaRecorder.), fileUri);
             viewModel.setFileUri(fileUri);
-            viewModel.setFilePath(imgPath);
+            viewModel.setFilePath(String.valueOf(fileList));
             startActivityForResult(takePictureIntent, requestCode);
         }
     }
