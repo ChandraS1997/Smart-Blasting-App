@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
 
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
@@ -13,23 +12,19 @@ import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.app.AppDelegate;
-import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
-import com.smart_blasting_drilling.android.dialogs.DownloadListDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
@@ -40,7 +35,6 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectH
 import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
 import com.smart_blasting_drilling.android.room_database.entities.BlastCodeEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
-import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
@@ -50,42 +44,49 @@ import java.util.List;
 
 public class HoleDetailActivity extends BaseActivity implements View.OnClickListener, OnHoleClickListener {
     public NavController navController;
-    HoleDetailActivityBinding binding;
     public AllTablesData allTablesData;
     public ResponseBladesRetrieveData bladesRetrieveData;
     public boolean isTableHeaderFirstTimeLoad = true;
-
     public List<ResponseHoleDetailData> holeDetailDataList = new ArrayList<>();
     public int rowPageVal = 1;
     public RowItemDetail rowItemDetail;
+    public boolean isFound;
+    public MutableLiveData<Boolean> mapViewDataUpdateLiveData = new MutableLiveData<>();
+    HoleDetailActivityBinding binding;
     List<String> rowList = new ArrayList<>();
 
-    public MutableLiveData<Boolean> mapViewDataUpdateLiveData = new MutableLiveData<>();
-
     public void setDataFromBundle() {
-//        if (isBundleIntentNotEmpty()) {
-            bladesRetrieveData = AppDelegate.getInstance().getBladesRetrieveData();
-            allTablesData = AppDelegate.getInstance().getAllTablesData();
-            for (int i = 0; i < allTablesData.getTable2().size(); i++) {
-                boolean isFound = false;
-                for (int j = 0; j < rowList.size(); j++) {
-                    if (rowList.get(j).replace("Row ", "").equals(String.valueOf(allTablesData.getTable2().get(i).getRowNo()))) {
-                        isFound = true;
-                        break;
+        // if (isBundleIntentNotEmpty()) {
+        bladesRetrieveData = AppDelegate.getInstance().getBladesRetrieveData();
+        allTablesData = AppDelegate.getInstance().getAllTablesData();
+        try {
+            if (!allTablesData.getTable2().isEmpty()) {
+                for (int i = 0; i < allTablesData.getTable2().size(); i++) {
+                    isFound = false;
+                    if (!rowList.isEmpty()) {
+                        for (int j = 0; j < rowList.size(); j++) {
+                            if (rowList.get(j).replace("Row ", "").equals(String.valueOf(allTablesData.getTable2().get(i).getRowNo()))) {
+                                isFound = true;
+                                break;
+                            }
+                        }
                     }
+                    if (!isFound)
+                        rowList.add("Row " + allTablesData.getTable2().get(i).getRowNo());
                 }
-                if (!isFound)
-                    rowList.add("Row " + allTablesData.getTable2().get(i).getRowNo());
             }
+        } catch (Exception e) {
+            e.getMessage();
+        }
 
-            if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
+        if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
+            setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
+        } else {
+            AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+            if (StringUtill.isEmpty(entity.getProjectCode())) {
                 setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
-            } else {
-                AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
-                if (StringUtill.isEmpty(entity.getProjectCode())) {
-                    setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
-                }
             }
+        }
 
 //            setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
 //        }
@@ -102,7 +103,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             rowSpinnerList[i] = rowList.get(i);
         }
 
-        if (rowSpinnerList.length > 0){
+        if (rowSpinnerList.length > 0) {
             binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
             binding.headerLayHole.spinnerRow.setAdapter(Constants.getAdapter(this, rowSpinnerList));
             binding.headerLayHole.spinnerRow.setText(rowSpinnerList[0]);
@@ -182,7 +183,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
     public void syncDataAPi() {
         AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.getDesignId()));
-        setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "").observe(this, new Observer<JsonPrimitive>() {
+        setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), (modelEntity != null && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "").observe(this, new Observer<JsonPrimitive>() {
             @Override
             public void onChanged(JsonPrimitive response) {
                 if (response == null) {
@@ -222,10 +223,6 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         return editModelArrayList;
     }
 
-    public interface RowItemDetail {
-        void setRowOfTable(int rowNo, AllTablesData allTablesData);
-    }
-
     @Override
     public void onClick(View view) {
         Bundle bundle = new Bundle();
@@ -243,6 +240,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.switchBtn:
+            case R.id.homeBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 finish();
                 break;
@@ -264,10 +262,6 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.logoutBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 setLogOut();
-                break;
-            case R.id.homeBtn:
-                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                finish();
                 break;
             case R.id.mapBtn:
                 binding.headerLayHole.projectInfo.setVisibility(View.GONE);
@@ -315,7 +309,6 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         ft.commitAllowingStateLoss();
     }
 
-
     @Override
     public void onHoleClick(String frommapview) {
         if (frommapview.equals("mapviewFragment")) {
@@ -354,6 +347,10 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
         ft.add(infoDialogFragment, HoleDetailDialog.TAG);
         ft.commitAllowingStateLoss();
+    }
+
+    public interface RowItemDetail {
+        void setRowOfTable(int rowNo, AllTablesData allTablesData);
     }
 
 }

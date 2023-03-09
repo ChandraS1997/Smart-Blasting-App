@@ -51,7 +51,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import id.zelory.compressor.Compressor;
@@ -70,20 +69,17 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
     PickiT pickiT;
     ActivityResultLauncher<String> activityResultLauncher;
     String filename;
-    Bitmap bitmap;
     String extension;
     ResponseBladesRetrieveData bladesRetrieveData;
-    private Bitmap mResultsBitmap;
-
     String designId = "";
-
     MediaViewModel viewModel;
+    File mediaFile;
+    private Bitmap mResultsBitmap;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_media);
-
         viewModel = new ViewModelProvider(this).get(MediaViewModel.class);
 
         StatusBarUtils.statusBarColor(this, R.color._FFA722);
@@ -95,7 +91,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
 
         binding.headerMedia.backImg.setOnClickListener(view -> finish());
 
-        getAllImageFromGallery();
+        //getAllImageFromGallery();
         Log.e("Abc : ", new Gson().toJson(getAllShownImagesPath(this)));
 
         binding.clickhereTv.setOnClickListener(view -> selectImage());
@@ -131,6 +127,55 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         }
     }
 
+//    private void getAllImageFromGallery() {
+//        try {
+//            ArrayList<String> galleryImageUrls;
+//            final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};//get all columns of type images
+//            final String orderBy = MediaStore.Images.Media.DATE_TAKEN;//order data by date
+//
+//            Cursor imagecursor = managedQuery(
+//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
+//                    null, orderBy + " DESC");//get all data in Cursor by sorting in DESC order
+//
+//            galleryImageUrls = new ArrayList<String>();
+//
+//            for (int i = 0; i < imagecursor.getCount(); i++) {
+//                imagecursor.moveToPosition(i);
+//                int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);//get column index
+//                galleryImageUrls.add(imagecursor.getString(dataColumnIndex));//get Image from column index
+//
+//            }
+//            Log.e("fatch in","images");
+//
+//            Log.e("Image List ans :- ", new Gson().toJson(galleryImageUrls));
+//
+//            List<String> fileList = new ArrayList<>();
+//            String selection = MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " = ?";
+//            String[] selectionArgs = new String[] {
+//                    "Camera"
+//            };
+//            String[] projection = new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
+//            try (Cursor cursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, selectionArgs, "")) {
+//                for (int i = 0; i < cursor.getCount(); i++) {
+//                    cursor.moveToPosition(i);
+//                    int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+//                    fileList.add(cursor.getString(dataColumnIndex));
+//                }
+//            }
+//
+//            try (Cursor videoCursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, "")) {
+//                for (int i = 0; i < videoCursor.getCount(); i++) {
+//                    videoCursor.moveToPosition(i);
+//                    int dataColumnIndex = videoCursor.getColumnIndex(MediaStore.Video.Media.DATA);
+//                    fileList.add(videoCursor.getString(dataColumnIndex));
+//                }
+//            }
+//
+//            Log.e("Image List :- ", new Gson().toJson(fileList));
+//        } catch (Exception e) {
+//            e.getLocalizedMessage();
+//        }
+//    }
 
     private ArrayList<String> getAllShownImagesPath(AppCompatActivity activity) {
         ArrayList<String> allImages = new ArrayList<>();
@@ -141,8 +186,8 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         String absolutePathOfImage = null;
         uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-        String[] projection = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
+        String[] projection = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
 
         cursor = activity.getContentResolver().query(uri, projection, null,
                 null, null);
@@ -164,58 +209,8 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         return newList;
     }
 
-    private void getAllImageFromGallery() {
-        try {
-            ArrayList<String> galleryImageUrls;
-            final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};//get all columns of type images
-            final String orderBy = MediaStore.Images.Media.DATE_TAKEN;//order data by date
-
-            Cursor imagecursor = managedQuery(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
-                    null, orderBy + " DESC");//get all data in Cursor by sorting in DESC order
-
-            galleryImageUrls = new ArrayList<String>();
-
-            for (int i = 0; i < imagecursor.getCount(); i++) {
-                imagecursor.moveToPosition(i);
-                int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);//get column index
-                galleryImageUrls.add(imagecursor.getString(dataColumnIndex));//get Image from column index
-
-            }
-            Log.e("fatch in","images");
-
-            Log.e("Image List ans :- ", new Gson().toJson(galleryImageUrls));
-
-            List<String> fileList = new ArrayList<>();
-            String selection = MediaStore.Images.Media.BUCKET_DISPLAY_NAME + " = ?";
-            String[] selectionArgs = new String[] {
-                    "Camera"
-            };
-            String[] projection = new String[]{MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
-            try (Cursor cursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, selectionArgs, "")) {
-                for (int i = 0; i < cursor.getCount(); i++) {
-                    cursor.moveToPosition(i);
-                    int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-                    fileList.add(cursor.getString(dataColumnIndex));
-                }
-            }
-
-            try (Cursor videoCursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, "")) {
-                for (int i = 0; i < videoCursor.getCount(); i++) {
-                    videoCursor.moveToPosition(i);
-                    int dataColumnIndex = videoCursor.getColumnIndex(MediaStore.Video.Media.DATA);
-                    fileList.add(videoCursor.getString(dataColumnIndex));
-                }
-            }
-
-            Log.e("Image List :- ", new Gson().toJson(fileList));
-        } catch (Exception e) {
-            e.getLocalizedMessage();
-        }
-    }
-
     private void selectImage() {
-        final CharSequence[] options = {getString(R.string.take_photo),getString(R.string.take_video),getString(R.string.choose_from), getString(R.string.cancel)};
+        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.take_video), getString(R.string.choose_from), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.choose_option));
         builder.setItems(options, (dialog, item) -> {
@@ -226,16 +221,14 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
                     requestCameraPermission(PICK_IMAGE_CAMERA);
                 }
                 dialog.dismiss();
-            }
-            else if (options[item].equals(getString(R.string.take_video))) {
+            } else if (options[item].equals(getString(R.string.take_video))) {
                 if (checkPermission()) {
                     openVideo(2);
                 } else {
                     requestCameraPermission(PICK_VIDEO_CAMERA);
                 }
                 dialog.dismiss();
-            }
-            else if (options[item].equals(getString(R.string.choose_from_gallery))) {
+            } else if (options[item].equals(getString(R.string.choose_from_gallery))) {
                 dialog.dismiss();
                 String[] permission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
                 Permissions.check(this, permission, null, null, new PermissionHandler() {
@@ -368,7 +361,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         String[] docSplit = imgPath.split("/");
         String[] fileName = docSplit[docSplit.length - 1].split("\\.");
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                ,getString(R.string.app_name)+File.separator+String.format("%s_%s.%s", String.format("%s_%s", "SDB"
+                , getString(R.string.app_name) + File.separator + String.format("%s_%s.%s", String.format("%s_%s", "SDB"
                 , System.currentTimeMillis()), fileName[0], fileName[1]));
         if (!file.exists()) {
             file.mkdir();
@@ -377,9 +370,9 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
     }
 
     private void insertMediaApiCaller(Uri imgPath, String extension, String blastCode, String blastNo) {
-
         mResultsBitmap = BitmapUtils.resamplePic(this, String.valueOf(imgPath));
-        BitmapUtils.saveImage(this, mResultsBitmap,extension,imgPath);
+        BitmapUtils.saveImage(this, mResultsBitmap, extension, imgPath);
+        BitmapUtils.galleryAddPic(this, String.valueOf(imgPath));
         showLoader();
         Map<String, Object> map = new HashMap<>();
         map.put("BlastCode", blastCode);
@@ -390,8 +383,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         map.put("media_clicked_date", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
         map.put("media_upload_date", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
         map.put("media_source", "");
-        map.put("media_type", extension.equals(".MP4") ? "video" : "image");
-
+        map.put("media_type", extension.equals(".mp4") ? "video" : "image");
         MainService.ImageVideoApiCaller(this, map).observe((LifecycleOwner) this, responsemedia -> {
             if (responsemedia == null) {
                 showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
@@ -405,6 +397,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
                                     Toast.makeText(this, responsemedia.getAsJsonObject().get("ReturnObject").getAsString(), Toast.LENGTH_LONG).show();
                                     insertImageList();
                                     uploadMediaApiCaller(extension);
+                                    //uploadMediaApiVideo(extension);
                                 } else {
                                     Toast.makeText(this, "Error In Insertion", Toast.LENGTH_LONG).show();
                                 }
@@ -427,39 +420,29 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
 
     private void uploadMediaApiCaller(String extension) {
         mResultsBitmap = BitmapUtils.resamplePic(this, imgPath);
-//        BitmapUtils.saveImage(this, mResultsBitmap,extension, imgPath);
+        BitmapUtils.saveImage(this, mResultsBitmap, extension, Uri.parse(imgPath));
         showLoader();
         Map<String, RequestBody> map = new HashMap<>();
-        map.put("mediatype", toRequestBody(extension.equals(".MP4") ? "Video" : "Image"));
-        MultipartBody.Part fileData = null;
-        if (imgPath != null) {
-            File compressedImgFile = Compressor.getDefault(this).compressToFile(file);
-
-            RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                    .addFormDataPart("Media","MicrosoftTeams-image.png",
-                            RequestBody.create(MediaType.parse("application/octet-stream"),
-                                    compressedImgFile))
-                    .build();
-
-            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), compressedImgFile);
-            fileData = MultipartBody.Part.createFormData("Media", file.getName(), body);
-        }
-
-        MainService.uploadApiCallerImage(this, map, fileData).observe(this, responseupload -> {
-            if (responseupload == null) {
+        map.put("mediatype", toRequestBody(extension.equals(".mp4") ? "Video" : "Image"));
+         MultipartBody.Part fileData = null;
+      //  if (imgPath != null) {
+           File compressedImgFile = Compressor.getDefault(this).compressToFile(file);
+//            RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("Media",filename,
+//                            RequestBody.create(MediaType.parse("application/octet-stream"), compressedImgFile)).build();
+            RequestBody requestFile = RequestBody.create(compressedImgFile, MediaType.parse(extension.equalsIgnoreCase(".mp4 ") ? "video/mp4":"image/png"));
+            fileData = MultipartBody.Part.createFormData("Media", file.getName(), requestFile);
+       // }
+        MainService.uploadApiCallerImage(this, extension.equals(".mp4") ? "Video" : "Image" ,fileData).observe(this, responseUpload -> {
+            if (responseUpload == null) {
                 showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
             } else {
-                if (responseupload != null) {
+                if (responseUpload != null) {
                     try {
-                        JsonObject jsonObject = responseupload.getAsJsonObject();
+                        JsonObject jsonObject = responseUpload.getAsJsonObject();
                         if (jsonObject != null) {
                             try {
-                                if (responseupload.getAsJsonObject().has("Message")) {
-                                    Toast.makeText(this,
-
-                                                    responseupload.getAsJsonObject().get("Message").getAsString(),
-                                                    Toast.LENGTH_LONG)
-                                            .show();
+                                if (responseUpload.getAsJsonObject().has("Message")) {
+                                    Toast.makeText(this, responseUpload.getAsJsonObject().get("Message").getAsString(), Toast.LENGTH_LONG).show();
                                 }
                             } catch (Exception e) {
                                 Log.e(NODATAFOUND, e.getMessage());
@@ -476,8 +459,6 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
             }
             hideLoader();
         });
-
-
     }
 
     private void insertImageList() {
@@ -485,19 +466,16 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         imageListBlank();
     }
 
-
-    File mediaFile;
-
     private void fileDownloadCode(String docType, String url) {
         String[] docSplit = url.split("/");
         String[] fileName = docSplit[docSplit.length - 1].split("\\.");
-        mediaFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),getString(R.string.app_name)+File.separator+String.format("%s_%s.%s", docType, fileName[0], fileName[1]));
+        mediaFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), getString(R.string.app_name) + File.separator + String.format("%s_%s.%s", docType, fileName[0], fileName[1]));
         if (!mediaFile.exists()) {
             String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
             Permissions.check(this, permissions, null, null, new PermissionHandler() {
                 @Override
                 public void onGranted() {
-                    downloadMedia(docType,url, String.format("%s_%s.jpg", docType, fileName[0]));
+                    downloadMedia(docType, url, String.format("%s_%s.jpg", docType, fileName[0]));
                 }
             });
         } else {
@@ -509,7 +487,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         if (checkDir()) {
             long refId = downloadFile(url, fileName, mediaFile);
             Log.e(String.valueOf(refId), url);
-            showToast("File successfully downloaded at "+mediaFile.getAbsolutePath());
+            showToast("File successfully downloaded at " + mediaFile.getAbsolutePath());
         }
     }
 
@@ -539,5 +517,45 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         DonwloadFileManagerUtils downloadHelper = new DonwloadFileManagerUtils(this);
         return downloadHelper.downloadData(uri, fileName, filePath);
     }
-
+//    private void uploadMediaApiVideo(String extension) {
+//        showLoader();
+//        Map<String, RequestBody> map = new HashMap<>();
+//        map.put("mediatype", toRequestBody("Video"));
+//        MultipartBody.Part fileData = null;
+//        if (imgPath != null) {
+//            File compressedImgFile = Compressor.getDefault(this).compressToFile(file);
+//            RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("Media",filename,
+//                            RequestBody.create(MediaType.parse("application/octet-stream"), compressedImgFile))
+//                    .build();
+//            RequestBody   requestFile = RequestBody.create(compressedImgFile, MediaType.parse("video/mp4"));
+//            fileData = MultipartBody.Part.createFormData("Media", file.getName(), requestFile);
+//        }
+//        MainService.uploadApiCallerImage(this, String.valueOf(extension.equals(".MP4")),fileData).observe(this, responseUpload -> {
+//            if (responseUpload == null) {
+//                showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+//            } else {
+//                if (responseUpload != null) {
+//                    try {
+//                        JsonObject jsonObject = responseUpload.getAsJsonObject();
+//                        if (jsonObject != null) {
+//                            try {
+//                                if (responseUpload.getAsJsonObject().has("Message")) {
+//                                    Toast.makeText(this, responseUpload.getAsJsonObject().get("Message").getAsString(), Toast.LENGTH_LONG).show();
+//                                }
+//                            } catch (Exception e) {
+//                                Log.e(NODATAFOUND, e.getMessage());
+//                            }
+//
+//                        } else {
+//                            showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+//                        }
+//                    } catch (Exception e) {
+//                        Log.e(NODATAFOUND, e.getMessage());
+//                    }
+//                    hideLoader();
+//                }
+//            }
+//            hideLoader();
+//        });
+//    }
 }

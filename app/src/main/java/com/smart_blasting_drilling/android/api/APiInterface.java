@@ -21,6 +21,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 public interface APiInterface {
@@ -67,12 +68,12 @@ public interface APiInterface {
     Call<JsonObject> InsertMediaApiCaller(@Body Map<String, Object> map);
 
     @Multipart
-    @POST("api/sblast/upload_media.php?mediatype=Image")
-    Call<JsonObject> UploadeApiCallerImage(/*@PartMap Map<String, RequestBody> map, */@Part MultipartBody.Part fileData);
+    @POST("upload_media.php")
+    Call<JsonObject> UploadeApiCallerImage( @Query ("mediatype")String mediatype, @Part MultipartBody.Part fileData);
 
     @Multipart
-    @POST("api/sblast/upload_media.php?mediatype=Video")
-    Call<JsonObject> UploadeApiCallerVideo(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part fileData);
+    @POST("upload_media.php")
+    Call<JsonObject> UploadeApiCallerVideo(@Query("mediatype") String mediatype,@Part MultipartBody.Part fileData);
 
     @POST("insertUpdateAppSyncDetails")
     Call<JsonPrimitive> insertUpdateAppSyncDetailsApiCaller(@Body JsonObject map);

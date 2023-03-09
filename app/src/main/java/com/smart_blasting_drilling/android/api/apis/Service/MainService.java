@@ -499,12 +499,12 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonObject> uploadApiCallerImage(final Context context, Map<String, RequestBody> map, MultipartBody.Part fileData) {
+    public static LiveData<JsonObject> uploadApiCallerImage(final Context context,String mediatype, MultipartBody.Part fileData) {
         final MutableLiveData<JsonObject> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonObject> call = uplodeApiService.UploadeApiCallerImage(/*map, */fileData);
+        Call<JsonObject> call = uplodeApiService.UploadeApiCallerImage(mediatype,fileData);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -524,12 +524,12 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonObject> uploadApiCallerVideo(final Context context, Map<String, RequestBody> map, MultipartBody.Part fileData) {
+    public static LiveData<JsonObject> uploadApiCallerVideo(final Context context,String mediaType, MultipartBody.Part fileData) {
         final MutableLiveData<JsonObject> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonObject> call = uplodeApiService.UploadeApiCallerVideo(map, fileData);
+        Call<JsonObject> call = uplodeApiService.UploadeApiCallerVideo(mediaType, fileData);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

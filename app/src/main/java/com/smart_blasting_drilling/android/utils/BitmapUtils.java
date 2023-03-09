@@ -90,7 +90,7 @@ public class BitmapUtils {
 
         return deleted;
     }
-    private static void galleryAddPic(Context context, String imagePath) {
+    public static void galleryAddPic(Context context, String imagePath) {
 
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(imagePath);
@@ -110,7 +110,7 @@ public class BitmapUtils {
             videoFileName = "VIDEO_" + timeStamp + ".mp4";
         }
         else {
-          imageFileName = "JPEG_" + timeStamp + ".jpg";}
+          imageFileName = "JPEG_" + timeStamp + ".png";}
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/MyCamera");
         boolean success = true;
         if (!storageDir.exists()) {
@@ -145,7 +145,7 @@ public class BitmapUtils {
                     File imageFile = new File(storageDir, imageFileName);
                     savedImagePath = imageFile.getAbsolutePath();
                     OutputStream fOut = new FileOutputStream(imageFile);
-                    image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                    image.compress(Bitmap.CompressFormat.PNG, 100, fOut);
                     fOut.close();
                     galleryAddPic(context, savedImagePath);
                 }
