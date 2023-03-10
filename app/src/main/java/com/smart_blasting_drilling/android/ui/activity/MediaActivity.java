@@ -371,8 +371,8 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
 
     private void insertMediaApiCaller(Uri imgPath, String extension, String blastCode, String blastNo) {
         mResultsBitmap = BitmapUtils.resamplePic(this, String.valueOf(imgPath));
-        BitmapUtils.saveImage(this, mResultsBitmap, extension, imgPath);
-        BitmapUtils.galleryAddPic(this, String.valueOf(imgPath));
+       // BitmapUtils.saveImage(this, mResultsBitmap, extension, imgPath);
+        //BitmapUtils.galleryAddPic(this, String.valueOf(imgPath));
         showLoader();
         Map<String, Object> map = new HashMap<>();
         map.put("BlastCode", blastCode);
