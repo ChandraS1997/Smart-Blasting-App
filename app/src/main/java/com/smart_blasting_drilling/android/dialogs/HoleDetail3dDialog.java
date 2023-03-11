@@ -12,6 +12,7 @@ import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.gson.Gson;
@@ -96,6 +97,13 @@ public class HoleDetail3dDialog extends BaseDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.hole_parameteres_3d_layout, container, false);
+
+        binding.mainContainerView.setBackgroundColor(mContext.getColor(R.color._80000000));
+
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(20, 20, 20, 20);
+        binding.childContainerView.setLayoutParams(layoutParams);
+
         return binding.getRoot();
     }
 
@@ -180,11 +188,11 @@ public class HoleDetail3dDialog extends BaseDialogFragment {
             updateHoleDetailData.setHoleStatus(StringUtill.getString(binding.holeStatusSpinner.getText().toString()));
 
             bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
-            bladesEntity.setHoleId(Integer.parseInt(holeDetailData.getHoleNo()));
-            bladesEntity.setRowId(Integer.parseInt(holeDetailData.getRowNo()));
+            bladesEntity.setHoleId(Integer.parseInt(String.valueOf(holeDetailData.getHoleNo())));
+            bladesEntity.setRowId(Integer.parseInt(String.valueOf(holeDetailData.getRowNo())));
             bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
 
-            if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()), Integer.parseInt(holeDetailData.getRowNo()), Integer.parseInt(holeDetailData.getHoleNo()))) {
+            if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()), Integer.parseInt(String.valueOf(holeDetailData.getRowNo())), Integer.parseInt(String.valueOf(holeDetailData.getHoleNo())))) {
                 updateProjectBladesDao.insertProject(bladesEntity);
             } else {
                 updateProjectBladesDao.updateProject(bladesEntity);
@@ -202,7 +210,7 @@ public class HoleDetail3dDialog extends BaseDialogFragment {
                 }
                 if (!Constants.isListEmpty(holeDetailDataList)) {
                     for (int i = 0; i < holeDetailDataList.size(); i++) {
-                        if (updateHoleDetailData.getRowNo().equals(String.valueOf(holeDetailDataList.get(i).getRowNo())) && holeDetailDataList.get(i).getHoleID().equals(updateHoleDetailData.getHoleID())) {
+                        if (String.valueOf(updateHoleDetailData.getRowNo()).equals(String.valueOf(holeDetailDataList.get(i).getRowNo())) && holeDetailDataList.get(i).getHoleID().equals(updateHoleDetailData.getHoleID())) {
                             holeDetailDataList.set(i, updateHoleDetailData);
                         } else {
                             holeDetailDataList.set(i, holeDetailDataList.get(i));

@@ -145,7 +145,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                 binding.horizontalScrollView.setVisibility(View.VISIBLE);
                 List<Response3DTable4HoleChargingDataModel> holeDetailData = new ArrayList<>();
                 for (int i = 0; i < tablesData.size(); i++) {
-                    if (tablesData.get(i).getRowNo().equals(String.valueOf(((HoleDetail3DModelActivity) mContext).rowPageVal))) {
+                    if (String.valueOf(tablesData.get(i).getRowNo()).equals(String.valueOf(((HoleDetail3DModelActivity) mContext).rowPageVal))) {
                         holeDetailData.add(tablesData.get(i));
                     }
                 }

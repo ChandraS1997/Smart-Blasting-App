@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mainCardContainerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="@dimen/_2sdp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/columnDataContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/columnName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semi_bold"
+                android:text="@string/type"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.smart_blasting_drilling.android.helper.TextSpinner
+                android:id="@+id/typeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:textColor="@color/_414346"
+                android:textSize="@dimen/_15ssp"
+                android:inputType="text"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:imeOptions="flagNoExtractUi"
+                android:editable="false"
+                android:background="@drawable/border_edittext_bg"
+                android:drawableTint="@color/black"
+                android:fontFamily="@font/inter_semi_bold"
+                app:dropDownDrawable="@drawable/downarro"
+                app:dropDownDrawableHeight="@dimen/_8sdp"
+                app:dropDownDrawableSpacing="15dp"
+                app:dropDownDrawableWidth="@dimen/_14ssp"
+                app:dropDownHeight="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                app:layout_constraintTop_toBottomOf="@id/columnName"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/explosiveAndCostContainerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintTop_toBottomOf="@id/typeSpinner">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/explosiveContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/costContainer"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/explosiveTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/explosive"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.smart_blasting_drilling.android.helper.TextSpinner
+                        android:id="@+id/explosiveEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:textColor="@color/black"
+                        android:editable="false"
+                        android:drawableTint="@color/black"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="@dimen/_14ssp"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="text"
+                        android:background="@drawable/border_edittext_bg"
+                        app:dropDownDrawable="@drawable/downarro"
+                        app:dropDownDrawableHeight="@dimen/_8sdp"
+                        app:dropDownDrawableSpacing="15dp"
+                        app:dropDownDrawableWidth="@dimen/_14ssp"
+                        app:dropDownHeight="@dimen/_150sdp"
+                        app:layout_constraintTop_toBottomOf="@id/explosiveTxt"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/costContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    app:layout_constraintStart_toEndOf="@id/explosiveContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/costTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/cost"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/costEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:textColor="@color/black"
+                        android:hint="@string/cost"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="@dimen/_14ssp"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:imeOptions="flagNoExtractUi"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/border_edittext_bg"
+                        app:layout_constraintTop_toBottomOf="@id/costTxt"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/columnDataLthWghtContain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintTop_toBottomOf="@id/explosiveAndCostContainerView">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/columnLengthContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/colWeightContainer"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/columnLengthTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/length"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/columnLengthEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:textColor="@color/black"
+                        android:hint="@string/length"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="@dimen/_14ssp"
+                        android:imeOptions="flagNoExtractUi"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:inputType="numberDecimal"
+                        android:background="@drawable/border_edittext_bg"
+                        app:layout_constraintTop_toBottomOf="@id/columnLengthTxt"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/colWeightContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    app:layout_constraintStart_toEndOf="@id/columnLengthContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/columnWeightTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:text="@string/weight"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/columnWeightEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:textColor="@color/black"
+                        android:hint="@string/weight"
+                        android:fontFamily="@font/inter_regular"
+                        android:textSize="@dimen/_14ssp"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="numberDecimal"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:background="@drawable/border_edittext_bg"
+                        app:layout_constraintTop_toBottomOf="@id/columnWeightTxt"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

@@ -53,16 +53,16 @@ public class ChargeTypeArrayItem implements Serializable {
 		this.length = length;
 	}
 
-	public Object getLength(){
-		return length;
+	public double getLength(){
+		return length != null ? (double) length : 0.0;
 	}
 
 	public void setWeight(Object weight){
 		this.weight = weight;
 	}
 
-	public Object getWeight(){
-		return weight;
+	public double getWeight(){
+		return weight != null ? (double) weight : 0.0;
 	}
 
 	public void setProdId(int prodId){
@@ -93,8 +93,8 @@ public class ChargeTypeArrayItem implements Serializable {
 		this.cost = cost;
 	}
 
-	public Object getCost(){
-		return cost;
+	public int getCost(){
+		return cost != null ? (int) cost : 0;
 	}
 
 	public void setName(String name){

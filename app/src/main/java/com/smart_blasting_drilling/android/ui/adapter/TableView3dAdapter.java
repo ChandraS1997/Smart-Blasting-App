@@ -73,7 +73,7 @@ public class TableView3dAdapter extends BaseRecyclerAdapter {
         void setDataBind(Response3DTable4HoleChargingDataModel holeDetailData) {
             boolean isHeader = holeDetailData == null && getAdapterPosition() == 0;
 
-            Hole3dTableColumnViewAdapter columnViewAdapter = new Hole3dTableColumnViewAdapter(context, editModelArrayList.get(getAdapterPosition()).getTableEditModelList(), isHeader);
+            Hole3dTableColumnViewAdapter columnViewAdapter = new Hole3dTableColumnViewAdapter(context, editModelArrayList.get(getAdapterPosition()).getTableEditModelList(), isHeader, holeDetailData);
             binding.columnList.setAdapter(columnViewAdapter);
 
         }

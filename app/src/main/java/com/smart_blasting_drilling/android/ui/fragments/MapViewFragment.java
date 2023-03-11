@@ -19,20 +19,29 @@ import com.google.gson.Gson;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
+import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.FragmentMapviewBinding;
+import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
+import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
+import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
+import com.smart_blasting_drilling.android.ui.adapter.HoleItemAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.MapHolePointAdapter;
 import com.smart_blasting_drilling.android.ui.models.MapHole3DDataModel;
 import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
-public class MapViewFragment extends BaseFragment {
+public class MapViewFragment extends BaseFragment implements HoleDetailActivity.HoleDetailCallBackListener {
     FragmentMapviewBinding binding;
 
     @Override
@@ -52,7 +61,7 @@ public class MapViewFragment extends BaseFragment {
         if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mapview, container, false);
 
-            getMapHoleDataList();
+            ((HoleDetailActivity) mContext).holeDetailCallBackListener = this;
 
             ((HoleDetailActivity) mContext).mapViewDataUpdateLiveData.observe((LifecycleOwner) mContext, aBoolean -> {
                 if (aBoolean) {
@@ -75,6 +84,12 @@ public class MapViewFragment extends BaseFragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getMapHoleDataList();
+    }
+
     void getMapHoleDataList() {
         List<ResponseHoleDetailData> holeDetailDataList = ((HoleDetailActivity) mContext).holeDetailDataList;
         ResponseBladesRetrieveData bladesRetrieveData = ((HoleDetailActivity) mContext).bladesRetrieveData;
@@ -94,9 +109,20 @@ public class MapViewFragment extends BaseFragment {
                 }
             }
 
-            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px, RecyclerView.LayoutParams.WRAP_CONTENT);
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * 150, RecyclerView.LayoutParams.WRAP_CONTENT);
             binding.rowHolePoint.setLayoutParams(layoutParams);
         }
+    }
+
+    @Override
+    public void setHoleDetailCallBack(ResponseBladesRetrieveData data, ResponseHoleDetailData detailData) {
+        ((HoleDetailActivity) mContext).binding.holeDetailLayoutContainer.setVisibility(View.VISIBLE);
+        ((HoleDetailActivity) mContext).setHoleDetailDialog(data, detailData);
+    }
+
+    @Override
+    public void saveAndCloseHoleDetailCallBack(ResponseHoleDetailData detailData) {
+        ((HoleDetailActivity) mContext).binding.holeDetailLayoutContainer.setVisibility(View.GONE);
     }
 
 }

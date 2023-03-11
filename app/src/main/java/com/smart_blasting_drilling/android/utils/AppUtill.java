@@ -1,6 +1,8 @@
 package com.smart_blasting_drilling.android.utils;
 
+import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -49,6 +51,27 @@ public class AppUtill {
                 ()-> view.setEnabled(true),
                 500
         );
+    }
+
+    public static void checkWidthHeight(View view) {
+        try {
+            ViewTreeObserver vto = view.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+
+                    if (view.getMeasuredHeight() > 0) {
+                        view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        int width = view.getMeasuredWidth();
+                        int height = view.getMeasuredHeight();
+
+                        Log.e("Width" + width, "  ->  Height" + height);
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
     }
 
 }

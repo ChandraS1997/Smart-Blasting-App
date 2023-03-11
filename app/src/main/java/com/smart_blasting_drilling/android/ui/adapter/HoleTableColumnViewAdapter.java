@@ -8,16 +8,20 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.HoleTableColumnViewBinding;
+import com.smart_blasting_drilling.android.dialogs.ChangingDataDialog;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
@@ -25,11 +29,13 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
     Context context;
     List<TableEditModel> editModelArrayList;
     boolean isHeader;
+    ResponseHoleDetailData holeDetailData;
 
-    public HoleTableColumnViewAdapter(Context context, List<TableEditModel> editModelArrayList, boolean isHeader) {
+    public HoleTableColumnViewAdapter(Context context, List<TableEditModel> editModelArrayList, boolean isHeader, ResponseHoleDetailData holeDetailData) {
         this.context = context;
         this.editModelArrayList = editModelArrayList;
         this.isHeader = isHeader;
+        this.holeDetailData = holeDetailData;
     }
 
     @Override
@@ -94,6 +100,16 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
             }
 
             binding.holeIdVal.setLayoutParams(layoutParams);
+
+            binding.holeIdVal.setOnClickListener(view -> {
+                if (getBindingAdapterPosition() > 0 && !binding.holeIdVal.getText().toString().equals("Charging")) {
+                    FragmentManager manager = ((BaseActivity) context).getSupportFragmentManager();
+                    ChangingDataDialog dataDialog = ChangingDataDialog.getInstance(holeDetailData, ((HoleDetailActivity) context).bladesRetrieveData);
+                    FragmentTransaction ft = manager.beginTransaction();
+                    ft.add(dataDialog, ChangingDataDialog.TAG);
+                    ft.commitAllowingStateLoss();
+                }
+            });
 
         }
 

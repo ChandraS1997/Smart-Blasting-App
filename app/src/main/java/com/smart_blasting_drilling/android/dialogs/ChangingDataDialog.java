@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +29,11 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdatePr
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
+import com.smart_blasting_drilling.android.ui.adapter.ChargingDataListAdapter;
+import com.smart_blasting_drilling.android.ui.models.ChargingDataModel;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChangingDataDialog extends BaseDialogFragment {
@@ -44,9 +48,12 @@ public class ChangingDataDialog extends BaseDialogFragment {
     ProjectHoleDetailRowColDao entity;
     ResponseBladesRetrieveData bladesRetrieveData;
 
+    List<ChargingDataModel> chargingDataModelList = new ArrayList<>();
+    ChargingDataListAdapter adapter;
+
+
     public ChangingDataDialog() {
         _self = this;
-        entity = appDatabase.projectHoleDetailRowColDao();
     }
 
     public static ChangingDataDialog getInstance(ResponseHoleDetailData holeDetailData, ResponseBladesRetrieveData data) {
@@ -107,31 +114,34 @@ public class ChangingDataDialog extends BaseDialogFragment {
 
     @Override
     public void loadData() {
-        if (holeDetailData != null) {
-            binding.spinnerColumn.setText(holeDetailData.getColName());
-            binding.columnLengthEt.setText(String.valueOf(holeDetailData.getColLength()));
-            binding.columnWeightEt.setText(String.valueOf(holeDetailData.getColWt()));
+        entity = appDatabase.projectHoleDetailRowColDao();
+        if (Constants.isListEmpty(chargingDataModelList))
+            chargingDataModelList.add(new ChargingDataModel());
 
-            binding.spinnerbottom.setText(String.valueOf(holeDetailData.getBtmName()));
-            binding.bottomLengthEt.setText(String.valueOf(holeDetailData.getBtmLength()));
-            binding.bottomWeightEt.setText(String.valueOf(holeDetailData.getBtmWt()));
-
-            binding.spinnerbuster.setText(holeDetailData.getBsterName());
-            binding.busterLengthEt.setText(String.valueOf(holeDetailData.getBsterLength()));
-            binding.busterWeightEt.setText(String.valueOf(holeDetailData.getBsterWt()));
-
-            binding.spinnerStem.setText(holeDetailData.getStemLngth() != null ? String.valueOf(holeDetailData.getStemLngth()) : "0");
-        }
+        adapter = new ChargingDataListAdapter(mContext, chargingDataModelList);
+        binding.chargingList.setAdapter(adapter);
 
         binding.closeBtn.setOnClickListener(view -> {
             dismiss();
         });
 
+        binding.addChargingFab.setOnClickListener(view -> {
+            if (adapter != null)
+                adapter.addItemInArray();
+            chargingDataModelList.add(new ChargingDataModel());
+            adapter.notifyDataSetChanged();
+            binding.chargingList.scrollToPosition(chargingDataModelList.size() - 1);
+        });
+
         binding.saveProceedBtn.setOnClickListener(view -> {
+            Log.e("Item List : ", new Gson().toJson(adapter.getJsonArray()));
+        });
+
+        /*binding.saveProceedBtn.setOnClickListener(view -> {
             UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
             UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
 
-            updateHoleDetailData.setStemLngth(StringUtill.isEmpty(binding.spinnerStem.getText().toString()) ? 0 : Integer.parseInt(binding.spinnerStem.getText().toString()));
+            *//*updateHoleDetailData.setStemLngth(StringUtill.isEmpty(binding.spinnerStem.getText().toString()) ? 0 : Integer.parseInt(binding.spinnerStem.getText().toString()));
             updateHoleDetailData.setColName(StringUtill.getString(binding.spinnerColumn.getText().toString()));
             updateHoleDetailData.setColLength(StringUtill.getString(binding.columnLengthEt.getText().toString()));
             updateHoleDetailData.setColWt(StringUtill.getString(binding.columnWeightEt.getText().toString()));
@@ -141,7 +151,7 @@ public class ChangingDataDialog extends BaseDialogFragment {
             updateHoleDetailData.setBsterName(StringUtill.getString(binding.busterName.getText().toString()));
             updateHoleDetailData.setBsterLength(Integer.parseInt(StringUtill.getString(binding.busterLengthEt.getText().toString())));
             updateHoleDetailData.setBsterWt(Integer.parseInt(StringUtill.getString(binding.busterWeightEt.getText().toString())));
-
+*//*
             bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
             bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
 
@@ -182,7 +192,7 @@ public class ChangingDataDialog extends BaseDialogFragment {
             } else {
                 dismiss();
             }
-        });
+        });*/
 
     }
 

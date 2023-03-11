@@ -169,8 +169,8 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 		this.holeType = holeType;
 	}
 
-	public String getHoleType(){
-		return holeType;
+	public int getHoleType(){
+		return Integer.parseInt(holeType);
 	}
 
 	public void setHoleID(String holeID){
@@ -249,8 +249,8 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 		this.holeNo = holeNo;
 	}
 
-	public String getHoleNo(){
-		return holeNo;
+	public int getHoleNo(){
+		return Integer.parseInt(holeNo);
 	}
 
 	public void setSpacing(String spacing){
@@ -265,8 +265,8 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 		this.rowNo = rowNo;
 	}
 
-	public String getRowNo(){
-		return rowNo;
+	public int getRowNo(){
+		return Integer.parseInt(rowNo);
 	}
 
 	public void setTotalCharge(String totalCharge){

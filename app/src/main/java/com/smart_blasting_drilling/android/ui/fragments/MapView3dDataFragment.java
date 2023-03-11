@@ -13,25 +13,34 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
+import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.FragmentMapview3dBinding;
-import com.smart_blasting_drilling.android.databinding.FragmentMapviewBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
+import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
+import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
 import com.smart_blasting_drilling.android.ui.adapter.MapHolePoint3dAdapter;
-import com.smart_blasting_drilling.android.ui.adapter.MapHolePointAdapter;
 import com.smart_blasting_drilling.android.ui.models.MapHole3DDataModel;
-import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
-public class MapView3dDataFragment extends BaseFragment {
+public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DModelActivity.HoleDetailCallBackListener {
     FragmentMapview3dBinding binding;
 
     @Override
@@ -51,7 +60,7 @@ public class MapView3dDataFragment extends BaseFragment {
         if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mapview_3d, container, false);
 
-            getMapHoleDataList();
+            ((HoleDetail3DModelActivity) mContext).holeDetailCallBackListener = this;
 
             ((HoleDetail3DModelActivity) mContext).mapViewDataUpdateLiveData.observe((LifecycleOwner) mContext, aBoolean -> {
                 if (aBoolean) {
@@ -74,6 +83,12 @@ public class MapView3dDataFragment extends BaseFragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getMapHoleDataList();
+    }
+
     void getMapHoleDataList() {
         List<Response3DTable4HoleChargingDataModel> holeDetailDataList = ((HoleDetail3DModelActivity) mContext).holeDetailDataList;
         List<MapHole3DDataModel> colHoleDetailDataList = new ArrayList<>();
@@ -92,9 +107,20 @@ public class MapView3dDataFragment extends BaseFragment {
                 }
             }
 
-            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px, RecyclerView.LayoutParams.WRAP_CONTENT);
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * 150, RecyclerView.LayoutParams.WRAP_CONTENT);
             binding.rowHolePoint.setLayoutParams(layoutParams);
         }
+    }
+
+    @Override
+    public void setHoleDetailCallBack(Response3DTable4HoleChargingDataModel detailData) {
+        ((HoleDetail3DModelActivity) mContext).binding.holeDetailLayoutContainer.setVisibility(View.VISIBLE);
+        ((HoleDetail3DModelActivity) mContext).set3dHoleDetail(((HoleDetail3DModelActivity) mContext).bladesRetrieveData.get(0), detailData);
+    }
+
+    @Override
+    public void saveAndCloseHoleDetailCallBack(Response3DTable4HoleChargingDataModel detailData) {
+        ((HoleDetail3DModelActivity) mContext).binding.holeDetailLayoutContainer.setVisibility(View.GONE);
     }
 
 }

@@ -9,9 +9,12 @@
 
         <androidx.drawerlayout.widget.DrawerLayout
             android:id="@+id/mainDrawerLayout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/white"
+            app:layout_constraintEnd_toStartOf="@id/holeDetailLayoutContainer"
+            app:layout_constraintStart_toStartOf="parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -72,6 +75,19 @@
 
 
         </androidx.drawerlayout.widget.DrawerLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/holeDetailLayoutContainer"
+            android:layout_width="@dimen/_300sdp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <include android:id="@+id/holeDetailLayout"
+                layout="@layout/hole_parameteres_3d_layout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

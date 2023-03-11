@@ -2,6 +2,7 @@ package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,64 +69,44 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
         void setDataBind(ResponseHoleDetailData detailData) {
             if (patternType.equals("Staggered")) {
                 if (spaceVal == 1) {
+                    binding.holeStatusTxt.setGravity(Gravity.START);
                     binding.startSpaceView.setVisibility(View.GONE);
                     binding.endSpaceView.setVisibility(View.VISIBLE);
                 } else {
+                    binding.holeStatusTxt.setGravity(Gravity.END);
                     binding.startSpaceView.setVisibility(View.VISIBLE);
                     binding.endSpaceView.setVisibility(View.GONE);
                 }
             } else if (patternType.equals("Rectangular/Square"))  {
+                binding.holeStatusTxt.setGravity(Gravity.START);
                 binding.startSpaceView.setVisibility(View.GONE);
                 binding.endSpaceView.setVisibility(View.VISIBLE);
             }
 
-            binding.holeStatusTxt.setVisibility(View.GONE);
+            binding.holeStatusTxt.setVisibility(View.VISIBLE);
             if (!StringUtill.isEmpty(detailData.getHoleStatus())) {
                 switch (detailData.getHoleStatus()) {
                     case "Completed":
-                        binding.holeStatusTxt.setVisibility(View.VISIBLE);
-                        binding.holeStatusTxt.setText(context.getString(R.string.completed));
                         binding.holeIcon.setImageResource(R.drawable.green_circle);
                         break;
                     case "Work in Progress":
-                        binding.holeStatusTxt.setVisibility(View.VISIBLE);
-                        binding.holeStatusTxt.setText(context.getString(R.string.progress));
                         binding.holeIcon.setImageResource(R.drawable.blue_circle);
                         break;
                     case "Deleted/ Blocked holes/ Do not blast":
-                        binding.holeStatusTxt.setVisibility(View.VISIBLE);
-                        binding.holeStatusTxt.setText(context.getString(R.string.blocked));
                         binding.holeIcon.setImageResource(R.drawable.red_circle);
                         break;
                     default:
-                        binding.holeStatusTxt.setVisibility(View.GONE);
                         binding.holeIcon.setImageResource(R.drawable.circle_hole_pending);
                         break;
                 }
             }
 
+            binding.holeStatusTxt.setText(StringUtill.getString(String.format("R%sH%s", detailData.getRowNo(), detailData.getHoleNo())));
+
             itemView.setOnClickListener(view -> {
-                ((HoleDetailActivity) context).openHoleDetailDialog(detailData);
+                if (((HoleDetailActivity) context).holeDetailCallBackListener != null)
+                    ((HoleDetailActivity) context).holeDetailCallBackListener.setHoleDetailCallBack(((HoleDetailActivity) context).bladesRetrieveData,detailData);
             });
-
-            try {
-                ViewTreeObserver vto = binding.mainContainerView.getViewTreeObserver();
-                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-
-                        if (binding.mainContainerView.getMeasuredHeight() > 0) {
-                            binding.mainContainerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                            int width = binding.mainContainerView.getMeasuredWidth();
-                            int height = binding.mainContainerView.getMeasuredHeight();
-
-                            Log.e("Width" + width, "  ->  Hieght" + height);
-                        }
-                    }
-                });
-            } catch (Exception e) {
-                e.getLocalizedMessage();
-            }
 
         }
 

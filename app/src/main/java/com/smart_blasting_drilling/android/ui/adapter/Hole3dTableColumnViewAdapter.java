@@ -1,22 +1,25 @@
 package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.HoleTableColumnViewBinding;
+import com.smart_blasting_drilling.android.dialogs.ChangingDataDialog;
+import com.smart_blasting_drilling.android.dialogs.Charging3dDataDialog;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
-import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
@@ -26,12 +29,14 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
     Context context;
     List<TableEditModel> editModelArrayList;
+    Response3DTable4HoleChargingDataModel holeDetailData;
     boolean isHeader;
 
-    public Hole3dTableColumnViewAdapter(Context context, List<TableEditModel> editModelArrayList, boolean isHeader) {
+    public Hole3dTableColumnViewAdapter(Context context, List<TableEditModel> editModelArrayList, boolean isHeader, Response3DTable4HoleChargingDataModel holeDetailData) {
         this.context = context;
         this.editModelArrayList = editModelArrayList;
         this.isHeader = isHeader;
+        this.holeDetailData = holeDetailData;
     }
 
     @Override
@@ -97,24 +102,15 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
             binding.holeIdVal.setLayoutParams(layoutParams);
 
-            try {
-                ViewTreeObserver vto = binding.mainContainerView.getViewTreeObserver();
-                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-
-                        if (binding.mainContainerView.getMeasuredHeight() > 0) {
-                            binding.mainContainerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                            int width = binding.mainContainerView.getMeasuredWidth();
-                            int height = binding.mainContainerView.getMeasuredHeight();
-
-                            Log.e("Width" + width, "  ->  Hieght" + height);
-                        }
-                    }
-                });
-            } catch (Exception e) {
-                e.getLocalizedMessage();
-            }
+            binding.holeIdVal.setOnClickListener(view -> {
+                if (getBindingAdapterPosition() > 0 && !binding.holeIdVal.getText().toString().equals("Charging")) {
+                    FragmentManager manager = ((BaseActivity) context).getSupportFragmentManager();
+                    Charging3dDataDialog dataDialog = Charging3dDataDialog.getInstance(holeDetailData);
+                    FragmentTransaction ft = manager.beginTransaction();
+                    ft.add(dataDialog, ChangingDataDialog.TAG);
+                    ft.commitAllowingStateLoss();
+                }
+            });
 
         }
 

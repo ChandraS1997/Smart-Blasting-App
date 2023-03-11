@@ -12,6 +12,7 @@ import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.gson.Gson;
@@ -97,6 +98,13 @@ public class HoleDetailDialog extends BaseDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.hole_parameteres_layout, container, false);
+
+        binding.mainContainerView.setBackgroundColor(mContext.getColor(R.color._80000000));
+
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.setMargins(20, 20, 20, 20);
+        binding.childContainerView.setLayoutParams(layoutParams);
+
         return binding.getRoot();
     }
 

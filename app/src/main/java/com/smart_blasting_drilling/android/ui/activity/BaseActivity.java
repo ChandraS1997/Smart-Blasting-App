@@ -223,20 +223,20 @@ public class BaseActivity extends AppCompatActivity {
             boolean isFound = false;
             List<Response3DTable4HoleChargingDataModel> dataList = new ArrayList<>();
             for (MapHole3DDataModel e : rowMapHoleDataModelList) {
-                if (categoryList.getRowNo().equals(String.valueOf(e.getRowId()))) {
+                if (String.valueOf(categoryList.getRowNo()).equals(String.valueOf(e.getRowId()))) {
                     isFound = true;
                     break;
                 }
             }
             if (!isFound) {
-                rowMapHoleDataModelList.add(new MapHole3DDataModel(categoryList.getRowNo(), dataList));
+                rowMapHoleDataModelList.add(new MapHole3DDataModel(String.valueOf(categoryList.getRowNo()), dataList));
             }
         }
 
         for (MapHole3DDataModel e : rowMapHoleDataModelList) {
             List<Response3DTable4HoleChargingDataModel> dataList = new ArrayList<>();
             for (Response3DTable4HoleChargingDataModel categoryList : holeDetailDataList) {
-                if (e.getRowId().equals(categoryList.getRowNo())) {
+                if (e.getRowId().equals(String.valueOf(categoryList.getRowNo()))) {
                     dataList.add(categoryList);
                 }
             }
@@ -1334,6 +1334,7 @@ public class BaseActivity extends AppCompatActivity {
                     chargeDetailsObject.addProperty("HoleName",String.format("R%sH%s",  tablesData.getTable2().get(i).getRowNo(), tablesData.getTable2().get(i).getHoleNo()));
                     chargeDetailsObject.addProperty("RowType","Production");
                     chargeDetailsObject.addProperty("HoleDia", String.valueOf(tablesData.getTable2().get(i).getHoleDiameter()));
+
                     chargeDetailsObject.addProperty("ExpCode", String.valueOf(tablesData.getTable2().get(i).getExpCode()));
                     chargeDetailsObject.addProperty("Weight", "30");
                     chargeDetailsObject.addProperty("ExpLength", "4");
@@ -1346,6 +1347,7 @@ public class BaseActivity extends AppCompatActivity {
                     chargeDetailsObject.addProperty("Weight2","0.4");
                     chargeDetailsObject.addProperty("ExpLength2","0");
                     chargeDetailsObject.addProperty("CostPerUnit2",String.valueOf(tablesData.getTable2().get(i).getCostUnit2()));
+
                     chargeDetailsObject.addProperty("Burden",String.valueOf(tablesData.getTable2().get(i).getBurden() == 0 ? "" : tablesData.getTable2().get(i).getBurden()));
                     chargeDetailsObject.addProperty("Spacing",String.valueOf(tablesData.getTable2().get(i).getSpacing()));
                     chargeDetailsObject.addProperty("Delay1", "0");
@@ -1884,60 +1886,67 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void insertUpdate3DActualDesignHoleDetailApiCaller(List<Response3DTable4HoleChargingDataModel> allTablesData, List<Response3DTable1DataModel> bladesRetrieveData) {
-        JsonArray mapObjectArray = new JsonArray();
-        JsonObject object = new JsonObject();
-        object.addProperty("Block", "");
-        object.addProperty("BlockLength", "");
-        object.addProperty("BottomX", "");
-        object.addProperty("BottomY", "");
-        object.addProperty("BottomZ", "");
-        object.addProperty("Burden", "");
-        object.addProperty("ChargeLength", "");
+        try {
+            JsonArray mapObjectArray = new JsonArray();
+            for (Response3DTable4HoleChargingDataModel dataModel : allTablesData) {
+                JsonObject object = new JsonObject();
+                object.addProperty("Block", dataModel.getBlock());
+                object.addProperty("BlockLength", dataModel.getBlockLength());
+                object.addProperty("BottomX", dataModel.getBottomX());
+                object.addProperty("BottomY", dataModel.getBottomY());
+                object.addProperty("BottomZ", dataModel.getBottomZ());
+                object.addProperty("Burden", dataModel.getBurden());
+                object.addProperty("ChargeLength", dataModel.getChargeLength());
 
-        JsonArray chargeTypeArray = new JsonArray();
-        JsonObject chargeTypeObject = new JsonObject();
-        chargeTypeObject.addProperty("type","");
-        chargeTypeObject.addProperty("name","");
-        chargeTypeObject.addProperty("cost","");
-        chargeTypeObject.addProperty("weight","");
-        chargeTypeObject.addProperty("length","");
-        chargeTypeObject.addProperty("prodType","");
-        chargeTypeObject.addProperty("prodId","");
-        chargeTypeObject.addProperty("color","");
-        chargeTypeObject.addProperty("percentage","");
-        chargeTypeArray.add(chargeTypeObject);
+                JsonArray chargeTypeArray = new JsonArray();
+                for (ChargeTypeArrayItem arrayItem : dataModel.getChargeTypeArray()) {
+                    JsonObject chargeTypeObject = new JsonObject();
+                    chargeTypeObject.addProperty("type", arrayItem.getType());
+                    chargeTypeObject.addProperty("name", arrayItem.getName());
+                    chargeTypeObject.addProperty("cost", arrayItem.getCost());
+                    chargeTypeObject.addProperty("weight", arrayItem.getWeight());
+                    chargeTypeObject.addProperty("length", arrayItem.getLength());
+                    chargeTypeObject.addProperty("prodType", arrayItem.getProdType());
+                    chargeTypeObject.addProperty("prodId", arrayItem.getProdId());
+                    chargeTypeObject.addProperty("color", arrayItem.getColor());
+                    chargeTypeObject.addProperty("percentage", String.valueOf(arrayItem.getPercentage()));
+                    chargeTypeArray.add(chargeTypeObject);
+                }
+                object.add("ChargeTypeArray", chargeTypeArray);
 
-        object.add("ChargeTypeArray", chargeTypeArray);
+                object.addProperty("DeckLength", dataModel.getDeckLength());
+                object.addProperty("DesignId", dataModel.getDesignId());
+                object.addProperty("HoleDelay", dataModel.getHoleDelay());
+                object.addProperty("HoleDepth", dataModel.getHoleDepth());
+                object.addProperty("HoleDiameter", dataModel.getHoleDiameter());
+                object.addProperty("HoleID", String.format("R%sH%s", dataModel.getRowNo(), dataModel.getHoleNo()));
+                object.addProperty("HoleNo", dataModel.getHoleNo());
+                object.addProperty("HoleType", dataModel.getHoleType());
+                object.addProperty("InHoleDelay", dataModel.getInHoleDelay());
+                object.addProperty("RowNo", dataModel.getRowNo());
+                object.addProperty("Spacing", dataModel.getSpacing());
+                object.addProperty("StemmingLength", dataModel.getStemmingLength());
+                object.addProperty("Subgrade", dataModel.getSubgrade());
+                object.addProperty("TielineId", dataModel.getTielineID());
+                object.addProperty("TopX", dataModel.getTopX());
+                object.addProperty("TopY", dataModel.getTopY());
+                object.addProperty("TopZ", dataModel.getTopZ());
+                object.addProperty("TotalCharge", dataModel.getTotalCharge());
+                object.addProperty("VerticalDip", dataModel.getVerticalDip());
+                object.addProperty("WaterDepth", dataModel.getWaterDepth());
 
-        object.addProperty("DeckLength", "");
-        object.addProperty("DesignId", "");
-        object.addProperty("HoleDelay", "");
-        object.addProperty("HoleDepth", "");
-        object.addProperty("HoleDiameter", "");
-        object.addProperty("HoleID", "");
-        object.addProperty("HoleNo", "");
-        object.addProperty("HoleType", "");
-        object.addProperty("InHoleDelay", "");
-        object.addProperty("RowNo", "");
-        object.addProperty("Spacing", "");
-        object.addProperty("StemmingLength", "");
-        object.addProperty("Subgrade", "");
-        object.addProperty("TielineId", "");
-        object.addProperty("TopX", "");
-        object.addProperty("TopY", "");
-        object.addProperty("TopZ", "");
-        object.addProperty("TotalCharge", "");
-        object.addProperty("VerticalDip", "");
-        object.addProperty("WaterDepth", "");
-
-        mapObjectArray.add(object);
-
-        MainService.insertUpdate3DActualDesignHoleDetailApiCaller(this, mapObjectArray).observe(this, new Observer<JsonObject>() {
-            @Override
-            public void onChanged(JsonObject jsonObject) {
-
+                mapObjectArray.add(object);
             }
-        });
+
+            MainService.insertUpdate3DActualDesignHoleDetailApiCaller(this, mapObjectArray).observe(this, new Observer<JsonObject>() {
+                @Override
+                public void onChanged(JsonObject jsonObject) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

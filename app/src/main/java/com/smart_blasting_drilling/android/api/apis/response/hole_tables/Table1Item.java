@@ -46,7 +46,7 @@ public class Table1Item implements Serializable {
     private Object fragOptimumSize;
 
     @SerializedName("GroundSiteConstant")
-    private int groundSiteConstant;
+    private Object groundSiteConstant;
 
     @SerializedName("RockName")
     private String rockName;
@@ -221,11 +221,11 @@ public class Table1Item implements Serializable {
         return fragOptimumSize;
     }
 
-    public void setGroundSiteConstant(int groundSiteConstant) {
+    public void setGroundSiteConstant(Object groundSiteConstant) {
         this.groundSiteConstant = groundSiteConstant;
     }
 
-    public int getGroundSiteConstant() {
+    public Object getGroundSiteConstant() {
         return groundSiteConstant;
     }
 

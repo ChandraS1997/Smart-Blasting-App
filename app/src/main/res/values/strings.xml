@@ -198,5 +198,10 @@
     <string name="block_length">Block Length</string>
     <string name="hole_delay">Hole Delay</string>
     <string name="in_hole_delay">In Hole Delay</string>
+    <string name="type">Type</string>
+    <string name="length">Length</string>
+    <string name="weight">Weight</string>
+    <string name="explosive">Explosive</string>
+    <string name="cost">Cost</string>
 
 </resources>

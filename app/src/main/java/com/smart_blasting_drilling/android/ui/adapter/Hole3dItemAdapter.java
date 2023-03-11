@@ -2,6 +2,7 @@ package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Res
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.HoleItemBinding;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.List;
@@ -68,64 +70,44 @@ public class Hole3dItemAdapter extends BaseRecyclerAdapter {
         void setDataBind(Response3DTable4HoleChargingDataModel detailData) {
             if (patternType.equals("Staggered")) {
                 if (spaceVal == 1) {
+                    binding.holeStatusTxt.setGravity(Gravity.START);
                     binding.startSpaceView.setVisibility(View.GONE);
                     binding.endSpaceView.setVisibility(View.VISIBLE);
                 } else {
+                    binding.holeStatusTxt.setGravity(Gravity.END);
                     binding.startSpaceView.setVisibility(View.VISIBLE);
                     binding.endSpaceView.setVisibility(View.GONE);
                 }
             } else if (patternType.equals("Rectangular/Square"))  {
+                binding.holeStatusTxt.setGravity(Gravity.START);
                 binding.startSpaceView.setVisibility(View.GONE);
                 binding.endSpaceView.setVisibility(View.VISIBLE);
             }
 
-            binding.holeStatusTxt.setVisibility(View.GONE);
+            binding.holeStatusTxt.setVisibility(View.VISIBLE);
             if (!StringUtill.isEmpty(detailData.getHoleStatus())) {
                 switch (detailData.getHoleStatus()) {
                     case "Completed":
-                        binding.holeStatusTxt.setVisibility(View.VISIBLE);
-                        binding.holeStatusTxt.setText(context.getString(R.string.completed));
                         binding.holeIcon.setImageResource(R.drawable.green_circle);
                         break;
                     case "Work in Progress":
-                        binding.holeStatusTxt.setVisibility(View.VISIBLE);
-                        binding.holeStatusTxt.setText(context.getString(R.string.progress));
                         binding.holeIcon.setImageResource(R.drawable.blue_circle);
                         break;
                     case "Deleted/ Blocked holes/ Do not blast":
-                        binding.holeStatusTxt.setVisibility(View.VISIBLE);
-                        binding.holeStatusTxt.setText(context.getString(R.string.blocked));
                         binding.holeIcon.setImageResource(R.drawable.red_circle);
                         break;
                     default:
-                        binding.holeStatusTxt.setVisibility(View.GONE);
                         binding.holeIcon.setImageResource(R.drawable.circle_hole_pending);
                         break;
                 }
             }
 
+            binding.holeStatusTxt.setText(StringUtill.getString(String.format("R%sH%s", detailData.getRowNo(), detailData.getHoleNo())));
+
             itemView.setOnClickListener(view -> {
-                ((HoleDetail3DModelActivity) context).openHoleDetailDialog(detailData);
+                if (((HoleDetail3DModelActivity) context).holeDetailCallBackListener != null)
+                    ((HoleDetail3DModelActivity) context).holeDetailCallBackListener.setHoleDetailCallBack(detailData);
             });
-
-            try {
-                ViewTreeObserver vto = binding.mainContainerView.getViewTreeObserver();
-                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-
-                        if (binding.mainContainerView.getMeasuredHeight() > 0) {
-                            binding.mainContainerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                            int width = binding.mainContainerView.getMeasuredWidth();
-                            int height = binding.mainContainerView.getMeasuredHeight();
-
-                            Log.e("Width" + width, "  ->  Hieght" + height);
-                        }
-                    }
-                });
-            } catch (Exception e) {
-                e.getLocalizedMessage();
-            }
 
         }
 

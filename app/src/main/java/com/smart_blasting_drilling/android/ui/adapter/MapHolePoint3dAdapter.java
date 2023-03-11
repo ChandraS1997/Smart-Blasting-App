@@ -18,6 +18,7 @@ import com.smart_blasting_drilling.android.databinding.MapHoleColunmItemBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.models.MapHole3DDataModel;
 
@@ -81,7 +82,7 @@ public class MapHolePoint3dAdapter extends BaseRecyclerAdapter {
                     if (appDatabase.projectHoleDetailRowColDao().getAllBladesProjectList().get(0) != null) {
                         Type teamList = new TypeToken<List<Table1Item>>() {
                         }.getType();
-                        AllTablesData tablesData = new Gson().fromJson(appDatabase.projectHoleDetailRowColDao().getAllBladesProject(((HoleDetailActivity) context).bladesRetrieveData.getDesignId()).getProjectHole(), AllTablesData.class);
+                        AllTablesData tablesData = new Gson().fromJson(appDatabase.projectHoleDetailRowColDao().getAllBladesProject(((HoleDetail3DModelActivity) context).bladesRetrieveData.get(0).getDesignId()).getProjectHole(), AllTablesData.class);
                         List<Table1Item> drillPatternDataItemList = tablesData.getTable1();
                         if (!Constants.isListEmpty(drillPatternDataItemList)) {
                             String[] drillPatternDataItem = new String[drillPatternDataItemList.size()];
