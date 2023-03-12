@@ -203,5 +203,6 @@
     <string name="weight">Weight</string>
     <string name="explosive">Explosive</string>
     <string name="cost">Cost</string>
+    <string name="choose_hole_status">Choose Hole Status</string>
 
 </resources>

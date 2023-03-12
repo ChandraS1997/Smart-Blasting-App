@@ -309,7 +309,7 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                 if (appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0) != null) {
 
                     Type siteList = new TypeToken<List<ResponseSiteDetail>>(){}.getType();
-                    List<ResponseSiteDetail> siteDetailList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("Table"), siteList);
+                    List<ResponseSiteDetail> siteDetailList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data"), String.class), JsonObject.class).get("Table"), siteList);
                     if (!Constants.isListEmpty(siteDetailList)) {
                         String[] siteNameList = new String[siteDetailList.size()];
                         for (int i = 0; i < siteDetailList.size(); i++) {
@@ -327,7 +327,7 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                     }
 
                     Type rigList = new TypeToken<List<ResponseRigData>>(){}.getType();
-                    List<ResponseRigData> rigDetailList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("Table1"), rigList);
+                    List<ResponseRigData> rigDetailList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data"), String.class), JsonObject.class).get("Table1"), rigList);
                     if (!Constants.isListEmpty(rigDetailList)) {
                         String[] rigNameList = new String[rigDetailList.size()];
                         for (int i = 0; i < rigDetailList.size(); i++) {
@@ -342,7 +342,7 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                     }
 
                     Type empList = new TypeToken<List<ResponseEmployeeData>>(){}.getType();
-                    List<ResponseEmployeeData> employeeDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("Table6"), empList);
+                    List<ResponseEmployeeData> employeeDataList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data"), String.class), JsonObject.class).get("Table6"), empList);
                     if (!Constants.isListEmpty(employeeDataList)) {
                         String[] employeeNameList = new String[employeeDataList.size()];
                         for (int i = 0; i < employeeDataList.size(); i++) {
@@ -401,7 +401,7 @@ public class ProjectDetailDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.drillMaterialDao().getAllEntityDataList())) {
                 if (appDatabase.drillMaterialDao().getAllEntityDataList().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseDrillMaterialData>>(){}.getType();
-                    List<ResponseDrillMaterialData> drillMaterialDataList = new Gson().fromJson(appDatabase.drillMaterialDao().getAllEntityDataList().get(0).getData(), teamList);
+                    List<ResponseDrillMaterialData> drillMaterialDataList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillMaterialDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data"), String.class), teamList);
                     if (!Constants.isListEmpty(drillMaterialDataList)) {
                         String[] drillMaterialDataItem = new String[drillMaterialDataList.size()];
                         for (int i = 0; i < drillMaterialDataList.size(); i++) {

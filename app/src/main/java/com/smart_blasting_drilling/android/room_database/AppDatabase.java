@@ -15,6 +15,7 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.Explosiv
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.FileTypeTableDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.InitiatingDataDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.InitiatingDeviceDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.MediaUploadDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.MineTableDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.PitTableDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project2DBladesDao;
@@ -26,6 +27,7 @@ import com.smart_blasting_drilling.android.room_database.entities.AllProjectBlad
 import com.smart_blasting_drilling.android.room_database.entities.BlastCodeEntity;
 import com.smart_blasting_drilling.android.room_database.entities.BlastPerformanceEntity;
 import com.smart_blasting_drilling.android.room_database.entities.InitiatingDeviceDataEntity;
+import com.smart_blasting_drilling.android.room_database.entities.MediaUploadEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseDrillMaterialEntity;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ResponseDrillMethodDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.RockDataDao;
@@ -59,7 +61,7 @@ import com.smart_blasting_drilling.android.room_database.entities.UpdatedProject
             , AllMineInfoSurfaceInitiatorEntity.class, ResponseDrillAccessoriesInfoAllDataEntity.class
             , ResponseDrillMethodEntity.class, ResponseDrillMaterialEntity.class, UpdatedProjectDetailEntity.class
             , InitiatingDeviceDataEntity.class, AllProjectBladesModelEntity.class, BlastPerformanceEntity.class
-            , BlastCodeEntity.class}, exportSchema = true,
+            , BlastCodeEntity.class, MediaUploadEntity.class}, exportSchema = true,
     autoMigrations = {})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -86,6 +88,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract AllProjectBladesModelDao allProjectBladesModelDao();
     public abstract BlastPerformanceDao blastPerformanceDao();
     public abstract BlastCodeDao blastCodeDao();
+    public abstract MediaUploadDao mediaUploadDao();
 
     public static class DatabaseMigrations {
         public Migration MIGRATION_2_3 = new Migration(2, 3) {

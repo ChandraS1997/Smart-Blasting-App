@@ -1235,7 +1235,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public Object getUnitCost1(){
-		return unitCost1;
+		return unitCost1 != null ? unitCost1 : "";
 	}
 
 	public void setColId(int colId){
@@ -1403,7 +1403,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public Object getName1(){
-		return name1;
+		return name1 == null ? "" : name1;
 	}
 
 	public void setName2(String name2){
@@ -1747,7 +1747,7 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 	public Object getColor1(){
-		return color1;
+		return color1 != null ? color1 : "";
 	}
 
 	public void setTieLineId(Object tieLineId){

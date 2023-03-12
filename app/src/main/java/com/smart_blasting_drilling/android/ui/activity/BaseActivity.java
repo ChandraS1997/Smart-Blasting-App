@@ -1575,7 +1575,7 @@ public class BaseActivity extends AppCompatActivity {
             for (int j = 0; j < tablesData.get(0).getChargeTypeArray().size(); j++) {
                 JsonObject expUsedDetailObject = new JsonObject();
                 expUsedDetailObject.addProperty("expcode"+(j == 0 ? "" : j), String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getProdId()));
-                expUsedDetailObject.addProperty("qty"+(j == 0 ? "" : j), /*String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getProdQty())*/0);
+                expUsedDetailObject.addProperty("qty"+(j == 0 ? "" : j), String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getLength()));
                 expUsedDetailArray.add(expUsedDetailObject);
             }
 
@@ -1619,9 +1619,19 @@ public class BaseActivity extends AppCompatActivity {
                     chargeDetailsObject.addProperty("Delay2", String.valueOf(tablesData.get(i).getHoleDelay()));
                     chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
                     chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
-                    chargeDetailsObject.addProperty("DeckDepth","");
+                    for (int j = 0; j < tablesData.get(i).getChargeTypeArray().size(); j++) {
+                        if (tablesData.get(i).getChargeTypeArray().get(j).getProdType() == 5) {
+                            chargeDetailsObject.addProperty("DeckDepth", tablesData.get(i).getChargeTypeArray().get(j).getLength());
+                            break;
+                        }
+                    }
                     chargeDetailsObject.addProperty("DeckStart","");
-                    chargeDetailsObject.addProperty("SteamLen", String.valueOf(tablesData.get(i).getStemmingLength()));
+                    for (int j = 0; j < tablesData.get(i).getChargeTypeArray().size(); j++) {
+                        if (tablesData.get(i).getChargeTypeArray().get(j).getProdType() == 4) {
+                            chargeDetailsObject.addProperty("SteamLen", String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getLength()));
+                            break;
+                        }
+                    }
                     chargeDetailsObject.addProperty("WaterDepth", String.valueOf(tablesData.get(i).getWaterDepth()));
                     chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.get(i).getHoleDepth()));
                     chargeDetailsObject.addProperty("Subgrade", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getSubgrade()) ? "" : tablesData.get(i).getSubgrade()));
@@ -1901,15 +1911,15 @@ public class BaseActivity extends AppCompatActivity {
                 JsonArray chargeTypeArray = new JsonArray();
                 for (ChargeTypeArrayItem arrayItem : dataModel.getChargeTypeArray()) {
                     JsonObject chargeTypeObject = new JsonObject();
-                    chargeTypeObject.addProperty("type", arrayItem.getType());
-                    chargeTypeObject.addProperty("name", arrayItem.getName());
+                    chargeTypeObject.addProperty("type", StringUtill.isEmpty(arrayItem.getType()) ? "" : arrayItem.getType());
+                    chargeTypeObject.addProperty("name", StringUtill.isEmpty(arrayItem.getName()) ? "" : arrayItem.getName());
                     chargeTypeObject.addProperty("cost", arrayItem.getCost());
                     chargeTypeObject.addProperty("weight", arrayItem.getWeight());
                     chargeTypeObject.addProperty("length", arrayItem.getLength());
                     chargeTypeObject.addProperty("prodType", arrayItem.getProdType());
                     chargeTypeObject.addProperty("prodId", arrayItem.getProdId());
-                    chargeTypeObject.addProperty("color", arrayItem.getColor());
-                    chargeTypeObject.addProperty("percentage", String.valueOf(arrayItem.getPercentage()));
+                    chargeTypeObject.addProperty("color", StringUtill.isEmpty(arrayItem.getColor()) ? "" : arrayItem.getColor());
+                    chargeTypeObject.addProperty("percentage", StringUtill.isEmpty(String.valueOf(arrayItem.getPercentage())) ? "" : String.valueOf(arrayItem.getPercentage()));
                     chargeTypeArray.add(chargeTypeObject);
                 }
                 object.add("ChargeTypeArray", chargeTypeArray);

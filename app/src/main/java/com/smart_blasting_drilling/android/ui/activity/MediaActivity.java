@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
@@ -30,6 +31,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.hbisoft.pickit.PickiT;
 import com.hbisoft.pickit.PickiTCallbacks;
 import com.nabinbhandari.android.permissions.PermissionHandler;
@@ -40,6 +42,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetri
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.databinding.ActivityMediaBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.room_database.entities.MediaUploadEntity;
 import com.smart_blasting_drilling.android.ui.adapter.MediaAdapter;
 import com.smart_blasting_drilling.android.utils.BitmapUtils;
 import com.smart_blasting_drilling.android.utils.DateUtils;
@@ -51,12 +54,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import wseemann.media.FFmpegMediaMetadataRetriever;
 
 public class MediaActivity extends BaseActivity implements PickiTCallbacks {
 
@@ -89,13 +94,22 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
             designId = getIntent().getExtras().getString("blades_data");
         }
 
-        binding.headerMedia.backImg.setOnClickListener(view -> finish());
+        binding.headerMedia.backImg.setOnClickListener(view -> {
+            addMediaIntoDb();
+            finish();
+        });
 
         //getAllImageFromGallery();
         Log.e("Abc : ", new Gson().toJson(getAllShownImagesPath(this)));
 
         binding.clickhereTv.setOnClickListener(view -> selectImage());
         pickiT = new PickiT(this, this, this);
+
+        if (appDatabase.mediaUploadDao().isExistItem(designId)) {
+            String data = appDatabase.mediaUploadDao().getSingleItemEntity(designId).getData();
+            List<String> imageList = new Gson().fromJson(data, new TypeToken<List<String>>(){}.getType());
+            AppDelegate.getInstance().setImgList(imageList);
+        }
 
         imageListBlank();
 
@@ -107,6 +121,26 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
 
         binding.addCameraFab.setOnClickListener(view -> selectImage());
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        addMediaIntoDb();
+    }
+
+    private void addMediaIntoDb() {
+        if (!Constants.isListEmpty(AppDelegate.getInstance().getImgList())) {
+            String data = new Gson().fromJson(new Gson().toJson(AppDelegate.getInstance().getImgList()), String.class);
+            if (appDatabase.mediaUploadDao().isExistItem(designId)) {
+                appDatabase.mediaUploadDao().updateItem(designId, data);
+            } else {
+                MediaUploadEntity mediaUploadEntity = new MediaUploadEntity();
+                mediaUploadEntity.setProjectId(designId);
+                mediaUploadEntity.setData(data);
+                appDatabase.mediaUploadDao().insertItem(mediaUploadEntity);
+            }
+        }
     }
 
     private void imageListBlank() {
@@ -418,8 +452,26 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         });
     }
 
+    public void VideoToGif(String uri) {
+        Uri videoFileUri = Uri.parse(uri);
+
+        FFmpegMediaMetadataRetriever retriever = new FFmpegMediaMetadataRetriever();
+        retriever.setDataSource(uri);
+        List<Bitmap> rev = new ArrayList<Bitmap>();
+        MediaPlayer mp = MediaPlayer.create(this, videoFileUri);
+        int millis = mp.getDuration();
+        System.out.println("starting point");
+        for (int i = 100000; i <=millis * 1000; i += 100000*2) {
+            Bitmap bitmap = retriever.getFrameAtTime(i, FFmpegMediaMetadataRetriever.OPTION_CLOSEST);
+            rev.add(bitmap);
+        }
+        Log.e("Bitmap : ", new Gson().toJson(rev));
+    }
+
     private void uploadMediaApiCaller(String extension) {
         mResultsBitmap = BitmapUtils.resamplePic(this, imgPath);
+//        if (extension.equalsIgnoreCase(".mp4"))
+//            VideoToGif(imgPath);
         BitmapUtils.saveImage(this, mResultsBitmap, extension, Uri.parse(imgPath));
         showLoader();
         Map<String, RequestBody> map = new HashMap<>();

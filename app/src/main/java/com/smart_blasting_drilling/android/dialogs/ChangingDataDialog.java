@@ -20,6 +20,7 @@ import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.DialogChargingDataViewBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
@@ -48,7 +49,7 @@ public class ChangingDataDialog extends BaseDialogFragment {
     ProjectHoleDetailRowColDao entity;
     ResponseBladesRetrieveData bladesRetrieveData;
 
-    List<ChargingDataModel> chargingDataModelList = new ArrayList<>();
+    List<ChargeTypeArrayItem> chargingDataModelList = new ArrayList<>();
     ChargingDataListAdapter adapter;
 
 
@@ -112,11 +113,65 @@ public class ChangingDataDialog extends BaseDialogFragment {
 
     }
 
+    private List<ChargeTypeArrayItem> setChargeArray() {
+        List<ChargeTypeArrayItem> arrayItemList = new ArrayList<>();
+
+        try {
+            ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+            arrayItem.setName(holeDetailData.getName());
+            arrayItem.setColor(holeDetailData.getColor());
+            arrayItem.setCost(holeDetailData.getUnitCost());
+            if (holeDetailData.getExpCode() != null)
+                arrayItem.setProdId(((Double) holeDetailData.getExpCode()).intValue());
+            if (holeDetailData.getExpType() != null)
+                arrayItem.setProdType(((Double) holeDetailData.getExpType()).intValue());
+            arrayItemList.add(arrayItem);
+
+            arrayItem = new ChargeTypeArrayItem();
+            arrayItem.setName(String.valueOf(holeDetailData.getName1()));
+            arrayItem.setColor(String.valueOf(holeDetailData.getColor1()));
+            arrayItem.setCost(holeDetailData.getUnitCost1());
+            if (holeDetailData.getExpCode1() != null)
+                arrayItem.setProdId(((Double) holeDetailData.getExpCode1()).intValue());
+            if (holeDetailData.getExpType1() != null)
+                arrayItem.setProdType(((Double) holeDetailData.getExpType1()).intValue());
+            arrayItemList.add(arrayItem);
+
+            arrayItem = new ChargeTypeArrayItem();
+            arrayItem.setName(holeDetailData.getName2());
+            arrayItem.setColor(holeDetailData.getColor2());
+            arrayItem.setCost(holeDetailData.getUnitCost2());
+            if (holeDetailData.getExpCode2() != null)
+                arrayItem.setProdId(((Double) holeDetailData.getExpCode2()).intValue());
+            if (holeDetailData.getExpType2() != null)
+                arrayItem.setProdType(((Double) holeDetailData.getExpType2()).intValue());
+            arrayItemList.add(arrayItem);
+
+            arrayItem = new ChargeTypeArrayItem();
+            arrayItem.setLength(holeDetailData.getStemLngth());
+            arrayItemList.add(arrayItem);
+
+            arrayItem = new ChargeTypeArrayItem();
+            arrayItem.setLength(holeDetailData.getDeckLength1());
+            arrayItemList.add(arrayItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return arrayItemList;
+    }
+
     @Override
     public void loadData() {
         entity = appDatabase.projectHoleDetailRowColDao();
-        if (Constants.isListEmpty(chargingDataModelList))
-            chargingDataModelList.add(new ChargingDataModel());
+        /*if (Constants.isListEmpty(chargingDataModelList))
+            chargingDataModelList.add(new ChargeTypeArrayItem());
+        else {
+            chargingDataModelList.clear();
+            chargingDataModelList.addAll(setChargeArray());
+        }*/
+
+        chargingDataModelList.clear();
+        chargingDataModelList.addAll(setChargeArray());
 
         adapter = new ChargingDataListAdapter(mContext, chargingDataModelList);
         binding.chargingList.setAdapter(adapter);
@@ -125,33 +180,53 @@ public class ChangingDataDialog extends BaseDialogFragment {
             dismiss();
         });
 
+        binding.addChargingFab.setVisibility(View.GONE);
+
         binding.addChargingFab.setOnClickListener(view -> {
             if (adapter != null)
                 adapter.addItemInArray();
-            chargingDataModelList.add(new ChargingDataModel());
-            adapter.notifyDataSetChanged();
+            chargingDataModelList.add(new ChargeTypeArrayItem());
+            adapter.notifyItemChanged(chargingDataModelList.size() - 1);
             binding.chargingList.scrollToPosition(chargingDataModelList.size() - 1);
         });
 
         binding.saveProceedBtn.setOnClickListener(view -> {
-            Log.e("Item List : ", new Gson().toJson(adapter.getJsonArray()));
-        });
-
-        /*binding.saveProceedBtn.setOnClickListener(view -> {
             UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
             UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
 
-            *//*updateHoleDetailData.setStemLngth(StringUtill.isEmpty(binding.spinnerStem.getText().toString()) ? 0 : Integer.parseInt(binding.spinnerStem.getText().toString()));
-            updateHoleDetailData.setColName(StringUtill.getString(binding.spinnerColumn.getText().toString()));
-            updateHoleDetailData.setColLength(StringUtill.getString(binding.columnLengthEt.getText().toString()));
-            updateHoleDetailData.setColWt(StringUtill.getString(binding.columnWeightEt.getText().toString()));
-            updateHoleDetailData.setBtmName(StringUtill.getString(binding.bottomName.getText().toString()));
-            updateHoleDetailData.setBtmLength(Integer.parseInt(StringUtill.getString(binding.bottomLengthEt.getText().toString())));
-            updateHoleDetailData.setBtmWt(Integer.parseInt(StringUtill.getString(binding.bottomWeightEt.getText().toString())));
-            updateHoleDetailData.setBsterName(StringUtill.getString(binding.busterName.getText().toString()));
-            updateHoleDetailData.setBsterLength(Integer.parseInt(StringUtill.getString(binding.busterLengthEt.getText().toString())));
-            updateHoleDetailData.setBsterWt(Integer.parseInt(StringUtill.getString(binding.busterWeightEt.getText().toString())));
-*//*
+            List<ChargeTypeArrayItem> chargeTypeArrayItemList = adapter.getJsonArray();
+            for (int i = 0; i < chargeTypeArrayItemList.size(); i++) {
+                if ((i + 1) == 1) {
+                    updateHoleDetailData.setExpCode(chargeTypeArrayItemList.get(i).getProdId());
+                    updateHoleDetailData.setName(chargeTypeArrayItemList.get(i).getName());
+                    updateHoleDetailData.setColor(chargeTypeArrayItemList.get(i).getColor());
+                    updateHoleDetailData.setExpType(chargeTypeArrayItemList.get(i).getProdType());
+                    updateHoleDetailData.setUnitCost(chargeTypeArrayItemList.get(i).getCost());
+                }
+                if ((i + 1) == 2) {
+                    updateHoleDetailData.setExpCode1(chargeTypeArrayItemList.get(i).getProdId());
+                    updateHoleDetailData.setName1(chargeTypeArrayItemList.get(i).getName());
+                    updateHoleDetailData.setColor1(chargeTypeArrayItemList.get(i).getColor());
+                    updateHoleDetailData.setExpType1(chargeTypeArrayItemList.get(i).getProdType());
+                    updateHoleDetailData.setUnitCost1(chargeTypeArrayItemList.get(i).getCost());
+                }
+                if ((i + 1) == 3) {
+                    updateHoleDetailData.setBsterName(chargeTypeArrayItemList.get(i).getName());
+                    updateHoleDetailData.setBsterLength(((Double) chargeTypeArrayItemList.get(i).getLength()).intValue());
+                    updateHoleDetailData.setBsterWt(chargeTypeArrayItemList.get(i).getWeight());
+                    updateHoleDetailData.setExpCode2(chargeTypeArrayItemList.get(i).getProdId());
+                    updateHoleDetailData.setName2(chargeTypeArrayItemList.get(i).getName());
+                    updateHoleDetailData.setColor2(chargeTypeArrayItemList.get(i).getColor());
+                    updateHoleDetailData.setExpType2(chargeTypeArrayItemList.get(i).getProdType());
+                    updateHoleDetailData.setUnitCost2(chargeTypeArrayItemList.get(i).getCost());
+                }
+                if ((i + 1) == 4) {
+                    updateHoleDetailData.setStemLngth(chargeTypeArrayItemList.get(i).getLength());
+                }
+                if ((i + 1) == 5) {
+                    updateHoleDetailData.setDeckLength1(((Double) chargeTypeArrayItemList.get(i).getLength()).intValue());
+                }
+            }
             bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
             bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
 
@@ -192,7 +267,7 @@ public class ChangingDataDialog extends BaseDialogFragment {
             } else {
                 dismiss();
             }
-        });*/
+        });
 
     }
 

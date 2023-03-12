@@ -216,19 +216,19 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         }
 
         List<TableEditModel> editModelArrayList = new ArrayList<>();
-        editModelArrayList.add(new TableEditModel("Row No"));
-        editModelArrayList.add(new TableEditModel("Hole No"));
-        editModelArrayList.add(new TableEditModel("Hole Id"));
-        editModelArrayList.add(new TableEditModel("Hole Depth"));
-        editModelArrayList.add(new TableEditModel("Hole Status"));
-        editModelArrayList.add(new TableEditModel("Hole Angle"));
-        editModelArrayList.add(new TableEditModel("Diameter"));
-        editModelArrayList.add(new TableEditModel("Burden"));
-        editModelArrayList.add(new TableEditModel("Spacing"));
-        editModelArrayList.add(new TableEditModel("X"));
-        editModelArrayList.add(new TableEditModel("Y"));
-        editModelArrayList.add(new TableEditModel("Z"));
-        editModelArrayList.add(new TableEditModel("Charging"));
+        editModelArrayList.add(new TableEditModel("Row No", "Row No"));
+        editModelArrayList.add(new TableEditModel("Hole No", "Hole No"));
+        editModelArrayList.add(new TableEditModel("Hole Id", "Hole Id"));
+        editModelArrayList.add(new TableEditModel("Hole Depth", "Hole Depth"));
+        editModelArrayList.add(new TableEditModel("Hole Status", "Hole Status"));
+        editModelArrayList.add(new TableEditModel("Hole Angle", "Hole Angle"));
+        editModelArrayList.add(new TableEditModel("Diameter", "Diameter"));
+        editModelArrayList.add(new TableEditModel("Burden", "Burden"));
+        editModelArrayList.add(new TableEditModel("Spacing", "Spacing"));
+        editModelArrayList.add(new TableEditModel("X", "X"));
+        editModelArrayList.add(new TableEditModel("Y", "Y"));
+        editModelArrayList.add(new TableEditModel("Z","Z"));
+        editModelArrayList.add(new TableEditModel("Charging", "Charging"));
         return editModelArrayList;
     }
 
@@ -363,9 +363,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     public void setHoleDetailDialog(ResponseBladesRetrieveData bladesRetrieveData, ResponseHoleDetailData holeDetailData) {
-        ProjectHoleDetailRowColDao entity;
         ResponseHoleDetailData updateHoleDetailData = holeDetailData;
-        entity = appDatabase.projectHoleDetailRowColDao();
         if (holeDetailData != null) {
             binding.holeDetailLayout.holeDepthEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDepth())));
             String[] status = new String[]{"Pending Hole", "Work in Progress", "Completed", "Deleted/ Blocked holes/ Do not blast"};
@@ -391,8 +389,6 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         });
 
         binding.holeDetailLayout.saveProceedBtn.setOnClickListener(view -> {
-            UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
-            UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
 
             updateHoleDetailData.setHoleDepth(StringUtill.isEmpty(binding.holeDetailLayout.holeDepthEt.getText().toString()) ? 0 : Integer.parseInt(binding.holeDetailLayout.holeDepthEt.getText().toString()));
             updateHoleDetailData.setHoleAngle(StringUtill.isEmpty(binding.holeDetailLayout.holeAngleEt.getText().toString()) ? 0 : Integer.parseInt(binding.holeDetailLayout.holeAngleEt.getText().toString()));
@@ -404,59 +400,67 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             updateHoleDetailData.setZ(StringUtill.isEmpty(binding.holeDetailLayout.zEt.getText().toString()) ? 0 : binding.holeDetailLayout.zEt.getText().toString());
             updateHoleDetailData.setHoleStatus(StringUtill.getString(binding.holeDetailLayout.holeStatusSpinner.getText().toString()));
 
-            bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
-            bladesEntity.setHoleId(holeDetailData.getHoleNo());
-            bladesEntity.setRowId((int) holeDetailData.getRowNo());
-            bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
-
-            if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()), (int) holeDetailData.getRowNo(), holeDetailData.getHoleNo())) {
-                updateProjectBladesDao.insertProject(bladesEntity);
-            } else {
-                updateProjectBladesDao.updateProject(bladesEntity);
-            }
-
-            String dataStr = "";
-
-            AllTablesData allTablesData = this.allTablesData;
-            if (allTablesData != null) {
-                List<ResponseHoleDetailData> holeDetailDataList = allTablesData.getTable2();
-                if (!Constants.isListEmpty(holeDetailDataList)) {
-                    for (int i = 0; i < holeDetailDataList.size(); i++) {
-                        if (holeDetailDataList.get(i).getRowNo() == updateHoleDetailData.getRowNo() && holeDetailDataList.get(i).getHoleID().equals(updateHoleDetailData.getHoleID())) {
-                            holeDetailDataList.set(i, updateHoleDetailData);
-                        } else {
-                            holeDetailDataList.set(i, holeDetailDataList.get(i));
-                        }
-                    }
-
-                    allTablesData.setTable2(holeDetailDataList);
-                    dataStr = new Gson().toJson(allTablesData);
-
-                    if (!entity.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
-                        entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(updateHoleDetailData.getDesignId()), bladesRetrieveData.isIs3dBlade(), dataStr));
-                    } else {
-                        entity.updateProject(String.valueOf(updateHoleDetailData.getDesignId()), dataStr);
-                    }
-
-                }
-            }
-
-            AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(updateHoleDetailData.getDesignId()));
-
-//            ((BaseActivity) mContext).setInsertUpdateHoleDetailSync(((HoleDetailActivity) mContext).bladesRetrieveData, updateHoleDetailData, modelEntity != null ? modelEntity.getProjectCode() : "0");
-
-            ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
-            ProjectHoleDetailRowColEntity colEntity = dao.getAllBladesProject(String.valueOf(holeDetailData.getDesignId()));
-            allTablesData = new Gson().fromJson(colEntity.getProjectHole(), AllTablesData.class);
-
-            if (((HoleDetailActivity) this).rowItemDetail != null)
-                ((HoleDetailActivity) this).rowItemDetail.setRowOfTable(((HoleDetailActivity) this).rowPageVal, allTablesData);
-
-            if (((HoleDetailActivity) this).mapViewDataUpdateLiveData != null)
-                ((HoleDetailActivity) this).mapViewDataUpdateLiveData.setValue(true);
+            updateEditedDataIntoDb(updateHoleDetailData);
 
             binding.holeDetailLayoutContainer.setVisibility(View.GONE);
         });
+    }
+
+    public void updateEditedDataIntoDb(ResponseHoleDetailData updateHoleDetailData) {
+        ProjectHoleDetailRowColDao entity = appDatabase.projectHoleDetailRowColDao();
+        UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
+        UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
+
+        bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
+        bladesEntity.setHoleId(updateHoleDetailData.getHoleNo());
+        bladesEntity.setRowId((int) updateHoleDetailData.getRowNo());
+        bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
+
+        if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()), (int) updateHoleDetailData.getRowNo(), updateHoleDetailData.getHoleNo())) {
+            updateProjectBladesDao.insertProject(bladesEntity);
+        } else {
+            updateProjectBladesDao.updateProject(bladesEntity);
+        }
+
+        String dataStr = "";
+
+        AllTablesData allTablesData = this.allTablesData;
+        if (allTablesData != null) {
+            List<ResponseHoleDetailData> holeDetailDataList = allTablesData.getTable2();
+            if (!Constants.isListEmpty(holeDetailDataList)) {
+                for (int i = 0; i < holeDetailDataList.size(); i++) {
+                    if (holeDetailDataList.get(i).getRowNo() == updateHoleDetailData.getRowNo() && holeDetailDataList.get(i).getHoleID().equals(updateHoleDetailData.getHoleID())) {
+                        holeDetailDataList.set(i, updateHoleDetailData);
+                    } else {
+                        holeDetailDataList.set(i, holeDetailDataList.get(i));
+                    }
+                }
+
+                allTablesData.setTable2(holeDetailDataList);
+                dataStr = new Gson().toJson(allTablesData);
+
+                if (!entity.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
+                    entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(updateHoleDetailData.getDesignId()), bladesRetrieveData.isIs3dBlade(), dataStr));
+                } else {
+                    entity.updateProject(String.valueOf(updateHoleDetailData.getDesignId()), dataStr);
+                }
+
+            }
+        }
+
+        AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(updateHoleDetailData.getDesignId()));
+
+//            ((BaseActivity) mContext).setInsertUpdateHoleDetailSync(((HoleDetailActivity) mContext).bladesRetrieveData, updateHoleDetailData, modelEntity != null ? modelEntity.getProjectCode() : "0");
+
+        ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
+        ProjectHoleDetailRowColEntity colEntity = dao.getAllBladesProject(String.valueOf(updateHoleDetailData.getDesignId()));
+        allTablesData = new Gson().fromJson(colEntity.getProjectHole(), AllTablesData.class);
+
+        if (((HoleDetailActivity) this).rowItemDetail != null)
+            ((HoleDetailActivity) this).rowItemDetail.setRowOfTable(((HoleDetailActivity) this).rowPageVal, allTablesData);
+
+        if (((HoleDetailActivity) this).mapViewDataUpdateLiveData != null)
+            ((HoleDetailActivity) this).mapViewDataUpdateLiveData.setValue(true);
     }
 
 }

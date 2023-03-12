@@ -16,15 +16,25 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
+import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.databinding.DialogChargingDataViewBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
+import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
+import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
 import com.smart_blasting_drilling.android.ui.adapter.Charging3dDataListAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.ChargingDataListAdapter;
 import com.smart_blasting_drilling.android.ui.models.ChargingDataModel;
@@ -123,12 +133,80 @@ public class Charging3dDataDialog extends BaseDialogFragment {
             if (adapter != null)
                 adapter.addItemInArray();
             chargingDataModelList.add(new ChargeTypeArrayItem());
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemChanged(chargingDataModelList.size() - 1);
             binding.chargingList.scrollToPosition(chargingDataModelList.size() - 1);
         });
 
         binding.saveProceedBtn.setOnClickListener(view -> {
-            Log.e("Item List : ", new Gson().toJson(adapter.getJsonArray()));
+            allTablesData.setChargeTypeArray(new Gson().toJson(adapter.getJsonArray()));
+
+            UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
+            UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
+
+            bladesEntity.setData(new Gson().toJson(allTablesData));
+            bladesEntity.setHoleId(Integer.parseInt(String.valueOf(allTablesData.getHoleNo())));
+            bladesEntity.setRowId(Integer.parseInt(String.valueOf(allTablesData.getRowNo())));
+            bladesEntity.setDesignId(String.valueOf(allTablesData.getDesignId()));
+
+            if (!updateProjectBladesDao.isExistProject(String.valueOf(allTablesData.getDesignId()), Integer.parseInt(String.valueOf(allTablesData.getRowNo())), Integer.parseInt(String.valueOf(allTablesData.getHoleNo())))) {
+                updateProjectBladesDao.insertProject(bladesEntity);
+            } else {
+                updateProjectBladesDao.updateProject(bladesEntity);
+            }
+
+            JsonElement element = AppDelegate.getInstance().getHole3DDataElement();
+            List<Response3DTable4HoleChargingDataModel> allTablesDataChild = new ArrayList<>();
+            if (element != null) {
+                JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
+                for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
+                    holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
+                }
+                if (!Constants.isListEmpty(holeDetailDataList)) {
+                    for (int i = 0; i < holeDetailDataList.size(); i++) {
+                        if (String.valueOf(allTablesData.getRowNo()).equals(String.valueOf(holeDetailDataList.get(i).getRowNo())) && holeDetailDataList.get(i).getHoleID().equals(allTablesData.getHoleID())) {
+                            holeDetailDataList.set(i, allTablesData);
+                        } else {
+                            holeDetailDataList.set(i, holeDetailDataList.get(i));
+                        }
+                    }
+
+                    array.set(3, new Gson().fromJson(new Gson().toJson(holeDetailDataList), JsonElement.class));
+                    JsonObject jsonObject = new JsonObject();
+                    JsonPrimitive primitive = new JsonPrimitive(new Gson().toJson(array));
+                    jsonObject.add("GetAll3DDesignInfoResult", primitive);
+
+                    if (!entity.isExistProject(String.valueOf(allTablesData.getDesignId()))) {
+                        entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(allTablesData.getDesignId()), true, new Gson().toJson(jsonObject)));
+                    } else {
+                        entity.updateProject(String.valueOf(allTablesData.getDesignId()), new Gson().toJson(jsonObject));
+                    }
+
+                }
+            }
+
+            try {
+                ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
+                ProjectHoleDetailRowColEntity colEntity = dao.getAllBladesProject(allTablesData.getDesignId());
+
+                JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) new Gson().fromJson(colEntity.getProjectHole(), JsonElement.class)).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
+                for (JsonElement e : new Gson().fromJson(array.get(3), JsonArray.class)) {
+                    holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
+                }
+
+                if (((HoleDetail3DModelActivity) mContext).rowItemDetail != null)
+                    ((HoleDetail3DModelActivity) mContext).rowItemDetail.setRowOfTable(((HoleDetail3DModelActivity) mContext).rowPageVal, holeDetailDataList);
+
+                if (((HoleDetail3DModelActivity) mContext).mapViewDataUpdateLiveData != null)
+                    ((HoleDetail3DModelActivity) mContext).mapViewDataUpdateLiveData.setValue(true);
+
+            } catch (Exception e) {
+                e.getLocalizedMessage();
+            }
+
+            dismiss();
+
         });
 
     }

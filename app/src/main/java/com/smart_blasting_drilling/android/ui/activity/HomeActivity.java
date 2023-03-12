@@ -35,6 +35,7 @@ import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Res
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable7DesignElementDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApis;
+import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
@@ -147,7 +148,9 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void callBaseApis() {
-        getMinePitZoneBenchApiCaller();
+        if (BaseApplication.getInstance().isInternetConnected(this)) {
+            getMinePitZoneBenchApiCaller();
+        }
     }
 
     private void setDownloadDataView() {
@@ -472,7 +475,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.mineTableDao().getAllBladesProject())) {
                                         appDatabase.mineTableDao().insertProject(mineTableEntity);
                                     } else {
-                                        appDatabase.mineTableDao().updateProject(0, new Gson().toJson(mineTableEntity));
+                                        appDatabase.mineTableDao().updateProject(1, new Gson().toJson(mineTableEntity));
                                     }
                                 }
                                 if (allTablesData.getTable1() != null) {
@@ -481,7 +484,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.benchTableDao().getAllBladesProject())) {
                                         appDatabase.benchTableDao().insertProject(benchTableEntity);
                                     } else {
-                                        appDatabase.benchTableDao().updateProject(0, new Gson().toJson(benchTableEntity));
+                                        appDatabase.benchTableDao().updateProject(1, new Gson().toJson(benchTableEntity));
                                     }
                                 }
                                 if (allTablesData.getTable2() != null) {
@@ -490,7 +493,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.zoneTableDao().getAllBladesProject())) {
                                         appDatabase.zoneTableDao().insertProject(zoneTableEntity);
                                     } else {
-                                        appDatabase.zoneTableDao().updateProject(0, new Gson().toJson(zoneTableEntity));
+                                        appDatabase.zoneTableDao().updateProject(1, new Gson().toJson(zoneTableEntity));
                                     }
                                 }
                                 if (allTablesData.getTable3() != null) {
@@ -499,7 +502,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject())) {
                                         appDatabase.pitTableDao().insertProject(pitTableEntity);
                                     } else {
-                                        appDatabase.pitTableDao().updateProject(0, new Gson().toJson(pitTableEntity));
+                                        appDatabase.pitTableDao().updateProject(1, new Gson().toJson(pitTableEntity));
                                     }
                                 }
                                 if (allTablesData.getTable4() != null) {
@@ -508,7 +511,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.typeTableDao().getAllBladesProject())) {
                                         appDatabase.typeTableDao().insertProject(typeTableEntity);
                                     } else {
-                                        appDatabase.typeTableDao().updateProject(0, new Gson().toJson(typeTableEntity));
+                                        appDatabase.typeTableDao().updateProject(1, new Gson().toJson(typeTableEntity));
                                     }
                                 }
                                 if (allTablesData.getTable5() != null) {
@@ -517,7 +520,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.fileDetailsTableDao().getAllBladesProject())) {
                                         appDatabase.fileDetailsTableDao().insertProject(fileDetailsTableEntity);
                                     } else {
-                                        appDatabase.fileDetailsTableDao().updateProject(0, new Gson().toJson(fileDetailsTableEntity));
+                                        appDatabase.fileDetailsTableDao().updateProject(1, new Gson().toJson(fileDetailsTableEntity));
                                     }
                                 }
                             } catch (Exception e) {
@@ -647,7 +650,7 @@ public class HomeActivity extends BaseActivity {
                                     if (Constants.isListEmpty(appDatabase.allMineInfoSurfaceInitiatorDao().getAllBladesProject())) {
                                         appDatabase.allMineInfoSurfaceInitiatorDao().insertProject(entity);
                                     } else {
-                                        appDatabase.allMineInfoSurfaceInitiatorDao().updateProject(0, new Gson().toJson(entity));
+                                        appDatabase.allMineInfoSurfaceInitiatorDao().updateProject(1, new Gson().toJson(entity));
                                     }
                                 } catch (Exception e) {
                                     Log.e(NODATAFOUND, e.getMessage());
@@ -683,7 +686,7 @@ public class HomeActivity extends BaseActivity {
                                 if (Constants.isListEmpty(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject())) {
                                     appDatabase.drillAccessoriesInfoAllDataDao().insertProject(entity);
                                 } else {
-                                    appDatabase.drillAccessoriesInfoAllDataDao().updateProject(0, new Gson().toJson(entity));
+                                    appDatabase.drillAccessoriesInfoAllDataDao().updateProject(1, new Gson().toJson(entity));
                                 }
                             } catch (Exception e) {
                                 Log.e(NODATAFOUND, e.getMessage());
@@ -749,7 +752,7 @@ public class HomeActivity extends BaseActivity {
                                 if (Constants.isListEmpty(appDatabase.drillMaterialDao().getAllEntityDataList())) {
                                     appDatabase.drillMaterialDao().insertItem(entity);
                                 } else {
-                                    appDatabase.drillMaterialDao().updateItem(0, new Gson().toJson(entity));
+                                    appDatabase.drillMaterialDao().updateItem(1, new Gson().toJson(entity));
                                 }
                             } catch (Exception e) {
                                 Log.e(NODATAFOUND, e.getMessage());

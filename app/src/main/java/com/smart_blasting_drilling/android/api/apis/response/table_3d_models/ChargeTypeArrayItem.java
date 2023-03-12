@@ -46,7 +46,7 @@ public class ChargeTypeArrayItem implements Serializable {
 	}
 
 	public Object getPercentage(){
-		return percentage;
+		return percentage != null ? percentage : "";
 	}
 
 	public void setLength(Object length){

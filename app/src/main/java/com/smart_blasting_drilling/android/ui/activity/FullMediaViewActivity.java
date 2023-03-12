@@ -2,6 +2,7 @@ package com.smart_blasting_drilling.android.ui.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.MediaController;
 
 import androidx.annotation.Nullable;
@@ -24,10 +25,13 @@ public class FullMediaViewActivity extends BaseActivity {
 
         StatusBarUtils.statusBarColor(this, R.color._FFA722);
 
+        binding.headerMedia.backImg.setOnClickListener(view -> finish());
+
         if (isBundleIntentNotEmpty()) {
             uri = getIntent().getExtras().getString("media_uri");
             String extension = uri.substring(uri.lastIndexOf("."));
             if (extension.equalsIgnoreCase(".MP4")) {
+                binding.VideoView.setVisibility(View.VISIBLE);
                 binding.VideoView.setVideoURI(Uri.parse(uri));
                 MediaController mediaController = new MediaController(this);
                 mediaController.setAnchorView(binding.VideoView);
@@ -35,6 +39,7 @@ public class FullMediaViewActivity extends BaseActivity {
                 binding.VideoView.setMediaController(mediaController);
                 binding.VideoView.start();
             } else {
+                binding.photoView.setVisibility(View.VISIBLE);
                 Glide.with(this).load(uri).into(binding.photoView);
             }
         }

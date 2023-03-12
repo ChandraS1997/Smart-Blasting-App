@@ -216,31 +216,31 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         }
 
         List<TableEditModel> editModelArrayList = new ArrayList<>();
-        editModelArrayList.add(new TableEditModel("Row No"));
-        editModelArrayList.add(new TableEditModel("Hole No"));
-        editModelArrayList.add(new TableEditModel("Hole Id"));
-        editModelArrayList.add(new TableEditModel("Hole Type"));
-        editModelArrayList.add(new TableEditModel("Hole Depth"));
-        editModelArrayList.add(new TableEditModel("Hole Status"));
-        editModelArrayList.add(new TableEditModel("VerticalDip"));
-        editModelArrayList.add(new TableEditModel("Diameter"));
-        editModelArrayList.add(new TableEditModel("Burden"));
-        editModelArrayList.add(new TableEditModel("Spacing"));
-        editModelArrayList.add(new TableEditModel("Subgrade"));
-        editModelArrayList.add(new TableEditModel("TopX"));
-        editModelArrayList.add(new TableEditModel("TopY"));
-        editModelArrayList.add(new TableEditModel("TopZ"));
-        editModelArrayList.add(new TableEditModel("BottomX"));
-        editModelArrayList.add(new TableEditModel("BottomY"));
-        editModelArrayList.add(new TableEditModel("BottomZ"));
-        editModelArrayList.add(new TableEditModel("TotalCharge"));
-        editModelArrayList.add(new TableEditModel("ChargeLength"));
-        editModelArrayList.add(new TableEditModel("StemmingLength"));
-        editModelArrayList.add(new TableEditModel("DeckLength"));
-        editModelArrayList.add(new TableEditModel("Block"));
-        editModelArrayList.add(new TableEditModel("BlockLength"));
-        editModelArrayList.add(new TableEditModel("InHoleDelay"));
-        editModelArrayList.add(new TableEditModel("Charging"));
+        editModelArrayList.add(new TableEditModel("Row No", "Row No"));
+        editModelArrayList.add(new TableEditModel("Hole No", "Hole No"));
+        editModelArrayList.add(new TableEditModel("Hole Id", "Hole Id"));
+        editModelArrayList.add(new TableEditModel("Hole Type", "Hole Type"));
+        editModelArrayList.add(new TableEditModel("Hole Depth", "Hole Depth"));
+        editModelArrayList.add(new TableEditModel("Hole Status", "Hole Status"));
+        editModelArrayList.add(new TableEditModel("VerticalDip", "VerticalDip"));
+        editModelArrayList.add(new TableEditModel("Diameter", "Diameter"));
+        editModelArrayList.add(new TableEditModel("Burden", "Burden"));
+        editModelArrayList.add(new TableEditModel("Spacing", "Spacing"));
+        editModelArrayList.add(new TableEditModel("Subgrade", "Subgrade"));
+        editModelArrayList.add(new TableEditModel("TopX", "TopX"));
+        editModelArrayList.add(new TableEditModel("TopY", "TopY"));
+        editModelArrayList.add(new TableEditModel("TopZ", "TopZ"));
+        editModelArrayList.add(new TableEditModel("BottomX" ,"BottomX"));
+        editModelArrayList.add(new TableEditModel("BottomY", "BottomY"));
+        editModelArrayList.add(new TableEditModel("BottomZ", "BottomZ"));
+        editModelArrayList.add(new TableEditModel("TotalCharge", "TotalCharge"));
+        editModelArrayList.add(new TableEditModel("ChargeLength", "ChargeLength"));
+        editModelArrayList.add(new TableEditModel("StemmingLength", "StemmingLength"));
+        editModelArrayList.add(new TableEditModel("DeckLength", "DeckLength"));
+        editModelArrayList.add(new TableEditModel("Block", "Block"));
+        editModelArrayList.add(new TableEditModel("BlockLength", "BlockLength"));
+        editModelArrayList.add(new TableEditModel("InHoleDelay", "InHoleDelay"));
+        editModelArrayList.add(new TableEditModel("Charging", "Charging"));
         return editModelArrayList;
     }
 
@@ -391,7 +391,6 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     }
 
     public void set3dHoleDetail(Response3DTable1DataModel bladesRetrieveData, Response3DTable4HoleChargingDataModel holeDetailData) {
-        ProjectHoleDetailRowColDao entity = appDatabase.projectHoleDetailRowColDao();
 
         Response3DTable4HoleChargingDataModel updateHoleDetailData = holeDetailData;
         if (holeDetailData != null) {
@@ -433,8 +432,6 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         });
 
         binding.holeDetailLayout.saveProceedBtn.setOnClickListener(view -> {
-            UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
-            UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
 
             updateHoleDetailData.setHoleDepth(StringUtill.isEmpty(binding.holeDetailLayout.holeDepthEt.getText().toString()) ? "0" : binding.holeDetailLayout.holeDepthEt.getText().toString());
             updateHoleDetailData.setVerticalDip(StringUtill.isEmpty(binding.holeDetailLayout.holeAngleEt.getText().toString()) ? "0" : binding.holeDetailLayout.holeAngleEt.getText().toString());
@@ -461,79 +458,87 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
             updateHoleDetailData.setHoleStatus(StringUtill.getString(binding.holeDetailLayout.holeStatusSpinner.getText().toString()));
 
-            bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
-            bladesEntity.setHoleId(Integer.parseInt(String.valueOf(holeDetailData.getHoleNo())));
-            bladesEntity.setRowId(Integer.parseInt(String.valueOf(holeDetailData.getRowNo())));
-            bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
+            updateEditedDataIntoDb(updateHoleDetailData);
+        });
+    }
 
-            if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()), Integer.parseInt(String.valueOf(holeDetailData.getRowNo())), Integer.parseInt(String.valueOf(holeDetailData.getHoleNo())))) {
-                updateProjectBladesDao.insertProject(bladesEntity);
-            } else {
-                updateProjectBladesDao.updateProject(bladesEntity);
+    public void updateEditedDataIntoDb(Response3DTable4HoleChargingDataModel updateHoleDetailData) {
+        UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
+        UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
+        ProjectHoleDetailRowColDao entity = appDatabase.projectHoleDetailRowColDao();
+
+        bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
+        bladesEntity.setHoleId(Integer.parseInt(String.valueOf(updateHoleDetailData.getHoleNo())));
+        bladesEntity.setRowId(Integer.parseInt(String.valueOf(updateHoleDetailData.getRowNo())));
+        bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
+
+        if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()), Integer.parseInt(String.valueOf(updateHoleDetailData.getRowNo())), Integer.parseInt(String.valueOf(updateHoleDetailData.getHoleNo())))) {
+            updateProjectBladesDao.insertProject(bladesEntity);
+        } else {
+            updateProjectBladesDao.updateProject(bladesEntity);
+        }
+
+        String dataStr = "";
+
+        JsonElement element = AppDelegate.getInstance().getHole3DDataElement();
+        List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
+        if (element != null) {
+            JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+            List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
+            for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
+                holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
             }
-
-            String dataStr = "";
-
-            JsonElement element = AppDelegate.getInstance().getHole3DDataElement();
-            List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
-            if (element != null) {
-                JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
-                List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
-                for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
-                    holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
-                }
-                if (!Constants.isListEmpty(holeDetailDataList)) {
-                    for (int i = 0; i < holeDetailDataList.size(); i++) {
-                        if (String.valueOf(updateHoleDetailData.getRowNo()).equals(String.valueOf(holeDetailDataList.get(i).getRowNo())) && holeDetailDataList.get(i).getHoleID().equals(updateHoleDetailData.getHoleID())) {
-                            holeDetailDataList.set(i, updateHoleDetailData);
-                        } else {
-                            holeDetailDataList.set(i, holeDetailDataList.get(i));
-                        }
-                    }
-
-                    array.set(3, new Gson().fromJson(new Gson().toJson(holeDetailDataList), JsonElement.class));
-                    JsonObject jsonObject = new JsonObject();
-                    JsonPrimitive primitive = new JsonPrimitive(new Gson().toJson(array));
-                    jsonObject.add("GetAll3DDesignInfoResult", primitive);
-                    allTablesData = holeDetailDataList;
-                    dataStr = new Gson().toJson(allTablesData);
-
-                    if (!entity.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
-                        entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(updateHoleDetailData.getDesignId()), bladesRetrieveData.isIs3dBlade(), new Gson().toJson(jsonObject)));
+            if (!Constants.isListEmpty(holeDetailDataList)) {
+                for (int i = 0; i < holeDetailDataList.size(); i++) {
+                    if (String.valueOf(updateHoleDetailData.getRowNo()).equals(String.valueOf(holeDetailDataList.get(i).getRowNo())) && holeDetailDataList.get(i).getHoleID().equals(updateHoleDetailData.getHoleID())) {
+                        holeDetailDataList.set(i, updateHoleDetailData);
                     } else {
-                        entity.updateProject(String.valueOf(updateHoleDetailData.getDesignId()), new Gson().toJson(jsonObject));
+                        holeDetailDataList.set(i, holeDetailDataList.get(i));
                     }
-
                 }
-            }
 
-            AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(updateHoleDetailData.getDesignId()));
+                array.set(3, new Gson().fromJson(new Gson().toJson(holeDetailDataList), JsonElement.class));
+                JsonObject jsonObject = new JsonObject();
+                JsonPrimitive primitive = new JsonPrimitive(new Gson().toJson(array));
+                jsonObject.add("GetAll3DDesignInfoResult", primitive);
+                allTablesData = holeDetailDataList;
+                dataStr = new Gson().toJson(allTablesData);
+
+                if (!entity.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
+                    entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(updateHoleDetailData.getDesignId()), true, new Gson().toJson(jsonObject)));
+                } else {
+                    entity.updateProject(String.valueOf(updateHoleDetailData.getDesignId()), new Gson().toJson(jsonObject));
+                }
+
+            }
+        }
+
+        AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(updateHoleDetailData.getDesignId()));
 
 //            ((BaseActivity) mContext).setInsertUpdateHoleDetailSync(((HoleDetailActivity) mContext).bladesRetrieveData, updateHoleDetailData, modelEntity != null ? modelEntity.getProjectCode() : "0");
 
-            try {
-                ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
-                ProjectHoleDetailRowColEntity colEntity = dao.getAllBladesProject(holeDetailData.getDesignId());
+        try {
+            ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
+            ProjectHoleDetailRowColEntity colEntity = dao.getAllBladesProject(updateHoleDetailData.getDesignId());
 
-                JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) new Gson().fromJson(colEntity.getProjectHole(), JsonElement.class)).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
-                List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
-                for (JsonElement e : new Gson().fromJson(array.get(3), JsonArray.class)) {
-                    holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
-                }
-
-                allTablesData = holeDetailDataList;
-
-                if (((HoleDetail3DModelActivity) this).rowItemDetail != null)
-                    ((HoleDetail3DModelActivity) this).rowItemDetail.setRowOfTable(((HoleDetail3DModelActivity) this).rowPageVal, holeDetailDataList);
-
-                if (((HoleDetail3DModelActivity) this).mapViewDataUpdateLiveData != null)
-                    ((HoleDetail3DModelActivity) this).mapViewDataUpdateLiveData.setValue(true);
-
-                binding.holeDetailLayoutContainer.setVisibility(View.GONE);
-            } catch (Exception e) {
-                e.getLocalizedMessage();
+            JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) new Gson().fromJson(colEntity.getProjectHole(), JsonElement.class)).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+            List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
+            for (JsonElement e : new Gson().fromJson(array.get(3), JsonArray.class)) {
+                holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
             }
-        });
+
+            allTablesData = holeDetailDataList;
+
+            if (((HoleDetail3DModelActivity) this).rowItemDetail != null)
+                ((HoleDetail3DModelActivity) this).rowItemDetail.setRowOfTable(((HoleDetail3DModelActivity) this).rowPageVal, holeDetailDataList);
+
+            if (((HoleDetail3DModelActivity) this).mapViewDataUpdateLiveData != null)
+                ((HoleDetail3DModelActivity) this).mapViewDataUpdateLiveData.setValue(true);
+
+            binding.holeDetailLayoutContainer.setVisibility(View.GONE);
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
     }
 
 }

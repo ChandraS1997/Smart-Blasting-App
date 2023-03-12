@@ -269,11 +269,7 @@ public class MainService {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
-                    if (response.errorBody() != null) {
-//                        data.setValue(getError(response));
-                    } else {
-                        data.setValue(null);
-                    }
+                    data.setValue(null);
                 }
             }
 
@@ -281,6 +277,7 @@ public class MainService {
             public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
                 ((BaseActivity) context).hideLoader();
                 Log.e(" API FAILED ", t.getLocalizedMessage());
+                data.setValue(null);
             }
         });
 
@@ -300,11 +297,7 @@ public class MainService {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
-                    if (response.errorBody() != null) {
-//                        data.setValue(getError(response));
-                    } else {
-                        data.setValue(null);
-                    }
+                    data.setValue(null);
                 }
             }
 
@@ -312,6 +305,7 @@ public class MainService {
             public void onFailure(@NonNull Call<JsonElement> call, @NonNull Throwable t) {
                 ((BaseActivity) context).hideLoader();
                 Log.e(" API FAILED ", t.getLocalizedMessage());
+                data.setValue(null);
             }
         });
 
@@ -331,11 +325,7 @@ public class MainService {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
-                    if (response.errorBody() != null) {
-//                        data.setValue(getError(response));
-                    } else {
-                        data.setValue(null);
-                    }
+                    data.setValue(null);
                 }
             }
 
@@ -362,11 +352,7 @@ public class MainService {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
-                    if (response.errorBody() != null) {
-//                        data.setValue(getError(response));
-                    } else {
-                        data.setValue(null);
-                    }
+                    data.setValue(null);
                 }
             }
 
@@ -393,11 +379,7 @@ public class MainService {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
-                    if (response.errorBody() != null) {
-//                        data.setValue(getError(response));
-                    } else {
-                        data.setValue(null);
-                    }
+                    data.setValue(null);
                 }
             }
 
@@ -424,11 +406,7 @@ public class MainService {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
-                    if (response.errorBody() != null) {
-//                        data.setValue(getError(response));
-                    } else {
-                        data.setValue(null);
-                    }
+                    data.setValue(null);
                 }
             }
 
@@ -455,11 +433,7 @@ public class MainService {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
-                    if (response.errorBody() != null) {
-//                        data.setValue(getError(response));
-                    } else {
-                        data.setValue(null);
-                    }
+                    data.setValue(null);
                 }
             }
 

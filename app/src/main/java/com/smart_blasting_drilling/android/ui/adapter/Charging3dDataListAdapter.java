@@ -116,6 +116,9 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
     }
 
     public List<ChargeTypeArrayItem> getJsonArray() {
+        if (jsonArray.size() != chargingDataModelList.size()) {
+            addItemInArray();
+        }
         return jsonArray;
     }
 
@@ -129,12 +132,14 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
         }
 
         private void setExpArray(String type) {
-            if (type.equals("Stemming")) {
-                binding.explosiveEt.setAdapter(Constants.getAdapter(context, stemArr));
-            } else if (type.equals("Decking")) {
-                binding.explosiveEt.setAdapter(Constants.getAdapter(context, deckArr));
-            } else {
-                binding.explosiveEt.setAdapter(Constants.getAdapter(context, otherDataArr));
+            if (!StringUtill.isEmpty(type)) {
+                if (type.equals("Stemming")) {
+                    binding.explosiveEt.setAdapter(Constants.getAdapter(context, stemArr));
+                } else if (type.equals("Decking")) {
+                    binding.explosiveEt.setAdapter(Constants.getAdapter(context, deckArr));
+                } else {
+                    binding.explosiveEt.setAdapter(Constants.getAdapter(context, otherDataArr));
+                }
             }
         }
 
@@ -172,9 +177,15 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
                             jsonObject.setProdId(otherArr.get(i).getAsJsonObject().get("ExpCode").getAsInt());
                         }
                         jsonObject.setType(binding.typeSpinner.getText().toString());
+                        jsonObject.setName(binding.explosiveEt.getText().toString());
                         jsonObject.setColor(chargingDataModel.getColor());
                         jsonObject.setPercentage(chargingDataModel.getPercentage());
-                        jsonObject.setProdType("explosive", binding.explosiveEt.getText().toString());
+                        for (int a = 0; a < typeArr.length; a++) {
+                            if (typeArr[a].equals(binding.typeSpinner.getText().toString())) {
+                                jsonObject.setProdType(a+1);
+                                break;
+                            }
+                        }
                         jsonObject.setCost(binding.costEt.getText().toString());
                     } catch (Exception e) {
                         e.printStackTrace();
