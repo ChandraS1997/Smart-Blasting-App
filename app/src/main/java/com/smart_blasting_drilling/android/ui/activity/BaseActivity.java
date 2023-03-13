@@ -59,6 +59,8 @@ import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceAllTypeMode
 import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceModel;
 import com.smart_blasting_drilling.android.ui.models.MapHole3DDataModel;
 import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
+import com.smart_blasting_drilling.android.ui.models.NorthEastCoordinateModel;
+import com.smart_blasting_drilling.android.ui.models.ReferenceCoordinateModel;
 import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
@@ -1958,6 +1960,91 @@ public class BaseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+
+    public void mapCoordinatesAndroid(double northing, double easting, List<ResponseHoleDetailData> holeDetailData) {
+        try {
+            long width = 537;
+            long height = 527;
+
+            double x, y;
+
+            List<ReferenceCoordinateModel> referenceCoordinateModelList = new ArrayList<>();
+
+            if (northing == 0 || easting == 20) {
+                for (int i = 0; i < holeDetailData.size(); i++) {
+                    if (holeDetailData.get(i).getX() == 0) {
+                        x = 20;
+                    } else {
+                        x = Math.abs(holeDetailData.get(i).getX() + 30);
+                    }
+                    y = Math.abs(holeDetailData.get(i).getY());
+                    referenceCoordinateModelList.add(new ReferenceCoordinateModel(holeDetailData.get(i).getRowNo(), holeDetailData.get(i).getHoleNo(), x, y));
+                }
+            } else {
+
+                int holeNo = 0;
+                NorthEastCoordinateModel arrMinMaxEastingNorthing = findMinMaxEastingNorthingAndroid(holeDetailData);
+                //for Easting- No. of pixels in meter
+                float scaleFactorEasting = (float) (width / (arrMinMaxEastingNorthing.getMaxEasting() - arrMinMaxEastingNorthing.getMinEasting()));
+                //for Northing- No. of pixels in meter
+                float scaleFactorNorthing = (float) (height / (arrMinMaxEastingNorthing.getMaxNorthing() - arrMinMaxEastingNorthing.getMinNorthing()));
+
+                // to find the scale that will fit the canvas get the min scale to fit height or width
+                float scaleMinEastNorth = Math.min(scaleFactorEasting, scaleFactorNorthing);
+
+                for (int i = 0; i < holeDetailData.size(); i++) {
+                    x = (holeDetailData.get(i).getY() - arrMinMaxEastingNorthing.getMinEasting()) * scaleFactorEasting;
+                    y = (holeDetailData.get(i).getX() - arrMinMaxEastingNorthing.getMinNorthing()) * scaleFactorNorthing;
+                    y = height - y;
+                    holeNo = holeNo + 1;
+                    referenceCoordinateModelList.add(new ReferenceCoordinateModel(holeDetailData.get(i).getRowNo(), holeDetailData.get(i).getHoleNo(), x, y));
+                }
+            }
+
+        /*var HoleCoorInfo = {
+                HoleCoorinatesInfo: referenceCoordinate,
+                ProjectCode: Number($scope.ProjectCode)
+        };*/
+
+            Log.e("referenceCoordinateModelList : ", new Gson().toJson(referenceCoordinateModelList));
+
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
+    }
+
+    NorthEastCoordinateModel findMinMaxEastingNorthingAndroid(List<ResponseHoleDetailData> holeDetailData) {
+        float minEasting = 0, maxEasting = 0, minNorthing = 0, maxNorthing = 0;
+        if (!Constants.isListEmpty(holeDetailData)) {
+            minEasting = Float.parseFloat(String.valueOf(holeDetailData.get(0).getY()));
+            maxEasting = Float.parseFloat(String.valueOf(holeDetailData.get(0).getY()));
+            minNorthing = Float.parseFloat(String.valueOf(holeDetailData.get(0).getX()));
+            maxNorthing = Float.parseFloat(String.valueOf(holeDetailData.get(0).getX()));
+
+            float tempNorthing, tempEasting;
+            for (int i = 1, len = holeDetailData.size(); i < len; i++) {
+                holeDetailData.get(i).setX(Float.parseFloat(String.valueOf(holeDetailData.get(i).getX())));
+                tempNorthing = Float.parseFloat(String.valueOf(holeDetailData.get(i).getX()));
+                minNorthing = Math.min(tempNorthing, minNorthing);
+                maxNorthing = Math.max(tempNorthing, maxNorthing);
+
+                holeDetailData.get(i).setY(Float.parseFloat(String.valueOf(holeDetailData.get(i).getY())));
+                tempEasting = Float.parseFloat(String.valueOf(holeDetailData.get(i).getY()));
+                minEasting = Math.min(tempEasting, minEasting);
+                maxEasting = Math.max(tempEasting, maxEasting);
+            }
+
+            minEasting = minEasting - 10;
+            maxEasting = maxEasting + 10;
+            minNorthing = minNorthing - 10;
+            maxNorthing = maxNorthing + 10;
+
+            return new NorthEastCoordinateModel(minEasting, maxEasting, minNorthing, maxNorthing);
+        } else {
+            return new NorthEastCoordinateModel();
+        }
     }
 
 }

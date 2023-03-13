@@ -93,8 +93,8 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
 
             holeDetailDataList.add(null);
 
-            tableViewAdapter = new TableViewAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
-            binding.tableRv.setAdapter(tableViewAdapter);
+            /*tableViewAdapter = new TableViewAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
+            binding.tableRv.setAdapter(tableViewAdapter);*/
 
             if (allTablesData == null) {
                 getAllDesignInfoApiCaller(bladesRetrieveData.isIs3dBlade());

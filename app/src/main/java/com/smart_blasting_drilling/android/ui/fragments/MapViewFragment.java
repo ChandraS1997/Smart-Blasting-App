@@ -95,6 +95,8 @@ public class MapViewFragment extends BaseFragment implements HoleDetailActivity.
         ResponseBladesRetrieveData bladesRetrieveData = ((HoleDetailActivity) mContext).bladesRetrieveData;
         List<MapHoleDataModel> colHoleDetailDataList = new ArrayList<>();
 
+        ((BaseActivity) mContext).mapCoordinatesAndroid(holeDetailDataList.get(0).getX(), holeDetailDataList.get(0).getY(), holeDetailDataList);
+
         if (!Constants.isListEmpty(holeDetailDataList)) {
             colHoleDetailDataList = ((BaseActivity) mContext).getRowWiseHoleList(holeDetailDataList);
 

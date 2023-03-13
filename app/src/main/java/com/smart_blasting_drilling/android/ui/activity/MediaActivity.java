@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -249,18 +250,22 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         builder.setTitle(getString(R.string.choose_option));
         builder.setItems(options, (dialog, item) -> {
             if (options[item].equals(getString(R.string.take_photo))) {
-                if (checkPermission()) {
-                    openCamera(1);
-                } else {
-                    requestCameraPermission(PICK_IMAGE_CAMERA);
-                }
+                String[] permission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+                Permissions.check(this, permission, null, null, new PermissionHandler() {
+                    @Override
+                    public void onGranted() {
+                        openCamera(1);
+                    }
+                });
                 dialog.dismiss();
             } else if (options[item].equals(getString(R.string.take_video))) {
-                if (checkPermission()) {
-                    openVideo(2);
-                } else {
-                    requestCameraPermission(PICK_VIDEO_CAMERA);
-                }
+                String[] permission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+                Permissions.check(this, permission, null, null, new PermissionHandler() {
+                    @Override
+                    public void onGranted() {
+                        openVideo(2);
+                    }
+                });
                 dialog.dismiss();
             } else if (options[item].equals(getString(R.string.choose_from_gallery))) {
                 dialog.dismiss();
@@ -405,8 +410,8 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
 
     private void insertMediaApiCaller(Uri imgPath, String extension, String blastCode, String blastNo) {
         mResultsBitmap = BitmapUtils.resamplePic(this, String.valueOf(imgPath));
-       // BitmapUtils.saveImage(this, mResultsBitmap, extension, imgPath);
-        //BitmapUtils.galleryAddPic(this, String.valueOf(imgPath));
+        BitmapUtils.saveImage(this, mResultsBitmap, extension, imgPath);
+        BitmapUtils.galleryAddPic(this, String.valueOf(imgPath));
         showLoader();
         Map<String, Object> map = new HashMap<>();
         map.put("BlastCode", blastCode);
@@ -453,25 +458,32 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
     }
 
     public void VideoToGif(String uri) {
-        Uri videoFileUri = Uri.parse(uri);
+        try {
+            Uri videoFileUri = Uri.parse(uri);
 
-        FFmpegMediaMetadataRetriever retriever = new FFmpegMediaMetadataRetriever();
-        retriever.setDataSource(uri);
-        List<Bitmap> rev = new ArrayList<Bitmap>();
-        MediaPlayer mp = MediaPlayer.create(this, videoFileUri);
-        int millis = mp.getDuration();
-        System.out.println("starting point");
-        for (int i = 100000; i <=millis * 1000; i += 100000*2) {
-            Bitmap bitmap = retriever.getFrameAtTime(i, FFmpegMediaMetadataRetriever.OPTION_CLOSEST);
-            rev.add(bitmap);
+            MediaMetadataRetriever mRetriever = new MediaMetadataRetriever();
+            mRetriever.setDataSource(uri);
+
+            /*FFmpegMediaMetadataRetriever retriever = new FFmpegMediaMetadataRetriever();
+            retriever.setDataSource(uri);*/
+            List<Bitmap> rev = new ArrayList<Bitmap>();
+            MediaPlayer mp = MediaPlayer.create(this, videoFileUri);
+            int millis = mp.getDuration();
+            System.out.println("starting point");
+            for (int i = 100000; i <= millis * 1000; i += 100000 * 2) {
+                Bitmap bitmap = mRetriever.getFrameAtTime(i, MediaMetadataRetriever.OPTION_CLOSEST);
+                rev.add(bitmap);
+            }
+            Log.e("Bitmap : ", new Gson().toJson(rev));
+        } catch (Exception e) {
+            e.getLocalizedMessage();
         }
-        Log.e("Bitmap : ", new Gson().toJson(rev));
     }
 
     private void uploadMediaApiCaller(String extension) {
         mResultsBitmap = BitmapUtils.resamplePic(this, imgPath);
-//        if (extension.equalsIgnoreCase(".mp4"))
-//            VideoToGif(imgPath);
+        if (extension.equalsIgnoreCase(".mp4"))
+            VideoToGif(imgPath);
         BitmapUtils.saveImage(this, mResultsBitmap, extension, Uri.parse(imgPath));
         showLoader();
         Map<String, RequestBody> map = new HashMap<>();

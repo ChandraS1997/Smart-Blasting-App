@@ -35,6 +35,16 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/selectedImageIcn"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:src="@mipmap/icn_cicle_green_right_tick"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="@dimen/_10sdp"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

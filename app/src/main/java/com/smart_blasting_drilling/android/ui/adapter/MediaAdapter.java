@@ -20,16 +20,27 @@ import com.smart_blasting_drilling.android.databinding.MediaItemBinding;
 import com.smart_blasting_drilling.android.ui.activity.FullMediaViewActivity;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
     List<String> imageList;
+    MediaDeleteListener mediaDeleteListener;
+    boolean isMultipleSelectionEnable = false;
+    List<String> selectedImageList;
+    List<Integer> selectedImagePositionList;
 
     public MediaAdapter(Context context, List<String> imageList) {
         this.context = context;
         this.imageList = imageList;
+        this.selectedImageList = new ArrayList<>();
+        this.selectedImagePositionList = new ArrayList<>();
+    }
+
+    public void setUpListener(MediaDeleteListener mediaDeleteListener) {
+        this.mediaDeleteListener = mediaDeleteListener;
     }
 
     private RecyclerView.ViewHolder getViewHolder(LayoutInflater inflater, ViewGroup group) {
@@ -54,6 +65,10 @@ public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return imageList.size();
     }
 
+    public interface MediaDeleteListener {
+        void deleteMedia();
+        void deleteMultipleMedia();
+    }
 
     public class MediaHolder extends RecyclerView.ViewHolder {
         MediaItemBinding binding;
@@ -71,12 +86,6 @@ public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 binding.VideoView.setVisibility(View.VISIBLE);
                 binding.Image.setVisibility(View.GONE);
                 Uri uri = Uri.parse(path);
-                /*binding.VideoView.setVideoURI(uri);
-                MediaController mediaController = new MediaController(context);
-                mediaController.setAnchorView(binding.VideoView);
-                mediaController.setMediaPlayer(binding.VideoView);
-                binding.VideoView.setMediaController(mediaController);
-                binding.VideoView.start();*/
                 binding.VideoView.setBackgroundColor(context.getColor(R.color.black));
                 binding.VideoView.setImageResource(R.drawable.play);
             } else {
@@ -86,11 +95,39 @@ public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             }
 
             itemView.setOnClickListener(view -> {
-                Bundle bundle = new Bundle();
-                bundle.putString("media_uri", path);
-                Intent intent = new Intent(context, FullMediaViewActivity.class);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                if (isMultipleSelectionEnable) {
+                    if (binding.selectedImageIcn.getVisibility() == View.VISIBLE) {
+                        binding.selectedImageIcn.setVisibility(View.GONE);
+                        selectedImageList.remove(path);
+                    } else {
+                        binding.selectedImageIcn.setVisibility(View.VISIBLE);
+                        selectedImageList.add(path);
+                    }
+                    if (selectedImageList.size() == 0) {
+                        isMultipleSelectionEnable = false;
+                    }
+                    notifyItemChanged(getBindingAdapterPosition());
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("media_uri", path);
+                    Intent intent = new Intent(context, FullMediaViewActivity.class);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (!isMultipleSelectionEnable) {
+                        isMultipleSelectionEnable = true;
+                        binding.selectedImageIcn.setVisibility(View.VISIBLE);
+                        selectedImageList.add(path);
+                        selectedImagePositionList.add(getBindingAdapterPosition());
+                        notifyItemChanged(getBindingAdapterPosition());
+                    }
+                    return true;
+                }
             });
 
         }

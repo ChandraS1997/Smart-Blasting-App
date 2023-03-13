@@ -650,8 +650,18 @@ public class ResponseHoleDetailData implements Serializable {
 		this.blastingQuality = blastingQuality;
 	}
 
-	public Object getZ() {
-		return z == null ? "" : z;
+	public double getZ() {
+		if (z != null) {
+			if (z instanceof String) {
+				return ((Double) Double.parseDouble(String.valueOf(z)));
+			}
+			if (z instanceof Float) {
+				return ((Float) z);
+			}
+			return ((Double) z);
+		} else {
+			return 0.0;
+		}
 	}
 
 	public void setZ(Object z) {
@@ -1067,6 +1077,9 @@ public class ResponseHoleDetailData implements Serializable {
 			if (x instanceof String) {
 				return ((Double) Double.parseDouble(String.valueOf(x)));
 			}
+			if (x instanceof Float) {
+				return ((Float) x);
+			}
 			return ((Double) x);
 		} else {
 			return 0.0;
@@ -1089,6 +1102,9 @@ public class ResponseHoleDetailData implements Serializable {
 		if (y != null) {
 			if (y instanceof String) {
 				return ((Double) Double.parseDouble(String.valueOf(y)));
+			}
+			if (y instanceof Float) {
+				return ((Float) y);
 			}
 			return ((Double) y);
 		} else {
