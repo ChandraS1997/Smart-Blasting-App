@@ -204,5 +204,8 @@
     <string name="explosive">Explosive</string>
     <string name="cost">Cost</string>
     <string name="choose_hole_status">Choose Hole Status</string>
+    <string name="select_shift"><font color='#CC252C'>*</font>Select Shift</string>
+    <string name="select_driller"><font color='#CC252C'>*</font>Select Driller</string>
+    <string name="drill_method"><font color='#CC252C'>*</font>Drill Method</string>
 
 </resources>

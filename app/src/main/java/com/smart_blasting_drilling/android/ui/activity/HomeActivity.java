@@ -40,6 +40,7 @@ import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllMineInfoSurfaceInitiatorEntity;
+import com.smart_blasting_drilling.android.room_database.entities.DrillShiftInfoEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ExplosiveDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.InitiatingDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
@@ -753,6 +754,40 @@ public class HomeActivity extends BaseActivity {
                                     appDatabase.drillMaterialDao().insertItem(entity);
                                 } else {
                                     appDatabase.drillMaterialDao().updateItem(1, new Gson().toJson(entity));
+                                }
+                            } catch (Exception e) {
+                                Log.e(NODATAFOUND, e.getMessage());
+                            }
+
+                        } else {
+                            Log.e(ERROR, SOMETHING_WENT_WRONG);
+                        }
+                    } catch (Exception e) {
+                        Log.e(NODATAFOUND, e.getMessage());
+                    }
+                }
+            }
+            getDrillShiftInfoApiCaller();
+        });
+    }
+
+    public void getDrillShiftInfoApiCaller() {
+        ResponseLoginData loginData = manger.getUserDetails();
+        MainService.getDrillShiftInfoApiCaller(this, loginData.getUserid(), loginData.getCompanyid()).observe(this, response -> {
+            if (response == null) {
+                showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
+            } else {
+                if (!(response.isJsonNull())) {
+                    try {
+                        JsonObject jsonObject = response.getAsJsonObject();
+                        if (jsonObject != null) {
+                            try {
+                                DrillShiftInfoEntity entity = new DrillShiftInfoEntity();
+                                entity.setData(jsonObject.get("GetdrillaccessoriesinfoResult").getAsString());
+                                if (Constants.isListEmpty(appDatabase.drillMethodDao().getAllEntityDataList())) {
+                                    appDatabase.drillShiftInfoDao().insertItem(entity);
+                                } else {
+                                    appDatabase.drillShiftInfoDao().updateItem(1, new Gson().toJson(entity));
                                 }
                             } catch (Exception e) {
                                 Log.e(NODATAFOUND, e.getMessage());

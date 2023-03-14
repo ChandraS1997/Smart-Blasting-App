@@ -35,6 +35,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseMineTable;
 import com.smart_blasting_drilling.android.api.apis.response.ResponsePitTable;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseRigData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseRockData;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseShiftData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseSiteDetail;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseZoneTable;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
@@ -72,7 +73,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
     public Response3DTable1DataModel bladesRetrieveData;
     public Response3DTable1DataModel updateBladesData;
 
-    int siteId, rigId, empId, drillTypeId, drillMaterialId, drillPatternId, mineCode, zoneCode, rockCode, benchCode, expCode, pitCode;
+    int siteId, rigId, empId, drillTypeId, drillerCode, drillMethodId, drillMaterialId, shiftCode, drillPatternId, mineCode, zoneCode, rockCode, benchCode, expCode, pitCode;
     String startDate, startTime, endTime, endDate;
 
     public ProjectDetail3DDataDialog() {
@@ -168,6 +169,12 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                     jsonObject.addProperty("drill_type_id", drillTypeId);
                     jsonObject.addProperty("drill_material", binding.spinnerMaterialDrilled.getText().toString());
                     jsonObject.addProperty("drill_material_id", drillMaterialId);
+                    jsonObject.addProperty("shift", binding.spinnerShift.getText().toString());
+                    jsonObject.addProperty("shift_code", shiftCode);
+                    jsonObject.addProperty("drill_method", binding.spinnerDrillMethod.getText().toString());
+                    jsonObject.addProperty("drill_method_code", drillMethodId);
+                    jsonObject.addProperty("driller_name", binding.spinnerDriller.getText().toString());
+                    jsonObject.addProperty("driller_code", drillerCode);
                     jsonObject.addProperty("client_name", binding.clientName.getText().toString());
                     jsonObject.addProperty("project_number", binding.projectNumber.getText().toString());
                     jsonObject.addProperty("project_status", binding.spinnerProjectStatus.getText().toString());
@@ -344,6 +351,13 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                         binding.spinnerSelectTeam.setOnItemClickListener((adapterView, view, i, l) -> {
                             empId = employeeDataList.get(i).getEmployeeCode();
                         });
+
+                        binding.spinnerDriller.setAdapter(Constants.getAdapter(mContext, employeeNameList));
+                        binding.spinnerDriller.setText(StringUtill.getString(employeeNameList[0]));
+                        binding.spinnerDriller.setOnItemClickListener((adapterView, view, i, l) -> {
+                            drillerCode = employeeDataList.get(i).getEmployeeCode();
+                        });
+                        drillerCode = employeeDataList.get(0).getEmployeeCode();
                     }
 
                 }
@@ -364,6 +378,13 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                             drillTypeId = drillMethodDataList.get(i).getDrillMethodId();
                         });
                         drillTypeId = drillMethodDataList.get(0).getDrillMethodId();
+
+                        binding.spinnerDrillMethod.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
+                        binding.spinnerDrillMethod.setText(StringUtill.getString(drillMethodDataItem[0]));
+                        binding.spinnerDrillMethod.setOnItemClickListener((adapterView, view, i, l) -> {
+                            drillMethodId = drillMethodDataList.get(i).getDrillMethodId();
+                        });
+                        drillMethodId = drillMethodDataList.get(0).getDrillMethodId();
                     }
                 }
             }
@@ -384,6 +405,25 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                             drillPatternId = drillPatternDataItemList.get(i).getPatternTypeId();
                         });
                         drillPatternId = drillPatternDataItemList.get(0).getPatternTypeId();
+                    }
+                }
+            }
+
+            if (!Constants.isListEmpty(appDatabase.drillShiftInfoDao().getAllEntityDataList())) {
+                if (appDatabase.drillShiftInfoDao().getAllEntityDataList().get(0) != null) {
+                    Type teamList = new TypeToken<List<ResponseShiftData>>(){}.getType();
+                    List<ResponseShiftData> drillMaterialDataList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillShiftInfoDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data"), String.class), teamList);
+                    if (!Constants.isListEmpty(drillMaterialDataList)) {
+                        String[] drillMaterialDataItem = new String[drillMaterialDataList.size()];
+                        for (int i = 0; i < drillMaterialDataList.size(); i++) {
+                            drillMaterialDataItem[i] = drillMaterialDataList.get(i).getShiftName();
+                        }
+                        binding.spinnerShift.setAdapter(Constants.getAdapter(mContext, drillMaterialDataItem));
+                        binding.spinnerShift.setText(StringUtill.getString(drillMaterialDataItem[0]));
+                        binding.spinnerShift.setOnItemClickListener((adapterView, view, i, l) -> {
+                            shiftCode = drillMaterialDataList.get(i).getShiftCode();
+                        });
+                        shiftCode = drillMaterialDataList.get(0).getShiftCode();
                     }
                 }
             }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.MediaController;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -18,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.databinding.MediaItemBinding;
 import com.smart_blasting_drilling.android.ui.activity.FullMediaViewActivity;
+import com.smart_blasting_drilling.android.ui.models.MediaDataModel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,17 +26,15 @@ import java.util.List;
 public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
-    List<String> imageList;
+    List<MediaDataModel> imageList;
     MediaDeleteListener mediaDeleteListener;
     boolean isMultipleSelectionEnable = false;
-    List<String> selectedImageList;
-    List<Integer> selectedImagePositionList;
+    List<MediaDataModel> selectedImageList;
 
-    public MediaAdapter(Context context, List<String> imageList) {
+    public MediaAdapter(Context context, List<MediaDataModel> mediaDataModelList) {
         this.context = context;
-        this.imageList = imageList;
+        this.imageList = mediaDataModelList;
         this.selectedImageList = new ArrayList<>();
-        this.selectedImagePositionList = new ArrayList<>();
     }
 
     public void setUpListener(MediaDeleteListener mediaDeleteListener) {
@@ -66,8 +64,12 @@ public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public interface MediaDeleteListener {
-        void deleteMedia();
-        void deleteMultipleMedia();
+        void selectMediaCallBack();
+        void clearMediaCallBack();
+    }
+
+    public List<MediaDataModel> getImageList() {
+        return imageList;
     }
 
     public class MediaHolder extends RecyclerView.ViewHolder {
@@ -78,38 +80,47 @@ public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             binding = itemView;
         }
 
-        public void setDataBind(String path) {
-            Glide.with(context).load(new File(path)).placeholder(R.drawable.ic_logo).into(binding.Image);
+        public void setDataBind(MediaDataModel mediaDataModel) {
+            Glide.with(context).load(new File(mediaDataModel.getFilePath())).placeholder(R.drawable.ic_logo).into(binding.Image);
 
-            String extension = path.substring(path.lastIndexOf("."));
+            String extension = mediaDataModel.getFilePath().substring(mediaDataModel.getFilePath().lastIndexOf("."));
             if (extension.equals(".mp4")) {
                 binding.VideoView.setVisibility(View.VISIBLE);
                 binding.Image.setVisibility(View.GONE);
-                Uri uri = Uri.parse(path);
+                Uri uri = Uri.parse(mediaDataModel.getFilePath());
                 binding.VideoView.setBackgroundColor(context.getColor(R.color.black));
                 binding.VideoView.setImageResource(R.drawable.play);
             } else {
                 binding.Image.setVisibility(View.VISIBLE);
                 binding.VideoView.setVisibility(View.GONE);
-                Glide.with(context).load(path).apply(new RequestOptions().error(R.drawable.ic_logo)).into(binding.Image);
+                Glide.with(context).load(mediaDataModel.getFilePath()).apply(new RequestOptions().error(R.drawable.ic_logo)).into(binding.Image);
+            }
+
+            if (isMultipleSelectionEnable) {
+                if (!mediaDataModel.isSelection()) {
+                    binding.selectedImageIcn.setVisibility(View.GONE);
+                } else {
+                    binding.selectedImageIcn.setVisibility(View.VISIBLE);
+                }
             }
 
             itemView.setOnClickListener(view -> {
                 if (isMultipleSelectionEnable) {
-                    if (binding.selectedImageIcn.getVisibility() == View.VISIBLE) {
-                        binding.selectedImageIcn.setVisibility(View.GONE);
-                        selectedImageList.remove(path);
+                    if (mediaDataModel.isSelection()) {
+                        selectedImageList.remove(mediaDataModel);
                     } else {
-                        binding.selectedImageIcn.setVisibility(View.VISIBLE);
-                        selectedImageList.add(path);
+                        selectedImageList.add(mediaDataModel);
                     }
+                    mediaDataModel.setSelection(!mediaDataModel.isSelection());
                     if (selectedImageList.size() == 0) {
                         isMultipleSelectionEnable = false;
+                        if (mediaDeleteListener != null)
+                            mediaDeleteListener.clearMediaCallBack();
                     }
-                    notifyItemChanged(getBindingAdapterPosition());
+                    notifyDataSetChanged();
                 } else {
                     Bundle bundle = new Bundle();
-                    bundle.putString("media_uri", path);
+                    bundle.putString("media_uri", mediaDataModel.getFilePath());
                     Intent intent = new Intent(context, FullMediaViewActivity.class);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
@@ -121,12 +132,13 @@ public class MediaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 public boolean onLongClick(View view) {
                     if (!isMultipleSelectionEnable) {
                         isMultipleSelectionEnable = true;
-                        binding.selectedImageIcn.setVisibility(View.VISIBLE);
-                        selectedImageList.add(path);
-                        selectedImagePositionList.add(getBindingAdapterPosition());
-                        notifyItemChanged(getBindingAdapterPosition());
+                        selectedImageList.add(mediaDataModel);
+                        mediaDataModel.setSelection(true);
+                        if (mediaDeleteListener != null)
+                            mediaDeleteListener.selectMediaCallBack();
+                        notifyDataSetChanged();
                     }
-                    return true;
+                    return false;
                 }
             });
 

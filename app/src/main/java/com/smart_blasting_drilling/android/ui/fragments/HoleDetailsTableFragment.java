@@ -250,7 +250,7 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                     if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getExpCode1()))) {
                         chargingCount = chargingCount + 1;
                     }
-                    if (!StringUtill.isEmpty((String) holeDetailData.getExpCode2())) {
+                    if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getExpCode2()))) {
                         chargingCount = chargingCount + 1;
                     }
                     if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getStemLngth()))) {

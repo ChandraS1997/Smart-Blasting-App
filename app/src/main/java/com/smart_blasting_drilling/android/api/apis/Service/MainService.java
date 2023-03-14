@@ -492,7 +492,7 @@ public class MainService {
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e(" API FAILED ", t.getLocalizedMessage());
-
+                data.setValue(null);
             }
         });
         return data;
@@ -654,6 +654,31 @@ public class MainService {
             return data;
         }
         Call<JsonObject> call = testBlastSblastApiService.insertUpdate3DActualDesignHoleDetailApiCaller(map);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonObject> getDrillShiftInfoApiCaller(final Context context, String userId, String companyId) {
+        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonObject> call = drimzApiService.getDrillShiftInfoApiCaller(userId, companyId);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

@@ -365,8 +365,8 @@ public class BaseActivity extends AppCompatActivity {
                 drillDetailObject.addProperty("depthStart", "0");
                 drillDetailObject.addProperty("depthEnd", String.valueOf(holeDetailData.get(0).getHoleDepth()));
                 drillDetailObject.addProperty("waterLevel", String.valueOf(holeDetailData.get(0).getWaterDepth()));
-                drillDetailObject.addProperty("drillerName", "1");
-                drillDetailObject.addProperty("drillMethod", "1");
+                drillDetailObject.addProperty("drillerName", projectDetailJson != null ? projectDetailJson.get("driller_code").getAsString() : "");
+                drillDetailObject.addProperty("drillMethod", projectDetailJson != null ? projectDetailJson.get("drill_method_code").getAsString() : "");
                 drillDetailObject.addProperty("northing", String.valueOf(holeDetailData.get(0).getTopX()));
                 drillDetailObject.addProperty("easting", String.valueOf(holeDetailData.get(0).getTopY()));
             }
@@ -382,7 +382,7 @@ public class BaseActivity extends AppCompatActivity {
             drillDetailObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             drillDetailObject.addProperty("syncDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             drillDetailObject.addProperty("deviceType", "android");
-            drillDetailObject.addProperty("shiftCode", 18);
+            drillDetailObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             drillDetailArray.add(drillDetailObject);
 
 
@@ -430,9 +430,9 @@ public class BaseActivity extends AppCompatActivity {
                     logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     logHoleSectionDetailObject.addProperty("DeviceType", "android");
                     logHoleSectionDetailObject.addProperty("RigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsInt() : 0);
-                    logHoleSectionDetailObject.addProperty("DrillerCode", 4);
-                    logHoleSectionDetailObject.addProperty("DrillMethod", 1);
-                    logHoleSectionDetailObject.addProperty("ShiftCode", 18);
+                    logHoleSectionDetailObject.addProperty("DrillerCode", projectDetailJson != null ? projectDetailJson.get("driller_code").getAsInt() : 4);
+                    logHoleSectionDetailObject.addProperty("DrillMethod", projectDetailJson != null ? projectDetailJson.get("drill_method_code").getAsInt() : 1);
+                    logHoleSectionDetailObject.addProperty("ShiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
                     logHoleSectionDetailObject.addProperty("DrillLogActivityDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
 
                     holeDetailObject.add("LogHoleSectionDetails", logHoleSectionDetailObject);
@@ -451,7 +451,7 @@ public class BaseActivity extends AppCompatActivity {
             basicInformationObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             basicInformationObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             basicInformationObject.addProperty("userId", manger.getUserDetails().getUserid());
-            basicInformationObject.addProperty("shiftCode", 18);
+            basicInformationObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             basicInformationArray.add(basicInformationObject);
 
             JsonArray visitorDetailsArray = new JsonArray();
@@ -465,7 +465,7 @@ public class BaseActivity extends AppCompatActivity {
             visitorDetailsObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             visitorDetailsObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             visitorDetailsObject.addProperty("userId", manger.getUserDetails().getUserid());
-            visitorDetailsObject.addProperty("shiftCode", 18);
+            visitorDetailsObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             visitorDetailsArray.add(visitorDetailsObject);
 
             JsonArray preStartCheckListArray = new JsonArray();
@@ -477,7 +477,7 @@ public class BaseActivity extends AppCompatActivity {
             preStartCheckListObject.addProperty("modificationDate",DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             preStartCheckListObject.addProperty("companyId",manger.getUserDetails().getCompanyid());
             preStartCheckListObject.addProperty("userId",manger.getUserDetails().getUserid());
-            preStartCheckListObject.addProperty("shiftCode",18);
+            preStartCheckListObject.addProperty("shiftCode",projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             preStartCheckListArray.add(preStartCheckListObject);
 
             JsonArray activityDetailArray = new JsonArray();
@@ -490,7 +490,7 @@ public class BaseActivity extends AppCompatActivity {
             activityDetailsObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             activityDetailsObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             activityDetailsObject.addProperty("userId", manger.getUserDetails().getUserid());
-            activityDetailsObject.addProperty("shiftCode", 18);
+            activityDetailsObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             activityDetailArray.add(activityDetailsObject);
 
             JsonArray drillAccessoriesDetailArray = new JsonArray();
@@ -507,7 +507,7 @@ public class BaseActivity extends AppCompatActivity {
             drillAccessoriesDetailObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             drillAccessoriesDetailObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             drillAccessoriesDetailObject.addProperty("userId", manger.getUserDetails().getUserid());
-            drillAccessoriesDetailObject.addProperty("shiftCode", 18);
+            drillAccessoriesDetailObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             drillAccessoriesDetailObject.addProperty("KG", 0);
             drillAccessoriesDetailObject.addProperty("Leter", 0);
             drillAccessoriesDetailObject.addProperty("TotalCost", 0);
@@ -525,7 +525,7 @@ public class BaseActivity extends AppCompatActivity {
             hazardDetailsObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             hazardDetailsObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             hazardDetailsObject.addProperty("userId", manger.getUserDetails().getUserid());
-            hazardDetailsObject.addProperty("shiftCode", 18);
+            hazardDetailsObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
 
             hazardDetailsArray.add(hazardDetailsObject);
 
@@ -538,7 +538,7 @@ public class BaseActivity extends AppCompatActivity {
             rigInspectionObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             rigInspectionObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             rigInspectionObject.addProperty("userId", manger.getUserDetails().getUserid());
-            rigInspectionObject.addProperty("shiftCode", 18);
+            rigInspectionObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             rigInspectionDetailArray.add(rigInspectionObject);
 
             JsonArray confirmationFormDetailArray = new JsonArray();
@@ -548,7 +548,7 @@ public class BaseActivity extends AppCompatActivity {
             confirmationFormDetailObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             confirmationFormDetailObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             confirmationFormDetailObject.addProperty("userId", manger.getUserDetails().getUserid());
-            confirmationFormDetailObject.addProperty("shiftCode", 18);
+            confirmationFormDetailObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             confirmationFormDetailArray.add(confirmationFormDetailObject);
 
 
@@ -721,8 +721,8 @@ public class BaseActivity extends AppCompatActivity {
                 drillDetailObject.addProperty("depthStart", "0");
                 drillDetailObject.addProperty("depthEnd", String.valueOf(holeDetailData.get(0).getHoleDepth()));
                 drillDetailObject.addProperty("waterLevel", String.valueOf(holeDetailData.get(0).getWaterDepth()));
-                drillDetailObject.addProperty("drillerName", "1");
-                drillDetailObject.addProperty("drillMethod", "1");
+                drillDetailObject.addProperty("drillerName", projectDetailJson != null ? projectDetailJson.get("driller_code").getAsString() : "");
+                drillDetailObject.addProperty("drillMethod", projectDetailJson != null ? projectDetailJson.get("drill_method_code").getAsString() : "");
                 drillDetailObject.addProperty("northing", String.valueOf(holeDetailData.get(0).getDrillX()));
                 drillDetailObject.addProperty("easting", String.valueOf(holeDetailData.get(0).getDrillY()));
             }
@@ -738,7 +738,7 @@ public class BaseActivity extends AppCompatActivity {
             drillDetailObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             drillDetailObject.addProperty("syncDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             drillDetailObject.addProperty("deviceType", "android");
-            drillDetailObject.addProperty("shiftCode", 18);
+            drillDetailObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             drillDetailArray.add(drillDetailObject);
 
 
@@ -786,9 +786,9 @@ public class BaseActivity extends AppCompatActivity {
                     logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     logHoleSectionDetailObject.addProperty("DeviceType", "android");
                     logHoleSectionDetailObject.addProperty("RigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsInt() : 0);
-                    logHoleSectionDetailObject.addProperty("DrillerCode", 4);
-                    logHoleSectionDetailObject.addProperty("DrillMethod", 1);
-                    logHoleSectionDetailObject.addProperty("ShiftCode", 18);
+                    logHoleSectionDetailObject.addProperty("DrillerCode", projectDetailJson != null ? projectDetailJson.get("driller_code").getAsInt() : 4);
+                    logHoleSectionDetailObject.addProperty("DrillMethod", projectDetailJson != null ? projectDetailJson.get("drill_method_code").getAsInt() : 1);
+                    logHoleSectionDetailObject.addProperty("ShiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
                     logHoleSectionDetailObject.addProperty("DrillLogActivityDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
 
                     holeDetailObject.add("LogHoleSectionDetails", logHoleSectionDetailObject);
@@ -807,7 +807,7 @@ public class BaseActivity extends AppCompatActivity {
             basicInformationObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             basicInformationObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             basicInformationObject.addProperty("userId", manger.getUserDetails().getUserid());
-            basicInformationObject.addProperty("shiftCode", 18);
+            basicInformationObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             basicInformationArray.add(basicInformationObject);
 
             JsonArray visitorDetailsArray = new JsonArray();
@@ -821,7 +821,7 @@ public class BaseActivity extends AppCompatActivity {
             visitorDetailsObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             visitorDetailsObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             visitorDetailsObject.addProperty("userId", manger.getUserDetails().getUserid());
-            visitorDetailsObject.addProperty("shiftCode", 18);
+            visitorDetailsObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             visitorDetailsArray.add(visitorDetailsObject);
 
             JsonArray preStartCheckListArray = new JsonArray();
@@ -833,7 +833,7 @@ public class BaseActivity extends AppCompatActivity {
             preStartCheckListObject.addProperty("modificationDate",DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             preStartCheckListObject.addProperty("companyId",manger.getUserDetails().getCompanyid());
             preStartCheckListObject.addProperty("userId",manger.getUserDetails().getUserid());
-            preStartCheckListObject.addProperty("shiftCode",18);
+            preStartCheckListObject.addProperty("shiftCode",projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             preStartCheckListArray.add(preStartCheckListObject);
 
             JsonArray activityDetailArray = new JsonArray();
@@ -846,7 +846,7 @@ public class BaseActivity extends AppCompatActivity {
             activityDetailsObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             activityDetailsObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             activityDetailsObject.addProperty("userId", manger.getUserDetails().getUserid());
-            activityDetailsObject.addProperty("shiftCode", 18);
+            activityDetailsObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             activityDetailArray.add(activityDetailsObject);
 
             JsonArray drillAccessoriesDetailArray = new JsonArray();
@@ -863,7 +863,7 @@ public class BaseActivity extends AppCompatActivity {
             drillAccessoriesDetailObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             drillAccessoriesDetailObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             drillAccessoriesDetailObject.addProperty("userId", manger.getUserDetails().getUserid());
-            drillAccessoriesDetailObject.addProperty("shiftCode", 18);
+            drillAccessoriesDetailObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             drillAccessoriesDetailObject.addProperty("KG", 0);
             drillAccessoriesDetailObject.addProperty("Leter", 0);
             drillAccessoriesDetailObject.addProperty("TotalCost", 0);
@@ -881,7 +881,7 @@ public class BaseActivity extends AppCompatActivity {
             hazardDetailsObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             hazardDetailsObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             hazardDetailsObject.addProperty("userId", manger.getUserDetails().getUserid());
-            hazardDetailsObject.addProperty("shiftCode", 18);
+            hazardDetailsObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
 
             hazardDetailsArray.add(hazardDetailsObject);
 
@@ -894,7 +894,7 @@ public class BaseActivity extends AppCompatActivity {
             rigInspectionObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             rigInspectionObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             rigInspectionObject.addProperty("userId", manger.getUserDetails().getUserid());
-            rigInspectionObject.addProperty("shiftCode", 18);
+            rigInspectionObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             rigInspectionDetailArray.add(rigInspectionObject);
 
             JsonArray confirmationFormDetailArray = new JsonArray();
@@ -904,7 +904,7 @@ public class BaseActivity extends AppCompatActivity {
             confirmationFormDetailObject.addProperty("modificationDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
             confirmationFormDetailObject.addProperty("companyId", manger.getUserDetails().getCompanyid());
             confirmationFormDetailObject.addProperty("userId", manger.getUserDetails().getUserid());
-            confirmationFormDetailObject.addProperty("shiftCode", 18);
+            confirmationFormDetailObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
             confirmationFormDetailArray.add(confirmationFormDetailObject);
 
 
@@ -1126,7 +1126,7 @@ public class BaseActivity extends AppCompatActivity {
                     holeDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
                     holeDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     holeDetailObject.addProperty("DeviceType", 0);
-                    holeDetailObject.addProperty("shiftCode", 18);
+                    holeDetailObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
                     holeDetailObject.addProperty("UserRole", 0);
                     holeDetailObject.addProperty("HoleType", String.valueOf(detailData.getHoleType()));
                     holeDetailObject.addProperty("CalculateDrillPenetration", 0);
@@ -1146,9 +1146,9 @@ public class BaseActivity extends AppCompatActivity {
                     logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     logHoleSectionDetailObject.addProperty("deviceType", "android");
                     logHoleSectionDetailObject.addProperty("RigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsInt() : 0);
-                    logHoleSectionDetailObject.addProperty("DrillerCode", 4);
-                    logHoleSectionDetailObject.addProperty("DrillMethod", 1);
-                    logHoleSectionDetailObject.addProperty("ShiftCode", 18);
+                    logHoleSectionDetailObject.addProperty("DrillerCode", projectDetailJson != null ? projectDetailJson.get("driller_code").getAsInt() : 4);
+                    logHoleSectionDetailObject.addProperty("DrillMethod", projectDetailJson != null ? projectDetailJson.get("drill_method_code").getAsInt() : 1);
+                    logHoleSectionDetailObject.addProperty("ShiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
                     logHoleSectionDetailObject.addProperty("DrillLogActivityDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
 
                     holeDetailObject.add("LogHoleSectionDetails", logHoleSectionDetailObject);
@@ -1212,7 +1212,7 @@ public class BaseActivity extends AppCompatActivity {
                     holeDetailObject.addProperty("UserId", manger.getUserDetails().getUserid());
                     holeDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     holeDetailObject.addProperty("DeviceType", 0);
-                    holeDetailObject.addProperty("shiftCode", 18);
+                    holeDetailObject.addProperty("shiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
                     holeDetailObject.addProperty("UserRole", 0);
                     holeDetailObject.addProperty("HoleType", String.valueOf(detailData.getHoleType()));
                     holeDetailObject.addProperty("CalculateDrillPenetration", 0);
@@ -1232,9 +1232,9 @@ public class BaseActivity extends AppCompatActivity {
                     logHoleSectionDetailObject.addProperty("ModificationDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
                     logHoleSectionDetailObject.addProperty("deviceType", "android");
                     logHoleSectionDetailObject.addProperty("RigCode", projectDetailJson != null ? projectDetailJson.get("rig_id").getAsInt() : 0);
-                    logHoleSectionDetailObject.addProperty("DrillerCode", 4);
-                    logHoleSectionDetailObject.addProperty("DrillMethod", 1);
-                    logHoleSectionDetailObject.addProperty("ShiftCode", 18);
+                    logHoleSectionDetailObject.addProperty("DrillerCode", projectDetailJson != null ? projectDetailJson.get("driller_code").getAsInt() : 4);
+                    logHoleSectionDetailObject.addProperty("DrillMethod", projectDetailJson != null ? projectDetailJson.get("drill_method_code").getAsInt() : 1);
+                    logHoleSectionDetailObject.addProperty("ShiftCode", projectDetailJson != null ? projectDetailJson.get("shift_code").getAsInt() : 18);
                     logHoleSectionDetailObject.addProperty("DrillLogActivityDateTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
 
                     holeDetailObject.add("LogHoleSectionDetails", logHoleSectionDetailObject);

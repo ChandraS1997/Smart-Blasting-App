@@ -289,6 +289,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.listBtn:
+                binding.holeDetailLayout.mainContainerView.setVisibility(View.GONE);
                 binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
                 binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
                 binding.holeParaLay.setVisibility(View.GONE);

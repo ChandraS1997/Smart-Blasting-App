@@ -45,6 +45,7 @@ import com.smart_blasting_drilling.android.databinding.ActivityMediaBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.entities.MediaUploadEntity;
 import com.smart_blasting_drilling.android.ui.adapter.MediaAdapter;
+import com.smart_blasting_drilling.android.ui.models.MediaDataModel;
 import com.smart_blasting_drilling.android.utils.BitmapUtils;
 import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.DonwloadFileManagerUtils;
@@ -62,9 +63,8 @@ import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import wseemann.media.FFmpegMediaMetadataRetriever;
 
-public class MediaActivity extends BaseActivity implements PickiTCallbacks {
+public class MediaActivity extends BaseActivity implements PickiTCallbacks, MediaAdapter.MediaDeleteListener {
 
     private final int PICK_IMAGE_CAMERA = 1;
     private final int PICK_VIDEO_CAMERA = 2;
@@ -72,6 +72,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
     MediaAdapter mediaAdapter;
     File file = null;
     String imgPath;
+    MediaDataModel mediaDataModel;
     PickiT pickiT;
     ActivityResultLauncher<String> activityResultLauncher;
     String filename;
@@ -108,8 +109,8 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
 
         if (appDatabase.mediaUploadDao().isExistItem(designId)) {
             String data = appDatabase.mediaUploadDao().getSingleItemEntity(designId).getData();
-            List<String> imageList = new Gson().fromJson(data, new TypeToken<List<String>>(){}.getType());
-            AppDelegate.getInstance().setImgList(imageList);
+            List<MediaDataModel> imageList = new Gson().fromJson(data, new TypeToken<List<MediaDataModel>>(){}.getType());
+            AppDelegate.getInstance().setMediaDataModelList(imageList);
         }
 
         imageListBlank();
@@ -131,8 +132,8 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
     }
 
     private void addMediaIntoDb() {
-        if (!Constants.isListEmpty(AppDelegate.getInstance().getImgList())) {
-            String data = new Gson().fromJson(new Gson().toJson(AppDelegate.getInstance().getImgList()), String.class);
+        if (!Constants.isListEmpty(AppDelegate.getInstance().getMediaDataModelList())) {
+            String data = new Gson().toJson(AppDelegate.getInstance().getMediaDataModelList());
             if (appDatabase.mediaUploadDao().isExistItem(designId)) {
                 appDatabase.mediaUploadDao().updateItem(designId, data);
             } else {
@@ -145,11 +146,13 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
     }
 
     private void imageListBlank() {
-        if (!Constants.isListEmpty(AppDelegate.getInstance().getImgList())) {
-            mediaAdapter = new MediaAdapter(this, AppDelegate.getInstance().getImgList());
+        if (!Constants.isListEmpty(AppDelegate.getInstance().getMediaDataModelList())) {
+            mediaAdapter = new MediaAdapter(this, AppDelegate.getInstance().getMediaDataModelList());
             binding.mediaRecycler.setAdapter(mediaAdapter);
+
+            mediaAdapter.setUpListener(this);
         }
-        if (Constants.isListEmpty(AppDelegate.getInstance().getImgList())) {
+        if (Constants.isListEmpty(AppDelegate.getInstance().getMediaDataModelList())) {
             binding.noimageTV.setVisibility(View.VISIBLE);
             binding.clickhereTv.setVisibility(View.VISIBLE);
             binding.mediaRecycler.setVisibility(View.GONE);
@@ -405,6 +408,13 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         if (!file.exists()) {
             file.mkdir();
         }
+        String type = "";
+        if (extension.equalsIgnoreCase(".mp4")) {
+            type = "video";
+        } else {
+            type = "image";
+        }
+        mediaDataModel = new MediaDataModel(fileName[0], imgPath, extension, type, false);
         insertMediaApiCaller(contentUri, extension, designId, "5");
     }
 
@@ -450,7 +460,6 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
                     } catch (Exception e) {
                         Log.e(NODATAFOUND, e.getMessage());
                     }
-                    hideLoader();
                 }
             }
             hideLoader();
@@ -482,20 +491,27 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
 
     private void uploadMediaApiCaller(String extension) {
         mResultsBitmap = BitmapUtils.resamplePic(this, imgPath);
-        if (extension.equalsIgnoreCase(".mp4"))
-            VideoToGif(imgPath);
+        /*if (extension.equalsIgnoreCase(".mp4"))
+            VideoToGif(imgPath);*/
         BitmapUtils.saveImage(this, mResultsBitmap, extension, Uri.parse(imgPath));
         showLoader();
         Map<String, RequestBody> map = new HashMap<>();
         map.put("mediatype", toRequestBody(extension.equals(".mp4") ? "Video" : "Image"));
-         MultipartBody.Part fileData = null;
-      //  if (imgPath != null) {
-           File compressedImgFile = Compressor.getDefault(this).compressToFile(file);
-//            RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("Media",filename,
-//                            RequestBody.create(MediaType.parse("application/octet-stream"), compressedImgFile)).build();
+        MultipartBody.Part fileData = null;
+        if (extension.equalsIgnoreCase(".mp4")) {
+            File file = new File(imgPath);
+            RequestBody requestFile = RequestBody.create(file, MediaType.parse(extension.equalsIgnoreCase(".mp4 ") ? "video/mp4":"image/png"));
+            fileData = MultipartBody.Part.createFormData("Media", file.getName(), requestFile);
+            uploadMediaApiFun(fileData);
+        } else {
+            File compressedImgFile = Compressor.getDefault(this).compressToFile(file);
             RequestBody requestFile = RequestBody.create(compressedImgFile, MediaType.parse(extension.equalsIgnoreCase(".mp4 ") ? "video/mp4":"image/png"));
             fileData = MultipartBody.Part.createFormData("Media", file.getName(), requestFile);
-       // }
+            uploadMediaApiFun(fileData);
+        }
+    }
+
+    private void uploadMediaApiFun(MultipartBody.Part fileData) {
         MainService.uploadApiCallerImage(this, extension.equals(".mp4") ? "Video" : "Image" ,fileData).observe(this, responseUpload -> {
             if (responseUpload == null) {
                 showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
@@ -518,7 +534,6 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
                     } catch (Exception e) {
                         Log.e(NODATAFOUND, e.getMessage());
                     }
-                    hideLoader();
                 }
             }
             hideLoader();
@@ -526,7 +541,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
     }
 
     private void insertImageList() {
-        AppDelegate.getInstance().setSingleImageIntoList(imgPath);
+        AppDelegate.getInstance().setSingleMediaIntoList(mediaDataModel);
         imageListBlank();
     }
 
@@ -581,45 +596,25 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks {
         DonwloadFileManagerUtils downloadHelper = new DonwloadFileManagerUtils(this);
         return downloadHelper.downloadData(uri, fileName, filePath);
     }
-//    private void uploadMediaApiVideo(String extension) {
-//        showLoader();
-//        Map<String, RequestBody> map = new HashMap<>();
-//        map.put("mediatype", toRequestBody("Video"));
-//        MultipartBody.Part fileData = null;
-//        if (imgPath != null) {
-//            File compressedImgFile = Compressor.getDefault(this).compressToFile(file);
-//            RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("Media",filename,
-//                            RequestBody.create(MediaType.parse("application/octet-stream"), compressedImgFile))
-//                    .build();
-//            RequestBody   requestFile = RequestBody.create(compressedImgFile, MediaType.parse("video/mp4"));
-//            fileData = MultipartBody.Part.createFormData("Media", file.getName(), requestFile);
-//        }
-//        MainService.uploadApiCallerImage(this, String.valueOf(extension.equals(".MP4")),fileData).observe(this, responseUpload -> {
-//            if (responseUpload == null) {
-//                showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
-//            } else {
-//                if (responseUpload != null) {
-//                    try {
-//                        JsonObject jsonObject = responseUpload.getAsJsonObject();
-//                        if (jsonObject != null) {
-//                            try {
-//                                if (responseUpload.getAsJsonObject().has("Message")) {
-//                                    Toast.makeText(this, responseUpload.getAsJsonObject().get("Message").getAsString(), Toast.LENGTH_LONG).show();
-//                                }
-//                            } catch (Exception e) {
-//                                Log.e(NODATAFOUND, e.getMessage());
-//                            }
-//
-//                        } else {
-//                            showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
-//                        }
-//                    } catch (Exception e) {
-//                        Log.e(NODATAFOUND, e.getMessage());
-//                    }
-//                    hideLoader();
-//                }
-//            }
-//            hideLoader();
-//        });
-//    }
+
+    @Override
+    public void selectMediaCallBack() {
+        binding.headerMedia.deleteIcn.setVisibility(View.VISIBLE);
+        binding.headerMedia.deleteIcn.setOnClickListener(view -> {
+            Log.e("Selected Images : ", new Gson().toJson(mediaAdapter.getImageList()));
+            List<MediaDataModel> mediaDataModelList = new ArrayList<>();
+            for (MediaDataModel dataModel : mediaAdapter.getImageList()) {
+                if (!dataModel.isSelection()) {
+                    mediaDataModelList.add(dataModel);
+                }
+            }
+            AppDelegate.getInstance().setMediaDataModelList(mediaDataModelList);
+            imageListBlank();
+        });
+    }
+
+    @Override
+    public void clearMediaCallBack() {
+        binding.headerMedia.deleteIcn.setVisibility(View.GONE);
+    }
 }

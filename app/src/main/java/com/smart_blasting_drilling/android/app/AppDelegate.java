@@ -11,6 +11,7 @@ import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Res
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable7DesignElementDataModel;
 import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.ui.models.MediaDataModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public class AppDelegate {
     public static void setInstance(AppDelegate instance) {
         AppDelegate.instance = instance;
     }
-    public List<String> imgList = new ArrayList<>();
+    public List<MediaDataModel> mediaDataModelList = new ArrayList<>();
 
     public JsonObject codeIdObject = new JsonObject();
     public ResponseProjectModelFromAllInfoApi projectModelFromAllInfoApi = new ResponseProjectModelFromAllInfoApi();
@@ -70,19 +71,19 @@ public class AppDelegate {
         this.project3DModelFromAllInfoApi = project3DModelFromAllInfoApi;
     }
 
-    public List<String> getImgList() {
-        return imgList;
+    public List<MediaDataModel> getMediaDataModelList() {
+        return mediaDataModelList;
     }
 
-    public void setImgList(List<String> imgList) {
-        this.imgList = imgList;
+    public void setMediaDataModelList(List<MediaDataModel> mediaDataModelList) {
+        this.mediaDataModelList = mediaDataModelList;
     }
 
-    public void setSingleImageIntoList(String filePath) {
-        if (imgList == null) {
-            imgList = new ArrayList<>();
+    public void setSingleMediaIntoList(MediaDataModel filePath) {
+        if (mediaDataModelList == null) {
+            mediaDataModelList = new ArrayList<>();
         }
-        imgList.add(filePath);
+        mediaDataModelList.add(filePath);
     }
 
     public AllTablesData getAllTablesData() {

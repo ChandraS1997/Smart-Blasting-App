@@ -694,11 +694,150 @@
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/materialDrilledShiftDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/materialDrilledDataContainer">
+
+                            <TextView
+                                android:id="@+id/selectShiftTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/select_shift"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerShift"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:enabled="false"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineShift"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/materialDrillerDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/materialDrilledShiftDataContainer">
+
+                            <TextView
+                                android:id="@+id/drillerTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/select_driller"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerDriller"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:enabled="false"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineDriller"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/materialDrillMethodDataContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_45sdp"
+                            app:layout_constraintTop_toBottomOf="@id/materialDrillerDataContainer">
+
+                            <TextView
+                                android:id="@+id/drillMethodTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:text="@string/drill_method"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_15ssp"
+                                android:gravity="center_vertical"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                                android:id="@+id/spinnerDrillMethod"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/spinner_site_name"
+                                android:editable="false"
+                                android:enabled="false"
+                                android:paddingEnd="@dimen/_15sdp"
+                                android:textColor="@color/_414346"
+                                android:textSize="@dimen/_15ssp"
+                                app:dropDownDrawable="@drawable/downarro"
+                                app:dropDownDrawableHeight="@dimen/_8sdp"
+                                app:dropDownDrawableSpacing="15dp"
+                                app:dropDownDrawableWidth="@dimen/_14ssp"
+                                app:dropDownHeight="@dimen/_150sdp"
+                                app:layout_constraintEnd_toEndOf="parent" />
+
+                            <View
+                                android:id="@+id/viewLineDrillMethod"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:background="@color/grey"
+                                android:orientation="horizontal"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/clientNameDataContainer"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_45sdp"
-                            app:layout_constraintTop_toBottomOf="@id/materialDrilledDataContainer">
+                            app:layout_constraintTop_toBottomOf="@id/materialDrillMethodDataContainer">
 
                             <TextView
                                 android:id="@+id/clientNameTitle"

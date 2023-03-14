@@ -107,7 +107,7 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
                 }
             }
 
-            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * 150, RecyclerView.LayoutParams.WRAP_CONTENT);
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * 137, RecyclerView.LayoutParams.WRAP_CONTENT);
             binding.rowHolePoint.setLayoutParams(layoutParams);
         }
     }

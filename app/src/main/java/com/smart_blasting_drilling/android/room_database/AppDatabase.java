@@ -11,6 +11,7 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.BenchTab
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.BlastCodeDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.BlastPerformanceDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.DrillAccessoriesInfoAllDataDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.DrillShiftInfoDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ExplosiveDataDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.FileTypeTableDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.InitiatingDataDao;
@@ -26,6 +27,7 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdatedP
 import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
 import com.smart_blasting_drilling.android.room_database.entities.BlastCodeEntity;
 import com.smart_blasting_drilling.android.room_database.entities.BlastPerformanceEntity;
+import com.smart_blasting_drilling.android.room_database.entities.DrillShiftInfoEntity;
 import com.smart_blasting_drilling.android.room_database.entities.InitiatingDeviceDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.MediaUploadEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseDrillMaterialEntity;
@@ -61,7 +63,7 @@ import com.smart_blasting_drilling.android.room_database.entities.UpdatedProject
             , AllMineInfoSurfaceInitiatorEntity.class, ResponseDrillAccessoriesInfoAllDataEntity.class
             , ResponseDrillMethodEntity.class, ResponseDrillMaterialEntity.class, UpdatedProjectDetailEntity.class
             , InitiatingDeviceDataEntity.class, AllProjectBladesModelEntity.class, BlastPerformanceEntity.class
-            , BlastCodeEntity.class, MediaUploadEntity.class}, exportSchema = true,
+            , BlastCodeEntity.class, MediaUploadEntity.class, DrillShiftInfoEntity.class}, exportSchema = true,
     autoMigrations = {})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -89,6 +91,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract BlastPerformanceDao blastPerformanceDao();
     public abstract BlastCodeDao blastCodeDao();
     public abstract MediaUploadDao mediaUploadDao();
+    public abstract DrillShiftInfoDao drillShiftInfoDao();
 
     public static class DatabaseMigrations {
         public Migration MIGRATION_2_3 = new Migration(2, 3) {
