@@ -536,7 +536,7 @@ public class ProjectDetailDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.explosiveDataDao().getAllBladesProject())) {
                 if (appDatabase.explosiveDataDao().getAllBladesProject().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseExplosiveDataModel>>(){}.getType();
-                    List<ResponseExplosiveDataModel> drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
+                    List<ResponseExplosiveDataModel> drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.explosiveDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
                     if (!Constants.isListEmpty(drillMethodDataList)) {
                         String[] drillMethodDataItem = new String[drillMethodDataList.size()];
                         for (int i = 0; i < drillMethodDataList.size(); i++) {

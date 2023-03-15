@@ -151,6 +151,12 @@ public class HomeActivity extends BaseActivity {
     private void callBaseApis() {
         if (BaseApplication.getInstance().isInternetConnected(this)) {
             getMinePitZoneBenchApiCaller();
+            getRecordApiCaller();
+            getAllMineInfoSurfaceInitiatorApiCaller();
+            getDrillAccessoriesInfoAllDataApiCaller();
+            getDrillMethodApiCaller();
+            getDrillMaterialApiCaller();
+            getDrillShiftInfoApiCaller();
         }
     }
 
@@ -536,7 +542,6 @@ public class HomeActivity extends BaseActivity {
                         Log.e(NODATAFOUND, e.getMessage());
                     }
                 }
-                getRecordApiCaller();
             }
         });
     }
@@ -628,7 +633,6 @@ public class HomeActivity extends BaseActivity {
                     }
                     hideLoader();
                 }
-                getAllMineInfoSurfaceInitiatorApiCaller();
             }
         });
     }
@@ -666,7 +670,6 @@ public class HomeActivity extends BaseActivity {
                         }
                     }
                 }
-                getDrillAccessoriesInfoAllDataApiCaller();
             }
         });
     }
@@ -701,7 +704,6 @@ public class HomeActivity extends BaseActivity {
                     }
                 }
             }
-            getDrillMethodApiCaller();
         });
     }
 
@@ -734,7 +736,6 @@ public class HomeActivity extends BaseActivity {
                     }
                 }
             }
-            getDrillMaterialApiCaller();
         });
     }
 
@@ -767,7 +768,6 @@ public class HomeActivity extends BaseActivity {
                     }
                 }
             }
-            getDrillShiftInfoApiCaller();
         });
     }
 
@@ -784,7 +784,7 @@ public class HomeActivity extends BaseActivity {
                             try {
                                 DrillShiftInfoEntity entity = new DrillShiftInfoEntity();
                                 entity.setData(jsonObject.get("GetdrillaccessoriesinfoResult").getAsString());
-                                if (Constants.isListEmpty(appDatabase.drillMethodDao().getAllEntityDataList())) {
+                                if (Constants.isListEmpty(appDatabase.drillShiftInfoDao().getAllEntityDataList())) {
                                     appDatabase.drillShiftInfoDao().insertItem(entity);
                                 } else {
                                     appDatabase.drillShiftInfoDao().updateItem(1, new Gson().toJson(entity));

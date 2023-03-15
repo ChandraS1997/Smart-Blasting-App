@@ -434,6 +434,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
         map.put("media_source", "");
         map.put("media_type", extension.equals(".mp4") ? "video" : "image");
         MainService.ImageVideoApiCaller(this, map).observe((LifecycleOwner) this, responsemedia -> {
+            hideLoader();
             if (responsemedia == null) {
                 showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
             } else {
@@ -462,7 +463,6 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
                     }
                 }
             }
-            hideLoader();
         });
     }
 
