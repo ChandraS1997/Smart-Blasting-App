@@ -50,6 +50,7 @@ import com.smart_blasting_drilling.android.utils.BitmapUtils;
 import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.DonwloadFileManagerUtils;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 import com.smart_blasting_drilling.android.viewmodel.MediaViewModel;
 
 import java.io.File;
@@ -95,6 +96,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
         if (isBundleIntentNotEmpty()) {
             designId = getIntent().getExtras().getString("blades_data");
         }
+        AppDelegate.getInstance().setMediaDataModelList(null);
 
         binding.headerMedia.backImg.setOnClickListener(view -> {
             addMediaIntoDb();
@@ -102,15 +104,17 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
         });
 
         //getAllImageFromGallery();
-        Log.e("Abc : ", new Gson().toJson(getAllShownImagesPath(this)));
 
         binding.clickhereTv.setOnClickListener(view -> selectImage());
         pickiT = new PickiT(this, this, this);
 
-        if (appDatabase.mediaUploadDao().isExistItem(designId)) {
-            String data = appDatabase.mediaUploadDao().getSingleItemEntity(designId).getData();
-            List<MediaDataModel> imageList = new Gson().fromJson(data, new TypeToken<List<MediaDataModel>>(){}.getType());
-            AppDelegate.getInstance().setMediaDataModelList(imageList);
+        if (!StringUtill.isEmpty(designId)) {
+            if (appDatabase.mediaUploadDao().isExistItem(designId)) {
+                String data = appDatabase.mediaUploadDao().getSingleItemEntity(designId).getData();
+                List<MediaDataModel> imageList = new Gson().fromJson(data, new TypeToken<List<MediaDataModel>>() {
+                }.getType());
+                AppDelegate.getInstance().setMediaDataModelList(imageList);
+            }
         }
 
         imageListBlank();

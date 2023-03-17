@@ -5,7 +5,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainContainerView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_light_gray_drawable"
+        android:paddingBottom="@dimen/_10sdp">
 
         <View
             android:id="@+id/startSpaceView"
@@ -28,7 +30,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="@dimen/_11ssp"
-            android:text="R3H5"
             android:gravity="center"
             android:fontFamily="@font/inter_regular"
             app:layout_constraintTop_toTopOf="parent"

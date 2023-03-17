@@ -47,6 +47,7 @@ import com.smart_blasting_drilling.android.room_database.entities.BlastCodeEntit
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
+import com.smart_blasting_drilling.android.utils.KeyboardUtils;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
@@ -404,6 +405,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 binding.holeDetailLayout.holeStatusSpinner.setText(StringUtill.getString(holeDetailData.getHoleStatus()));
             }
 
+            binding.holeDetailLayout.holeNameEt.setText(String.format("R%sH%s", StringUtill.getString(String.valueOf(holeDetailData.getRowNo())), StringUtill.getString(String.valueOf(holeDetailData.getHoleNo()))));
             binding.holeDetailLayout.holeAngleEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getVerticalDip())));
             binding.holeDetailLayout.diameterEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDiameter())));
             binding.holeDetailLayout.burdenEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBurden())));
@@ -428,6 +430,9 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         }
 
         binding.holeDetailLayout.closeBtn.setOnClickListener(view -> {
+            KeyboardUtils.hideSoftKeyboard(this);
+            if (Constants.holeBgListener != null)
+                Constants.holeBgListener.setBackgroundRefresh();
             binding.holeDetailLayoutContainer.setVisibility(View.GONE);
         });
 

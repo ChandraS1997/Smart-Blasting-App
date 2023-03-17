@@ -16,6 +16,8 @@ import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.HoleItemBinding;
+import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.interfaces.HoleBgListener;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.utils.AppUtill;
@@ -29,6 +31,7 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
     List<ResponseHoleDetailData> holeDetailDataList;
     int spaceVal;
     String patternType = "Rectangular/Square";
+    int selectedPos = -1;
 
     public HoleItemAdapter(Context context, List<ResponseHoleDetailData> holeDetailDataList, int spaceVal, String patternType) {
         this.context = context;
@@ -60,12 +63,13 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
         return holeDetailDataList.size();
     }
 
-    class HoleItemViewHolder extends RecyclerView.ViewHolder {
+    class HoleItemViewHolder extends RecyclerView.ViewHolder implements HoleBgListener {
         HoleItemBinding binding;
 
         public HoleItemViewHolder(@NonNull HoleItemBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
+            Constants.holeBgListener = this;
         }
 
         void setDataBind(ResponseHoleDetailData detailData) {
@@ -83,6 +87,14 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
                 binding.holeStatusTxt.setGravity(Gravity.START);
                 binding.startSpaceView.setVisibility(View.GONE);
                 binding.endSpaceView.setVisibility(View.VISIBLE);
+            }
+
+            if (selectedPos == getBindingAdapterPosition()) {
+                binding.mainContainerView.setBackgroundResource(R.drawable.bg_light_gray_drawable);
+                binding.mainContainerView.setElevation(2f);
+            } else {
+                binding.mainContainerView.setBackgroundResource(0);
+                binding.mainContainerView.setElevation(0f);
             }
 
             binding.holeStatusTxt.setVisibility(View.VISIBLE);
@@ -106,12 +118,19 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
             binding.holeStatusTxt.setText(StringUtill.getString(String.format("R%sH%s", detailData.getRowNo(), detailData.getHoleNo())));
 
             itemView.setOnClickListener(view -> {
+                selectedPos = getBindingAdapterPosition();
                 if (((HoleDetailActivity) context).holeDetailCallBackListener != null)
                     ((HoleDetailActivity) context).holeDetailCallBackListener.setHoleDetailCallBack(((HoleDetailActivity) context).bladesRetrieveData,detailData);
+                notifyDataSetChanged();
             });
 
         }
 
+        @Override
+        public void setBackgroundRefresh() {
+            selectedPos = -1;
+            notifyDataSetChanged();
+        }
     }
 
 }
