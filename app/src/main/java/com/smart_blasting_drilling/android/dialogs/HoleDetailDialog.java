@@ -122,7 +122,7 @@ public class HoleDetailDialog extends BaseDialogFragment {
     public void loadData() {
         entity = appDatabase.projectHoleDetailRowColDao();
         if (holeDetailData != null) {
-            binding.holeDepthEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDepth())));
+            binding.holeDepthEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDepthDouble())));
             String[] status = new String[]{"Pending Hole", "Work in Progress", "Completed", "Deleted/ Blocked holes/ Do not blast"};
             binding.holeStatusSpinner.setAdapter(Constants.getAdapter(mContext, status));
 
@@ -134,8 +134,8 @@ public class HoleDetailDialog extends BaseDialogFragment {
 
             binding.holeAngleEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleAngle())));
             binding.diameterEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDiameter())));
-            binding.burdenEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBurden())));
-            binding.spacingEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getSpacing())));
+            binding.burdenEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBurdenDouble())));
+            binding.spacingEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getSpacingDouble())));
             binding.xEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getX())));
             binding.yTxtEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getY())));
             binding.zEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getZ())));

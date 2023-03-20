@@ -2008,7 +2008,7 @@ public class BaseActivity extends AppCompatActivity {
                 ProjectCode: Number($scope.ProjectCode)
         };*/
 
-            Log.e("referenceCoordinateModelList : ", new Gson().toJson(referenceCoordinateModelList));
+//            Log.e("referenceCoordinateModelList : ", new Gson().toJson(referenceCoordinateModelList));
 
         } catch (Exception e) {
             e.getLocalizedMessage();

@@ -538,6 +538,18 @@ public class ResponseHoleDetailData implements Serializable {
 		}
 	}
 
+
+	public double getBurdenDouble(){
+		if (burden != null) {
+			if (burden instanceof String) {
+				return Double.parseDouble(String.valueOf(burden));
+			}
+			return (double) burden;
+		} else {
+			return 0;
+		}
+	}
+
 	public void setDensity(Object density){
 		this.density = density;
 	}
@@ -956,7 +968,7 @@ public class ResponseHoleDetailData implements Serializable {
 		return deckLength1 != null ? ((Double) deckLength1).intValue() : 0;
 	}
 
-	public void setHoleAngle(int holeAngle){
+	public void setHoleAngle(Object holeAngle){
 		this.holeAngle = holeAngle;
 	}
 
@@ -964,6 +976,12 @@ public class ResponseHoleDetailData implements Serializable {
 		if (holeAngle instanceof Integer)
 			return (int) holeAngle;
 		return holeAngle != null ? ((Double)holeAngle).intValue() : 0;
+	}
+
+	public double getHoleAngleDouble(){
+		if (holeAngle instanceof Double)
+			return (double) holeAngle;
+		return holeAngle != null ? (double) holeAngle : 0.0;
 	}
 
 	public void setDesignId(int designId){
@@ -1160,6 +1178,16 @@ public class ResponseHoleDetailData implements Serializable {
 		return 0;
 	}
 
+	public double getSpacingDouble(){
+		if (spacing != null) {
+			if (spacing instanceof String) {
+				return Double.parseDouble(String.valueOf(spacing));
+			}
+			return (double) spacing;
+		}
+		return 0.0;
+	}
+
 	public void setBtmId(int btmId){
 		this.btmId = btmId;
 	}
@@ -1314,7 +1342,7 @@ public class ResponseHoleDetailData implements Serializable {
 		return density1;
 	}
 
-	public void setHoleDepth(int holeDepth){
+	public void setHoleDepth(Object holeDepth){
 		this.holeDepth = holeDepth;
 	}
 
@@ -1322,6 +1350,12 @@ public class ResponseHoleDetailData implements Serializable {
 		if (holeDepth instanceof Integer)
 			return (int) holeDepth;
 		return holeDepth != null ? ((Double) holeDepth).intValue() : 0;
+	}
+
+	public double getHoleDepthDouble(){
+		if (holeDepth instanceof Double)
+			return (double) holeDepth;
+		return holeDepth != null ? (double) holeDepth : 0.0;
 	}
 
 	public void setDensity2(Object density2){

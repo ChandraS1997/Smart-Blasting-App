@@ -5,22 +5,40 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainContainerView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/_33sdp">
 
         <EditText
+            android:visibility="gone"
             android:id="@+id/holeIdVal"
             android:layout_width="@dimen/_120sdp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/table_cell_border"
             android:inputType="none"
-            android:enabled="false"
             android:gravity="center"
             android:textColor="@color/black"
             android:paddingHorizontal="@dimen/_5sdp"
             android:text="Hole Status"
             android:imeOptions="flagNoExtractUi"
             android:singleLine="true"
+            android:textSize="@dimen/_15ssp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/holeIdValTxt"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/table_cell_border"
+            android:inputType="none"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:paddingHorizontal="@dimen/_5sdp"
+            android:text="Hole Status"
+            android:singleLine="true"
+            android:textSize="@dimen/_15ssp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 

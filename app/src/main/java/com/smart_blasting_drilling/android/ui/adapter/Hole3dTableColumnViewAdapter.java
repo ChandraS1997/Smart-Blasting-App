@@ -85,65 +85,60 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
             binding = itemView;
         }
 
+        void setValueOfData(TableEditModel model) {
+            if (setViewOfTitle(model.getTitleVal())) {
+                if (isHeader) {
+                    binding.holeIdValTxt.setVisibility(View.VISIBLE);
+                    binding.holeIdValTxt.setText(StringUtill.getString(model.getCheckBox()));
+                } else {
+                    binding.holeIdVal.setVisibility(View.VISIBLE);
+                    binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
+                }
+            } else {
+                binding.holeIdValTxt.setVisibility(View.VISIBLE);
+                binding.holeIdValTxt.setText(StringUtill.getString(model.getCheckBox()));
+            }
+        }
+
+        private boolean setViewOfTitle(String title) {
+            return StringUtill.getString(title).equals("Hole Depth")
+                    || StringUtill.getString(title).equals("VerticalDip")
+                    || StringUtill.getString(title).equals("Burden")
+                    || StringUtill.getString(title).equals("Spacing");
+        }
+
         void setDataBind(TableEditModel model) {
 
-            if (((HoleDetail3DModelActivity) context).isTableHeaderFirstTimeLoad) {
-                binding.holeIdVal.setVisibility(View.VISIBLE);
+            if (((HoleDetailActivity) context).isTableHeaderFirstTimeLoad) {
+                setValueOfData(model);
             } else {
                 if (model.isSelected()) {
-                    binding.holeIdVal.setVisibility(View.VISIBLE);
+                    setValueOfData(model);
                 } else {
-                    binding.holeIdVal.setVisibility(View.GONE);
+                    if (setViewOfTitle(model.getTitleVal()))
+                        binding.holeIdVal.setVisibility(View.GONE);
+                    else
+                        binding.holeIdValTxt.setVisibility(View.GONE);
                 }
             }
-            binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
 
             LinearLayout.LayoutParams layoutParams;
             if (isHeader) {
                 layoutParams = new LinearLayout.LayoutParams(300, 100);
             } else {
-                layoutParams = new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams = new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.MATCH_PARENT);
             }
 
-            if (StringUtill.getString(model.getTitleVal()).equals("Hole Depth")) {
-                if (getBindingAdapterPosition() > 0) {
+            if (setViewOfTitle(model.getTitleVal())) {
+                if (!isHeader) {
                     binding.holeIdVal.setEnabled(true);
                     binding.holeIdVal.setCursorVisible(true);
-                    binding.holeIdVal.setBackgroundResource(R.drawable.table_cell_border_white_bg);
-                    binding.holeIdVal.setInputType(InputType.TYPE_CLASS_NUMBER);
-                }
-            }
-            if (StringUtill.getString(model.getTitleVal()).equals("Hole Status")) {
-                if (getBindingAdapterPosition() > 0) {
-                    binding.holeIdVal.setClickable(true);
-                }
-            }
-            if (StringUtill.getString(model.getTitleVal()).equals("VerticalDip")) {
-                if (getBindingAdapterPosition() > 0) {
-                    binding.holeIdVal.setEnabled(true);
-                    binding.holeIdVal.setCursorVisible(true);
-                    binding.holeIdVal.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    binding.holeIdVal.setBackgroundResource(R.drawable.table_cell_border_white_bg);
-                }
-            }
-            if (StringUtill.getString(model.getTitleVal()).equals("Burden")) {
-                if (getBindingAdapterPosition() > 0) {
-                    binding.holeIdVal.setEnabled(true);
-                    binding.holeIdVal.setCursorVisible(true);
-                    binding.holeIdVal.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    binding.holeIdVal.setBackgroundResource(R.drawable.table_cell_border_white_bg);
-                }
-            }
-            if (StringUtill.getString(model.getTitleVal()).equals("Spacing")) {
-                if (getBindingAdapterPosition() > 0) {
-                    binding.holeIdVal.setEnabled(true);
-                    binding.holeIdVal.setCursorVisible(true);
-                    binding.holeIdVal.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    binding.holeIdVal.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
                     binding.holeIdVal.setBackgroundResource(R.drawable.table_cell_border_white_bg);
                 }
             }
 
-            binding.holeIdVal.setOnClickListener(view -> {
+            binding.holeIdValTxt.setOnClickListener(view -> {
                 if (getBindingAdapterPosition() > 0 && !binding.holeIdVal.getText().toString().equals("Charging")) {
                     if (model.getTitleVal().equals("Hole Status")) {
                         FragmentManager fragmentManager = ((BaseActivity) context).getSupportFragmentManager();
@@ -200,6 +195,7 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
             });
 
             binding.holeIdVal.setLayoutParams(layoutParams);
+            binding.holeIdValTxt.setLayoutParams(layoutParams);
 
         }
 

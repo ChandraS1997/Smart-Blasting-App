@@ -62,7 +62,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
     public interface HoleDetailCallBackListener {
         void setHoleDetailCallBack(ResponseBladesRetrieveData data, ResponseHoleDetailData detailData);
-        void saveAndCloseHoleDetailCallBack(ResponseHoleDetailData detailData);
+        void saveAndCloseHoleDetailCallBack();
     }
 
     public void setDataFromBundle() {
@@ -288,7 +288,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.listBtn:
-                binding.holeDetailLayout.mainContainerView.setVisibility(View.GONE);
+                binding.holeDetailLayoutContainer.setVisibility(View.GONE);
                 binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
                 binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
                 binding.holeParaLay.setVisibility(View.GONE);
@@ -365,7 +365,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     public void setHoleDetailDialog(ResponseBladesRetrieveData bladesRetrieveData, ResponseHoleDetailData holeDetailData) {
         ResponseHoleDetailData updateHoleDetailData = holeDetailData;
         if (holeDetailData != null) {
-            binding.holeDetailLayout.holeDepthEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDepth())));
+            binding.holeDetailLayout.holeDepthEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDepthDouble())));
             String[] status = new String[]{"Pending Hole", "Work in Progress", "Completed", "Deleted/ Blocked holes/ Do not blast"};
             binding.holeDetailLayout.holeStatusSpinner.setAdapter(Constants.getAdapter(this, status));
 
@@ -378,8 +378,8 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             binding.holeDetailLayout.holeNameEt.setText(String.format("R%sH%s", StringUtill.getString(String.valueOf(holeDetailData.getRowNo())), StringUtill.getString(String.valueOf(holeDetailData.getHoleNo()))));
             binding.holeDetailLayout.holeAngleEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleAngle())));
             binding.holeDetailLayout.diameterEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDiameter())));
-            binding.holeDetailLayout.burdenEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBurden())));
-            binding.holeDetailLayout.spacingEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getSpacing())));
+            binding.holeDetailLayout.burdenEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBurdenDouble())));
+            binding.holeDetailLayout.spacingEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getSpacingDouble())));
             binding.holeDetailLayout.xEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getX())));
             binding.holeDetailLayout.yTxtEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getY())));
             binding.holeDetailLayout.zEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getZ())));
@@ -394,8 +394,8 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
         binding.holeDetailLayout.saveProceedBtn.setOnClickListener(view -> {
 
-            updateHoleDetailData.setHoleDepth(StringUtill.isEmpty(binding.holeDetailLayout.holeDepthEt.getText().toString()) ? 0 : Integer.parseInt(binding.holeDetailLayout.holeDepthEt.getText().toString()));
-            updateHoleDetailData.setHoleAngle(StringUtill.isEmpty(binding.holeDetailLayout.holeAngleEt.getText().toString()) ? 0 : Integer.parseInt(binding.holeDetailLayout.holeAngleEt.getText().toString()));
+            updateHoleDetailData.setHoleDepth(StringUtill.isEmpty(binding.holeDetailLayout.holeDepthEt.getText().toString()) ? 0 : Double.parseDouble(binding.holeDetailLayout.holeDepthEt.getText().toString()));
+            updateHoleDetailData.setHoleAngle(StringUtill.isEmpty(binding.holeDetailLayout.holeAngleEt.getText().toString()) ? 0 : Double.parseDouble(binding.holeDetailLayout.holeAngleEt.getText().toString()));
             updateHoleDetailData.setHoleDiameter(StringUtill.isEmpty(binding.holeDetailLayout.diameterEt.getText().toString()) ? 0 : Integer.parseInt(binding.holeDetailLayout.diameterEt.getText().toString()));
             updateHoleDetailData.setBurden(StringUtill.isEmpty(binding.holeDetailLayout.burdenEt.getText().toString()) ? 0 : binding.holeDetailLayout.burdenEt.getText().toString());
             updateHoleDetailData.setSpacing(StringUtill.isEmpty(binding.holeDetailLayout.spacingEt.getText().toString()) ? 0 : binding.holeDetailLayout.spacingEt.getText().toString());

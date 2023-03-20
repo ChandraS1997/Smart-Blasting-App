@@ -50,8 +50,8 @@ public class MapViewFragment extends BaseFragment implements HoleDetailActivity.
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (((HoleDetailActivity) mContext).binding.holeDetailLayout.mainContainerView.getVisibility() == View.VISIBLE) {
-                    ((HoleDetailActivity) mContext).binding.holeDetailLayout.mainContainerView.setVisibility(View.GONE);
+                if (((HoleDetailActivity) mContext).binding.holeDetailLayoutContainer.getVisibility() == View.VISIBLE) {
+                    saveAndCloseHoleDetailCallBack();
                 } else {
                     if (getView() != null)
                         Navigation.findNavController(getView()).navigateUp();
@@ -127,7 +127,9 @@ public class MapViewFragment extends BaseFragment implements HoleDetailActivity.
     }
 
     @Override
-    public void saveAndCloseHoleDetailCallBack(ResponseHoleDetailData detailData) {
+    public void saveAndCloseHoleDetailCallBack() {
+        if (Constants.holeBgListener != null)
+            Constants.holeBgListener.setBackgroundRefresh();
         ((HoleDetailActivity) mContext).binding.holeDetailLayoutContainer.setVisibility(View.GONE);
     }
 
