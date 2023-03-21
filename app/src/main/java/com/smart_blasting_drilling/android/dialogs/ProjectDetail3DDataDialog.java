@@ -43,6 +43,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseZoneTable;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.Table1Item;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApplication;
@@ -394,24 +395,24 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.projectHoleDetailRowColDao().getAllBladesProjectList())) {
                 if (appDatabase.projectHoleDetailRowColDao().getAllBladesProjectList().get(0) != null) {
                     Type teamList = new TypeToken<List<Table1Item>>(){}.getType();
-                    /*JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
-                    List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
-                    for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
-                        holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
-                    }*/
-                    AllTablesData tablesData = new Gson().fromJson(new Gson().fromJson(appDatabase.projectHoleDetailRowColDao().getAllBladesProject(bladesRetrieveData.getDesignId()).getProjectHole(), JsonObject.class).get("GetAll3DDesignInfoResult"), AllTablesData.class);
-                    List<Table1Item> drillPatternDataItemList = tablesData.getTable1();
-                    if (!Constants.isListEmpty(drillPatternDataItemList)) {
-                        String[] drillPatternDataItem = new String[drillPatternDataItemList.size()];
-                        for (int i = 0; i < drillPatternDataItemList.size(); i++) {
-                            drillPatternDataItem[i] = drillPatternDataItemList.get(i).getPatternType();
+                    JsonArray array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.projectHoleDetailRowColDao().getAllBladesProject(bladesRetrieveData.getDesignId()).getProjectHole(), JsonObject.class).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                    List<Response3DTable2DataModel> holeDetailDataList = new ArrayList<>();
+                    for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(1), String.class), JsonArray.class)) {
+                        holeDetailDataList.add(new Gson().fromJson(e, Response3DTable2DataModel.class));
+                    }
+                    /*AllTablesData tablesData = new Gson().fromJson(new Gson().fromJson(appDatabase.projectHoleDetailRowColDao().getAllBladesProject(bladesRetrieveData.getDesignId()).getProjectHole(), JsonObject.class).get("GetAll3DDesignInfoResult"), AllTablesData.class);
+                    List<Table1Item> drillPatternDataItemList = tablesData.getTable1();*/
+                    if (!Constants.isListEmpty(holeDetailDataList)) {
+                        String[] drillPatternDataItem = new String[holeDetailDataList.size()];
+                        for (int i = 0; i < holeDetailDataList.size(); i++) {
+                            drillPatternDataItem[i] = holeDetailDataList.get(i).getPatternType();
                         }
                         binding.spinnerDrillingPattern.setAdapter(Constants.getAdapter(mContext, drillPatternDataItem));
                         binding.spinnerDrillingPattern.setText(StringUtill.getString(drillPatternDataItem[0]));
                         binding.spinnerDrillingPattern.setOnItemClickListener((adapterView, view, i, l) -> {
-                            drillPatternId = drillPatternDataItemList.get(i).getPatternTypeId();
+                            drillPatternId = 2;
                         });
-                        drillPatternId = drillPatternDataItemList.get(0).getPatternTypeId();
+                        drillPatternId = 2;
                     }
                 }
             }
@@ -438,7 +439,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.drillMaterialDao().getAllEntityDataList())) {
                 if (appDatabase.drillMaterialDao().getAllEntityDataList().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseDrillMaterialData>>(){}.getType();
-                    List<ResponseDrillMaterialData> drillMaterialDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillMaterialDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data"), teamList);
+                    List<ResponseDrillMaterialData> drillMaterialDataList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillMaterialDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data"), String.class), teamList);
                     if (!Constants.isListEmpty(drillMaterialDataList)) {
                         String[] drillMaterialDataItem = new String[drillMaterialDataList.size()];
                         for (int i = 0; i < drillMaterialDataList.size(); i++) {
@@ -533,7 +534,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.explosiveDataDao().getAllBladesProject())) {
                 if (appDatabase.explosiveDataDao().getAllBladesProject().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseExplosiveDataModel>>(){}.getType();
-                    List<ResponseExplosiveDataModel> drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
+                    List<ResponseExplosiveDataModel> drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.explosiveDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
                     if (!Constants.isListEmpty(drillMethodDataList)) {
                         String[] drillMethodDataItem = new String[drillMethodDataList.size()];
                         for (int i = 0; i < drillMethodDataList.size(); i++) {

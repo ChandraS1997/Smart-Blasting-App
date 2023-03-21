@@ -16,6 +16,7 @@ import com.smart_blasting_drilling.android.api.apis.response.hole_tables.Table1I
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.MapHoleColunmItemBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.interfaces.Hole3DBgListener;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
@@ -58,12 +59,13 @@ public class MapHolePoint3dAdapter extends BaseRecyclerAdapter {
         return colHoleDetailDataList.size();
     }
 
-    class MapHolePointViewHolder extends RecyclerView.ViewHolder {
+    class MapHolePointViewHolder extends RecyclerView.ViewHolder implements Hole3DBgListener {
         MapHoleColunmItemBinding binding;
 
         public MapHolePointViewHolder(@NonNull MapHoleColunmItemBinding itemView) {
             super(itemView.getRoot());
             binding = itemView;
+            Constants.hole3DBgListener = this;
         }
 
         void setDataBind(MapHole3DDataModel mapHoleDataModel) {
@@ -101,6 +103,10 @@ public class MapHolePoint3dAdapter extends BaseRecyclerAdapter {
             binding.rowHolePoint.setAdapter(adapter);
         }
 
+        @Override
+        public void setBackgroundRefresh() {
+            notifyDataSetChanged();
+        }
     }
 
 }

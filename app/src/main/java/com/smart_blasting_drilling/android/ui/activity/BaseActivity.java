@@ -2047,4 +2047,88 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void _3dMapCoordinatesAndroid(double northing, double easting, List<Response3DTable4HoleChargingDataModel> holeDetailData) {
+        try {
+            long width = 537;
+            long height = 527;
+
+            double x, y;
+
+            List<ReferenceCoordinateModel> referenceCoordinateModelList = new ArrayList<>();
+
+            if (northing == 0 || easting == 20) {
+                for (int i = 0; i < holeDetailData.size(); i++) {
+                    if (Double.parseDouble(holeDetailData.get(i).getTopX()) == 0) {
+                        x = 20;
+                    } else {
+                        x = Math.abs(Double.parseDouble(holeDetailData.get(i).getTopX()) + 30);
+                    }
+                    y = Math.abs(Double.parseDouble(holeDetailData.get(i).getTopY()));
+                    referenceCoordinateModelList.add(new ReferenceCoordinateModel(holeDetailData.get(i).getRowNo(), holeDetailData.get(i).getHoleNo(), x, y));
+                }
+            } else {
+
+                int holeNo = 0;
+                NorthEastCoordinateModel arrMinMaxEastingNorthing = findMinMaxEastingNorthingFor3dMapAndroid(holeDetailData);
+                //for Easting- No. of pixels in meter
+                float scaleFactorEasting = (float) (width / (arrMinMaxEastingNorthing.getMaxEasting() - arrMinMaxEastingNorthing.getMinEasting()));
+                //for Northing- No. of pixels in meter
+                float scaleFactorNorthing = (float) (height / (arrMinMaxEastingNorthing.getMaxNorthing() - arrMinMaxEastingNorthing.getMinNorthing()));
+
+                // to find the scale that will fit the canvas get the min scale to fit height or width
+                float scaleMinEastNorth = Math.min(scaleFactorEasting, scaleFactorNorthing);
+
+                for (int i = 0; i < holeDetailData.size(); i++) {
+                    x = (Double.parseDouble(holeDetailData.get(i).getTopY()) - arrMinMaxEastingNorthing.getMinEasting()) * scaleFactorEasting;
+                    y = (Double.parseDouble(holeDetailData.get(i).getTopX()) - arrMinMaxEastingNorthing.getMinNorthing()) * scaleFactorNorthing;
+                    y = height - y;
+                    holeNo = holeNo + 1;
+                    referenceCoordinateModelList.add(new ReferenceCoordinateModel(holeDetailData.get(i).getRowNo(), holeDetailData.get(i).getHoleNo(), x, y));
+                }
+            }
+
+        /*var HoleCoorInfo = {
+                HoleCoorinatesInfo: referenceCoordinate,
+                ProjectCode: Number($scope.ProjectCode)
+        };*/
+
+            Log.e("referenceCoordinateModelList : ", new Gson().toJson(referenceCoordinateModelList));
+
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
+    }
+
+    NorthEastCoordinateModel findMinMaxEastingNorthingFor3dMapAndroid(List<Response3DTable4HoleChargingDataModel> holeDetailData) {
+        float minEasting = 0, maxEasting = 0, minNorthing = 0, maxNorthing = 0;
+        if (!Constants.isListEmpty(holeDetailData)) {
+            minEasting = Float.parseFloat(String.valueOf(holeDetailData.get(0).getTopY()));
+            maxEasting = Float.parseFloat(String.valueOf(holeDetailData.get(0).getTopY()));
+            minNorthing = Float.parseFloat(String.valueOf(holeDetailData.get(0).getTopX()));
+            maxNorthing = Float.parseFloat(String.valueOf(holeDetailData.get(0).getTopX()));
+
+            float tempNorthing, tempEasting;
+            for (int i = 1, len = holeDetailData.size(); i < len; i++) {
+                holeDetailData.get(i).setTopX(String.valueOf(holeDetailData.get(i).getTopX()));
+                tempNorthing = Float.parseFloat(String.valueOf(holeDetailData.get(i).getTopX()));
+                minNorthing = Math.min(tempNorthing, minNorthing);
+                maxNorthing = Math.max(tempNorthing, maxNorthing);
+
+                holeDetailData.get(i).setTopY(String.valueOf(holeDetailData.get(i).getTopY()));
+                tempEasting = Float.parseFloat(String.valueOf(holeDetailData.get(i).getTopY()));
+                minEasting = Math.min(tempEasting, minEasting);
+                maxEasting = Math.max(tempEasting, maxEasting);
+            }
+
+            minEasting = minEasting - 10;
+            maxEasting = maxEasting + 10;
+            minNorthing = minNorthing - 10;
+            maxNorthing = maxNorthing + 10;
+
+            return new NorthEastCoordinateModel(minEasting, maxEasting, minNorthing, maxNorthing);
+        } else {
+            return new NorthEastCoordinateModel();
+        }
+    }
+
 }

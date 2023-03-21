@@ -17,6 +17,7 @@ import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Res
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.HoleItemBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.interfaces.Hole3DBgListener;
 import com.smart_blasting_drilling.android.interfaces.HoleBgListener;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
@@ -62,6 +63,16 @@ public class Hole3dItemAdapter extends BaseRecyclerAdapter {
         return holeDetailDataList.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     class HoleItemViewHolder extends RecyclerView.ViewHolder implements HoleBgListener {
         HoleItemBinding binding;
 
@@ -94,12 +105,6 @@ public class Hole3dItemAdapter extends BaseRecyclerAdapter {
                 binding.endSpaceView.setVisibility(View.VISIBLE);
             }
 
-            if (selectedPos == getBindingAdapterPosition()) {
-                binding.mainContainerView.setBackgroundResource(R.drawable.bg_light_gray_drawable);
-            } else {
-                binding.mainContainerView.setBackgroundResource(0);
-            }
-
             binding.holeStatusTxt.setVisibility(View.VISIBLE);
             if (!StringUtill.isEmpty(detailData.getHoleStatus())) {
                 switch (detailData.getHoleStatus()) {
@@ -126,6 +131,15 @@ public class Hole3dItemAdapter extends BaseRecyclerAdapter {
                     ((HoleDetail3DModelActivity) context).holeDetailCallBackListener.setHoleDetailCallBack(detailData);
                 notifyDataSetChanged();
             });
+
+            if (selectedPos == getBindingAdapterPosition()) {
+                binding.mainContainerView.setBackgroundResource(R.drawable.bg_light_gray_drawable);
+                binding.mainContainerView.setElevation(10f);
+            } else {
+
+                binding.mainContainerView.setBackgroundResource(R.color.white);
+                binding.mainContainerView.setElevation(0f);
+            }
 
         }
 

@@ -109,7 +109,7 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
         void setDataBind(TableEditModel model) {
 
-            if (((HoleDetailActivity) context).isTableHeaderFirstTimeLoad) {
+            if (((HoleDetail3DModelActivity) context).isTableHeaderFirstTimeLoad) {
                 setValueOfData(model);
             } else {
                 if (model.isSelected()) {

@@ -73,7 +73,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
     public interface HoleDetailCallBackListener {
         void setHoleDetailCallBack(Response3DTable4HoleChargingDataModel detailData);
-        void saveAndCloseHoleDetailCallBack(Response3DTable4HoleChargingDataModel detailData);
+        void saveAndCloseHoleDetailCallBack();
     }
 
     public void setDataFromBundle() {
@@ -433,6 +433,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             KeyboardUtils.hideSoftKeyboard(this);
             if (Constants.holeBgListener != null)
                 Constants.holeBgListener.setBackgroundRefresh();
+            if (Constants.hole3DBgListener != null)
+                Constants.hole3DBgListener.setBackgroundRefresh();
             binding.holeDetailLayoutContainer.setVisibility(View.GONE);
         });
 
@@ -540,6 +542,11 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             if (((HoleDetail3DModelActivity) this).mapViewDataUpdateLiveData != null)
                 ((HoleDetail3DModelActivity) this).mapViewDataUpdateLiveData.setValue(true);
 
+            KeyboardUtils.hideSoftKeyboard(this);
+            if (Constants.holeBgListener != null)
+                Constants.holeBgListener.setBackgroundRefresh();
+            if (Constants.hole3DBgListener != null)
+                Constants.hole3DBgListener.setBackgroundRefresh();
             binding.holeDetailLayoutContainer.setVisibility(View.GONE);
         } catch (Exception e) {
             e.getLocalizedMessage();

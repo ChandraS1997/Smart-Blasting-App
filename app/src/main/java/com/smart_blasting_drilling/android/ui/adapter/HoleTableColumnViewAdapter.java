@@ -191,7 +191,10 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-
+                    binding.holeIdVal.setFocusable(true);
+                    binding.holeIdVal.setFocusableInTouchMode(true);
+                    binding.holeIdVal.setCursorVisible(true);
+                    binding.holeIdVal.requestFocus();
                 }
             });
 

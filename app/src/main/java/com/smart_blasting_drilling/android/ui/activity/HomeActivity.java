@@ -38,6 +38,8 @@ import com.smart_blasting_drilling.android.app.BaseApis;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
+import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
+import com.smart_blasting_drilling.android.interfaces.OnChangeConnectivityListener;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllMineInfoSurfaceInitiatorEntity;
 import com.smart_blasting_drilling.android.room_database.entities.DrillShiftInfoEntity;
@@ -148,16 +150,37 @@ public class HomeActivity extends BaseActivity {
 
     }
 
+    private boolean isDbTableCheck() {
+        return Constants.isListEmpty(appDatabase.mineTableDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.benchTableDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.zoneTableDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.pitTableDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.typeTableDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.fileDetailsTableDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.typeTableDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.explosiveDataDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.tldDataEntity().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.initiatingDataDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.rockDataDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.allMineInfoSurfaceInitiatorDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject()) ||
+                Constants.isListEmpty(appDatabase.drillMethodDao().getAllEntityDataList()) ||
+                Constants.isListEmpty(appDatabase.drillMaterialDao().getAllEntityDataList()) ||
+                Constants.isListEmpty(appDatabase.drillShiftInfoDao().getAllEntityDataList());
+
+    }
+
     private void callBaseApis() {
         if (BaseApplication.getInstance().isInternetConnected(this)) {
-            getMinePitZoneBenchApiCaller();
-            getRecordApiCaller();
-            getAllMineInfoSurfaceInitiatorApiCaller();
-            getDrillAccessoriesInfoAllDataApiCaller();
-            getDrillMethodApiCaller();
-            getDrillMaterialApiCaller();
-            getDrillShiftInfoApiCaller();
+            if (isDbTableCheck()) {
+                getMinePitZoneBenchApiCaller();
+            }
         }
+        ConnectivityReceiver.getInstance().setConnectivityListener(b -> {
+            if (isDbTableCheck()) {
+                getMinePitZoneBenchApiCaller();
+            }
+        });
     }
 
     private void setDownloadDataView() {
@@ -465,6 +488,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     public void getMinePitZoneBenchApiCaller() {
+        showLoader();
         ResponseLoginData loginData = manger.getUserDetails();
         MainService.getMinePitZoneBenchApiCaller(this, loginData.getUserid(), loginData.getCompanyid()).observe((LifecycleOwner) this, new Observer<GetAllMinePitZoneBenchResult>() {
             @Override
@@ -542,6 +566,7 @@ public class HomeActivity extends BaseActivity {
                         Log.e(NODATAFOUND, e.getMessage());
                     }
                 }
+                getRecordApiCaller();
             }
         });
     }
@@ -631,8 +656,8 @@ public class HomeActivity extends BaseActivity {
                     } catch (Exception e) {
                         Log.e(NODATAFOUND, e.getMessage());
                     }
-                    hideLoader();
                 }
+                getAllMineInfoSurfaceInitiatorApiCaller();
             }
         });
     }
@@ -670,6 +695,7 @@ public class HomeActivity extends BaseActivity {
                         }
                     }
                 }
+                getDrillAccessoriesInfoAllDataApiCaller();
             }
         });
     }
@@ -704,6 +730,7 @@ public class HomeActivity extends BaseActivity {
                     }
                 }
             }
+            getDrillMethodApiCaller();
         });
     }
 
@@ -736,6 +763,7 @@ public class HomeActivity extends BaseActivity {
                     }
                 }
             }
+            getDrillMaterialApiCaller();
         });
     }
 
@@ -768,6 +796,7 @@ public class HomeActivity extends BaseActivity {
                     }
                 }
             }
+            getDrillShiftInfoApiCaller();
         });
     }
 
@@ -801,6 +830,7 @@ public class HomeActivity extends BaseActivity {
                     }
                 }
             }
+            hideLoader();
         });
     }
 

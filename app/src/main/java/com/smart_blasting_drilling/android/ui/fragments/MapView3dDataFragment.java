@@ -32,6 +32,7 @@ import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDet
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.adapter.MapHolePoint3dAdapter;
 import com.smart_blasting_drilling.android.ui.models.MapHole3DDataModel;
 import com.smart_blasting_drilling.android.utils.StringUtill;
@@ -49,8 +50,12 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
         requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (getView() != null)
-                    Navigation.findNavController(getView()).navigateUp();
+                if (((HoleDetail3DModelActivity) mContext).binding.holeDetailLayoutContainer.getVisibility() == View.VISIBLE) {
+                    saveAndCloseHoleDetailCallBack();
+                } else {
+                    if (getView() != null)
+                        Navigation.findNavController(getView()).navigateUp();
+                }
             }
         });
     }
@@ -93,6 +98,8 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
         List<Response3DTable4HoleChargingDataModel> holeDetailDataList = ((HoleDetail3DModelActivity) mContext).holeDetailDataList;
         List<MapHole3DDataModel> colHoleDetailDataList = new ArrayList<>();
 
+        ((BaseActivity) mContext)._3dMapCoordinatesAndroid(Double.parseDouble(holeDetailDataList.get(0).getTopX()), Double.parseDouble(holeDetailDataList.get(0).getTopY()), holeDetailDataList);
+
         if (!Constants.isListEmpty(holeDetailDataList)) {
             colHoleDetailDataList = ((BaseActivity) mContext).getRowWiseHoleIn3dList(holeDetailDataList);
 
@@ -107,7 +114,7 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
                 }
             }
 
-            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * 137, RecyclerView.LayoutParams.WRAP_CONTENT);
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * (137 + 15), RecyclerView.LayoutParams.WRAP_CONTENT);
             binding.rowHolePoint.setLayoutParams(layoutParams);
         }
     }
@@ -119,7 +126,9 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
     }
 
     @Override
-    public void saveAndCloseHoleDetailCallBack(Response3DTable4HoleChargingDataModel detailData) {
+    public void saveAndCloseHoleDetailCallBack() {
+        if (Constants.hole3DBgListener != null)
+            Constants.hole3DBgListener.setBackgroundRefresh();
         ((HoleDetail3DModelActivity) mContext).binding.holeDetailLayoutContainer.setVisibility(View.GONE);
     }
 

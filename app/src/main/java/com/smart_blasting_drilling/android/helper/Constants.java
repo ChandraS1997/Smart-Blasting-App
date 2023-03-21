@@ -11,6 +11,7 @@ import android.widget.ListAdapter;
 
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.app.BaseApplication;
+import com.smart_blasting_drilling.android.interfaces.Hole3DBgListener;
 import com.smart_blasting_drilling.android.interfaces.HoleBgListener;
 import com.smart_blasting_drilling.android.interfaces.OnDataEditTable;
 import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
@@ -22,6 +23,7 @@ public class Constants {
     public static OnHoleClickListener onHoleClickListener;
     public static OnDataEditTable onDataEditTable;
     public static HoleBgListener holeBgListener;
+    public static Hole3DBgListener hole3DBgListener;
 
     public static final String DATABASE_NAME = "drilling_blasting_db";
 

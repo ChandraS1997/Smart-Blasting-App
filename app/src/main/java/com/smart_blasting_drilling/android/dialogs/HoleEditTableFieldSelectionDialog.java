@@ -13,6 +13,7 @@ import android.view.Window;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.databinding.DialogSelectionFieldLayoutBinding;
@@ -81,6 +82,7 @@ public class HoleEditTableFieldSelectionDialog extends BaseDialogFragment {
         editModelArrayList.addAll(((HoleDetailActivity) mContext).getTableModel());
 
         adapterEditTableFields = new AdapterEditTableFields(mContext, editModelArrayList);
+        binding.tableEditRecycler.setLayoutManager(new LinearLayoutManager(mContext));
         binding.tableEditRecycler.setAdapter(adapterEditTableFields);
     }
 

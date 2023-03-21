@@ -254,7 +254,7 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                 AppDelegate.getInstance().setAllTablesData(allTablesData);
                 AppDelegate.getInstance().setBladesRetrieveData(bladesRetrieveData);
 //                i.putExtras(bundle);
-                startActivity(i);
+                mContext.startActivity(i);
             }
         }
     }

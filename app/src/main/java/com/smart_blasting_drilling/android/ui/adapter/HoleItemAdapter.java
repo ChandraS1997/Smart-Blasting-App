@@ -91,7 +91,7 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
 
             if (selectedPos == getBindingAdapterPosition()) {
                 binding.mainContainerView.setBackgroundResource(R.drawable.bg_light_gray_drawable);
-                binding.mainContainerView.setElevation(2f);
+                binding.mainContainerView.setElevation(10f);
             } else {
                 binding.mainContainerView.setBackgroundResource(0);
                 binding.mainContainerView.setElevation(0f);
