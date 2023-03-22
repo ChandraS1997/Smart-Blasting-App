@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -90,6 +91,7 @@ public class Constants {
         display.getMetrics(metrics);
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
+        Log.e("width : ", String.valueOf(width));
         return width;
     }
 
@@ -100,6 +102,7 @@ public class Constants {
         display.getMetrics(metrics);
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
+        Log.e("height : ", String.valueOf(height));
         return height;
     }
 

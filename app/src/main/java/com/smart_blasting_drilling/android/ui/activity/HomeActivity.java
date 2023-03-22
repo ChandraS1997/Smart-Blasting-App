@@ -416,7 +416,7 @@ public class HomeActivity extends BaseActivity {
             for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(2), String.class), JsonArray.class)) {
                 response3DTable3DataModels.add(new Gson().fromJson(element, Response3DTable3DataModel.class));
             }
-            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
+            for (JsonElement element : new Gson().fromJson(new Gson().toJson(array.get(3)), JsonArray.class)) {
                 response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
             }
             for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(6), String.class), JsonArray.class)) {

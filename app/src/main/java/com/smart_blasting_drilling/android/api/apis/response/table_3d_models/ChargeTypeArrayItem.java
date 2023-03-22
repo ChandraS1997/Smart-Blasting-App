@@ -54,7 +54,16 @@ public class ChargeTypeArrayItem implements Serializable {
 	}
 
 	public double getLength(){
-		return length != null ? (double) length : 0.0;
+		if (length == null) {
+			return 0;
+		}
+		if (length instanceof String) {
+			return Double.parseDouble(String.valueOf(length));
+		}
+		if (length instanceof Integer) {
+			return ((Integer) length).doubleValue();
+		}
+		return (double) length;
 	}
 
 	public void setWeight(Object weight){
@@ -62,7 +71,16 @@ public class ChargeTypeArrayItem implements Serializable {
 	}
 
 	public double getWeight(){
-		return weight != null ? (double) weight : 0.0;
+		if (weight == null) {
+			return 0;
+		}
+		if (weight instanceof String) {
+			return Double.parseDouble(String.valueOf(weight));
+		}
+		if (weight instanceof Integer) {
+			return ((Integer) weight).doubleValue();
+		}
+		return (double) weight;
 	}
 
 	public void setProdId(int prodId){
@@ -93,8 +111,14 @@ public class ChargeTypeArrayItem implements Serializable {
 		this.cost = cost;
 	}
 
-	public int getCost(){
-		return cost != null ? (int) cost : 0;
+	public double getCost(){
+		if (cost == null) {
+			return 0;
+		}
+		if (cost instanceof String) {
+			return Double.parseDouble(String.valueOf(cost));
+		}
+		return (double) cost;
 	}
 
 	public void setName(String name){

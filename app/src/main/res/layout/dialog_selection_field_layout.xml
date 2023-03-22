@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mainContainerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#80000000"
-        android:padding="@dimen/_30sdp">
+        android:padding="@dimen/_10sdp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:id="@+id/childContainerView"
+            android:layout_width="wrap_content"
             android:background="@color/white"
             android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_15sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -23,20 +26,31 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/header_lay_hole"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/_50sdp"
                 android:layout_width="0dp"
                 layout="@layout/header_lay_hole_activity" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/tableEditRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_210sdp"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/header_lay_hole"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/view_table_edit_fields"
-                tools:itemCount="10"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/listContainerView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_150sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/header_lay_hole">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tableEditRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/view_table_edit_fields"
+                    tools:itemCount="10"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
                 android:id="@+id/saveBtn"
@@ -52,8 +66,7 @@
                 android:textSize="@dimen/_17ssp"
                 app:layout_constraintEnd_toStartOf="@id/cancelBtn"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tableEditRecycler" />
+                app:layout_constraintTop_toBottomOf="@id/listContainerView" />
 
             <Button
                 android:id="@+id/cancelBtn"
@@ -67,10 +80,9 @@
                 android:text="@string/cancel"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_17ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/saveBtn"
-                app:layout_constraintTop_toBottomOf="@id/tableEditRecycler" />
+                app:layout_constraintTop_toBottomOf="@id/listContainerView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

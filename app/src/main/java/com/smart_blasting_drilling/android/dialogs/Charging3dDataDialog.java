@@ -196,7 +196,7 @@ public class Charging3dDataDialog extends BaseDialogFragment {
                 }
 
                 if (((HoleDetail3DModelActivity) mContext).rowItemDetail != null)
-                    ((HoleDetail3DModelActivity) mContext).rowItemDetail.setRowOfTable(((HoleDetail3DModelActivity) mContext).rowPageVal, holeDetailDataList);
+                    ((HoleDetail3DModelActivity) mContext).rowItemDetail.setRowOfTable(((HoleDetail3DModelActivity) mContext).rowPageVal, holeDetailDataList, false);
 
                 if (((HoleDetail3DModelActivity) mContext).mapViewDataUpdateLiveData != null)
                     ((HoleDetail3DModelActivity) mContext).mapViewDataUpdateLiveData.setValue(true);

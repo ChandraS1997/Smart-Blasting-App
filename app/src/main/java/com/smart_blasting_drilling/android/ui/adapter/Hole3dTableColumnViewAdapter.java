@@ -185,7 +185,7 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
                     if (StringUtill.getString(model.getTitleVal()).equals("Spacing")) {
                         holeDetailData.setSpacing(binding.holeIdVal.getText().toString());
                     }
-                    ((HoleDetail3DModelActivity) context).updateEditedDataIntoDb(holeDetailData);
+                    ((HoleDetail3DModelActivity) context).updateEditedDataIntoDb(holeDetailData, true);
                 }
 
                 @Override
@@ -195,7 +195,7 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
             });
 
             binding.holeIdVal.setLayoutParams(layoutParams);
-            binding.holeIdValTxt.setLayoutParams(layoutParams);
+            binding.holeIdValTxt.setLayoutParams(new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.MATCH_PARENT));
 
         }
 

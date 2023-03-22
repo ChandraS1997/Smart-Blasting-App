@@ -3,11 +3,13 @@ package com.smart_blasting_drilling.android.ui.activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +67,8 @@ import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -109,6 +113,10 @@ public class BaseActivity extends AppCompatActivity {
             toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
         }
         toast.show();
+    }
+
+    public int dp2px(@NotNull Resources resource, int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resource.getDisplayMetrics());
     }
 
 

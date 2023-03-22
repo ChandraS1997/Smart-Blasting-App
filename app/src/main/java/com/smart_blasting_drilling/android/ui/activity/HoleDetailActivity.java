@@ -26,6 +26,7 @@ import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTabl
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
+import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
 import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
@@ -59,6 +60,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     public HoleDetailActivityBinding binding;
     List<String> rowList = new ArrayList<>();
     public HoleDetailCallBackListener holeDetailCallBackListener;
+    public int updateValPos = -1, updateRowNo, updateHoleNo;
 
     public interface HoleDetailCallBackListener {
         void setHoleDetailCallBack(ResponseBladesRetrieveData data, ResponseHoleDetailData detailData);
@@ -120,7 +122,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             binding.headerLayHole.spinnerRow.setOnItemClickListener((adapterView, view, i, l) -> {
                 rowPageVal = Integer.parseInt(rowSpinnerList[i].replace("Row ", "0"));
                 if (rowItemDetail != null)
-                    rowItemDetail.setRowOfTable(rowPageVal, allTablesData);
+                    rowItemDetail.setRowOfTable(rowPageVal, allTablesData, false);
             });
         } else {
             binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
@@ -228,7 +230,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         editModelArrayList.add(new TableEditModel("Spacing", "Spacing"));
         editModelArrayList.add(new TableEditModel("X", "X"));
         editModelArrayList.add(new TableEditModel("Y", "Y"));
-        editModelArrayList.add(new TableEditModel("Z","Z"));
+        editModelArrayList.add(new TableEditModel("Z", "Z"));
         editModelArrayList.add(new TableEditModel("Charging", "Charging"));
         return editModelArrayList;
     }
@@ -305,9 +307,15 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
     private void setLogOut() {
 //        appDatabase.clearAllTables();
-        manger.logoutUser();
-        startActivity(new Intent(this, AuthActivity.class));
-        finishAffinity();
+        showAlertDialog("Logout", "Are you sure you want to logout?", "Yes", "No", new AppAlertDialogFragment.AppAlertDialogListener() {
+            @Override
+            public void onOk(AppAlertDialogFragment dialogFragment) {
+                dialogFragment.dismiss();
+                manger.logoutUser();
+                startActivity(new Intent(HoleDetailActivity.this, AuthActivity.class));
+                finishAffinity();
+            }
+        });
     }
 
     public void editTable() {
@@ -346,7 +354,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             allTablesData = new Gson().fromJson(entity.getProjectHole(), AllTablesData.class);
 
             if (rowItemDetail != null)
-                rowItemDetail.setRowOfTable(rowPageVal, allTablesData);
+                rowItemDetail.setRowOfTable(rowPageVal, allTablesData, false);
 
             if (mapViewDataUpdateLiveData != null)
                 mapViewDataUpdateLiveData.setValue(true);
@@ -359,7 +367,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     public interface RowItemDetail {
-        void setRowOfTable(int rowNo, AllTablesData allTablesData);
+        void setRowOfTable(int rowNo, AllTablesData allTablesData, boolean isFromUpdateAdapter);
     }
 
     public void setHoleDetailDialog(ResponseBladesRetrieveData bladesRetrieveData, ResponseHoleDetailData holeDetailData) {
@@ -404,13 +412,13 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             updateHoleDetailData.setZ(StringUtill.isEmpty(binding.holeDetailLayout.zEt.getText().toString()) ? 0 : binding.holeDetailLayout.zEt.getText().toString());
             updateHoleDetailData.setHoleStatus(StringUtill.getString(binding.holeDetailLayout.holeStatusSpinner.getText().toString()));
 
-            updateEditedDataIntoDb(updateHoleDetailData);
+            updateEditedDataIntoDb(updateHoleDetailData, false);
 
             binding.holeDetailLayoutContainer.setVisibility(View.GONE);
         });
     }
 
-    public void updateEditedDataIntoDb(ResponseHoleDetailData updateHoleDetailData) {
+    public void updateEditedDataIntoDb(ResponseHoleDetailData updateHoleDetailData, boolean isFromUpdateAdapter) {
         ProjectHoleDetailRowColDao entity = appDatabase.projectHoleDetailRowColDao();
         UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
         UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
@@ -461,7 +469,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         allTablesData = new Gson().fromJson(colEntity.getProjectHole(), AllTablesData.class);
 
         if (((HoleDetailActivity) this).rowItemDetail != null)
-            ((HoleDetailActivity) this).rowItemDetail.setRowOfTable(((HoleDetailActivity) this).rowPageVal, allTablesData);
+            ((HoleDetailActivity) this).rowItemDetail.setRowOfTable(((HoleDetailActivity) this).rowPageVal, allTablesData, isFromUpdateAdapter);
 
         if (((HoleDetailActivity) this).mapViewDataUpdateLiveData != null)
             ((HoleDetailActivity) this).mapViewDataUpdateLiveData.setValue(true);

@@ -31,6 +31,7 @@ import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Res
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.databinding.HoleDetail3dActivityBinding;
 import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
+import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
 import com.smart_blasting_drilling.android.dialogs.Hole3dEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleDetail3dDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
@@ -122,7 +123,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             binding.headerLayHole.spinnerRow.setOnItemClickListener((adapterView, view, i, l) -> {
                 rowPageVal = Integer.parseInt(rowSpinnerList[i].replace("Row ", "0"));
                 if (rowItemDetail != null)
-                    rowItemDetail.setRowOfTable(rowPageVal, allTablesData);
+                    rowItemDetail.setRowOfTable(rowPageVal, allTablesData, true);
             });
         } else {
             binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
@@ -246,7 +247,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     }
 
     public interface RowItemDetail {
-        void setRowOfTable(int rowNo, List<Response3DTable4HoleChargingDataModel> allTablesData);
+        void setRowOfTable(int rowNo, List<Response3DTable4HoleChargingDataModel> allTablesData, boolean isFromUpdateAdapter);
     }
 
     @Override
@@ -325,9 +326,15 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
     private void setLogOut() {
 //        appDatabase.clearAllTables();
-        manger.logoutUser();
-        startActivity(new Intent(this, AuthActivity.class));
-        finishAffinity();
+        showAlertDialog("Logout", "Are you sure you want to logout?", "Yes", "No", new AppAlertDialogFragment.AppAlertDialogListener() {
+            @Override
+            public void onOk(AppAlertDialogFragment dialogFragment) {
+                dialogFragment.dismiss();
+                manger.logoutUser();
+                startActivity(new Intent(HoleDetail3DModelActivity.this, AuthActivity.class));
+                finishAffinity();
+            }
+        });
     }
 
     public void editTable() {
@@ -375,7 +382,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 allTablesData = holeDetailDataList;
 
                 if (rowItemDetail != null)
-                    rowItemDetail.setRowOfTable(rowPageVal, holeDetailDataList);
+                    rowItemDetail.setRowOfTable(rowPageVal, holeDetailDataList, true);
 
                 if (mapViewDataUpdateLiveData != null)
                     mapViewDataUpdateLiveData.setValue(true);
@@ -465,11 +472,11 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
             updateHoleDetailData.setHoleStatus(StringUtill.getString(binding.holeDetailLayout.holeStatusSpinner.getText().toString()));
 
-            updateEditedDataIntoDb(updateHoleDetailData);
+            updateEditedDataIntoDb(updateHoleDetailData, false);
         });
     }
 
-    public void updateEditedDataIntoDb(Response3DTable4HoleChargingDataModel updateHoleDetailData) {
+    public void updateEditedDataIntoDb(Response3DTable4HoleChargingDataModel updateHoleDetailData, boolean isFromUpdateAdapter) {
         UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
         UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
         ProjectHoleDetailRowColDao entity = appDatabase.projectHoleDetailRowColDao();
@@ -537,7 +544,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             allTablesData = holeDetailDataList;
 
             if (((HoleDetail3DModelActivity) this).rowItemDetail != null)
-                ((HoleDetail3DModelActivity) this).rowItemDetail.setRowOfTable(((HoleDetail3DModelActivity) this).rowPageVal, holeDetailDataList);
+                ((HoleDetail3DModelActivity) this).rowItemDetail.setRowOfTable(((HoleDetail3DModelActivity) this).rowPageVal, holeDetailDataList, isFromUpdateAdapter);
 
             if (((HoleDetail3DModelActivity) this).mapViewDataUpdateLiveData != null)
                 ((HoleDetail3DModelActivity) this).mapViewDataUpdateLiveData.setValue(true);

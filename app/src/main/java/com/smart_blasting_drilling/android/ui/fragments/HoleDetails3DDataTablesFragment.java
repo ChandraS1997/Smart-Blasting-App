@@ -115,7 +115,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                 tablesData.setTable2(new Gson().fromJson(rowColEntity.projectHole, typeList));*/
                 holeDetailDataList.clear();
                 holeDetailDataList.add(null);
-                setTableData(allTablesData);
+                setTableData(allTablesData, false);
             }
 
             int count = 0;
@@ -138,7 +138,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
         binding.tableRv.setLayoutParams(layoutParams);
     }
 
-    public void setTableData(List<Response3DTable4HoleChargingDataModel> tablesData) {
+    public void setTableData(List<Response3DTable4HoleChargingDataModel> tablesData, boolean isFromUpdateAdapter) {
         if (tablesData != null) {
             if (!Constants.isListEmpty(tablesData)) {
                 binding.noHoleDataAvailableMsg.setVisibility(View.GONE);
@@ -154,7 +154,8 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                 holeDetailDataList.addAll(holeDetailData);
                 ((HoleDetail3DModelActivity) mContext).holeDetailDataList.clear();
                 ((HoleDetail3DModelActivity) mContext).holeDetailDataList.addAll(tablesData);
-                setDataNotifyList(true);
+                if (!isFromUpdateAdapter)
+                    setDataNotifyList(true);
             } else {
                 binding.noHoleDataAvailableMsg.setVisibility(View.VISIBLE);
                 binding.horizontalScrollView.setVisibility(View.GONE);
@@ -220,7 +221,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                                     AppDelegate.getInstance().setResponse3DTable3DataModel(response3DTable3DataModels);
                                     AppDelegate.getInstance().setDesignElementDataModel(response3DTable7DesignElementDataModels);
 
-                                    setTableData(response3DTable4HoleChargingDataModels);
+                                    setTableData(response3DTable4HoleChargingDataModels, false);
                                     setDataIntoDb(response);
                                 } catch (Exception e) {
                                     e.getLocalizedMessage();
@@ -313,7 +314,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
     }
 
     @Override
-    public void setRowOfTable(int rowNo, List<Response3DTable4HoleChargingDataModel> allTablesData) {
-        setTableData(allTablesData);
+    public void setRowOfTable(int rowNo, List<Response3DTable4HoleChargingDataModel> allTablesData, boolean isFromUpdateAdapter) {
+        setTableData(allTablesData, isFromUpdateAdapter);
     }
 }

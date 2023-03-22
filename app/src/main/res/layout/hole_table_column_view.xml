@@ -26,7 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/holeIdValTxt"
             android:layout_width="@dimen/_120sdp"
             android:layout_height="match_parent"
