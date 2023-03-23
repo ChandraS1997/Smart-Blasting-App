@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
@@ -48,22 +49,23 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
         try {
             if (!Constants.isListEmpty(appDatabase.allMineInfoSurfaceInitiatorDao().getAllBladesProject())) {
                 JsonObject jsonObject = new Gson().fromJson(appDatabase.allMineInfoSurfaceInitiatorDao().getAllBladesProject().get(0).getData(), JsonObject.class);
-                if (jsonObject.getAsJsonObject().has("Table1")) {
-                    deckingArr = jsonObject.getAsJsonObject().get("Table1").getAsJsonArray();
+                JsonObject jsObj = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(jsonObject.getAsJsonObject().get("data"), JsonPrimitive.class), String.class), JsonObject.class);
+                if (jsObj.getAsJsonObject().has("Table1")) {
+                    deckingArr = jsObj.getAsJsonObject().get("Table1").getAsJsonArray();
                     deckArr = new String[deckingArr.size()];
                     for (int i = 0; i < deckingArr.size(); i++) {
                         deckArr[i] = deckingArr.get(i).getAsJsonObject().get("Name").getAsString();
                     }
                 }
-                if (jsonObject.getAsJsonObject().has("Table2")) {
-                    stemmingArr = jsonObject.getAsJsonObject().get("Table2").getAsJsonArray();
+                if (jsObj.getAsJsonObject().has("Table2")) {
+                    stemmingArr = jsObj.getAsJsonObject().get("Table2").getAsJsonArray();
                     stemArr = new String[stemmingArr.size()];
                     for (int i = 0; i < stemmingArr.size(); i++) {
                         stemArr[i] = stemmingArr.get(i).getAsJsonObject().get("Name").getAsString();
                     }
                 }
-                if (jsonObject.getAsJsonObject().has("Table3")) {
-                    otherArr = jsonObject.getAsJsonObject().get("Table3").getAsJsonArray();
+                if (jsObj.getAsJsonObject().has("Table3")) {
+                    otherArr = jsObj.getAsJsonObject().get("Table3").getAsJsonArray();
                     otherDataArr = new String[otherArr.size()];
                     for (int i = 0; i < otherArr.size(); i++) {
                         otherDataArr[i] = otherArr.get(i).getAsJsonObject().get("Name").getAsString();
@@ -149,6 +151,12 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
             binding.typeSpinner.setAdapter(Constants.getAdapter(context, typeArr));
 
             binding.typeSpinner.setText(StringUtill.getString(chargingDataModel.getType()));
+            if (!StringUtill.isEmpty(chargingDataModel.getType())) {
+                binding.explosiveEt.setText(StringUtill.getString(chargingDataModel.getName()));
+                binding.costEt.setText(StringUtill.getString(String.valueOf(chargingDataModel.getCost())));
+                binding.columnLengthEt.setText(StringUtill.getString(String.valueOf(chargingDataModel.getLength())));
+                binding.columnWeightEt.setText(StringUtill.getString(String.valueOf(chargingDataModel.getWeight())));
+            }
             setExpArray(chargingDataModel.getType());
 
             binding.typeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {

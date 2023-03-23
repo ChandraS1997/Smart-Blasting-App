@@ -10,6 +10,8 @@ import java.io.Serializable;
 
 public class ResponseBladesRetrieveData implements Serializable {
 
+	boolean isDownloaded = false;
+
 	@SerializedName("BladesType")
 	boolean is3dBlade;
 
@@ -84,6 +86,14 @@ public class ResponseBladesRetrieveData implements Serializable {
 
 	@SerializedName("ChrctSize")
 	private String chrctSize;
+
+	public boolean isDownloaded() {
+		return isDownloaded;
+	}
+
+	public void setDownloaded(boolean downloaded) {
+		isDownloaded = downloaded;
+	}
 
 	public boolean isIs3dBlade() {
 		return is3dBlade;

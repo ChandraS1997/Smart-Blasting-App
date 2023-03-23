@@ -51,6 +51,7 @@ public class DownloadListDialog extends BaseDialogFragment {
     DownloadListDialog _self;
     ProjectDialogListAdapter projectDialogListAdapter;
     List<ResponseBladesRetrieveData> projectList = new ArrayList<>();
+    List<ResponseBladesRetrieveData> alreadyDownloadProjectList = new ArrayList<>();
     String startDate = "", endDate = "";
 
     public static DownloadListDialog getInstance(DownloadListDialog.DownloadLIstDialogListener listener) {
@@ -84,6 +85,11 @@ public class DownloadListDialog extends BaseDialogFragment {
 
     @Override
     public void loadData() {
+        Type projectListType = new TypeToken<List<ResponseBladesRetrieveData>>(){}.getType();
+        alreadyDownloadProjectList.clear();
+        alreadyDownloadProjectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project2DBladesDao().getAllBladesProject()), projectListType));
+        alreadyDownloadProjectList.addAll(new Gson().fromJson(new Gson().toJson(appDatabase.project3DBladesDao().getAllBladesProject()), projectListType));
+
         projectDialogListAdapter = new ProjectDialogListAdapter(mContext, projectList, false);
         binding.projectListRv.setLayoutManager(new LinearLayoutManager(mContext));
         binding.projectListRv.setAdapter(projectDialogListAdapter);
@@ -204,7 +210,7 @@ public class DownloadListDialog extends BaseDialogFragment {
                                 List<ResponseBladesRetrieveData> bladesRetrieveDataList = new Gson().fromJson(data, itemList);
                                 projectList.clear();
                                 if (!Constants.isListEmpty(bladesRetrieveDataList)) {
-                                    projectList.addAll(bladesRetrieveDataList);
+                                    projectList.addAll(getProjectList(bladesRetrieveDataList, alreadyDownloadProjectList));
                                     projectDialogListAdapter = new ProjectDialogListAdapter(mContext, projectList, false);
                                     binding.projectListRv.setLayoutManager(new LinearLayoutManager(mContext));
                                     binding.projectListRv.setAdapter(projectDialogListAdapter);
@@ -239,7 +245,7 @@ public class DownloadListDialog extends BaseDialogFragment {
                                 List<ResponseBladesRetrieveData> bladesRetrieveDataList = new Gson().fromJson(data, itemList);
                                 projectList.clear();
                                 if (!Constants.isListEmpty(bladesRetrieveDataList)) {
-                                    projectList.addAll(bladesRetrieveDataList);
+                                    projectList.addAll(getProjectList(bladesRetrieveDataList, alreadyDownloadProjectList));
                                     projectDialogListAdapter = new ProjectDialogListAdapter(mContext,projectList, true);
                                     binding.projectListRv.setLayoutManager(new LinearLayoutManager(mContext));
                                     binding.projectListRv.setAdapter(projectDialogListAdapter);
@@ -257,6 +263,20 @@ public class DownloadListDialog extends BaseDialogFragment {
             }
             hideLoader();
         });
+    }
+
+    private List<ResponseBladesRetrieveData> getProjectList(List<ResponseBladesRetrieveData> projectList, List<ResponseBladesRetrieveData> alreadyDownloadProjectList) {
+        List<ResponseBladesRetrieveData> bladesRetrieveData = projectList;
+        for (int i = 0; i < projectList.size(); i++) {
+            for (int j = 0; j < alreadyDownloadProjectList.size(); j++) {
+                if (projectList.get(i).getDesignId().equals(alreadyDownloadProjectList.get(j).getDesignId())) {
+                    projectList.get(i).setDownloaded(true);
+                    bladesRetrieveData.set(i, projectList.get(i));
+                    break;
+                }
+            }
+        }
+        return bladesRetrieveData;
     }
 
 }

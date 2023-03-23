@@ -32,12 +32,14 @@ public class Hole3dItemAdapter extends BaseRecyclerAdapter {
     int spaceVal;
     String patternType = "Rectangular/Square";
     int selectedPos = -1;
+    int rowPos = -1;
 
-    public Hole3dItemAdapter(Context context, List<Response3DTable4HoleChargingDataModel> holeDetailDataList, int spaceVal, String patternType) {
+    public Hole3dItemAdapter(Context context, List<Response3DTable4HoleChargingDataModel> holeDetailDataList, int spaceVal, String patternType, int rowPos) {
         this.context = context;
         this.holeDetailDataList = holeDetailDataList;
         this.spaceVal = spaceVal;
         this.patternType = patternType;
+        this.rowPos = rowPos;
     }
 
     @Override
@@ -126,7 +128,13 @@ public class Hole3dItemAdapter extends BaseRecyclerAdapter {
             binding.holeStatusTxt.setText(StringUtill.getString(String.format("R%sH%s", detailData.getRowNo(), detailData.getHoleNo())));
 
             itemView.setOnClickListener(view -> {
+                if (((HoleDetail3DModelActivity) context).holeDetailCallBackListener != null)
+                    ((HoleDetail3DModelActivity) context).holeDetailCallBackListener.setBgOfHoleOnNewRowChange(detailData.getRowNo(), detailData.getHoleNo(), getBindingAdapterPosition());
                 selectedPos = getBindingAdapterPosition();
+                ((HoleDetail3DModelActivity) context).updateValPos = getBindingAdapterPosition();
+                ((HoleDetail3DModelActivity) context).updateRowNo = detailData.getRowNo();
+                ((HoleDetail3DModelActivity) context).updateHoleNo = detailData.getHoleNo();
+                ((HoleDetail3DModelActivity) context).rowPos = rowPos;
                 if (((HoleDetail3DModelActivity) context).holeDetailCallBackListener != null)
                     ((HoleDetail3DModelActivity) context).holeDetailCallBackListener.setHoleDetailCallBack(detailData);
                 notifyDataSetChanged();
@@ -136,7 +144,6 @@ public class Hole3dItemAdapter extends BaseRecyclerAdapter {
                 binding.mainContainerView.setBackgroundResource(R.drawable.bg_light_gray_drawable);
                 binding.mainContainerView.setElevation(10f);
             } else {
-
                 binding.mainContainerView.setBackgroundResource(R.color.white);
                 binding.mainContainerView.setElevation(0f);
             }

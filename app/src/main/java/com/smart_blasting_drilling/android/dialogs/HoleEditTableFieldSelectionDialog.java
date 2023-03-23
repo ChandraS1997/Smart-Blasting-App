@@ -12,12 +12,16 @@ import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.databinding.DialogSelectionFieldLayoutBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.adapter.AdapterEditTableFields;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
@@ -60,8 +64,20 @@ public class HoleEditTableFieldSelectionDialog extends BaseDialogFragment {
             dismiss();
             ((HoleDetailActivity) mContext).isTableHeaderFirstTimeLoad = false;
             if (Constants.onDataEditTable != null && adapterEditTableFields != null) {
-                manger.setTableField(adapterEditTableFields.getSelectedData());
-                Constants.onDataEditTable.editDataTable(manger.getTableField());
+                boolean isSelected = false;
+                for (TableEditModel model : adapterEditTableFields.getSelectedData()) {
+                    if (model.isSelected()) {
+                        isSelected = true;
+                        break;
+                    }
+                }
+                if (isSelected) {
+                    manger.setTableField(adapterEditTableFields.getSelectedData());
+                    Constants.onDataEditTable.editDataTable(manger.getTableField(), true);
+                } else {
+                    manger.setTableField(null);
+                    Constants.onDataEditTable.editDataTable(((HoleDetailActivity) mContext).getTableModel(), false);
+                }
             }
         });
         binding.cancelBtn.setOnClickListener(view -> dismiss());
@@ -80,6 +96,32 @@ public class HoleEditTableFieldSelectionDialog extends BaseDialogFragment {
 
         editModelArrayList.clear();
         editModelArrayList.addAll(((HoleDetailActivity) mContext).getTableModel());
+
+        if (Constants.getScreenHeightResolution(mContext) < 800) {
+            /*
+            * ConstraintLayout.LayoutParams layoutParamsMsg = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.MATCH_PARENT);
+            layoutParamsMsg.setMargins(20, 20, 20, 20);
+
+            ConstraintLayout constraintLayout = binding.stackConst;
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(constraintLayout);
+            constraintSet.applyToLayoutParams(binding.msgView.getId(), layoutParamsMsg);
+            constraintSet.connect(R.id.msgView, ConstraintSet.TOP, R.id.statusView, ConstraintSet.BOTTOM, 20);
+            constraintSet.connect(R.id.msgView, ConstraintSet.START, R.id.stackConst, ConstraintSet.START, 0);
+            constraintSet.connect(R.id.msgView, ConstraintSet.END, R.id.stackConst, ConstraintSet.END, 0);
+
+            constraintSet.connect(R.id.statusView, ConstraintSet.TOP, R.id.stackConst, ConstraintSet.TOP, 10);
+            constraintSet.connect(R.id.statusView, ConstraintSet.START, R.id.stackConst, ConstraintSet.START, 0);
+            constraintSet.connect(R.id.statusView, ConstraintSet.END, R.id.stackConst, ConstraintSet.END, 0);
+            constraintSet.applyTo(constraintLayout);
+            * */
+
+            ConstraintLayout.LayoutParams layoutParamsMsg = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            layoutParamsMsg.height = ((BaseActivity) mContext).dp2px(mContext.getResources(), 150);
+            layoutParamsMsg.width = binding.listContainerView.getWidth();
+//            binding.listContainerView.setLayoutParams(layoutParamsMsg);
+            binding.tableEditRecycler.setLayoutParams(layoutParamsMsg);
+        }
 
         adapterEditTableFields = new AdapterEditTableFields(mContext, editModelArrayList);
         binding.tableEditRecycler.setLayoutManager(new LinearLayoutManager(mContext));

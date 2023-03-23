@@ -39,6 +39,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseExplosiveDa
 import com.smart_blasting_drilling.android.api.apis.response.ResponseExplosiveDataModel;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseMineTable;
 import com.smart_blasting_drilling.android.api.apis.response.ResponsePitTable;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectDeatilDialogData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseRigData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseRockData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseShiftData;
@@ -579,6 +580,11 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                 binding.projectNumber.setText(StringUtill.getString(bladesRetrieveData.getDesignCode()));
             }
 
+            if (!Constants.isListEmpty(appDatabase.updatedProjectDataDao().getAllEntityDataList())) {
+                if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId()))
+                    setUpdatedProjectData();
+            }
+
         } catch (Exception e) {
             e.getLocalizedMessage();
         }
@@ -605,6 +611,55 @@ public class ProjectDetailDialog extends BaseDialogFragment {
         void onOk(ProjectDetailDialog dialogFragment);
 
         default void onCancel(ProjectDetailDialog dialogFragment) {
+        }
+    }
+
+    private void setUpdatedProjectData() {
+        try {
+            UpdatedProjectDetailEntity updatedProjectDetailEntity = appDatabase.updatedProjectDataDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
+            ResponseProjectDeatilDialogData data = new Gson().fromJson(updatedProjectDetailEntity.getData(), ResponseProjectDeatilDialogData.class);
+            binding.projectName.setText(data.getProjectName());
+            binding.spinnerSiteName.setText(data.getSiteName());
+            binding.spinnerSelectTeam.setText(data.getTeamName());
+            binding.spinnerRig.setText(data.getRigName());
+            binding.spinnerMine.setText(data.getMineName());
+            binding.spinnerZone.setText(data.getZoneName());
+            binding.spinnerRock.setText(data.getRockName());
+            binding.spinnerBench.setText(data.getBenchName());
+            binding.spinnerExplosive.setText(data.getExplosiveName());
+            binding.spinnerPit.setText(data.getPitName());
+            binding.spinnerDrillingPattern.setText(data.getDrillPattern());
+            binding.spinnerDrillingType.setText(data.getDrillType());
+            binding.spinnerMaterialDrilled.setText(data.getDrillMaterial());
+            binding.spinnerShift.setText(data.getShift());
+            binding.spinnerDriller.setText(data.getDrillerName());
+            binding.spinnerDrillMethod.setText(data.getDrillMethod());
+            binding.clientName.setText(data.getClientName());
+            binding.projectNumber.setText(data.getProjectNumber());
+            binding.spinnerProjectStatus.setText(data.getProjectStatus());
+            binding.startDate.setText(data.getStartDate());
+            binding.startTime.setText(data.getStartTime());
+            binding.endDate.setText(data.getEndDate());
+            binding.endTime.setText(data.getEndTime());
+
+            startDate = data.getStartDate();
+            endDate = data.getEndDate();
+            siteId = data.getSiteId();
+            rigId = data.getRigId();
+            drillTypeId = data.getDrillTypeId();
+            drillerCode = data.getDrillerCode();
+            drillMethodId = data.getDrillMethodCode();
+            drillMaterialId = data.getDrillMaterialId();
+            shiftCode = data.getShiftCode();
+            drillPatternId = data.getDrillPatternId();
+            mineCode = data.getMineId();
+            zoneCode = data.getZoneId();
+            rockCode = data.getRockId();
+            benchCode = data.getBenchId();
+            expCode = data.getExplosiveId();
+            pitCode = data.getPitId();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

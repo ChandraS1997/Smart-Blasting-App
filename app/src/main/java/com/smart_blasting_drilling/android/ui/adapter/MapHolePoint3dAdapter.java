@@ -99,13 +99,13 @@ public class MapHolePoint3dAdapter extends BaseRecyclerAdapter {
                 e.getLocalizedMessage();
             }
 
-            Hole3dItemAdapter adapter = new Hole3dItemAdapter(context, mapHoleDataModel.getHoleDetailDataList(), spaceVal, patternType);
+            Hole3dItemAdapter adapter = new Hole3dItemAdapter(context, mapHoleDataModel.getHoleDetailDataList(), spaceVal, patternType, getBindingAdapterPosition());
             binding.rowHolePoint.setAdapter(adapter);
         }
 
         @Override
         public void setBackgroundRefresh() {
-            notifyDataSetChanged();
+            notifyItemChanged(((HoleDetail3DModelActivity) context).rowPos);
         }
     }
 

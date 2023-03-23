@@ -43,6 +43,7 @@ import java.util.TimerTask;
 
 public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DModelActivity.HoleDetailCallBackListener {
     FragmentMapview3dBinding binding;
+    MapHolePoint3dAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -132,4 +133,15 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
         ((HoleDetail3DModelActivity) mContext).binding.holeDetailLayoutContainer.setVisibility(View.GONE);
     }
 
+    @Override
+    public void setBgOfHoleOnNewRowChange(int row, int hole, int pos) {
+        if (((HoleDetail3DModelActivity) mContext).updateRowNo == -1) {
+            ((HoleDetail3DModelActivity) mContext).updateRowNo = row;
+        } else {
+            if (row != ((HoleDetail3DModelActivity) mContext).updateRowNo) {
+                if (Constants.hole3DBgListener != null)
+                    Constants.hole3DBgListener.setBackgroundRefresh();
+            }
+        }
+    }
 }

@@ -326,7 +326,7 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 	}
 
 	public String getHoleStatus() {
-		return holeStatus;
+		return holeStatus == null ? "Pending Holes" : holeStatus;
 	}
 
 	public void setHoleStatus(String holeStatus) {

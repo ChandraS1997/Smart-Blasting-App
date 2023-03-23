@@ -1,8 +1,12 @@
 package com.smart_blasting_drilling.android.api.apis.response;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ResponseHoleDetailData implements Serializable {
 
@@ -483,6 +487,29 @@ public class ResponseHoleDetailData implements Serializable {
 	@SerializedName("Location")
 	private String location;
 
+	@SerializedName("ChargeTypeArray")
+	private String chargeTypeArrayStr;
+
+	private List<ChargeTypeArrayItem> chargeTypeArray;
+
+	public String getChargeTypeArrayStr() {
+		return chargeTypeArrayStr;
+	}
+
+	public void setChargeTypeArrayStr(String chargeTypeArrayStr) {
+		this.chargeTypeArrayStr = chargeTypeArrayStr;
+	}
+
+	public void setChargeTypeArray(String chargeTypeArrayStr){
+		this.chargeTypeArrayStr = chargeTypeArrayStr;
+		this.chargeTypeArray = new Gson().fromJson(chargeTypeArrayStr, new TypeToken<List<ChargeTypeArrayItem>>(){}.getType());
+	}
+
+	public List<ChargeTypeArrayItem> getChargeTypeArray(){
+		this.chargeTypeArray = new Gson().fromJson(chargeTypeArrayStr, new TypeToken<List<ChargeTypeArrayItem>>(){}.getType());
+		return chargeTypeArray;
+	}
+
 	public String getHoleStatus() {
 		return holeStatus == null ? "Pending Holes" : holeStatus;
 	}
@@ -539,15 +566,8 @@ public class ResponseHoleDetailData implements Serializable {
 	}
 
 
-	public double getBurdenDouble(){
-		if (burden != null) {
-			if (burden instanceof String) {
-				return Double.parseDouble(String.valueOf(burden));
-			}
-			return (double) burden;
-		} else {
-			return 0;
-		}
+	public String getBurdenDouble(){
+		return String.valueOf(burden);
 	}
 
 	public void setDensity(Object density){
@@ -975,13 +995,15 @@ public class ResponseHoleDetailData implements Serializable {
 	public int getHoleAngle(){
 		if (holeAngle instanceof Integer)
 			return (int) holeAngle;
-		return holeAngle != null ? ((Double)holeAngle).intValue() : 0;
+		if (holeAngle instanceof Double)
+			return ((Double) holeAngle).intValue();
+		if (holeAngle instanceof String)
+			return ((Double) Double.parseDouble(String.valueOf(holeAngle))).intValue();
+		return holeAngle != null ? ((Double) holeAngle).intValue() : 0;
 	}
 
-	public double getHoleAngleDouble(){
-		if (holeAngle instanceof Double)
-			return (double) holeAngle;
-		return holeAngle != null ? (double) holeAngle : 0.0;
+	public String getHoleAngleDouble(){
+		return String.valueOf(holeAngle);
 	}
 
 	public void setDesignId(int designId){
@@ -1178,14 +1200,8 @@ public class ResponseHoleDetailData implements Serializable {
 		return 0;
 	}
 
-	public double getSpacingDouble(){
-		if (spacing != null) {
-			if (spacing instanceof String) {
-				return Double.parseDouble(String.valueOf(spacing));
-			}
-			return (double) spacing;
-		}
-		return 0.0;
+	public String getSpacingDouble(){
+		return String.valueOf(spacing);
 	}
 
 	public void setBtmId(int btmId){
@@ -1349,13 +1365,15 @@ public class ResponseHoleDetailData implements Serializable {
 	public int getHoleDepth(){
 		if (holeDepth instanceof Integer)
 			return (int) holeDepth;
+		if (holeDepth instanceof Double)
+			return ((Double) holeDepth).intValue();
+		if (holeDepth instanceof String)
+			return ((Double) Double.parseDouble(String.valueOf(holeDepth))).intValue();
 		return holeDepth != null ? ((Double) holeDepth).intValue() : 0;
 	}
 
-	public double getHoleDepthDouble(){
-		if (holeDepth instanceof Double)
-			return (double) holeDepth;
-		return holeDepth != null ? (double) holeDepth : 0.0;
+	public String getHoleDepthDouble(){
+		return String.valueOf(holeDepth);
 	}
 
 	public void setDensity2(Object density2){

@@ -117,6 +117,10 @@ public class ChangingDataDialog extends BaseDialogFragment {
         List<ChargeTypeArrayItem> arrayItemList = new ArrayList<>();
 
         try {
+            if (!Constants.isListEmpty(holeDetailData.getChargeTypeArray())) {
+                arrayItemList = holeDetailData.getChargeTypeArray();
+                return arrayItemList;
+            }
             ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
             arrayItem.setName(holeDetailData.getName());
             arrayItem.setColor(holeDetailData.getColor());
@@ -191,81 +195,87 @@ public class ChangingDataDialog extends BaseDialogFragment {
         });
 
         binding.saveProceedBtn.setOnClickListener(view -> {
-            UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
-            UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
+            try {
+                updateHoleDetailData.setChargeTypeArray(new Gson().toJson(adapter.getJsonArray()));
 
-            List<ChargeTypeArrayItem> chargeTypeArrayItemList = adapter.getJsonArray();
-            for (int i = 0; i < chargeTypeArrayItemList.size(); i++) {
-                if ((i + 1) == 1) {
-                    updateHoleDetailData.setExpCode(chargeTypeArrayItemList.get(i).getProdId());
-                    updateHoleDetailData.setName(chargeTypeArrayItemList.get(i).getName());
-                    updateHoleDetailData.setColor(chargeTypeArrayItemList.get(i).getColor());
-                    updateHoleDetailData.setExpType(chargeTypeArrayItemList.get(i).getProdType());
-                    updateHoleDetailData.setUnitCost(chargeTypeArrayItemList.get(i).getCost());
-                }
-                if ((i + 1) == 2) {
-                    updateHoleDetailData.setExpCode1(chargeTypeArrayItemList.get(i).getProdId());
-                    updateHoleDetailData.setName1(chargeTypeArrayItemList.get(i).getName());
-                    updateHoleDetailData.setColor1(chargeTypeArrayItemList.get(i).getColor());
-                    updateHoleDetailData.setExpType1(chargeTypeArrayItemList.get(i).getProdType());
-                    updateHoleDetailData.setUnitCost1(chargeTypeArrayItemList.get(i).getCost());
-                }
-                if ((i + 1) == 3) {
-                    updateHoleDetailData.setBsterName(chargeTypeArrayItemList.get(i).getName());
-                    updateHoleDetailData.setBsterLength(((Double) chargeTypeArrayItemList.get(i).getLength()).intValue());
-                    updateHoleDetailData.setBsterWt(chargeTypeArrayItemList.get(i).getWeight());
-                    updateHoleDetailData.setExpCode2(chargeTypeArrayItemList.get(i).getProdId());
-                    updateHoleDetailData.setName2(chargeTypeArrayItemList.get(i).getName());
-                    updateHoleDetailData.setColor2(chargeTypeArrayItemList.get(i).getColor());
-                    updateHoleDetailData.setExpType2(chargeTypeArrayItemList.get(i).getProdType());
-                    updateHoleDetailData.setUnitCost2(chargeTypeArrayItemList.get(i).getCost());
-                }
-                if ((i + 1) == 4) {
-                    updateHoleDetailData.setStemLngth(chargeTypeArrayItemList.get(i).getLength());
-                }
-                if ((i + 1) == 5) {
-                    updateHoleDetailData.setDeckLength1(((Double) chargeTypeArrayItemList.get(i).getLength()).intValue());
-                }
-            }
-            bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
-            bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
+                UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
+                UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
 
-            if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
-                updateProjectBladesDao.insertProject(bladesEntity);
-            } else {
-                updateProjectBladesDao.updateProject(bladesEntity);
-            }
+                List<ChargeTypeArrayItem> chargeTypeArrayItemList = adapter.getJsonArray();
+                for (int i = 0; i < chargeTypeArrayItemList.size(); i++) {
+                    if ((i + 1) == 1) {
+                        updateHoleDetailData.setExpCode(chargeTypeArrayItemList.get(i).getProdId());
+                        updateHoleDetailData.setName(chargeTypeArrayItemList.get(i).getName());
+                        updateHoleDetailData.setColor(chargeTypeArrayItemList.get(i).getColor());
+                        updateHoleDetailData.setExpType(chargeTypeArrayItemList.get(i).getProdType());
+                        updateHoleDetailData.setUnitCost(chargeTypeArrayItemList.get(i).getCost());
+                    }
+                    if ((i + 1) == 2) {
+                        updateHoleDetailData.setExpCode1(chargeTypeArrayItemList.get(i).getProdId());
+                        updateHoleDetailData.setName1(chargeTypeArrayItemList.get(i).getName());
+                        updateHoleDetailData.setColor1(chargeTypeArrayItemList.get(i).getColor());
+                        updateHoleDetailData.setExpType1(chargeTypeArrayItemList.get(i).getProdType());
+                        updateHoleDetailData.setUnitCost1(chargeTypeArrayItemList.get(i).getCost());
+                    }
+                    if ((i + 1) == 3) {
+                        updateHoleDetailData.setBsterName(chargeTypeArrayItemList.get(i).getName());
+                        updateHoleDetailData.setBsterLength(((Double) chargeTypeArrayItemList.get(i).getLength()).intValue());
+                        updateHoleDetailData.setBsterWt(chargeTypeArrayItemList.get(i).getWeight());
+                        updateHoleDetailData.setExpCode2(chargeTypeArrayItemList.get(i).getProdId());
+                        updateHoleDetailData.setName2(chargeTypeArrayItemList.get(i).getName());
+                        updateHoleDetailData.setColor2(chargeTypeArrayItemList.get(i).getColor());
+                        updateHoleDetailData.setExpType2(chargeTypeArrayItemList.get(i).getProdType());
+                        updateHoleDetailData.setUnitCost2(chargeTypeArrayItemList.get(i).getCost());
+                    }
+                    if ((i + 1) == 4) {
+                        updateHoleDetailData.setStemLngth(chargeTypeArrayItemList.get(i).getLength());
+                    }
+                    if ((i + 1) == 5) {
+                        updateHoleDetailData.setDeckLength1(((Double) chargeTypeArrayItemList.get(i).getLength()).intValue());
+                    }
+                }
+                bladesEntity.setData(new Gson().toJson(updateHoleDetailData));
+                bladesEntity.setDesignId(String.valueOf(updateHoleDetailData.getDesignId()));
 
-            String dataStr = "";
+                if (!updateProjectBladesDao.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
+                    updateProjectBladesDao.insertProject(bladesEntity);
+                } else {
+                    updateProjectBladesDao.updateProject(bladesEntity);
+                }
 
-            AllTablesData allTablesData = ((HoleDetailActivity) mContext).allTablesData;
-            if (allTablesData != null) {
-                List<ResponseHoleDetailData> holeDetailDataList = allTablesData.getTable2();
-                if (!Constants.isListEmpty(holeDetailDataList)) {
-                    for (int i = 0; i < holeDetailDataList.size(); i++) {
-                        if (holeDetailDataList.get(i).getRowNo() == updateHoleDetailData.getRowNo() && holeDetailDataList.get(i).getHoleID().equals(updateHoleDetailData.getHoleID())) {
-                            holeDetailDataList.set(i, updateHoleDetailData);
-                        } else {
-                            holeDetailDataList.set(i, holeDetailDataList.get(i));
+                String dataStr = "";
+
+                AllTablesData allTablesData = ((HoleDetailActivity) mContext).allTablesData;
+                if (allTablesData != null) {
+                    List<ResponseHoleDetailData> holeDetailDataList = allTablesData.getTable2();
+                    if (!Constants.isListEmpty(holeDetailDataList)) {
+                        for (int i = 0; i < holeDetailDataList.size(); i++) {
+                            if (holeDetailDataList.get(i).getRowNo() == updateHoleDetailData.getRowNo() && holeDetailDataList.get(i).getHoleID().equals(updateHoleDetailData.getHoleID())) {
+                                holeDetailDataList.set(i, updateHoleDetailData);
+                            } else {
+                                holeDetailDataList.set(i, holeDetailDataList.get(i));
+                            }
                         }
+
+                        allTablesData.setTable2(holeDetailDataList);
+                        dataStr = new Gson().toJson(allTablesData);
+
+                        if (!entity.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
+                            entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(updateHoleDetailData.getDesignId()), false, dataStr));
+                        } else {
+                            entity.updateProject(String.valueOf(updateHoleDetailData.getDesignId()), dataStr);
+                        }
+
                     }
-
-                    allTablesData.setTable2(holeDetailDataList);
-                    dataStr = new Gson().toJson(allTablesData);
-
-                    if (!entity.isExistProject(String.valueOf(updateHoleDetailData.getDesignId()))) {
-                        entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(updateHoleDetailData.getDesignId()), false, dataStr));
-                    } else {
-                        entity.updateProject(String.valueOf(updateHoleDetailData.getDesignId()), dataStr);
-                    }
-
                 }
-            }
-            ProjectInfoDialogListener listener = getListener();
-            if (listener != null) {
-                listener.onOk(_self, String.valueOf(updateHoleDetailData.getDesignId()));
-            } else {
-                dismiss();
+                ProjectInfoDialogListener listener = getListener();
+                if (listener != null) {
+                    listener.onOk(_self, String.valueOf(updateHoleDetailData.getDesignId()));
+                } else {
+                    dismiss();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
