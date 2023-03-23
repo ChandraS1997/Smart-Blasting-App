@@ -31,6 +31,7 @@ import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.SyncProjectOptionDialog;
+import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
@@ -60,10 +61,11 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
     public HoleDetailActivityBinding binding;
     List<String> rowList = new ArrayList<>();
     public HoleDetailCallBackListener holeDetailCallBackListener;
-    public int updateValPos = -1, updateRowNo, updateHoleNo;
+    public int updateValPos = -1, updateRowNo = -1, updateHoleNo = -1, rowPos = -1;
 
     public interface HoleDetailCallBackListener {
         void setHoleDetailCallBack(ResponseBladesRetrieveData data, ResponseHoleDetailData detailData);
+        void setBgOfHoleOnNewRowChange(int row, int hole, int pos);
         void saveAndCloseHoleDetailCallBack();
     }
 
@@ -161,24 +163,35 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
             SyncProjectOptionDialog infoDialogFragment = SyncProjectOptionDialog.getInstance(new SyncProjectOptionDialog.SyncProjectListener() {
                 @Override
                 public void syncWithDrims() {
-                    syncDataAPi();
+                    if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
+                        syncDataAPi();
+                    } else {
+                        showToast("No internet connection. Make sure Wi-Fi or Cellular data is turn on, then try again");
+                    }
                 }
 
                 @Override
                 public void syncWithBims() {
-                    String blastCode = "";
-                    if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                        BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntity(1);
-                        if (blastCodeEntity != null)
-                            blastCode = blastCodeEntity.getBlastCode();
+                    if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
+                        String blastCode = "";
+                        if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
+                            BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntity(1);
+                            if (blastCodeEntity != null)
+                                blastCode = blastCodeEntity.getBlastCode();
+                        }
+                        blastInsertSyncRecordApiCaller(bladesRetrieveData, allTablesData, getRowWiseHoleList(allTablesData.getTable2()).size(), 0, blastCode);
+                    } else {
+                        showToast("No internet connection. Make sure Wi-Fi or Cellular data is turn on, then try again");
                     }
-                    blastInsertSyncRecordApiCaller(bladesRetrieveData, allTablesData, getRowWiseHoleList(allTablesData.getTable2()).size(), 0, blastCode);
                 }
 
                 @Override
                 public void syncWithBlades() {
-                    if (!bladesRetrieveData.isIs3dBlade())
+                    if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
                         insertActualDesignChartSheetApiCaller(allTablesData, bladesRetrieveData);
+                    } else {
+                        showToast("No internet connection. Make sure Wi-Fi or Cellular data is turn on, then try again");
+                    }
                 }
             });
             ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
@@ -314,6 +327,11 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 manger.logoutUser();
                 startActivity(new Intent(HoleDetailActivity.this, AuthActivity.class));
                 finishAffinity();
+            }
+
+            @Override
+            public void onCancel(AppAlertDialogFragment dialogFragment) {
+                dialogFragment.dismiss();
             }
         });
     }

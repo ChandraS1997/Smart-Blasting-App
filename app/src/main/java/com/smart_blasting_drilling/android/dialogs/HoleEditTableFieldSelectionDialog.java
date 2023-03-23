@@ -64,8 +64,20 @@ public class HoleEditTableFieldSelectionDialog extends BaseDialogFragment {
             dismiss();
             ((HoleDetailActivity) mContext).isTableHeaderFirstTimeLoad = false;
             if (Constants.onDataEditTable != null && adapterEditTableFields != null) {
-                manger.setTableField(adapterEditTableFields.getSelectedData());
-                Constants.onDataEditTable.editDataTable(manger.getTableField());
+                boolean isSelected = false;
+                for (TableEditModel model : adapterEditTableFields.getSelectedData()) {
+                    if (model.isSelected()) {
+                        isSelected = true;
+                        break;
+                    }
+                }
+                if (isSelected) {
+                    manger.setTableField(adapterEditTableFields.getSelectedData());
+                    Constants.onDataEditTable.editDataTable(manger.getTableField(), true);
+                } else {
+                    manger.setTableField(null);
+                    Constants.onDataEditTable.editDataTable(((HoleDetailActivity) mContext).getTableModel(), false);
+                }
             }
         });
         binding.cancelBtn.setOnClickListener(view -> dismiss());

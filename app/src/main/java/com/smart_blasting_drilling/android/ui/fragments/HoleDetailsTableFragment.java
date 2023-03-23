@@ -151,21 +151,26 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
     }
 
     @Override
-    public void editDataTable(List<TableEditModel> arrayList) {
-        List<TableEditModel> models = manger.getTableField();
+    public void editDataTable(List<TableEditModel> arrayList, boolean fromPref) {
+//        List<TableEditModel> models = manger.getTableField();
+        List<TableEditModel> models = arrayList;
         if (!Constants.isListEmpty(models)) {
             int selectedCount = 0;
             for (int i = 0; i < models.size(); i++) {
                 TableEditModel tableEditModel = models.get(i);
                 tableEditModel.setSelected(models.get(i).isSelected());
 
-                if (models.get(i).isSelected())
+                if (fromPref) {
+                    if (models.get(i).isSelected())
+                        selectedCount++;
+                } else {
                     selectedCount++;
+                }
 //                tableEditModel.setFirstTime(false);
                 tableEditModelArrayList.set(i, tableEditModel);
             }
-            setDataNotifyList(false);
             setWidthOfRv(selectedCount);
+            setDataNotifyList(false);
         }
     }
 

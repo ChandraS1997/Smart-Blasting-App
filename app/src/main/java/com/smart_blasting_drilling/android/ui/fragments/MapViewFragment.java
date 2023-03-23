@@ -30,6 +30,7 @@ import com.smart_blasting_drilling.android.room_database.entities.AllProjectBlad
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.adapter.HoleItemAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.MapHolePointAdapter;
@@ -133,4 +134,15 @@ public class MapViewFragment extends BaseFragment implements HoleDetailActivity.
         ((HoleDetailActivity) mContext).binding.holeDetailLayoutContainer.setVisibility(View.GONE);
     }
 
+    @Override
+    public void setBgOfHoleOnNewRowChange(int row, int hole, int pos) {
+        if (((HoleDetailActivity) mContext).updateRowNo == -1) {
+            ((HoleDetailActivity) mContext).updateRowNo = row;
+        } else {
+            if (row != ((HoleDetailActivity) mContext).updateRowNo) {
+                if (Constants.hole3DBgListener != null)
+                    Constants.hole3DBgListener.setBackgroundRefresh();
+            }
+        }
+    }
 }

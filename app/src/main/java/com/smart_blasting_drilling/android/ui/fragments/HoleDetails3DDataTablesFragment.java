@@ -106,7 +106,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
             tableViewAdapter = new TableView3dAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
             binding.tableRv.setAdapter(tableViewAdapter);
 
-            if (allTablesData == null) {
+            if (Constants.isListEmpty(allTablesData)) {
                 getAllDesignInfoApiCaller(bladesRetrieveData.get(0).isIs3dBlade());
             } else {
                 /*ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
@@ -167,15 +167,19 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
     }
 
     @Override
-    public void editDataTable(List<TableEditModel> arrayList) {
+    public void editDataTable(List<TableEditModel> arrayList, boolean fromPref) {
         List<TableEditModel> models = manger.get3dTableField();
         if (!Constants.isListEmpty(models)) {
             int selectedCount = 0;
             for (int i = 0; i < models.size(); i++) {
                 TableEditModel tableEditModel = models.get(i);
                 tableEditModel.setSelected(models.get(i).isSelected());
-                if (models.get(i).isSelected())
+                if (fromPref) {
+                    if (models.get(i).isSelected())
+                        selectedCount++;
+                } else {
                     selectedCount++;
+                }
 //                tableEditModel.setFirstTime(false);
                 tableEditModelArrayList.set(i, tableEditModel);
             }
@@ -209,7 +213,13 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                                     for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(2), String.class), JsonArray.class)) {
                                         response3DTable3DataModels.add(new Gson().fromJson(element, Response3DTable3DataModel.class));
                                     }
-                                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
+                                    JsonArray jsonArray = new JsonArray();
+                                    if (array.get(3) instanceof JsonArray) {
+                                        jsonArray = new Gson().fromJson(array.get(3), JsonArray.class);
+                                    } else {
+                                        jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class);
+                                    }
+                                    for (JsonElement element : jsonArray) {
                                         response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
                                     }
                                     for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(6), String.class), JsonArray.class)) {

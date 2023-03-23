@@ -39,6 +39,7 @@ import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDi
 import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.SyncProjectOptionDialog;
+import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.OnHoleClickListener;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
@@ -68,12 +69,15 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     public RowItemDetail rowItemDetail;
     List<String> rowList = new ArrayList<>();
 
+    public int updateValPos = -1, updateRowNo = -1, updateHoleNo = -1, rowPos = -1;
+
     public MutableLiveData<Boolean> mapViewDataUpdateLiveData = new MutableLiveData<>();
 
     public HoleDetail3DModelActivity.HoleDetailCallBackListener holeDetailCallBackListener;
 
     public interface HoleDetailCallBackListener {
         void setHoleDetailCallBack(Response3DTable4HoleChargingDataModel detailData);
+        void setBgOfHoleOnNewRowChange(int row, int hole, int pos);
         void saveAndCloseHoleDetailCallBack();
     }
 
@@ -162,23 +166,35 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             SyncProjectOptionDialog infoDialogFragment = SyncProjectOptionDialog.getInstance(new SyncProjectOptionDialog.SyncProjectListener() {
                 @Override
                 public void syncWithDrims() {
-                    syncDataAPi();
+                    if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
+                        syncDataAPi();
+                    } else {
+                        showToast("No internet connection. Make sure Wi-Fi or Cellular data is turn on, then try again");
+                    }
                 }
 
                 @Override
                 public void syncWithBims() {
-                    String blastCode = "";
-                    if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                        BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntity(1);
-                        if (blastCodeEntity != null)
-                            blastCode = blastCodeEntity.getBlastCode();
+                    if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
+                        String blastCode = "";
+                        if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
+                            BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntity(1);
+                            if (blastCodeEntity != null)
+                                blastCode = blastCodeEntity.getBlastCode();
+                        }
+                        blastInsertSyncRecord3DApiCaller(bladesRetrieveData.get(0), allTablesData, getRowWiseHoleIn3dList(allTablesData).size(), 0, blastCode);
+                    } else {
+                        showToast("No internet connection. Make sure Wi-Fi or Cellular data is turn on, then try again");
                     }
-                    blastInsertSyncRecord3DApiCaller(bladesRetrieveData.get(0), allTablesData, getRowWiseHoleIn3dList(allTablesData).size(), 0, blastCode);
                 }
 
                 @Override
                 public void syncWithBlades() {
-                    insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, bladesRetrieveData);
+                    if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
+                        insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, bladesRetrieveData);
+                    } else {
+                        showToast("No internet connection. Make sure Wi-Fi or Cellular data is turn on, then try again");
+                    }
                 }
             });
             ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
@@ -334,6 +350,11 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 startActivity(new Intent(HoleDetail3DModelActivity.this, AuthActivity.class));
                 finishAffinity();
             }
+
+            @Override
+            public void onCancel(AppAlertDialogFragment dialogFragment) {
+                dialogFragment.dismiss();
+            }
         });
     }
 
@@ -375,7 +396,13 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
                 JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) new Gson().fromJson(entity.getProjectHole(), JsonElement.class)).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
                 List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
-                for (JsonElement e : new Gson().fromJson(array.get(3), JsonArray.class)) {
+                JsonArray jsonArray = new JsonArray();
+                if (array.get(3) instanceof JsonArray) {
+                    jsonArray = new Gson().fromJson(array.get(3), JsonArray.class);
+                } else {
+                    jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class);
+                }
+                for (JsonElement e : jsonArray) {
                     holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
                 }
 
@@ -499,7 +526,13 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         if (element != null) {
             JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
             List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
-            for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class)) {
+            JsonArray jsonArray = new JsonArray();
+            if (array.get(3) instanceof JsonArray) {
+                jsonArray = new Gson().fromJson(array.get(3), JsonArray.class);
+            } else {
+                jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class);
+            }
+            for (JsonElement e : jsonArray) {
                 holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
             }
             if (!Constants.isListEmpty(holeDetailDataList)) {
@@ -549,7 +582,6 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             if (((HoleDetail3DModelActivity) this).mapViewDataUpdateLiveData != null)
                 ((HoleDetail3DModelActivity) this).mapViewDataUpdateLiveData.setValue(true);
 
-            KeyboardUtils.hideSoftKeyboard(this);
             if (Constants.holeBgListener != null)
                 Constants.holeBgListener.setBackgroundRefresh();
             if (Constants.hole3DBgListener != null)

@@ -89,13 +89,16 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
             if (setViewOfTitle(model.getTitleVal())) {
                 if (isHeader) {
                     binding.holeIdValTxt.setVisibility(View.VISIBLE);
+                    binding.holeIdVal.setVisibility(View.GONE);
                     binding.holeIdValTxt.setText(StringUtill.getString(model.getCheckBox()));
                 } else {
+                    binding.holeIdValTxt.setVisibility(View.GONE);
                     binding.holeIdVal.setVisibility(View.VISIBLE);
                     binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
                 }
             } else {
                 binding.holeIdValTxt.setVisibility(View.VISIBLE);
+                binding.holeIdVal.setVisibility(View.GONE);
                 binding.holeIdValTxt.setText(StringUtill.getString(model.getCheckBox()));
             }
         }
@@ -108,10 +111,15 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
                 if (model.isSelected()) {
                     setValueOfData(model);
                 } else {
-                    if (setViewOfTitle(model.getTitleVal()))
+                    if (!setViewOfTitle(model.getTitleVal())){
+                        binding.holeIdValTxt.setVisibility(View.VISIBLE);
                         binding.holeIdVal.setVisibility(View.GONE);
-                    else
+                        binding.holeIdValTxt.setText(StringUtill.getString(model.getCheckBox()));
+                    } else {
                         binding.holeIdValTxt.setVisibility(View.GONE);
+                        binding.holeIdVal.setVisibility(View.VISIBLE);
+                        binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
+                    }
                 }
             }
 
@@ -135,7 +143,7 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
             }
 
             binding.holeIdValTxt.setOnClickListener(view -> {
-                if (!isHeader && !binding.holeIdVal.getText().toString().equals("Charging")) {
+                if (!isHeader && !binding.holeIdValTxt.getText().toString().equals("Charging")) {
                     if (model.getTitleVal().equals("Hole Status")) {
                         FragmentManager fragmentManager = ((BaseActivity) context).getSupportFragmentManager();
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -143,7 +151,7 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
                         holeStatusDialog.setupListener(new HoleStatusDialog.HoleStatusListener() {
                             @Override
                             public void holeStatusCallBack(String status) {
-                                binding.holeIdVal.setText(StringUtill.getString(status));
+                                binding.holeIdValTxt.setText(StringUtill.getString(status));
                             }
                         });
                         transaction.add(holeStatusDialog, HoleStatusDialog.TAG);

@@ -14,11 +14,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/table_cell_border"
-            android:inputType="none"
             android:gravity="center"
             android:textColor="@color/black"
             android:paddingHorizontal="@dimen/_5sdp"
-            android:text="Hole Status"
             android:imeOptions="flagNoExtractUi"
             android:singleLine="true"
             android:textSize="@dimen/_15ssp"
@@ -26,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/holeIdValTxt"
             android:layout_width="@dimen/_120sdp"
             android:layout_height="match_parent"
@@ -36,7 +34,6 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:paddingHorizontal="@dimen/_5sdp"
-            android:text="Hole Status"
             android:singleLine="true"
             android:textSize="@dimen/_15ssp"
             app:layout_constraintTop_toTopOf="parent"

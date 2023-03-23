@@ -89,13 +89,16 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
             if (setViewOfTitle(model.getTitleVal())) {
                 if (isHeader) {
                     binding.holeIdValTxt.setVisibility(View.VISIBLE);
+                    binding.holeIdVal.setVisibility(View.GONE);
                     binding.holeIdValTxt.setText(StringUtill.getString(model.getCheckBox()));
                 } else {
                     binding.holeIdVal.setVisibility(View.VISIBLE);
+                    binding.holeIdValTxt.setVisibility(View.GONE);
                     binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
                 }
             } else {
                 binding.holeIdValTxt.setVisibility(View.VISIBLE);
+                binding.holeIdVal.setVisibility(View.GONE);
                 binding.holeIdValTxt.setText(StringUtill.getString(model.getCheckBox()));
             }
         }
@@ -115,10 +118,15 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
                 if (model.isSelected()) {
                     setValueOfData(model);
                 } else {
-                    if (setViewOfTitle(model.getTitleVal()))
+                    if (!setViewOfTitle(model.getTitleVal())){
+                        binding.holeIdValTxt.setVisibility(View.VISIBLE);
                         binding.holeIdVal.setVisibility(View.GONE);
-                    else
+                        binding.holeIdValTxt.setText(StringUtill.getString(model.getCheckBox()));
+                    } else {
                         binding.holeIdValTxt.setVisibility(View.GONE);
+                        binding.holeIdVal.setVisibility(View.VISIBLE);
+                        binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
+                    }
                 }
             }
 
@@ -133,13 +141,13 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
                 if (!isHeader) {
                     binding.holeIdVal.setEnabled(true);
                     binding.holeIdVal.setCursorVisible(true);
-                    binding.holeIdVal.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    binding.holeIdVal.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
                     binding.holeIdVal.setBackgroundResource(R.drawable.table_cell_border_white_bg);
                 }
             }
 
             binding.holeIdValTxt.setOnClickListener(view -> {
-                if (getBindingAdapterPosition() > 0 && !binding.holeIdVal.getText().toString().equals("Charging")) {
+                if (getBindingAdapterPosition() > 0 && !binding.holeIdValTxt.getText().toString().equals("Charging")) {
                     if (model.getTitleVal().equals("Hole Status")) {
                         FragmentManager fragmentManager = ((BaseActivity) context).getSupportFragmentManager();
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -147,7 +155,7 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
                         holeStatusDialog.setupListener(new HoleStatusDialog.HoleStatusListener() {
                             @Override
                             public void holeStatusCallBack(String status) {
-                                binding.holeIdVal.setText(StringUtill.getString(status));
+                                binding.holeIdValTxt.setText(StringUtill.getString(status));
                             }
                         });
                         transaction.add(holeStatusDialog, HoleStatusDialog.TAG);
@@ -190,7 +198,10 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-
+                    binding.holeIdVal.setFocusable(true);
+                    binding.holeIdVal.setFocusableInTouchMode(true);
+                    binding.holeIdVal.setCursorVisible(true);
+                    binding.holeIdVal.requestFocus();
                 }
             });
 

@@ -19,6 +19,7 @@ import com.smart_blasting_drilling.android.databinding.HoleItemBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.HoleBgListener;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
+import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.utils.AppUtill;
 import com.smart_blasting_drilling.android.utils.StringUtill;
@@ -32,12 +33,14 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
     int spaceVal;
     String patternType = "Rectangular/Square";
     int selectedPos = -1;
+    int rowPos = -1;
 
-    public HoleItemAdapter(Context context, List<ResponseHoleDetailData> holeDetailDataList, int spaceVal, String patternType) {
+    public HoleItemAdapter(Context context, List<ResponseHoleDetailData> holeDetailDataList, int spaceVal, String patternType, int rowPos) {
         this.context = context;
         this.holeDetailDataList = holeDetailDataList;
         this.spaceVal = spaceVal;
         this.patternType = patternType;
+        this.rowPos = rowPos;
     }
 
     @Override
@@ -118,7 +121,13 @@ public class HoleItemAdapter extends BaseRecyclerAdapter {
             binding.holeStatusTxt.setText(StringUtill.getString(String.format("R%sH%s", detailData.getRowNo(), detailData.getHoleNo())));
 
             itemView.setOnClickListener(view -> {
+                if (((HoleDetailActivity) context).holeDetailCallBackListener != null)
+                    ((HoleDetailActivity) context).holeDetailCallBackListener.setBgOfHoleOnNewRowChange(detailData.getRowNo(), detailData.getHoleNo(), getBindingAdapterPosition());
                 selectedPos = getBindingAdapterPosition();
+                ((HoleDetailActivity) context).updateValPos = getBindingAdapterPosition();
+                ((HoleDetailActivity) context).updateRowNo = detailData.getRowNo();
+                ((HoleDetailActivity) context).updateHoleNo = detailData.getHoleNo();
+                ((HoleDetailActivity) context).rowPos = rowPos;
                 if (((HoleDetailActivity) context).holeDetailCallBackListener != null)
                     ((HoleDetailActivity) context).holeDetailCallBackListener.setHoleDetailCallBack(((HoleDetailActivity) context).bladesRetrieveData,detailData);
                 notifyDataSetChanged();

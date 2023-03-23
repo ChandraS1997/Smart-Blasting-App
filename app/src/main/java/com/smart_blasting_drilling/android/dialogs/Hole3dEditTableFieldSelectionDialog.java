@@ -59,9 +59,22 @@ public class Hole3dEditTableFieldSelectionDialog extends BaseDialogFragment {
         binding.saveBtn.setOnClickListener(view -> {
             dismiss();
             ((HoleDetail3DModelActivity) mContext).isTableHeaderFirstTimeLoad = false;
-            if (Constants.onDataEditTable != null && adapterEditTableFields != null) {
-                manger.set3dTableField(adapterEditTableFields.getSelectedData());
-                Constants.onDataEditTable.editDataTable(manger.get3dTableField());
+
+            boolean isSelected = false;
+            for (TableEditModel model : adapterEditTableFields.getSelectedData()) {
+                if (model.isSelected()) {
+                    isSelected = true;
+                    break;
+                }
+            }
+            if (Constants.onDataEditTable != null) {
+                if (isSelected) {
+                    manger.set3dTableField(adapterEditTableFields.getSelectedData());
+                    Constants.onDataEditTable.editDataTable(manger.get3dTableField(), true);
+                } else {
+                    manger.set3dTableField(null);
+                    Constants.onDataEditTable.editDataTable(((HoleDetail3DModelActivity) mContext).getTableModel(), false);
+                }
             }
         });
         binding.cancelBtn.setOnClickListener(view -> dismiss());

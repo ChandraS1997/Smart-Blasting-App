@@ -17,6 +17,7 @@ import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.AdapterInitiatingDeviceBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceModel;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.List;
 
@@ -80,8 +81,11 @@ public class DownTheHoleAdapter extends BaseRecyclerAdapter {
 
         void setDataBInd(InitiatingDeviceModel initiatingDeviceModel) {
             binding.typeSpinner.setAdapter(Constants.getAdapter(context, typeList));
+            binding.typeSpinner.setText(StringUtill.isEmpty(initiatingDeviceModel.getType()) ? typeList[0] : initiatingDeviceModel.getType());
+            binding.unitCostEt.setText(StringUtill.getString(initiatingDeviceModel.getCost()));
+            binding.qtyEt.setText(StringUtill.getString(initiatingDeviceModel.getQty()));
             binding.unitCostEt.setEnabled(false);
-            binding.unitCostEt.setText(String.valueOf(responseInitiatingDataList.get(0).getUnitCost()));
+//            binding.unitCostEt.setText(String.valueOf(responseInitiatingDataList.get(0).getUnitCost()));
 
             binding.itemPageCountTxt.setText(String.format("Item No. :- %s", (getBindingAdapterPosition() + 1)));
             binding.deleteIcn.setOnClickListener(view -> {

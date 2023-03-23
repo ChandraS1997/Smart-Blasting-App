@@ -995,7 +995,11 @@ public class ResponseHoleDetailData implements Serializable {
 	public int getHoleAngle(){
 		if (holeAngle instanceof Integer)
 			return (int) holeAngle;
-		return holeAngle != null ? ((Double)holeAngle).intValue() : 0;
+		if (holeAngle instanceof Double)
+			return ((Double) holeAngle).intValue();
+		if (holeAngle instanceof String)
+			return ((Double) Double.parseDouble(String.valueOf(holeAngle))).intValue();
+		return holeAngle != null ? ((Double) holeAngle).intValue() : 0;
 	}
 
 	public String getHoleAngleDouble(){
@@ -1361,6 +1365,10 @@ public class ResponseHoleDetailData implements Serializable {
 	public int getHoleDepth(){
 		if (holeDepth instanceof Integer)
 			return (int) holeDepth;
+		if (holeDepth instanceof Double)
+			return ((Double) holeDepth).intValue();
+		if (holeDepth instanceof String)
+			return ((Double) Double.parseDouble(String.valueOf(holeDepth))).intValue();
 		return holeDepth != null ? ((Double) holeDepth).intValue() : 0;
 	}
 

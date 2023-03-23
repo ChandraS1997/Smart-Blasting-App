@@ -648,15 +648,15 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonObject> insertUpdate3DActualDesignHoleDetailApiCaller(final Context context, JsonArray map) {
-        final MutableLiveData<JsonObject> data = new MutableLiveData<>();
+    public static LiveData<JsonElement> insertUpdate3DActualDesignHoleDetailApiCaller(final Context context, JsonArray map) {
+        final MutableLiveData<JsonElement> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonObject> call = testBlastSblastApiService.insertUpdate3DActualDesignHoleDetailApiCaller(map);
-        call.enqueue(new Callback<JsonObject>() {
+        Call<JsonElement> call = testBlastSblastApiService.insertUpdate3DActualDesignHoleDetailApiCaller(map);
+        call.enqueue(new Callback<JsonElement>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
@@ -665,7 +665,7 @@ public class MainService {
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<JsonElement> call, Throwable t) {
                 data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }

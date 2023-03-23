@@ -36,6 +36,7 @@ import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Res
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApis;
 import com.smart_blasting_drilling.android.app.BaseApplication;
+import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
@@ -147,6 +148,23 @@ public class HomeActivity extends BaseActivity {
         binding.appLayout.bottomNavigation.designBtn.setOnClickListener(this::setBottomUiNavigation);
         binding.appLayout.bottomNavigation.drillingBtn.setOnClickListener(this::setBottomUiNavigation);
         binding.appLayout.bottomNavigation.blastingBtn.setOnClickListener(this::setBottomUiNavigation);
+
+        binding.appLayout.headerLayout.logoutBtn.setOnClickListener(view -> {
+            showAlertDialog("Logout", "Are you sure you want to logout?", "Yes", "No", new AppAlertDialogFragment.AppAlertDialogListener() {
+                @Override
+                public void onOk(AppAlertDialogFragment dialogFragment) {
+                    dialogFragment.dismiss();
+                    manger.logoutUser();
+                    startActivity(new Intent(HomeActivity.this, AuthActivity.class));
+                    finishAffinity();
+                }
+
+                @Override
+                public void onCancel(AppAlertDialogFragment dialogFragment) {
+                    dialogFragment.dismiss();
+                }
+            });
+        });
 
     }
 
@@ -416,7 +434,13 @@ public class HomeActivity extends BaseActivity {
             for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(2), String.class), JsonArray.class)) {
                 response3DTable3DataModels.add(new Gson().fromJson(element, Response3DTable3DataModel.class));
             }
-            for (JsonElement element : new Gson().fromJson(new Gson().toJson(array.get(3)), JsonArray.class)) {
+            JsonArray jsonArray = new JsonArray();
+            if (array.get(3) instanceof JsonArray) {
+                jsonArray = new Gson().fromJson(array.get(3), JsonArray.class);
+            } else {
+                jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class);
+            }
+            for (JsonElement element : jsonArray) {
                 response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
             }
             for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(6), String.class), JsonArray.class)) {

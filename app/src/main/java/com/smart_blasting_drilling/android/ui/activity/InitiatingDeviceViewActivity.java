@@ -32,6 +32,7 @@ import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceAllTypeMode
 import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceModel;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +82,8 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
                 binding.eleArrowImg.setRotation(0);
                 binding.eleListGroup.setVisibility(View.VISIBLE);
             }
-            setEleDetListNotify();
+            if (Constants.isListEmpty(electronicDetonatorModelList))
+                setEleDetListNotify();
         });
 
         binding.downTheHoleTxt.setOnClickListener(view -> {
@@ -92,7 +94,8 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
                 binding.downTheHoleArrowImg.setRotation(0);
                 binding.downToHoleListGroup.setVisibility(View.VISIBLE);
             }
-            setDownTheHoleNotify();
+            if (Constants.isListEmpty(downTheHoleModelList))
+                setDownTheHoleNotify();
         });
 
         binding.tldRowToRowTxt.setOnClickListener(view -> {
@@ -103,7 +106,8 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
                 binding.tldRowToRowArrowImg.setRotation(0);
                 binding.tldRowToRowListGroup.setVisibility(View.VISIBLE);
             }
-            setTldRowToRowListNotify();
+            if (Constants.isListEmpty(tldRowToRowModelList))
+                setTldRowToRowListNotify();
         });
 
         binding.tlsHoleToHoleTxt.setOnClickListener(view -> {
@@ -114,7 +118,8 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
                 binding.tlsHoleToHoleArrowImg.setRotation(0);
                 binding.tlsHoleToHoleListGroup.setVisibility(View.VISIBLE);
             }
-            setTlsHoleToHoleListNotify();
+            if (Constants.isListEmpty(tldHoleToHoleModelList))
+                setTlsHoleToHoleListNotify();
         });
 
         binding.downTheHoleAddBtn.setOnClickListener(view -> {
@@ -159,7 +164,37 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
         responseInitiatingDataList.clear();
     }
 
+    private void getSavedInitiatingDataFromDb() {
+        try {
+            if (appDatabase.initiatingDeviceDao().isExistItem(designId)) {
+                Type itemList = new TypeToken<List<InitiatingDeviceAllTypeModel>>() {}.getType();
+                List<InitiatingDeviceAllTypeModel> allTypeModelList = new Gson().fromJson(appDatabase.initiatingDeviceDao().getSingleItemEntity(designId).getData(), itemList);
+
+                if (!Constants.isListEmpty(allTypeModelList)) {
+                    for (int i = 0; i < allTypeModelList.size(); i++) {
+                        if (allTypeModelList.get(i).getDeviceName().equals("Electronic/Electric Detonator")) {
+                            electronicDetonatorModelList = allTypeModelList.get(i).getDeviceModelList();
+                        }
+                        if (allTypeModelList.get(i).getDeviceName().equals("Down The Hole")) {
+                            downTheHoleModelList = allTypeModelList.get(i).getDeviceModelList();
+                        }
+                        if (allTypeModelList.get(i).getDeviceName().equals("TLD(Row To Row)")) {
+                            tldRowToRowModelList = allTypeModelList.get(i).getDeviceModelList();
+                        }
+                        if (allTypeModelList.get(i).getDeviceName().equals("TLD(Hole To Hole)")) {
+                            tldHoleToHoleModelList = allTypeModelList.get(i).getDeviceModelList();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.getLocalizedMessage();
+        }
+    }
+
     private void setDataList() {
+        getSavedInitiatingDataFromDb();
+
         InitiatingDataDao initiatingDataDao = appDatabase.initiatingDataDao();
         List<InitiatingDataEntity> initiatingDataEntities = initiatingDataDao.getAllBladesProject();
         if (!Constants.isListEmpty(initiatingDataEntities)) {
