@@ -199,7 +199,12 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
         List<InitiatingDataEntity> initiatingDataEntities = initiatingDataDao.getAllBladesProject();
         if (!Constants.isListEmpty(initiatingDataEntities)) {
             clearList();
-            JsonArray array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonObject.class).get("data"), String.class), JsonArray.class);
+            JsonArray array = new JsonArray();
+            if (!new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonElement.class).isJsonArray()) {
+                array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonObject.class).get("data"), String.class), JsonArray.class);
+            } else {
+                array = new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonArray.class);
+            }
             for (JsonElement jsonElement : array) {
                 responseInitiatingDataList.add(new Gson().fromJson(new Gson().fromJson(jsonElement, JsonObject.class), ResultsetItem.class));
             }
