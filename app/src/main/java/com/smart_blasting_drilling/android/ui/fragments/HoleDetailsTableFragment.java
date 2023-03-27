@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
@@ -26,6 +28,8 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailD
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.api.apis.response.TableFieldItemModel;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.hole_tables.Table9Item;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.interfaces.OnDataEditTable;
@@ -57,6 +61,8 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
 
     ProjectHoleDetailRowColDao entity;
 
+    List<Table9Item> table9 = new ArrayList<>();
+
     @Override
     public void onResume() {
         super.onResume();
@@ -79,6 +85,8 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hole_details_table, container, false);
+
+            setSurfaceData();
 
             bladesRetrieveData = ((HoleDetailActivity) mContext).bladesRetrieveData;
             allTablesData = ((HoleDetailActivity) mContext).allTablesData;
@@ -124,6 +132,7 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
 
     private void setTableData(AllTablesData tablesData, boolean isFromUpdateAdapter) {
         if (tablesData != null) {
+            table9 = tablesData.getTable9();
             if (!Constants.isListEmpty(tablesData.getTable2())) {
                 binding.noHoleDataAvailableMsg.setVisibility(View.GONE);
                 binding.horizontalScrollView.setVisibility(View.VISIBLE);
@@ -199,8 +208,8 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                                         holeDetailDataList.clear();
                                         holeDetailDataList.add(null);
                                         allTablesData = tablesData;
-                                        setTableData(tablesData, false);
                                         setDataIntoDb(tablesData);
+                                        setTableData(tablesData, false);
                                     }
                                 } catch (Exception e) {
                                     Log.e(NODATAFOUND, e.getMessage());
@@ -249,6 +258,14 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getX() == 0.0 ? "" : holeDetailData.getX()), tableEditModelArrayList.get(9).getTitleVal(), tableEditModelArrayList.get(9).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getY() == 0.0 ? "" : holeDetailData.getY()), tableEditModelArrayList.get(10).getTitleVal(), tableEditModelArrayList.get(10).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getZ()), tableEditModelArrayList.get(11).getTitleVal(), tableEditModelArrayList.get(11).isSelected(), update));
+
+                    chargeTypeArrayItemList.clear();
+                    chargeTypeArrayItemList.add(getDataExp(holeDetailData.getColId(), otherArray, "Bulk"));
+                    chargeTypeArrayItemList.add(getDataExp(holeDetailData.getBtmId(), otherArray, "Bottom"));
+                    chargeTypeArrayItemList.add(getDataExp(holeDetailData.getBsterId(), otherArray, "Booster"));
+                    chargeTypeArrayItemList.add(getDataFromAllTableExp(holeDetailData.getExpCode(), stemArray, "Stemming"));
+                    chargeTypeArrayItemList.add(getDataFromAllTableExp(holeDetailData.getExpCode2(), deckArray, "Decking"));
+
                     int chargingCount = 0;
                     if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getExpCode()))) {
                         chargingCount = chargingCount + 1;
@@ -276,6 +293,11 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                     } else {
                         tableFieldItemModelList.add(new TableFieldItemModel(editModelArrayList));
                     }
+
+                    if (Constants.isListEmpty(holeDetailData.getChargeTypeArray())) {
+                        holeDetailData.setChargeTypeArray(new Gson().toJson(chargeTypeArrayItemList));
+                    }
+                    holeDetailDataList.set(i, holeDetailData);
                 }
             }
             tableViewAdapter = new TableViewAdapter(mContext, tableFieldItemModelList, holeDetailDataList);
@@ -289,4 +311,68 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
     public void setRowOfTable(int rowNo, AllTablesData allTablesData, boolean isFromUpdateAdapter) {
         setTableData(allTablesData, isFromUpdateAdapter);
     }
+
+    public List<ChargeTypeArrayItem> chargeTypeArrayItemList = new ArrayList<>();
+
+    JsonArray deckArray = new JsonArray();
+    JsonArray stemArray = new JsonArray();
+    JsonArray otherArray = new JsonArray();
+
+    private void setSurfaceData() {
+        try {
+            AppDatabase appDatabase = ((BaseActivity) mContext).appDatabase;
+            JsonObject jsonObject = new Gson().fromJson(appDatabase.allMineInfoSurfaceInitiatorDao().getAllBladesProject().get(0).getData(), JsonObject.class);
+            JsonObject jsObj = jsonObject;
+            if (jsonObject.has("data")) {
+                jsObj = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(jsonObject.getAsJsonObject().get("data"), JsonPrimitive.class), String.class), JsonObject.class);
+            }
+            if (jsObj.getAsJsonObject().has("Table1")) {
+                deckArray = jsObj.getAsJsonObject().get("Table1").getAsJsonArray();
+            }
+            if (jsObj.getAsJsonObject().has("Table2")) {
+                stemArray = jsObj.getAsJsonObject().get("Table2").getAsJsonArray();
+            }
+            if (jsObj.getAsJsonObject().has("Table3")) {
+                otherArray = jsObj.getAsJsonObject().get("Table3").getAsJsonArray();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ChargeTypeArrayItem getDataExp(Object code, JsonArray jsonArray, String type) {
+        if (code instanceof Double) {
+            code = ((Double) code).intValue();
+        }
+        ChargeTypeArrayItem element = new ChargeTypeArrayItem();
+        for (int i = 0; i < jsonArray.size(); i++) {
+            if (StringUtill.getString(String.valueOf(code)).equals(jsonArray.get(i).getAsJsonObject().get("ExpCode").getAsString())) {
+                element.setType(type);
+                element.setProdType(jsonArray.get(i).getAsJsonObject().get("Type").getAsInt());
+                element.setCost(jsonArray.get(i).getAsJsonObject().get("CostUnit").getAsInt());
+                element.setColor(jsonArray.get(i).getAsJsonObject().get("Color").getAsString());
+                element.setProdId(jsonArray.get(i).getAsJsonObject().get("ExpCode").getAsInt());
+                element.setName(jsonArray.get(i).getAsJsonObject().get("Name").getAsString());
+            }
+        }
+        return element;
+    }
+
+    private ChargeTypeArrayItem getDataFromAllTableExp(Object code, JsonArray jsonArray, String type) {
+        if (code instanceof Double) {
+            code = ((Double) code).intValue();
+        }
+        if (!Constants.isListEmpty(table9))
+            jsonArray = new Gson().fromJson(new Gson().toJson(table9), JsonArray.class);
+        ChargeTypeArrayItem element = new ChargeTypeArrayItem();
+        for (int i = 0; i < jsonArray.size(); i++) {
+            if (StringUtill.getString(String.valueOf(code)).equals(jsonArray.get(i).getAsJsonObject().get("ProdId").getAsString())) {
+                element.setType(type);
+                element.setCost(jsonArray.get(i).getAsJsonObject().get("ProdCost").getAsString());
+                element.setName(jsonArray.get(i).getAsJsonObject().get("ProdName").getAsString());
+            }
+        }
+        return element;
+    }
+
 }

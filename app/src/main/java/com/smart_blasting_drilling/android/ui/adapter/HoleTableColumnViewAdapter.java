@@ -236,41 +236,6 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
             }
         }
 
-        private JsonElement getDataExp(Object code) {
-            JsonElement element = null;
-            AppDatabase appDatabase = ((BaseActivity) context).appDatabase;
-            JsonArray deckArray = new JsonArray();
-            JsonArray stemArray = new JsonArray();
-            JsonArray otherArray = new JsonArray();
-            JsonObject jsonObject = new Gson().fromJson(appDatabase.allMineInfoSurfaceInitiatorDao().getAllBladesProject().get(0).getData(), JsonObject.class);
-            JsonObject jsObj = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(jsonObject.getAsJsonObject().get("data"), JsonPrimitive.class), String.class), JsonObject.class);
-            if (jsObj.getAsJsonObject().has("Table1")) {
-                deckArray = jsObj.getAsJsonObject().get("Table1").getAsJsonArray();
-            }
-            if (jsObj.getAsJsonObject().has("Table2")) {
-                stemArray = jsObj.getAsJsonObject().get("Table2").getAsJsonArray();
-            }
-            if (jsObj.getAsJsonObject().has("Table3")) {
-                otherArray = jsObj.getAsJsonObject().get("Table3").getAsJsonArray();
-            }
-            for (int i = 0; i < deckArray.size(); i++) {
-                if (StringUtill.getString(String.valueOf(code)).equals(deckArray.get(i).getAsJsonObject().get("ExpCode").getAsString())) {
-                    return deckArray.get(i);
-                }
-            }
-            for (int i = 0; i < stemArray.size(); i++) {
-                if (StringUtill.getString(String.valueOf(code)).equals(stemArray.get(i).getAsJsonObject().get("ExpCode").getAsString())) {
-                    return stemArray.get(i);
-                }
-            }
-            for (int i = 0; i < otherArray.size(); i++) {
-                if (StringUtill.getString(String.valueOf(code)).equals(otherArray.get(i).getAsJsonObject().get("ExpCode").getAsString())) {
-                    return otherArray.get(i);
-                }
-            }
-            return element;
-        }
-
     }
 
 }
