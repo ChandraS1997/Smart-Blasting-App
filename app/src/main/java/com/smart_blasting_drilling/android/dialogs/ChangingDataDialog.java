@@ -1,6 +1,7 @@
 package com.smart_blasting_drilling.android.dialogs;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +31,7 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectH
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.adapter.ChargingDataListAdapter;
 import com.smart_blasting_drilling.android.ui.models.ChargingDataModel;
@@ -82,6 +85,7 @@ public class ChangingDataDialog extends BaseDialogFragment {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             dialog.getWindow().setGravity(Gravity.CENTER);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
         return dialog;
     }
@@ -279,6 +283,12 @@ public class ChangingDataDialog extends BaseDialogFragment {
             }
         });
 
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        ((BaseActivity) mContext).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     private ProjectInfoDialogListener getListener() {

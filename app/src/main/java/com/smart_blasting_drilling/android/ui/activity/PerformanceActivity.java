@@ -13,6 +13,7 @@ import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTabl
 import com.smart_blasting_drilling.android.databinding.PerformancFragmentBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.entities.BlastPerformanceEntity;
+import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
 public class PerformanceActivity extends BaseActivity {
@@ -24,6 +25,7 @@ public class PerformanceActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.performanc_fragment);
+        StatusBarUtils.statusBarColor(this, R.color._FFA722);
 
         if (isBundleIntentNotEmpty()) {
             designId = getIntent().getExtras().getString("blades_data");

@@ -260,14 +260,10 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getZ()), tableEditModelArrayList.get(11).getTitleVal(), tableEditModelArrayList.get(11).isSelected(), update));
 
                     chargeTypeArrayItemList.clear();
-                    chargeTypeArrayItemList.add(getDataExp(holeDetailData.getColId(), otherArray, "Bulk"));
-                    chargeTypeArrayItemList.add(getDataExp(holeDetailData.getBtmId(), otherArray, "Bottom"));
-                    chargeTypeArrayItemList.add(getDataExp(holeDetailData.getBsterId(), otherArray, "Booster"));
-                    chargeTypeArrayItemList.add(getDataFromAllTableExp(holeDetailData.getExpCode(), stemArray, "Stemming"));
-                    chargeTypeArrayItemList.add(getDataFromAllTableExp(holeDetailData.getExpCode2(), deckArray, "Decking"));
+                    getDataFromAllTableExp();
 
-                    int chargingCount = 0;
-                    if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getExpCode()))) {
+                    int chargingCount = chargeTypeArrayItemList.size();
+                    /*if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getExpCode()))) {
                         chargingCount = chargingCount + 1;
                     }
                     if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getExpCode1()))) {
@@ -281,7 +277,7 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                     }
                     if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getDeckLength1()))) {
                         chargingCount = chargingCount + 1;
-                    }
+                    }*/
                     editModelArrayList.add(new TableEditModel(String.valueOf(chargingCount), tableEditModelArrayList.get(12).getTitleVal(), tableEditModelArrayList.get(12).isSelected(), update));
 
                     if (!update) {
@@ -358,21 +354,27 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
         return element;
     }
 
-    private ChargeTypeArrayItem getDataFromAllTableExp(Object code, JsonArray jsonArray, String type) {
-        if (code instanceof Double) {
-            code = ((Double) code).intValue();
-        }
-        if (!Constants.isListEmpty(table9))
-            jsonArray = new Gson().fromJson(new Gson().toJson(table9), JsonArray.class);
-        ChargeTypeArrayItem element = new ChargeTypeArrayItem();
-        for (int i = 0; i < jsonArray.size(); i++) {
-            if (StringUtill.getString(String.valueOf(code)).equals(jsonArray.get(i).getAsJsonObject().get("ProdId").getAsString())) {
-                element.setType(type);
-                element.setCost(jsonArray.get(i).getAsJsonObject().get("ProdCost").getAsString());
-                element.setName(jsonArray.get(i).getAsJsonObject().get("ProdName").getAsString());
+    private void getDataFromAllTableExp() {
+        if (!Constants.isListEmpty(table9)) {
+            for (int i = 0; i < table9.size(); i++) {
+                if (table9.get(i).getProdType().equals("Stemming") ||
+                        table9.get(i).getProdType().equals("Decking") ||
+                        table9.get(i).getProdType().equals("Column") ||
+                        table9.get(i).getProdType().equals("Base") ||
+                        table9.get(i).getProdType().equals("Booster")) {
+                    if (table9.get(i).getProdId() != 0 && !StringUtill.isEmpty(table9.get(i).getProdName())) {
+
+                        ChargeTypeArrayItem element = new ChargeTypeArrayItem();
+                        element.setType(StringUtill.getString(table9.get(i).getProdType()));
+                        element.setCost(StringUtill.getString(String.valueOf(table9.get(i).getProdCost())));
+                        element.setName(StringUtill.getString(table9.get(i).getProdName()));
+                        element.setProdId(table9.get(i).getProdId());
+
+                        chargeTypeArrayItemList.add(element);
+                    }
+                }
             }
         }
-        return element;
     }
 
 }

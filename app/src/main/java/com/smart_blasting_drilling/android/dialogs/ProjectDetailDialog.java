@@ -507,11 +507,22 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                             drillMethodDataItem[i] = drillMethodDataList.get(i).getName();
                         }
                         binding.spinnerMine.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerMine.setText(StringUtill.getString(drillMethodDataItem[0]));
+                        boolean isFound = false;
+                        for (int i = 0; i < drillMethodDataItem.length; i++) {
+                            if (StringUtill.getString(updateBladesData.getMineName()).equals(drillMethodDataItem[i])) {
+                                isFound = true;
+                                binding.spinnerMine.setText(StringUtill.getString(drillMethodDataItem[i]));
+                                mineCode = drillMethodDataList.get(i).getMineCode();
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            binding.spinnerMine.setText(StringUtill.getString(drillMethodDataItem[0]));
+                            mineCode = drillMethodDataList.get(0).getMineCode();
+                        }
                         binding.spinnerMine.setOnItemClickListener((adapterView, view, i, l) -> {
                             mineCode = drillMethodDataList.get(i).getMineCode();
                         });
-                        mineCode = drillMethodDataList.get(0).getMineCode();
                     }
                 }
             }
@@ -525,12 +536,25 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
                             drillMethodDataItem[i] = drillMethodDataList.get(i).getName();
                         }
+
+                        boolean isFound = false;
+                        for (int i = 0; i < drillMethodDataItem.length; i++) {
+                            if (StringUtill.getString(updateBladesData.getZoneName()).equals(drillMethodDataItem[i])) {
+                                isFound = true;
+                                binding.spinnerZone.setText(StringUtill.getString(drillMethodDataItem[i]));
+                                zoneCode = drillMethodDataList.get(i).getZoneCode();
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            binding.spinnerZone.setText(StringUtill.getString(drillMethodDataItem[0]));
+                            zoneCode = drillMethodDataList.get(0).getZoneCode();
+                        }
+
                         binding.spinnerZone.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerZone.setText(StringUtill.getString(drillMethodDataItem[0]));
                         binding.spinnerZone.setOnItemClickListener((adapterView, view, i, l) -> {
                             zoneCode = drillMethodDataList.get(i).getZoneCode();
                         });
-                        zoneCode = drillMethodDataList.get(0).getZoneCode();
                     }
                 }
             }
@@ -569,12 +593,25 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
                             drillMethodDataItem[i] = drillMethodDataList.get(i).getName();
                         }
+
+                        boolean isFound = false;
+                        for (int i = 0; i < drillMethodDataItem.length; i++) {
+                            if (StringUtill.getString(updateBladesData.getBenchName()).equals(drillMethodDataItem[i])) {
+                                isFound = true;
+                                binding.spinnerBench.setText(StringUtill.getString(drillMethodDataItem[i]));
+                                benchCode = drillMethodDataList.get(i).getBenchCode();
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            binding.spinnerBench.setText(StringUtill.getString(drillMethodDataItem[0]));
+                            benchCode = drillMethodDataList.get(0).getBenchCode();
+                        }
+
                         binding.spinnerBench.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerBench.setText(StringUtill.getString(drillMethodDataItem[0]));
                         binding.spinnerBench.setOnItemClickListener((adapterView, view, i, l) -> {
                             benchCode = drillMethodDataList.get(i).getBenchCode();
                         });
-                        benchCode = drillMethodDataList.get(0).getBenchCode();
                     }
                 }
             }
@@ -613,12 +650,25 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
                             drillMethodDataItem[i] = drillMethodDataList.get(i).getName();
                         }
+
+                        boolean isFound = false;
+                        for (int i = 0; i < drillMethodDataItem.length; i++) {
+                            if (StringUtill.getString(updateBladesData.getPitName()).equals(drillMethodDataItem[i])) {
+                                isFound = true;
+                                binding.spinnerPit.setText(StringUtill.getString(drillMethodDataItem[i]));
+                                pitCode = drillMethodDataList.get(i).getPitCode();
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            binding.spinnerPit.setText(StringUtill.getString(drillMethodDataItem[0]));
+                            pitCode = drillMethodDataList.get(0).getPitCode();
+                        }
+
                         binding.spinnerPit.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerPit.setText(StringUtill.getString(drillMethodDataItem[0]));
                         binding.spinnerPit.setOnItemClickListener((adapterView, view, i, l) -> {
                             pitCode = drillMethodDataList.get(i).getPitCode();
                         });
-                        pitCode = drillMethodDataList.get(0).getPitCode();
                     }
                 }
             }

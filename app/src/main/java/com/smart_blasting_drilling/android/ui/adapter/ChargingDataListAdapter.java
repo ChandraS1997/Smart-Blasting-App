@@ -161,8 +161,8 @@ public class ChargingDataListAdapter extends BaseRecyclerAdapter {
             if (!StringUtill.isEmpty(chargingDataModel.getType())) {
                 binding.explosiveEt.setText(StringUtill.getString(chargingDataModel.getName()));
                 binding.costEt.setText(StringUtill.getString(String.valueOf(chargingDataModel.getCost())));
-                binding.columnLengthEt.setText(StringUtill.getString(String.valueOf(chargingDataModel.getLength())));
-                binding.columnWeightEt.setText(StringUtill.getString(String.valueOf(chargingDataModel.getWeight())));
+                binding.columnLengthEt.setText(StringUtill.getString(String.valueOf(chargingDataModel.getLengthStr())));
+                binding.columnWeightEt.setText(StringUtill.getString(String.valueOf(chargingDataModel.getWeightStr())));
             }
             setExpArray(chargingDataModel.getType());
 

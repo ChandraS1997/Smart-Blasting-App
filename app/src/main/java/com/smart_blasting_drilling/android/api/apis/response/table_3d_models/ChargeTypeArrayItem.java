@@ -1,6 +1,7 @@
 package com.smart_blasting_drilling.android.api.apis.response.table_3d_models;
 
 import com.google.gson.annotations.SerializedName;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.io.Serializable;
 
@@ -66,6 +67,13 @@ public class ChargeTypeArrayItem implements Serializable {
 		return (double) length;
 	}
 
+	public String getLengthStr() {
+		if (length == null) {
+			return "";
+		}
+		return StringUtill.getString(String.valueOf(length));
+	}
+
 	public void setWeight(Object weight){
 		this.weight = weight;
 	}
@@ -81,6 +89,13 @@ public class ChargeTypeArrayItem implements Serializable {
 			return ((Integer) weight).doubleValue();
 		}
 		return (double) weight;
+	}
+
+	public String getWeightStr() {
+		if (weight == null) {
+			return "";
+		}
+		return StringUtill.getString(String.valueOf(weight));
 	}
 
 	public void setProdId(int prodId){
