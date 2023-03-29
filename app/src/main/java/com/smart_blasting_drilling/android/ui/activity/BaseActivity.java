@@ -348,14 +348,6 @@ public class BaseActivity extends AppCompatActivity {
                     }
                 }
 
-        /*Type empList = new TypeToken<List<ResponseEmployeeData>>(){}.getType();
-        List<ResponseEmployeeData> employeeDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("Table6"), empList);
-        for (ResponseEmployeeData employeeData : employeeDataList) {
-            if (String.valueOf(employeeData.getEmployeeCode()).equals(projectDetailJson.get("team_id").getAsString())) {
-
-            }
-        }*/
-
                 JsonArray rowHoleDetailArray = new JsonArray();
                 rowHoleDetailArray.add(new Gson().toJson(holeDetailData));
 
@@ -1324,10 +1316,10 @@ public class BaseActivity extends AppCompatActivity {
 
             // RowDetails Array
             JsonArray rowDetailsArray = new JsonArray();
-            JsonObject rowDetailsObject = new JsonObject();
             if (!Constants.isListEmpty(tablesData.getTable2())) {
                 List<MapHoleDataModel> mapHoleDataModels = getRowWiseHoleList(tablesData.getTable2());
                 for (int i = 0; i < mapHoleDataModels.size(); i++) {
+                    JsonObject rowDetailsObject = new JsonObject();
                     rowDetailsObject.addProperty("rowno", String.valueOf(i + 1));
                     if (!Constants.isListEmpty(mapHoleDataModels.get(i).getHoleDetailDataList()))
                         rowDetailsObject.addProperty("holeno", String.valueOf(mapHoleDataModels.get(i).getHoleDetailDataList().size()));
