@@ -22,8 +22,10 @@ import com.smart_blasting_drilling.android.databinding.ActivityInitiatingDeviceV
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.InitiatingDataDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.TldDataDao;
 import com.smart_blasting_drilling.android.room_database.entities.InitiatingDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.InitiatingDeviceDataEntity;
+import com.smart_blasting_drilling.android.room_database.entities.TldDataEntity;
 import com.smart_blasting_drilling.android.ui.adapter.DownTheHoleAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.ElectronicDetonatorAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.TldHoleToHoleAdapter;
@@ -48,6 +50,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
     String designId = "";
 
     List<ResultsetItem> responseInitiatingDataList = new ArrayList<>();
+    List<ResultsetItem> responseTldDataList = new ArrayList<>();
 
     List<InitiatingDeviceModel> electronicDetonatorModelList = new ArrayList<>();
     List<InitiatingDeviceModel> downTheHoleModelList = new ArrayList<>();
@@ -172,6 +175,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
 
     private void clearList() {
         responseInitiatingDataList.clear();
+        responseTldDataList.clear();
     }
 
     private void getSavedInitiatingDataFromDb() {
@@ -209,8 +213,8 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
 
         InitiatingDataDao initiatingDataDao = appDatabase.initiatingDataDao();
         List<InitiatingDataEntity> initiatingDataEntities = initiatingDataDao.getAllBladesProject();
+        clearList();
         if (!Constants.isListEmpty(initiatingDataEntities)) {
-            clearList();
             JsonArray array = new JsonArray();
             if (!new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonElement.class).isJsonArray()) {
                 array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonObject.class).get("data"), String.class), JsonArray.class);
@@ -220,7 +224,20 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
             for (JsonElement jsonElement : array) {
                 responseInitiatingDataList.add(new Gson().fromJson(new Gson().fromJson(jsonElement, JsonObject.class), ResultsetItem.class));
             }
-//            responseInitiatingDataList.addAll(new Gson().fromJson(initiatingDataEntities.get(0).getData(), new TypeToken<List<ResultsetItem>>(){}.getType()));
+        }
+
+        TldDataDao tldDataDao = appDatabase.tldDataEntity();
+        List<TldDataEntity> tldDataEntityList = tldDataDao.getAllBladesProject();
+        if (!Constants.isListEmpty(tldDataEntityList)) {
+            JsonArray array = new JsonArray();
+            if (!new Gson().fromJson(tldDataEntityList.get(0).getData(), JsonElement.class).isJsonArray()) {
+                array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(tldDataEntityList.get(0).getData(), JsonObject.class).get("data"), String.class), JsonArray.class);
+            } else {
+                array = new Gson().fromJson(tldDataEntityList.get(0).getData(), JsonArray.class);
+            }
+            for (JsonElement jsonElement : array) {
+                responseTldDataList.add(new Gson().fromJson(new Gson().fromJson(jsonElement, JsonObject.class), ResultsetItem.class));
+            }
         }
 
         electronicDetonatorAdapter = new ElectronicDetonatorAdapter(this, electronicDetonatorModelList, responseInitiatingDataList);
@@ -231,11 +248,11 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
         binding.downTheHoleList.setLayoutManager(new LinearLayoutManager(this));
         binding.downTheHoleList.setAdapter(downTheHoleAdapter);
 
-        tldRowToRowAdapter = new TldRowToRowAdapter(this, tldRowToRowModelList, responseInitiatingDataList);
+        tldRowToRowAdapter = new TldRowToRowAdapter(this, tldRowToRowModelList, responseTldDataList);
         binding.tldRowToRowList.setLayoutManager(new LinearLayoutManager(this));
         binding.tldRowToRowList.setAdapter(tldRowToRowAdapter);
 
-        tldHoleToHoleAdapter = new TldHoleToHoleAdapter(this, tldHoleToHoleModelList, responseInitiatingDataList);
+        tldHoleToHoleAdapter = new TldHoleToHoleAdapter(this, tldHoleToHoleModelList, responseTldDataList);
         binding.tlsHoleToHoleList.setLayoutManager(new LinearLayoutManager(this));
         binding.tlsHoleToHoleList.setAdapter(tldHoleToHoleAdapter);
 

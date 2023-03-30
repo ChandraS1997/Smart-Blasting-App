@@ -130,7 +130,7 @@ public class TldRowToRowAdapter extends BaseRecyclerAdapter {
 
         public void addData(ResultsetItem data) {
             InitiatingDeviceModel deviceModel = new InitiatingDeviceModel();
-            deviceModel.setPageCount(data.getIniCode());
+            deviceModel.setPageCount(data.getTldCode());
             deviceModel.setCost(String.valueOf(data.getUnitCost()));
             deviceModel.setQty(binding.qtyEt.getText().toString());
             deviceModel.setType(data.getName());

@@ -231,8 +231,8 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                                     AppDelegate.getInstance().setResponse3DTable3DataModel(response3DTable3DataModels);
                                     AppDelegate.getInstance().setDesignElementDataModel(response3DTable7DesignElementDataModels);
 
-                                    setTableData(response3DTable4HoleChargingDataModels, false);
                                     setDataIntoDb(response);
+                                    setTableData(response3DTable4HoleChargingDataModels, false);
                                 } catch (Exception e) {
                                     e.getLocalizedMessage();
                                 }

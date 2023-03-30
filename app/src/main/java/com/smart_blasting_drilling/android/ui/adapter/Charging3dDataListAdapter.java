@@ -49,7 +49,10 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
         try {
             if (!Constants.isListEmpty(appDatabase.allMineInfoSurfaceInitiatorDao().getAllBladesProject())) {
                 JsonObject jsonObject = new Gson().fromJson(appDatabase.allMineInfoSurfaceInitiatorDao().getAllBladesProject().get(0).getData(), JsonObject.class);
-                JsonObject jsObj = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(jsonObject.getAsJsonObject().get("data"), JsonPrimitive.class), String.class), JsonObject.class);
+                JsonObject jsObj = jsonObject;
+                if (jsonObject.has("data")) {
+                    jsObj = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(jsonObject.getAsJsonObject().get("data"), JsonPrimitive.class), String.class), JsonObject.class);
+                }
                 if (jsObj.getAsJsonObject().has("Table1")) {
                     deckingArr = jsObj.getAsJsonObject().get("Table1").getAsJsonArray();
                     deckArr = new String[deckingArr.size()];
