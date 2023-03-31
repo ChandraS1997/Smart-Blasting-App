@@ -16,18 +16,27 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.HoleTableColumnViewBinding;
 import com.smart_blasting_drilling.android.dialogs.ChangingDataDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleStatusDialog;
+import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.KeyboardUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
@@ -213,6 +222,18 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
                     || StringUtill.getString(title).equals("Hole Angle")
                     || StringUtill.getString(title).equals("Burden")
                     || StringUtill.getString(title).equals("Spacing");
+        }
+
+        private void setChargingData(ResponseBladesRetrieveData data) {
+            try {
+                List<ChargeTypeArrayItem> chargeTypeArrayItemList = new ArrayList<>();
+
+                if (!StringUtill.isEmpty(String.valueOf(holeDetailData.getExpCode()))) {
+
+                }
+            } catch (Exception e) {
+
+            }
         }
 
     }

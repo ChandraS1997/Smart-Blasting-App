@@ -317,7 +317,14 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                 if (appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0) != null) {
 
                     Type siteList = new TypeToken<List<ResponseSiteDetail>>(){}.getType();
-                    List<ResponseSiteDetail> siteDetailList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data"), String.class), JsonObject.class).get("Table"), siteList);
+                    List<ResponseSiteDetail> siteDetailList = new ArrayList<>();
+                    JsonObject jsonObject = new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class);
+                    if (jsonObject.has("data")) {
+                        siteDetailList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data"), String.class), JsonObject.class).get("Table"), siteList);
+                    } else {
+                        siteDetailList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("Table"), siteList);
+                    }
+//                    siteDetailList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data"), String.class), JsonObject.class).get("Table"), siteList);
                     if (!Constants.isListEmpty(siteDetailList)) {
                         String[] siteNameList = new String[siteDetailList.size()];
                         for (int i = 0; i < siteDetailList.size(); i++) {
@@ -328,14 +335,21 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         binding.spinnerSiteName.setAdapter(Constants.getAdapter(mContext, siteNameList));
                         siteId = siteDetailList.get(0).getSiteCode();
 
+                        List<ResponseSiteDetail> finalSiteDetailList = siteDetailList;
                         binding.spinnerSiteName.setOnItemClickListener((adapterView, view, i, l) -> {
-                            siteId = siteDetailList.get(i).getSiteCode();
-                            binding.clientName.setText(StringUtill.getString(siteDetailList.get(i).getClientName()));
+                            siteId = finalSiteDetailList.get(i).getSiteCode();
+                            binding.clientName.setText(StringUtill.getString(finalSiteDetailList.get(i).getClientName()));
                         });
                     }
 
                     Type rigList = new TypeToken<List<ResponseRigData>>(){}.getType();
-                    List<ResponseRigData> rigDetailList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data"), String.class), JsonObject.class).get("Table1"), rigList);
+                    List<ResponseRigData> rigDetailList = new ArrayList<>();
+                    jsonObject = new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class);
+                    if (jsonObject.has("data")) {
+                        rigDetailList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data"), String.class), JsonObject.class).get("Table1"), rigList);
+                    } else {
+                        rigDetailList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("Table1"), rigList);
+                    }
                     if (!Constants.isListEmpty(rigDetailList)) {
                         String[] rigNameList = new String[rigDetailList.size()];
                         for (int i = 0; i < rigDetailList.size(); i++) {
@@ -344,13 +358,20 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         rigId = rigDetailList.get(0).getRigCode();
                         binding.spinnerRig.setAdapter(Constants.getAdapter(mContext, rigNameList));
                         binding.spinnerRig.setText(StringUtill.getString(rigNameList[0]));
+                        List<ResponseRigData> finalRigDetailList = rigDetailList;
                         binding.spinnerRig.setOnItemClickListener((adapterView, view, i, l) -> {
-                            rigId = rigDetailList.get(i).getRigCode();
+                            rigId = finalRigDetailList.get(i).getRigCode();
                         });
                     }
 
                     Type empList = new TypeToken<List<ResponseEmployeeData>>(){}.getType();
-                    List<ResponseEmployeeData> employeeDataList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data"), String.class), JsonObject.class).get("Table6"), empList);
+                    List<ResponseEmployeeData> employeeDataList = new ArrayList<>();
+                    jsonObject = new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class);
+                    if (jsonObject.has("data")) {
+                        employeeDataList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data"), String.class), JsonObject.class).get("Table6"), empList);
+                    } else {
+                        employeeDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("Table6"), empList);
+                    }
                     if (!Constants.isListEmpty(employeeDataList)) {
                         String[] employeeNameList = new String[employeeDataList.size()];
                         for (int i = 0; i < employeeDataList.size(); i++) {
@@ -359,14 +380,15 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         empId = employeeDataList.get(0).getEmployeeCode();
                         binding.spinnerSelectTeam.setAdapter(Constants.getAdapter(mContext, employeeNameList));
                         binding.spinnerSelectTeam.setText(StringUtill.getString(employeeNameList[0]));
+                        List<ResponseEmployeeData> finalEmployeeDataList = employeeDataList;
                         binding.spinnerSelectTeam.setOnItemClickListener((adapterView, view, i, l) -> {
-                            empId = employeeDataList.get(i).getEmployeeCode();
+                            empId = finalEmployeeDataList.get(i).getEmployeeCode();
                         });
 
                         binding.spinnerDriller.setAdapter(Constants.getAdapter(mContext, employeeNameList));
                         binding.spinnerDriller.setText(StringUtill.getString(employeeNameList[0]));
                         binding.spinnerDriller.setOnItemClickListener((adapterView, view, i, l) -> {
-                            drillerCode = employeeDataList.get(i).getEmployeeCode();
+                            drillerCode = finalEmployeeDataList.get(i).getEmployeeCode();
                         });
                         drillerCode = employeeDataList.get(0).getEmployeeCode();
                     }
@@ -377,7 +399,12 @@ public class ProjectDetailDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.drillMethodDao().getAllEntityDataList())) {
                 if (appDatabase.drillMethodDao().getAllEntityDataList().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseDrillMethodData>>(){}.getType();
-                    List<ResponseDrillMethodData> drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillMethodDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
+                    List<ResponseDrillMethodData> drillMethodDataList = new ArrayList<>();
+                    if (!new Gson().fromJson(appDatabase.drillMethodDao().getAllEntityDataList().get(0).getData(), JsonElement.class).isJsonArray()) {
+                        drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillMethodDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
+                    } else {
+                        drillMethodDataList = new Gson().fromJson(appDatabase.drillMethodDao().getAllEntityDataList().get(0).getData(), teamList);
+                    }
                     if (!Constants.isListEmpty(drillMethodDataList)) {
                         String[] drillMethodDataItem = new String[drillMethodDataList.size()];
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
@@ -385,15 +412,16 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         }
                         binding.spinnerDrillingType.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
                         binding.spinnerDrillingType.setText(StringUtill.getString(drillMethodDataItem[0]));
+                        List<ResponseDrillMethodData> finalDrillMethodDataList = drillMethodDataList;
                         binding.spinnerDrillingType.setOnItemClickListener((adapterView, view, i, l) -> {
-                            drillTypeId = drillMethodDataList.get(i).getDrillMethodId();
+                            drillTypeId = finalDrillMethodDataList.get(i).getDrillMethodId();
                         });
                         drillTypeId = drillMethodDataList.get(0).getDrillMethodId();
 
                         binding.spinnerDrillMethod.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
                         binding.spinnerDrillMethod.setText(StringUtill.getString(drillMethodDataItem[0]));
                         binding.spinnerDrillMethod.setOnItemClickListener((adapterView, view, i, l) -> {
-                            drillMethodId = drillMethodDataList.get(i).getDrillMethodId();
+                            drillMethodId = finalDrillMethodDataList.get(i).getDrillMethodId();
                         });
                         drillMethodId = drillMethodDataList.get(0).getDrillMethodId();
                     }
@@ -423,7 +451,11 @@ public class ProjectDetailDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.drillMaterialDao().getAllEntityDataList())) {
                 if (appDatabase.drillMaterialDao().getAllEntityDataList().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseDrillMaterialData>>(){}.getType();
-                    List<ResponseDrillMaterialData> drillMaterialDataList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillMaterialDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data"), String.class), teamList);
+                    List<ResponseDrillMaterialData> drillMaterialDataList = new ArrayList<>();
+                    if (!new Gson().fromJson(appDatabase.drillMaterialDao().getAllEntityDataList().get(0).getData(), JsonElement.class).isJsonArray())
+                        drillMaterialDataList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillMaterialDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data"), String.class), teamList);
+                    else
+                        drillMaterialDataList = new Gson().fromJson(appDatabase.drillMaterialDao().getAllEntityDataList().get(0).getData(), teamList);
                     if (!Constants.isListEmpty(drillMaterialDataList)) {
                         String[] drillMaterialDataItem = new String[drillMaterialDataList.size()];
                         for (int i = 0; i < drillMaterialDataList.size(); i++) {
@@ -431,8 +463,9 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         }
                         binding.spinnerMaterialDrilled.setAdapter(Constants.getAdapter(mContext, drillMaterialDataItem));
                         binding.spinnerMaterialDrilled.setText(StringUtill.getString(drillMaterialDataItem[0]));
+                        List<ResponseDrillMaterialData> finalDrillMaterialDataList = drillMaterialDataList;
                         binding.spinnerMaterialDrilled.setOnItemClickListener((adapterView, view, i, l) -> {
-                            drillMaterialId = drillMaterialDataList.get(i).getMatTypeId();
+                            drillMaterialId = finalDrillMaterialDataList.get(i).getMatTypeId();
                         });
                         drillMaterialId = drillMaterialDataList.get(0).getMatTypeId();
                     }
@@ -442,7 +475,12 @@ public class ProjectDetailDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.drillShiftInfoDao().getAllEntityDataList())) {
                 if (appDatabase.drillShiftInfoDao().getAllEntityDataList().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseShiftData>>(){}.getType();
-                    List<ResponseShiftData> drillMaterialDataList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillShiftInfoDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data"), String.class), teamList);
+                    List<ResponseShiftData> drillMaterialDataList = new ArrayList<>();
+                    if (!new Gson().fromJson(appDatabase.drillShiftInfoDao().getAllEntityDataList().get(0).getData(), JsonElement.class).isJsonArray()) {
+                        drillMaterialDataList = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.drillShiftInfoDao().getAllEntityDataList().get(0).getData(), JsonObject.class).get("data"), String.class), teamList);
+                    } else {
+                        drillMaterialDataList = new Gson().fromJson(appDatabase.drillShiftInfoDao().getAllEntityDataList().get(0).getData(), teamList);
+                    }
                     if (!Constants.isListEmpty(drillMaterialDataList)) {
                         String[] drillMaterialDataItem = new String[drillMaterialDataList.size()];
                         for (int i = 0; i < drillMaterialDataList.size(); i++) {
@@ -450,8 +488,9 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         }
                         binding.spinnerShift.setAdapter(Constants.getAdapter(mContext, drillMaterialDataItem));
                         binding.spinnerShift.setText(StringUtill.getString(drillMaterialDataItem[0]));
+                        List<ResponseShiftData> finalDrillMaterialDataList = drillMaterialDataList;
                         binding.spinnerShift.setOnItemClickListener((adapterView, view, i, l) -> {
-                            shiftCode = drillMaterialDataList.get(i).getShiftCode();
+                            shiftCode = finalDrillMaterialDataList.get(i).getShiftCode();
                         });
                         shiftCode = drillMaterialDataList.get(0).getShiftCode();
                     }
@@ -468,11 +507,22 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                             drillMethodDataItem[i] = drillMethodDataList.get(i).getName();
                         }
                         binding.spinnerMine.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerMine.setText(StringUtill.getString(drillMethodDataItem[0]));
+                        boolean isFound = false;
+                        for (int i = 0; i < drillMethodDataItem.length; i++) {
+                            if (StringUtill.getString(updateBladesData.getMineName()).equals(drillMethodDataItem[i])) {
+                                isFound = true;
+                                binding.spinnerMine.setText(StringUtill.getString(drillMethodDataItem[i]));
+                                mineCode = drillMethodDataList.get(i).getMineCode();
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            binding.spinnerMine.setText(StringUtill.getString(drillMethodDataItem[0]));
+                            mineCode = drillMethodDataList.get(0).getMineCode();
+                        }
                         binding.spinnerMine.setOnItemClickListener((adapterView, view, i, l) -> {
                             mineCode = drillMethodDataList.get(i).getMineCode();
                         });
-                        mineCode = drillMethodDataList.get(0).getMineCode();
                     }
                 }
             }
@@ -486,12 +536,25 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
                             drillMethodDataItem[i] = drillMethodDataList.get(i).getName();
                         }
+
+                        boolean isFound = false;
+                        for (int i = 0; i < drillMethodDataItem.length; i++) {
+                            if (StringUtill.getString(updateBladesData.getZoneName()).equals(drillMethodDataItem[i])) {
+                                isFound = true;
+                                binding.spinnerZone.setText(StringUtill.getString(drillMethodDataItem[i]));
+                                zoneCode = drillMethodDataList.get(i).getZoneCode();
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            binding.spinnerZone.setText(StringUtill.getString(drillMethodDataItem[0]));
+                            zoneCode = drillMethodDataList.get(0).getZoneCode();
+                        }
+
                         binding.spinnerZone.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerZone.setText(StringUtill.getString(drillMethodDataItem[0]));
                         binding.spinnerZone.setOnItemClickListener((adapterView, view, i, l) -> {
                             zoneCode = drillMethodDataList.get(i).getZoneCode();
                         });
-                        zoneCode = drillMethodDataList.get(0).getZoneCode();
                     }
                 }
             }
@@ -499,7 +562,12 @@ public class ProjectDetailDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.rockDataDao().getAllBladesProject())) {
                 if (appDatabase.rockDataDao().getAllBladesProject().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseRockData>>(){}.getType();
-                    List<ResponseRockData> drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
+                    List<ResponseRockData> drillMethodDataList = new ArrayList<>();
+                    if (!new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), JsonElement.class).isJsonArray()) {
+                        drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
+                    } else {
+                        drillMethodDataList = new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), teamList);
+                    }
                     if (!Constants.isListEmpty(drillMethodDataList)) {
                         String[] drillMethodDataItem = new String[drillMethodDataList.size()];
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
@@ -507,8 +575,9 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         }
                         binding.spinnerRock.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
                         binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[0]));
+                        List<ResponseRockData> finalDrillMethodDataList = drillMethodDataList;
                         binding.spinnerRock.setOnItemClickListener((adapterView, view, i, l) -> {
-                            rockCode = drillMethodDataList.get(i).getRockCode();
+                            rockCode = finalDrillMethodDataList.get(i).getRockCode();
                         });
                         rockCode = drillMethodDataList.get(0).getRockCode();
                     }
@@ -524,12 +593,25 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
                             drillMethodDataItem[i] = drillMethodDataList.get(i).getName();
                         }
+
+                        boolean isFound = false;
+                        for (int i = 0; i < drillMethodDataItem.length; i++) {
+                            if (StringUtill.getString(updateBladesData.getBenchName()).equals(drillMethodDataItem[i])) {
+                                isFound = true;
+                                binding.spinnerBench.setText(StringUtill.getString(drillMethodDataItem[i]));
+                                benchCode = drillMethodDataList.get(i).getBenchCode();
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            binding.spinnerBench.setText(StringUtill.getString(drillMethodDataItem[0]));
+                            benchCode = drillMethodDataList.get(0).getBenchCode();
+                        }
+
                         binding.spinnerBench.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerBench.setText(StringUtill.getString(drillMethodDataItem[0]));
                         binding.spinnerBench.setOnItemClickListener((adapterView, view, i, l) -> {
                             benchCode = drillMethodDataList.get(i).getBenchCode();
                         });
-                        benchCode = drillMethodDataList.get(0).getBenchCode();
                     }
                 }
             }
@@ -537,7 +619,12 @@ public class ProjectDetailDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.explosiveDataDao().getAllBladesProject())) {
                 if (appDatabase.explosiveDataDao().getAllBladesProject().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseExplosiveDataModel>>(){}.getType();
-                    List<ResponseExplosiveDataModel> drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.explosiveDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
+                    List<ResponseExplosiveDataModel> drillMethodDataList = new ArrayList<>();
+                    if (!new Gson().fromJson(appDatabase.explosiveDataDao().getAllBladesProject().get(0).getData(), JsonElement.class).isJsonArray()) {
+                        drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.explosiveDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
+                    } else {
+                        drillMethodDataList = new Gson().fromJson(appDatabase.explosiveDataDao().getAllBladesProject().get(0).getData(), teamList);
+                    }
                     if (!Constants.isListEmpty(drillMethodDataList)) {
                         String[] drillMethodDataItem = new String[drillMethodDataList.size()];
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
@@ -545,8 +632,9 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         }
                         binding.spinnerExplosive.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
                         binding.spinnerExplosive.setText(StringUtill.getString(drillMethodDataItem[0]));
+                        List<ResponseExplosiveDataModel> finalDrillMethodDataList = drillMethodDataList;
                         binding.spinnerExplosive.setOnItemClickListener((adapterView, view, i, l) -> {
-                            expCode = drillMethodDataList.get(i).getExpCode();
+                            expCode = finalDrillMethodDataList.get(i).getExpCode();
                         });
                         expCode = drillMethodDataList.get(0).getExpCode();
                     }
@@ -562,12 +650,25 @@ public class ProjectDetailDialog extends BaseDialogFragment {
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
                             drillMethodDataItem[i] = drillMethodDataList.get(i).getName();
                         }
+
+                        boolean isFound = false;
+                        for (int i = 0; i < drillMethodDataItem.length; i++) {
+                            if (StringUtill.getString(updateBladesData.getPitName()).equals(drillMethodDataItem[i])) {
+                                isFound = true;
+                                binding.spinnerPit.setText(StringUtill.getString(drillMethodDataItem[i]));
+                                pitCode = drillMethodDataList.get(i).getPitCode();
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            binding.spinnerPit.setText(StringUtill.getString(drillMethodDataItem[0]));
+                            pitCode = drillMethodDataList.get(0).getPitCode();
+                        }
+
                         binding.spinnerPit.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerPit.setText(StringUtill.getString(drillMethodDataItem[0]));
                         binding.spinnerPit.setOnItemClickListener((adapterView, view, i, l) -> {
                             pitCode = drillMethodDataList.get(i).getPitCode();
                         });
-                        pitCode = drillMethodDataList.get(0).getPitCode();
                     }
                 }
             }

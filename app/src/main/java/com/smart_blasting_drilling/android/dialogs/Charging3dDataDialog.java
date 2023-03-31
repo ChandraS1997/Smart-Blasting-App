@@ -1,6 +1,7 @@
 package com.smart_blasting_drilling.android.dialogs;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,7 @@ import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdatePr
 import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
+import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
 import com.smart_blasting_drilling.android.ui.adapter.Charging3dDataListAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.ChargingDataListAdapter;
@@ -84,6 +87,7 @@ public class Charging3dDataDialog extends BaseDialogFragment {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             dialog.getWindow().setGravity(Gravity.CENTER);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         }
         return dialog;
     }
@@ -221,6 +225,12 @@ public class Charging3dDataDialog extends BaseDialogFragment {
 
         });
 
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        ((BaseActivity) mContext).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     private Charging3dDataDialog.ProjectInfoDialogListener getListener() {

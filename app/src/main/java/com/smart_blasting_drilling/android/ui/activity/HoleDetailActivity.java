@@ -175,7 +175,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                     if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
                         String blastCode = "";
                         if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                            BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntity(1);
+                            BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.getDesignId());
                             if (blastCodeEntity != null)
                                 blastCode = blastCodeEntity.getBlastCode();
                         }

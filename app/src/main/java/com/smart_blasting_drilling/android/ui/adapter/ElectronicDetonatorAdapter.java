@@ -86,7 +86,11 @@ public class ElectronicDetonatorAdapter extends BaseRecyclerAdapter {
         void setDataBInd(InitiatingDeviceModel initiatingDeviceModel) {
             binding.typeSpinner.setAdapter(Constants.getAdapter(context, typeList));
             binding.typeSpinner.setText(StringUtill.isEmpty(initiatingDeviceModel.getType()) ? typeList[0] : initiatingDeviceModel.getType());
-            binding.unitCostEt.setText(StringUtill.getString(initiatingDeviceModel.getCost()));
+            if (StringUtill.isEmpty(initiatingDeviceModel.getType())) {
+                binding.unitCostEt.setText(String.valueOf(responseInitiatingDataList.get(0).getUnitCost()));
+            } else {
+                binding.unitCostEt.setText(StringUtill.getString(initiatingDeviceModel.getCost()));
+            }
             binding.qtyEt.setText(StringUtill.getString(initiatingDeviceModel.getQty()));
 //            binding.unitCostEt.setText(String.valueOf(responseInitiatingDataList.get(0).getUnitCost()));
 

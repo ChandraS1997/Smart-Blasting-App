@@ -348,14 +348,6 @@ public class BaseActivity extends AppCompatActivity {
                     }
                 }
 
-        /*Type empList = new TypeToken<List<ResponseEmployeeData>>(){}.getType();
-        List<ResponseEmployeeData> employeeDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.drillAccessoriesInfoAllDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("Table6"), empList);
-        for (ResponseEmployeeData employeeData : employeeDataList) {
-            if (String.valueOf(employeeData.getEmployeeCode()).equals(projectDetailJson.get("team_id").getAsString())) {
-
-            }
-        }*/
-
                 JsonArray rowHoleDetailArray = new JsonArray();
                 rowHoleDetailArray.add(new Gson().toJson(holeDetailData));
 
@@ -1324,10 +1316,10 @@ public class BaseActivity extends AppCompatActivity {
 
             // RowDetails Array
             JsonArray rowDetailsArray = new JsonArray();
-            JsonObject rowDetailsObject = new JsonObject();
             if (!Constants.isListEmpty(tablesData.getTable2())) {
                 List<MapHoleDataModel> mapHoleDataModels = getRowWiseHoleList(tablesData.getTable2());
                 for (int i = 0; i < mapHoleDataModels.size(); i++) {
+                    JsonObject rowDetailsObject = new JsonObject();
                     rowDetailsObject.addProperty("rowno", String.valueOf(i + 1));
                     if (!Constants.isListEmpty(mapHoleDataModels.get(i).getHoleDetailDataList()))
                         rowDetailsObject.addProperty("holeno", String.valueOf(mapHoleDataModels.get(i).getHoleDetailDataList().size()));
@@ -1544,10 +1536,9 @@ public class BaseActivity extends AppCompatActivity {
                             }
                             String blastCode = jsonObject.get("ReturnObject").getAsString();
                             if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                                appDatabase.blastCodeDao().updateItem(0, blastCode);
+                                appDatabase.blastCodeDao().updateItem(bladesRetrieveData.getDesignId(), blastCode);
                             } else {
-                                BlastCodeEntity blastCodeEntity = new BlastCodeEntity();
-                                blastCodeEntity.setBlastCode(blastCode);
+                                BlastCodeEntity blastCodeEntity = new BlastCodeEntity(blastCode, bladesRetrieveData.getDesignId());
                                 appDatabase.blastCodeDao().insertItem(blastCodeEntity);
                             }
                         }
@@ -1596,10 +1587,10 @@ public class BaseActivity extends AppCompatActivity {
 
             // RowDetails Array
             JsonArray rowDetailsArray = new JsonArray();
-            JsonObject rowDetailsObject = new JsonObject();
             if (!Constants.isListEmpty(tablesData)) {
                 List<MapHole3DDataModel> mapHoleDataModels = getRowWiseHoleIn3dList(tablesData);
                 for (int i = 0; i < mapHoleDataModels.size(); i++) {
+                    JsonObject rowDetailsObject = new JsonObject();
                     rowDetailsObject.addProperty("rowno", String.valueOf(i + 1));
                     if (!Constants.isListEmpty(mapHoleDataModels.get(i).getHoleDetailDataList()))
                         rowDetailsObject.addProperty("holeno", String.valueOf(mapHoleDataModels.get(i).getHoleDetailDataList().size()));
@@ -1826,10 +1817,9 @@ public class BaseActivity extends AppCompatActivity {
                             }
                             String blastCode = jsonObject.get("ReturnObject").getAsString();
                             if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                                appDatabase.blastCodeDao().updateItem(0, blastCode);
+                                appDatabase.blastCodeDao().updateItem(bladesRetrieveData.getDesignId(), blastCode);
                             } else {
-                                BlastCodeEntity blastCodeEntity = new BlastCodeEntity();
-                                blastCodeEntity.setBlastCode(blastCode);
+                                BlastCodeEntity blastCodeEntity = new BlastCodeEntity(blastCode, bladesRetrieveData.getDesignId());
                                 appDatabase.blastCodeDao().insertItem(blastCodeEntity);
                             }
                             showToast("Project Sync Successfully");
@@ -1929,7 +1919,6 @@ public class BaseActivity extends AppCompatActivity {
                 object.addProperty("BottomY", dataModel.getBottomY());
                 object.addProperty("BottomZ", dataModel.getBottomZ());
                 object.addProperty("Burden", dataModel.getBurden());
-                object.addProperty("ChargeLength", dataModel.getChargeLength());
 
                 JsonArray chargeTypeArray = new JsonArray();
                 if (!Constants.isListEmpty(dataModel.getChargeTypeArray())) {
@@ -1947,7 +1936,8 @@ public class BaseActivity extends AppCompatActivity {
                         chargeTypeArray.add(chargeTypeObject);
                     }
                 }
-                object.add("ChargeTypeArray", chargeTypeArray);
+                object.addProperty("ChargeTypeArray", new Gson().toJson(chargeTypeArray));
+                object.addProperty("ChargeLength", chargeTypeArray.size());
 
                 object.addProperty("DeckLength", dataModel.getDeckLength());
                 object.addProperty("DesignId", dataModel.getDesignId());

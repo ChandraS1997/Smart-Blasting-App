@@ -22,14 +22,17 @@ import com.smart_blasting_drilling.android.databinding.ActivityInitiatingDeviceV
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.InitiatingDataDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.TldDataDao;
 import com.smart_blasting_drilling.android.room_database.entities.InitiatingDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.InitiatingDeviceDataEntity;
+import com.smart_blasting_drilling.android.room_database.entities.TldDataEntity;
 import com.smart_blasting_drilling.android.ui.adapter.DownTheHoleAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.ElectronicDetonatorAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.TldHoleToHoleAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.TldRowToRowAdapter;
 import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceAllTypeModel;
 import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceModel;
+import com.smart_blasting_drilling.android.utils.KeyboardUtils;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 
 import java.lang.reflect.Type;
@@ -47,6 +50,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
     String designId = "";
 
     List<ResultsetItem> responseInitiatingDataList = new ArrayList<>();
+    List<ResultsetItem> responseTldDataList = new ArrayList<>();
 
     List<InitiatingDeviceModel> electronicDetonatorModelList = new ArrayList<>();
     List<InitiatingDeviceModel> downTheHoleModelList = new ArrayList<>();
@@ -54,6 +58,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
     List<InitiatingDeviceModel> tldHoleToHoleModelList = new ArrayList<>();
 
     List<InitiatingDeviceAllTypeModel> initiatingDeviceAllTypeModelList = new ArrayList<>();
+    List<InitiatingDeviceAllTypeModel> dbSavedDataList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,27 +146,36 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
         binding.eleSaveBtn.setOnClickListener(view -> {
             List<InitiatingDeviceModel> modelList = electronicDetonatorAdapter.getInitiatingDeviceModelList();
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("Electronic/Electric Detonator", modelList));
+            showToast("Data added successfully");
+            KeyboardUtils.hideSoftKeyboard(this);
         });
 
         binding.downTheHoleSaveBtn.setOnClickListener(view -> {
             List<InitiatingDeviceModel> modelList = downTheHoleAdapter.getInitiatingDeviceModelList();
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("Down The Hole", modelList));
+            showToast("Data added successfully");
+            KeyboardUtils.hideSoftKeyboard(this);
         });
 
         binding.tldRowToRowSaveBtn.setOnClickListener(view -> {
             List<InitiatingDeviceModel> modelList = tldRowToRowAdapter.getInitiatingDeviceModelList();
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("TLD(Row To Row)", modelList));
+            showToast("Data added successfully");
+            KeyboardUtils.hideSoftKeyboard(this);
         });
 
         binding.tlsHoleToHoleSaveBtn.setOnClickListener(view -> {
             List<InitiatingDeviceModel> modelList = tldHoleToHoleAdapter.getInitiatingDeviceModelList();
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("TLD(Hole To Hole)", modelList));
+            showToast("Data added successfully");
+            KeyboardUtils.hideSoftKeyboard(this);
         });
 
     }
 
     private void clearList() {
         responseInitiatingDataList.clear();
+        responseTldDataList.clear();
     }
 
     private void getSavedInitiatingDataFromDb() {
@@ -171,6 +185,8 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
                 List<InitiatingDeviceAllTypeModel> allTypeModelList = new Gson().fromJson(appDatabase.initiatingDeviceDao().getSingleItemEntity(designId).getData(), itemList);
 
                 if (!Constants.isListEmpty(allTypeModelList)) {
+                    dbSavedDataList.clear();
+                    dbSavedDataList = allTypeModelList;
                     for (int i = 0; i < allTypeModelList.size(); i++) {
                         if (allTypeModelList.get(i).getDeviceName().equals("Electronic/Electric Detonator")) {
                             electronicDetonatorModelList = allTypeModelList.get(i).getDeviceModelList();
@@ -197,13 +213,31 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
 
         InitiatingDataDao initiatingDataDao = appDatabase.initiatingDataDao();
         List<InitiatingDataEntity> initiatingDataEntities = initiatingDataDao.getAllBladesProject();
+        clearList();
         if (!Constants.isListEmpty(initiatingDataEntities)) {
-            clearList();
-            JsonArray array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonObject.class).get("data"), String.class), JsonArray.class);
+            JsonArray array = new JsonArray();
+            if (!new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonElement.class).isJsonArray()) {
+                array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonObject.class).get("data"), String.class), JsonArray.class);
+            } else {
+                array = new Gson().fromJson(initiatingDataEntities.get(0).getData(), JsonArray.class);
+            }
             for (JsonElement jsonElement : array) {
                 responseInitiatingDataList.add(new Gson().fromJson(new Gson().fromJson(jsonElement, JsonObject.class), ResultsetItem.class));
             }
-//            responseInitiatingDataList.addAll(new Gson().fromJson(initiatingDataEntities.get(0).getData(), new TypeToken<List<ResultsetItem>>(){}.getType()));
+        }
+
+        TldDataDao tldDataDao = appDatabase.tldDataEntity();
+        List<TldDataEntity> tldDataEntityList = tldDataDao.getAllBladesProject();
+        if (!Constants.isListEmpty(tldDataEntityList)) {
+            JsonArray array = new JsonArray();
+            if (!new Gson().fromJson(tldDataEntityList.get(0).getData(), JsonElement.class).isJsonArray()) {
+                array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(tldDataEntityList.get(0).getData(), JsonObject.class).get("data"), String.class), JsonArray.class);
+            } else {
+                array = new Gson().fromJson(tldDataEntityList.get(0).getData(), JsonArray.class);
+            }
+            for (JsonElement jsonElement : array) {
+                responseTldDataList.add(new Gson().fromJson(new Gson().fromJson(jsonElement, JsonObject.class), ResultsetItem.class));
+            }
         }
 
         electronicDetonatorAdapter = new ElectronicDetonatorAdapter(this, electronicDetonatorModelList, responseInitiatingDataList);
@@ -214,11 +248,11 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
         binding.downTheHoleList.setLayoutManager(new LinearLayoutManager(this));
         binding.downTheHoleList.setAdapter(downTheHoleAdapter);
 
-        tldRowToRowAdapter = new TldRowToRowAdapter(this, tldRowToRowModelList, responseInitiatingDataList);
+        tldRowToRowAdapter = new TldRowToRowAdapter(this, tldRowToRowModelList, responseTldDataList);
         binding.tldRowToRowList.setLayoutManager(new LinearLayoutManager(this));
         binding.tldRowToRowList.setAdapter(tldRowToRowAdapter);
 
-        tldHoleToHoleAdapter = new TldHoleToHoleAdapter(this, tldHoleToHoleModelList, responseInitiatingDataList);
+        tldHoleToHoleAdapter = new TldHoleToHoleAdapter(this, tldHoleToHoleModelList, responseTldDataList);
         binding.tlsHoleToHoleList.setLayoutManager(new LinearLayoutManager(this));
         binding.tlsHoleToHoleList.setAdapter(tldHoleToHoleAdapter);
 
@@ -284,6 +318,10 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
             }
         }
 
+        if (Constants.isListEmpty(selectionModelList)) {
+            selectionModelList = dbSavedDataList;
+        }
+
         if (appDatabase.initiatingDeviceDao().isExistItem(designId)) {
             appDatabase.initiatingDeviceDao().updateItem(designId, new Gson().toJson(selectionModelList));
         } else {
@@ -292,6 +330,8 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
             entity.setDesignId(designId);
             appDatabase.initiatingDeviceDao().insertItem(entity);
         }
+
+        Log.e("Initiating Device : ", "Data added successfully");
 
     }
 

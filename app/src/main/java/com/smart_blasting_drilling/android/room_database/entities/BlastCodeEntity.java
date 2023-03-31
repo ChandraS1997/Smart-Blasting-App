@@ -13,7 +13,15 @@ public class BlastCodeEntity {
     @ColumnInfo(name = "BlastCode")
     public String blastCode;
 
+    @ColumnInfo(name = "DesignId")
+    public String designId;
+
     public BlastCodeEntity() {
+    }
+
+    public BlastCodeEntity(String blastCode, String designId) {
+        this.blastCode = blastCode;
+        this.designId = designId;
     }
 
     public BlastCodeEntity(String blastCode) {
