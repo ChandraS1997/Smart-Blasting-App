@@ -360,6 +360,8 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
                 if (table9.get(i).getProdType().equals("Stemming") ||
                         table9.get(i).getProdType().equals("Decking") ||
                         table9.get(i).getProdType().equals("Column") ||
+                        table9.get(i).getProdType().equals("Bulk") ||
+                        table9.get(i).getProdType().equals("Bottom") ||
                         table9.get(i).getProdType().equals("Base") ||
                         table9.get(i).getProdType().equals("Booster")) {
                     if (table9.get(i).getProdId() != 0 && !StringUtill.isEmpty(table9.get(i).getProdName())) {

@@ -24,11 +24,14 @@ public interface BlastCodeDao {
     @Query("SELECT * FROM BlastCodeEntity WHERE id = :id")
     BlastCodeEntity getSingleItemEntity(int id);
 
+    @Query("SELECT * FROM BlastCodeEntity WHERE DesignId = :id")
+    BlastCodeEntity getSingleItemEntityByDesignId(String id);
+
     @Query("DELETE FROM BlastCodeEntity")
     void deleteAllItem();
 
-    @Query("UPDATE BlastCodeEntity SET BlastCode=:data WHERE id = :id")
-    void updateItem(int id, String data);
+    @Query("UPDATE BlastCodeEntity SET BlastCode=:data WHERE DesignId = :id")
+    void updateItem(String id, String data);
 
     @Update
     void updateItem(BlastCodeEntity data);

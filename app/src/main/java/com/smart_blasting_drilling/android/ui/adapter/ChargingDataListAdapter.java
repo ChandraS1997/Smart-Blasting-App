@@ -153,8 +153,8 @@ public class ChargingDataListAdapter extends BaseRecyclerAdapter {
         }
 
         void setDataBind(ChargeTypeArrayItem chargingDataModel) {
-
-            String[] typeArr = new String[]{"Bulk", "Bottom", "Booster", "Stemming", "Decking"};
+            // Base == Bottom, Column == Bulk
+            String[] typeArr = new String[]{"Column", "Base", "Booster", "Stemming", "Decking"};
             binding.typeSpinner.setAdapter(Constants.getAdapter(context, typeArr));
 
             binding.typeSpinner.setText(StringUtill.getString(chargingDataModel.getType()));

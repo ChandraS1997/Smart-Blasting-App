@@ -37,8 +37,8 @@ public class PerformanceActivity extends BaseActivity {
         binding.headerPerformance.backImg.setOnClickListener(view -> finish());
 
         String[] yesNoStr = new String[]{"Yes", "No"};
-        String[] goodBadStr = new String[]{"Good", "Bad"};
-        String[] muckProfile = new String[]{"Staggered"};
+        String[] goodBadStr = new String[]{"Good", "Average", "Medium", "Poor"};
+        String[] muckProfile = new String[]{"Scattered", "Shallow & Disperesed", "Tight"};
 
         binding.noEdtSpinner.setAdapter(Constants.getAdapter(this, yesNoStr));
         binding.streamingInjectionSpinner.setAdapter(Constants.getAdapter(this, yesNoStr));

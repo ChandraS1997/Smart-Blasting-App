@@ -178,7 +178,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                     if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
                         String blastCode = "";
                         if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                            BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntity(1);
+                            BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.get(0).getDesignId());
                             if (blastCodeEntity != null)
                                 blastCode = blastCodeEntity.getBlastCode();
                         }

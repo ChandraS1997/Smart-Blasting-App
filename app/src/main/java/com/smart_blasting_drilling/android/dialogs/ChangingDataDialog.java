@@ -207,6 +207,7 @@ public class ChangingDataDialog extends BaseDialogFragment {
 
                 List<ChargeTypeArrayItem> chargeTypeArrayItemList = adapter.getJsonArray();
                 for (int i = 0; i < chargeTypeArrayItemList.size(); i++) {
+//                    if (chargeTypeArrayItemList.get(i).)
                     if ((i + 1) == 1) {
                         updateHoleDetailData.setExpCode(chargeTypeArrayItemList.get(i).getProdId());
                         updateHoleDetailData.setName(chargeTypeArrayItemList.get(i).getName());
