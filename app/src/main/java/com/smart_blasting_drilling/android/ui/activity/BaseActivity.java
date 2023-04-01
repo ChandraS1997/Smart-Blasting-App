@@ -37,6 +37,7 @@ import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.hole_tables.Table9Item;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
@@ -71,6 +72,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,6 +85,7 @@ public class BaseActivity extends AppCompatActivity {
     Toast toast;
     public Dialog noInternetdialog;
 
+    DecimalFormat decimalFormat = new DecimalFormat("#.##");
     ConnectivityReceiver receiver;
 
     public PreferenceManger manger;
@@ -105,6 +108,7 @@ public class BaseActivity extends AppCompatActivity {
         manger = BaseApplication.getPreferenceManger();
 
     }
+
     public void showToast(String msg) {
         try {
             toast.getView().isShown();
@@ -145,8 +149,6 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-
-
     public void hideLoader() {
         AppProgressBar.hideLoaderDialog();
     }
@@ -178,9 +180,6 @@ public class BaseActivity extends AppCompatActivity {
         intent.putExtra("fileType", type);
         startActivity(intent);
     }*/
-
-
-
 
 
     public void hideKeyboard(Activity activity) {
@@ -256,8 +255,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void noInternetDialog() {
-        if(!noInternetdialog.isShowing())
-        {
+        if (!noInternetdialog.isShowing()) {
             NoInternetBinding sDialog = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.no_internet, null, false);
             noInternetdialog = new Dialog(this);
             noInternetdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -1289,26 +1287,40 @@ public class BaseActivity extends AppCompatActivity {
             // ExpUsedDetails Array
             JsonArray expUsedDetailArray = new JsonArray();
 
-            if (!Constants.isListEmpty(tablesData.getTable2())) {
-                if (!Constants.isListEmpty(tablesData.getTable9())) {
-                    if (tablesData.getTable9().size() >= 3) {
+            if (!Constants.isListEmpty(tablesData.getTable9())) {
+                for (int i = 0; i < tablesData.getTable9().size(); i++) {
+                    Table9Item item = tablesData.getTable9().get(i);
+                    if (item.getProdType().equals("Base") || item.getProdType().equals("Bottom")) {
                         JsonObject expUsedDetailObject = new JsonObject();
-                        expUsedDetailObject.addProperty("expcode", String.valueOf(tablesData.getTable9().get(2).getProdId()));
-                        expUsedDetailObject.addProperty("qty", String.valueOf(tablesData.getTable9().get(2).getProdQty()));
+                        if (item.getProdId() != 0 && !StringUtill.isEmpty(item.getProdName())) {
+                            expUsedDetailObject.addProperty("expcode", String.valueOf(item.getProdId()));
+                            expUsedDetailObject.addProperty("qty", String.valueOf(item.getProdQty()));
+                        } else {
+                            expUsedDetailObject.addProperty("expcode", "");
+                            expUsedDetailObject.addProperty("qty", "");
+                        }
                         expUsedDetailArray.add(expUsedDetailObject);
                     }
-
-                    if (tablesData.getTable9().size() >= 4) {
+                    if (item.getProdType().equals("Column") || item.getProdType().equals("Bulk")) {
                         JsonObject expUsedDetailObject = new JsonObject();
-                        expUsedDetailObject.addProperty("expcode1", String.valueOf(tablesData.getTable9().get(3).getProdId()));
-                        expUsedDetailObject.addProperty("qty", String.valueOf(tablesData.getTable9().get(3).getProdQty()));
+                        if (item.getProdId() != 0 && !StringUtill.isEmpty(item.getProdName())) {
+                            expUsedDetailObject.addProperty("expcode1", String.valueOf(item.getProdId()));
+                            expUsedDetailObject.addProperty("qty", String.valueOf(item.getProdQty()));
+                        } else {
+                            expUsedDetailObject.addProperty("expcode1", "");
+                            expUsedDetailObject.addProperty("qty", "");
+                        }
                         expUsedDetailArray.add(expUsedDetailObject);
                     }
-
-                    if (tablesData.getTable9().size() >= 5) {
+                    if (item.getProdType().equals("Booster")) {
                         JsonObject expUsedDetailObject = new JsonObject();
-                        expUsedDetailObject.addProperty("expcode2", String.valueOf(tablesData.getTable9().get(4).getProdId()));
-                        expUsedDetailObject.addProperty("qty", String.valueOf(tablesData.getTable9().get(4).getProdQty()));
+                        if (item.getProdId() != 0 && !StringUtill.isEmpty(item.getProdName())) {
+                            expUsedDetailObject.addProperty("expcode2", String.valueOf(item.getProdId()));
+                            expUsedDetailObject.addProperty("qty", String.valueOf(item.getProdQty()));
+                        } else {
+                            expUsedDetailObject.addProperty("expcode2", "");
+                            expUsedDetailObject.addProperty("qty", "");
+                        }
                         expUsedDetailArray.add(expUsedDetailObject);
                     }
                 }
@@ -1335,39 +1347,65 @@ public class BaseActivity extends AppCompatActivity {
                 for (int i = 0; i < tablesData.getTable2().size(); i++) {
                     JsonObject chargeDetailsObject = new JsonObject();
                     chargeDetailsObject.addProperty("BlastCode", blastCode);
-                    chargeDetailsObject.addProperty("RowNo",String.valueOf(tablesData.getTable2().get(i).getRowNo()));
+                    chargeDetailsObject.addProperty("RowNo", String.valueOf(tablesData.getTable2().get(i).getRowNo()));
                     chargeDetailsObject.addProperty("HoleNo", String.valueOf(tablesData.getTable2().get(i).getHoleNo()));
-                    chargeDetailsObject.addProperty("HoleName",String.format("R%sH%s",  tablesData.getTable2().get(i).getRowNo(), tablesData.getTable2().get(i).getHoleNo()));
-                    chargeDetailsObject.addProperty("RowType","Production");
+                    chargeDetailsObject.addProperty("HoleName", String.format("R%sH%s", tablesData.getTable2().get(i).getRowNo(), tablesData.getTable2().get(i).getHoleNo()));
+                    chargeDetailsObject.addProperty("RowType", "Production");
                     chargeDetailsObject.addProperty("HoleDia", String.valueOf(tablesData.getTable2().get(i).getHoleDiameter()));
 
-                    chargeDetailsObject.addProperty("ExpCode", String.valueOf(tablesData.getTable2().get(i).getExpCode()));
-                    chargeDetailsObject.addProperty("Weight", "30");
-                    chargeDetailsObject.addProperty("ExpLength", "4");
-                    chargeDetailsObject.addProperty("CostPerUnit", String.valueOf(tablesData.getTable2().get(i).getCostUnit()));
-                    chargeDetailsObject.addProperty("ExpCode1",String.valueOf(tablesData.getTable2().get(i).getExpCode1()));
-                    chargeDetailsObject.addProperty("Weight1","20");
-                    chargeDetailsObject.addProperty("ExpLength1","4");
-                    chargeDetailsObject.addProperty("CostPerUnit1",String.valueOf(tablesData.getTable2().get(i).getCostUnit1()));
-                    chargeDetailsObject.addProperty("ExpCode2",String.valueOf(tablesData.getTable2().get(i).getExpCode2()));
-                    chargeDetailsObject.addProperty("Weight2","0.4");
-                    chargeDetailsObject.addProperty("ExpLength2","0");
-                    chargeDetailsObject.addProperty("CostPerUnit2",String.valueOf(tablesData.getTable2().get(i).getCostUnit2()));
+                    chargeDetailsObject.addProperty("ExpCode", "");
+                    chargeDetailsObject.addProperty("Weight", "");
+                    chargeDetailsObject.addProperty("ExpLength", "");
+                    chargeDetailsObject.addProperty("CostPerUnit", "");
 
-                    chargeDetailsObject.addProperty("Burden",String.valueOf(tablesData.getTable2().get(i).getBurden() == 0 ? "" : tablesData.getTable2().get(i).getBurden()));
-                    chargeDetailsObject.addProperty("Spacing",String.valueOf(tablesData.getTable2().get(i).getSpacing()));
+                    chargeDetailsObject.addProperty("ExpCode1", "");
+                    chargeDetailsObject.addProperty("Weight1", "");
+                    chargeDetailsObject.addProperty("ExpLength1", "");
+                    chargeDetailsObject.addProperty("CostPerUnit1", "");
+
+                    chargeDetailsObject.addProperty("ExpCode2", "");
+                    chargeDetailsObject.addProperty("Weight2", "");
+                    chargeDetailsObject.addProperty("ExpLength2", "");
+                    chargeDetailsObject.addProperty("CostPerUnit2", "");
+
+                    if (!Constants.isListEmpty(tablesData.getTable2().get(i).getChargeTypeArray())) {
+                        for (int j = 0; j < tablesData.getTable2().get(i).getChargeTypeArray().size(); j++) {
+                            ChargeTypeArrayItem arrayItem = tablesData.getTable2().get(i).getChargeTypeArray().get(j);
+                            if (arrayItem.getType().contains("Base") || arrayItem.getType().contains("Bottom")) {
+                                chargeDetailsObject.addProperty("ExpCode", String.valueOf(arrayItem.getProdId()));
+                                chargeDetailsObject.addProperty("Weight", arrayItem.getWeight());
+                                chargeDetailsObject.addProperty("ExpLength", arrayItem.getLength());
+                                chargeDetailsObject.addProperty("CostPerUnit", String.valueOf(arrayItem.getCost()));
+                            }
+                            if (arrayItem.getType().contains("Column") || arrayItem.getType().contains("Bulk")) {
+                                chargeDetailsObject.addProperty("ExpCode1", String.valueOf(arrayItem.getProdId()));
+                                chargeDetailsObject.addProperty("Weight1", arrayItem.getWeight());
+                                chargeDetailsObject.addProperty("ExpLength1", arrayItem.getLength());
+                                chargeDetailsObject.addProperty("CostPerUnit1", String.valueOf(arrayItem.getCost()));
+                            }
+                            if (arrayItem.getType().contains("Booster")) {
+                                chargeDetailsObject.addProperty("ExpCode2", String.valueOf(arrayItem.getProdId()));
+                                chargeDetailsObject.addProperty("Weight2", arrayItem.getWeight());
+                                chargeDetailsObject.addProperty("ExpLength2", arrayItem.getLength());
+                                chargeDetailsObject.addProperty("CostPerUnit2", String.valueOf(arrayItem.getCost()));
+                            }
+                        }
+                    }
+
+                    chargeDetailsObject.addProperty("Burden", String.valueOf(tablesData.getTable2().get(i).getBurden() == 0 ? "" : tablesData.getTable2().get(i).getBurden()));
+                    chargeDetailsObject.addProperty("Spacing", String.valueOf(tablesData.getTable2().get(i).getSpacing()));
                     chargeDetailsObject.addProperty("Delay1", "0");
                     chargeDetailsObject.addProperty("Delay2", String.valueOf(tablesData.getTable2().get(i).getDelay()));
                     chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
                     chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
-                    chargeDetailsObject.addProperty("DeckDepth","");
-                    chargeDetailsObject.addProperty("DeckStart","");
+                    chargeDetailsObject.addProperty("DeckDepth", "");
+                    chargeDetailsObject.addProperty("DeckStart", "");
                     chargeDetailsObject.addProperty("SteamLen", String.valueOf(tablesData.getTable2().get(i).getStemLngth()));
                     chargeDetailsObject.addProperty("WaterDepth", String.valueOf(tablesData.getTable2().get(i).getWaterDepth()));
                     chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.getTable2().get(i).getHoleDepth()));
                     chargeDetailsObject.addProperty("Subgrade", String.valueOf(tablesData.getTable2().get(i).getSubgrade() == 0 ? "" : tablesData.getTable2().get(i).getSubgrade()));
-                    chargeDetailsObject.addProperty("IsHoleBlock","");
-                    chargeDetailsObject.addProperty("HoleBlockLength","");
+                    chargeDetailsObject.addProperty("IsHoleBlock", "");
+                    chargeDetailsObject.addProperty("HoleBlockLength", "");
                     chargeDetailsObject.addProperty("HoleAngle", String.valueOf(tablesData.getTable2().get(i).getHoleAngle()));
                     chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(tablesData.getTable2().get(i).getInHoleDelay()));
                     chargeDetailsArray.add(chargeDetailsObject);
@@ -1402,7 +1440,7 @@ public class BaseActivity extends AppCompatActivity {
                                 dthDetailsObject.addProperty("BlastCode", blastCode);
                                 dthDetailsObject.addProperty("DTHCode", String.valueOf(deviceModel.getPageCount()));
                                 dthDetailsObject.addProperty("DTHName", deviceModel.getType());
-                                dthDetailsObject.addProperty("DTHCost",  deviceModel.getCost());
+                                dthDetailsObject.addProperty("DTHCost", deviceModel.getCost());
                                 dthDetailsObject.addProperty("DTHQty", deviceModel.getQty());
                                 dthDetailsArray.add(dthDetailsObject);
                             }
@@ -1434,7 +1472,6 @@ public class BaseActivity extends AppCompatActivity {
                             }
                         }
                     }
-
 
 
                 }
@@ -1500,12 +1537,12 @@ public class BaseActivity extends AppCompatActivity {
             mapObject.addProperty("TotSteam", "10");
             mapObject.addProperty("DrillMtr", "10");
             mapObject.addProperty("FlyRock", (blastPerformanceObject != null && blastPerformanceObject.has("FlyRock")) ? blastPerformanceObject.get("FlyRock").getAsString() : "");
-            mapObject.addProperty("Heavy",  1);
-            mapObject.addProperty("BoulderCount",  (blastPerformanceObject != null && blastPerformanceObject.has("BounderCount")) ? blastPerformanceObject.get("BounderCount").getAsString() : "");
-            mapObject.addProperty("Displacement",  (blastPerformanceObject != null && blastPerformanceObject.has("DisPlace")) ? blastPerformanceObject.get("DisPlace").getAsString() : "");
+            mapObject.addProperty("Heavy", 1);
+            mapObject.addProperty("BoulderCount", (blastPerformanceObject != null && blastPerformanceObject.has("BounderCount")) ? blastPerformanceObject.get("BounderCount").getAsString() : "");
+            mapObject.addProperty("Displacement", (blastPerformanceObject != null && blastPerformanceObject.has("DisPlace")) ? blastPerformanceObject.get("DisPlace").getAsString() : "");
             mapObject.addProperty("StemEject", 1);
-            mapObject.addProperty("Muck",  1);
-            mapObject.addProperty("BlastFumes",  1);
+            mapObject.addProperty("Muck", 1);
+            mapObject.addProperty("BlastFumes", 1);
             mapObject.addProperty("OverBlock", (blastPerformanceObject != null && blastPerformanceObject.has("BackBreak")) ? blastPerformanceObject.get("BackBreak").getAsString() : "");
             mapObject.add("ExpUsedDetails", expUsedDetailArray);
             mapObject.add("RowDetails", rowDetailsArray);
@@ -1577,12 +1614,64 @@ public class BaseActivity extends AppCompatActivity {
             // ExpUsedDetails Array
             JsonArray expUsedDetailArray = new JsonArray();
             if (!Constants.isListEmpty(tablesData.get(0).getChargeTypeArray())) {
+                if (!Constants.isListEmpty(tablesData.get(0).getChargeTypeArray())) {
+                    double length = 0;
+                    ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                    List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(0).getChargeTypeArray();
+                    for (int j = 0; j < chargeTypeArray.size(); j++) {
+                        ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                        if (item.getType().equals("Cartridge")) {
+                            if (StringUtill.isEmpty(arrayItem.getType()))
+                                arrayItem = item;
+                            length = length + item.getLength();
+                        }
+                    }
+
+                    JsonObject expUsedDetailObject = new JsonObject();
+                    expUsedDetailObject.addProperty("expcode", String.valueOf(arrayItem.getProdId()));
+                    expUsedDetailObject.addProperty("qty", String.valueOf(decimalFormat.format(length)));
+                    expUsedDetailArray.add(expUsedDetailObject);
+
+                    length = 0;
+                    arrayItem = new ChargeTypeArrayItem();
+                    for (int j = 0; j < chargeTypeArray.size(); j++) {
+                        ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                        if (item.getType().equals("Bulk")) {
+                            if (StringUtill.isEmpty(arrayItem.getType()))
+                                arrayItem = item;
+                            length = length + item.getLength();
+                        }
+                    }
+
+                    expUsedDetailObject = new JsonObject();
+                    expUsedDetailObject.addProperty("expcode1", String.valueOf(arrayItem.getProdId()));
+                    expUsedDetailObject.addProperty("qty", String.valueOf(decimalFormat.format(length)));
+                    expUsedDetailArray.add(expUsedDetailObject);
+
+                    length = 0;
+                    arrayItem = new ChargeTypeArrayItem();
+                    for (int j = 0; j < chargeTypeArray.size(); j++) {
+                        ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                        if (item.getType().equals("Booster")) {
+                            if (StringUtill.isEmpty(arrayItem.getType()))
+                                arrayItem = item;
+                            length = length + item.getLength();
+                        }
+                    }
+
+                    expUsedDetailObject = new JsonObject();
+                    expUsedDetailObject.addProperty("expcode2", String.valueOf(arrayItem.getProdId()));
+                    expUsedDetailObject.addProperty("qty", String.valueOf(decimalFormat.format(length)));
+                    expUsedDetailArray.add(expUsedDetailObject);
+
+                }
+                /*
                 for (int j = 0; j < tablesData.get(0).getChargeTypeArray().size(); j++) {
                     JsonObject expUsedDetailObject = new JsonObject();
                     expUsedDetailObject.addProperty("expcode" + (j == 0 ? "" : j), String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getProdId()));
                     expUsedDetailObject.addProperty("qty" + (j == 0 ? "" : j), String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getLength()));
                     expUsedDetailArray.add(expUsedDetailObject);
-                }
+                }*/
             }
 
             // RowDetails Array
@@ -1606,49 +1695,135 @@ public class BaseActivity extends AppCompatActivity {
                 for (int i = 0; i < tablesData.size(); i++) {
                     JsonObject chargeDetailsObject = new JsonObject();
                     chargeDetailsObject.addProperty("BlastCode", blastCode);
-                    chargeDetailsObject.addProperty("RowNo",String.valueOf(tablesData.get(i).getRowNo()));
+                    chargeDetailsObject.addProperty("RowNo", String.valueOf(tablesData.get(i).getRowNo()));
                     chargeDetailsObject.addProperty("HoleNo", String.valueOf(tablesData.get(i).getHoleNo()));
-                    chargeDetailsObject.addProperty("HoleName",String.format("R%sH%s",  tablesData.get(i).getRowNo(), tablesData.get(i).getHoleNo()));
-                    chargeDetailsObject.addProperty("RowType","Production");
+                    chargeDetailsObject.addProperty("HoleName", String.format("R%sH%s", tablesData.get(i).getRowNo(), tablesData.get(i).getHoleNo()));
+                    chargeDetailsObject.addProperty("RowType", "Production");
                     chargeDetailsObject.addProperty("HoleDia", String.valueOf(tablesData.get(i).getHoleDiameter()));
 
-                    if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
+                    /*if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
                         for (int j = 0; j < tablesData.get(i).getChargeTypeArray().size(); j++) {
                             chargeDetailsObject.addProperty("ExpCode" + (j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getProdId()));
                             chargeDetailsObject.addProperty("Weight" + (j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getWeight()));
                             chargeDetailsObject.addProperty("ExpLength" + (j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getLength()));
                             chargeDetailsObject.addProperty("CostPerUnit" + (j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getCost()));
                         }
+                    }*/
+
+                    if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
+                        double length = 0, weight = 0;
+                        boolean isCartridge = false;
+                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
+                        for (int j = 0; j < chargeTypeArray.size(); j++) {
+                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                            if (item.getType().equals("Cartridge")) {
+                                isCartridge = true;
+                                if (StringUtill.isEmpty(arrayItem.getType()))
+                                    arrayItem = item;
+                                length = length + item.getLength();
+                                weight = weight + item.getWeight();
+                            }
+                        }
+
+                        chargeDetailsObject.addProperty("ExpCode", isCartridge ? String.valueOf(arrayItem.getProdId()): "");
+                        chargeDetailsObject.addProperty("Weight", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0.0);
+                        chargeDetailsObject.addProperty("ExpLength", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0.0);
+                        chargeDetailsObject.addProperty("CostPerUnit", isCartridge ? arrayItem.getCost() : 0);
+
                     }
 
-                    chargeDetailsObject.addProperty("Burden",String.valueOf(StringUtill.isEmpty(tablesData.get(i).getBurden()) ? "" : tablesData.get(i).getBurden()));
-                    chargeDetailsObject.addProperty("Spacing",String.valueOf(tablesData.get(i).getSpacing()));
+                    if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
+                        double length = 0, weight = 0;
+                        boolean isCartridge = false;
+                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
+                        for (int j = 0; j < chargeTypeArray.size(); j++) {
+                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                            if (item.getType().equals("Bulk")) {
+                                isCartridge = true;
+                                if (StringUtill.isEmpty(arrayItem.getType()))
+                                    arrayItem = item;
+                                length = length + item.getLength();
+                                weight = weight + item.getWeight();
+                            }
+                        }
+
+                        chargeDetailsObject.addProperty("ExpCode1", isCartridge ? String.valueOf(arrayItem.getProdId()): "");
+                        chargeDetailsObject.addProperty("Weight1", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0);
+                        chargeDetailsObject.addProperty("ExpLength1", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0);
+                        chargeDetailsObject.addProperty("CostPerUnit1", isCartridge ? arrayItem.getCost() : 0);
+
+                    }
+
+                    if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
+                        double length = 0, weight = 0;
+                        boolean isCartridge = false;
+                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
+                        for (int j = 0; j < chargeTypeArray.size(); j++) {
+                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                            if (item.getType().equals("Booster")) {
+                                isCartridge = true;
+                                if (StringUtill.isEmpty(arrayItem.getType()))
+                                    arrayItem = item;
+                                length = length + item.getLength();
+                                weight = weight + item.getWeight();
+                            }
+                        }
+
+                        chargeDetailsObject.addProperty("ExpCode2", isCartridge ? String.valueOf(arrayItem.getProdId()): "");
+                        chargeDetailsObject.addProperty("Weight2", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0);
+                        chargeDetailsObject.addProperty("ExpLength2", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0);
+                        chargeDetailsObject.addProperty("CostPerUnit2", isCartridge ? arrayItem.getCost() : 0);
+
+                    }
+
+                    chargeDetailsObject.addProperty("Burden", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getBurden()) ? "" : tablesData.get(i).getBurden()));
+                    chargeDetailsObject.addProperty("Spacing", String.valueOf(tablesData.get(i).getSpacing()));
                     chargeDetailsObject.addProperty("Delay1", "0");
                     chargeDetailsObject.addProperty("Delay2", String.valueOf(tablesData.get(i).getHoleDelay()));
                     chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
                     chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
+
                     if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
-                        for (int j = 0; j < tablesData.get(i).getChargeTypeArray().size(); j++) {
-                            if (tablesData.get(i).getChargeTypeArray().get(j).getProdType() == 5) {
-                                chargeDetailsObject.addProperty("DeckDepth", tablesData.get(i).getChargeTypeArray().get(j).getLength());
-                                break;
+                        double length = 0;
+                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
+                        for (int j = 0; j < chargeTypeArray.size(); j++) {
+                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                            if (item.getType().equals("Decking")) {
+                                if (StringUtill.isEmpty(arrayItem.getType()))
+                                    arrayItem = item;
+                                length = length + item.getLength();
                             }
                         }
+
+                        chargeDetailsObject.addProperty("DeckDepth", length);
                     }
-                    chargeDetailsObject.addProperty("DeckStart","");
+
+                    chargeDetailsObject.addProperty("DeckStart", "");
+
                     if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
-                        for (int j = 0; j < tablesData.get(i).getChargeTypeArray().size(); j++) {
-                            if (tablesData.get(i).getChargeTypeArray().get(j).getProdType() == 4) {
-                                chargeDetailsObject.addProperty("SteamLen", String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getLength()));
-                                break;
+                        double length = 0;
+                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
+                        for (int j = 0; j < chargeTypeArray.size(); j++) {
+                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                            if (item.getType().equals("Decking")) {
+                                if (StringUtill.isEmpty(arrayItem.getType()))
+                                    arrayItem = item;
+                                length = length + item.getLength();
                             }
                         }
+
+                        chargeDetailsObject.addProperty("SteamLen", String.valueOf(length));
                     }
                     chargeDetailsObject.addProperty("WaterDepth", String.valueOf(tablesData.get(i).getWaterDepth()));
                     chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.get(i).getHoleDepth()));
                     chargeDetailsObject.addProperty("Subgrade", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getSubgrade()) ? "" : tablesData.get(i).getSubgrade()));
-                    chargeDetailsObject.addProperty("IsHoleBlock","");
-                    chargeDetailsObject.addProperty("HoleBlockLength","");
+                    chargeDetailsObject.addProperty("IsHoleBlock", "");
+                    chargeDetailsObject.addProperty("HoleBlockLength", "");
                     chargeDetailsObject.addProperty("HoleAngle", String.valueOf(tablesData.get(i).getVerticalDip()));
                     chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(tablesData.get(i).getInHoleDelay()));
                     chargeDetailsArray.add(chargeDetailsObject);
@@ -1683,7 +1858,7 @@ public class BaseActivity extends AppCompatActivity {
                                 dthDetailsObject.addProperty("BlastCode", blastCode);
                                 dthDetailsObject.addProperty("DTHCode", String.valueOf(deviceModel.getPageCount()));
                                 dthDetailsObject.addProperty("DTHName", deviceModel.getType());
-                                dthDetailsObject.addProperty("DTHCost",  deviceModel.getCost());
+                                dthDetailsObject.addProperty("DTHCost", deviceModel.getCost());
                                 dthDetailsObject.addProperty("DTHQty", deviceModel.getQty());
                                 dthDetailsArray.add(dthDetailsObject);
                             }
@@ -1715,7 +1890,6 @@ public class BaseActivity extends AppCompatActivity {
                             }
                         }
                     }
-
 
 
                 }
@@ -1781,12 +1955,12 @@ public class BaseActivity extends AppCompatActivity {
             mapObject.addProperty("TotSteam", "10");
             mapObject.addProperty("DrillMtr", "10");
             mapObject.addProperty("FlyRock", (blastPerformanceObject != null && blastPerformanceObject.has("FlyRock")) ? blastPerformanceObject.get("FlyRock").getAsString() : "");
-            mapObject.addProperty("Heavy",  1);
-            mapObject.addProperty("BoulderCount",  (blastPerformanceObject != null && blastPerformanceObject.has("BounderCount")) ? blastPerformanceObject.get("BounderCount").getAsString() : "");
-            mapObject.addProperty("Displacement",  (blastPerformanceObject != null && blastPerformanceObject.has("DisPlace")) ? blastPerformanceObject.get("DisPlace").getAsString() : "");
+            mapObject.addProperty("Heavy", 1);
+            mapObject.addProperty("BoulderCount", (blastPerformanceObject != null && blastPerformanceObject.has("BounderCount")) ? blastPerformanceObject.get("BounderCount").getAsString() : "");
+            mapObject.addProperty("Displacement", (blastPerformanceObject != null && blastPerformanceObject.has("DisPlace")) ? blastPerformanceObject.get("DisPlace").getAsString() : "");
             mapObject.addProperty("StemEject", 1);
-            mapObject.addProperty("Muck",  1);
-            mapObject.addProperty("BlastFumes",  1);
+            mapObject.addProperty("Muck", 1);
+            mapObject.addProperty("BlastFumes", 1);
             mapObject.addProperty("OverBlock", (blastPerformanceObject != null && blastPerformanceObject.has("BackBreak")) ? blastPerformanceObject.get("BackBreak").getAsString() : "");
             mapObject.add("ExpUsedDetails", expUsedDetailArray);
             mapObject.add("RowDetails", rowDetailsArray);
@@ -1841,17 +2015,37 @@ public class BaseActivity extends AppCompatActivity {
             if (!Constants.isListEmpty(tablesData.getTable2())) {
                 for (ResponseHoleDetailData detailData : tablesData.getTable2()) {
                     JsonObject object = new JsonObject();
-                    object.addProperty("BsterId", detailData.getBsterId());
-                    object.addProperty("BsterLength", detailData.getBsterLength());
-                    object.addProperty("BsterWt", detailData.getBsterWt());
+                    object.addProperty("BsterId", /*detailData.getBsterId()*/"");
+                    object.addProperty("BsterLength", /*detailData.getBsterLength()*/"");
+                    object.addProperty("BsterWt",/* detailData.getBsterWt()*/ "");
                     object.addProperty("BtmBasePrcnt", "");
-                    object.addProperty("BtmId", detailData.getBtmId());
-                    object.addProperty("BtmLength", detailData.getBtmLength());
-                    object.addProperty("BtmWt", detailData.getBtmWt());
+                    object.addProperty("BtmId", /*detailData.getBtmId()*/"");
+                    object.addProperty("BtmLength", /*detailData.getBtmLength()*/"");
+                    object.addProperty("BtmWt", /*detailData.getBtmWt()*/"");
                     object.addProperty("Burden", detailData.getBurden());
-                    object.addProperty("ColId", detailData.getColId());
-                    object.addProperty("ColLength", detailData.getColLength());
-                    object.addProperty("ColWt", detailData.getColWt());
+                    object.addProperty("ColId", /*detailData.getColId()*/"");
+                    object.addProperty("ColLength", /*detailData.getColLength()*/"");
+                    object.addProperty("ColWt", /*detailData.getColWt()*/"");
+                    if (!Constants.isListEmpty(detailData.getChargeTypeArray())) {
+                        for (int j = 0; j < detailData.getChargeTypeArray().size(); j++) {
+                            ChargeTypeArrayItem arrayItem = detailData.getChargeTypeArray().get(j);
+                            if (arrayItem.getType().contains("Column") || arrayItem.getType().contains("Bulk")) {
+                                object.addProperty("ColId", arrayItem.getProdId());
+                                object.addProperty("ColLength", arrayItem.getLength());
+                                object.addProperty("ColWt", arrayItem.getWeight());
+                            }
+                            if (arrayItem.getType().contains("Base") || arrayItem.getType().contains("Bottom")) {
+                                object.addProperty("BtmId", arrayItem.getProdId());
+                                object.addProperty("BtmLength", arrayItem.getLength());
+                                object.addProperty("BtmWt", arrayItem.getWeight());
+                            }
+                            if (arrayItem.getType().contains("Booster")) {
+                                object.addProperty("BsterId", arrayItem.getProdId());
+                                object.addProperty("BsterLength", arrayItem.getLength());
+                                object.addProperty("BsterWt", arrayItem.getWeight());
+                            }
+                        }
+                    }
                     object.addProperty("DeckLength", 0);
                     object.addProperty("DeckLength1", detailData.getDeckLength1());
                     object.addProperty("DeckLength2", detailData.getDeckLength2());
@@ -1878,7 +2072,7 @@ public class BaseActivity extends AppCompatActivity {
                     object.addProperty("RRDelay", detailData.getRRDelay());
                     object.addProperty("RowNo", detailData.getRowNo());
                     object.addProperty("Spacing", detailData.getSpacing());
-                    object.addProperty("StemLngth", StringUtill.isEmpty(detailData.getStemLngth()) ?  0.0 : Double.parseDouble(detailData.getStemLngth()));
+                    object.addProperty("StemLngth", StringUtill.isEmpty(detailData.getStemLngth()) ? 0.0 : Double.parseDouble(detailData.getStemLngth()));
                     object.addProperty("Subgrade", detailData.getSubgrade());
                     object.addProperty("TopBasePrcnt", 100);
                     object.addProperty("WaterDepth", String.valueOf(StringUtill.isEmpty(String.valueOf(detailData.getWaterDepth())) ? 0 : detailData.getWaterDepth()));
