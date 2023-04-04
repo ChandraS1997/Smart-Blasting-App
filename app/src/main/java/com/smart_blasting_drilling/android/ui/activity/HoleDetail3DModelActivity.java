@@ -177,10 +177,14 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 public void syncWithBims() {
                     if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
                         String blastCode = "";
-                        if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                            BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.get(0).getDesignId());
-                            if (blastCodeEntity != null)
-                                blastCode = blastCodeEntity.getBlastCode();
+                        if (!StringUtill.isEmpty(bladesRetrieveData.get(0).getBimsId())) {
+                            blastCode = bladesRetrieveData.get(0).getBimsId();
+                        } else {
+                            if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
+                                BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.get(0).getDesignId());
+                                if (blastCodeEntity != null)
+                                    blastCode = blastCodeEntity.getBlastCode();
+                            }
                         }
                         blastInsertSyncRecord3DApiCaller(bladesRetrieveData.get(0), allTablesData, getRowWiseHoleIn3dList(allTablesData).size(), 0, blastCode);
                     } else {

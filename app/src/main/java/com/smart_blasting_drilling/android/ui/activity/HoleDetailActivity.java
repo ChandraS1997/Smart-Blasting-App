@@ -174,10 +174,22 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 public void syncWithBims() {
                     if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
                         String blastCode = "";
-                        if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                            BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.getDesignId());
-                            if (blastCodeEntity != null)
-                                blastCode = blastCodeEntity.getBlastCode();
+                        if (Constants.isListEmpty(allTablesData.getTable())) {
+                            if (!StringUtill.isEmpty(allTablesData.getTable().get(0).getBimsId())) {
+                                blastCode = allTablesData.getTable().get(0).getBimsId();
+                            } else {
+                                if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
+                                    BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.getDesignId());
+                                    if (blastCodeEntity != null)
+                                        blastCode = blastCodeEntity.getBlastCode();
+                                }
+                            }
+                        } else {
+                            if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
+                                BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.getDesignId());
+                                if (blastCodeEntity != null)
+                                    blastCode = blastCodeEntity.getBlastCode();
+                            }
                         }
                         blastInsertSyncRecordApiCaller(bladesRetrieveData, allTablesData, getRowWiseHoleList(allTablesData.getTable2()).size(), 0, blastCode);
                     } else {

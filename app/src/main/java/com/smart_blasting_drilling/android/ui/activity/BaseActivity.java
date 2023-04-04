@@ -1585,6 +1585,7 @@ public class BaseActivity extends AppCompatActivity {
                                 BlastCodeEntity blastCodeEntity = new BlastCodeEntity(blastCode, bladesRetrieveData.getDesignId());
                                 appDatabase.blastCodeDao().insertItem(blastCodeEntity);
                             }
+                            updateDesignIdApiCaller(bladesRetrieveData.getDesignId(), blastCode, false, true);
                         }
                     }
                     hideLoader();
@@ -2004,6 +2005,7 @@ public class BaseActivity extends AppCompatActivity {
                                 appDatabase.blastCodeDao().insertItem(blastCodeEntity);
                             }
                             showToast("Project Sync Successfully");
+                            updateDesignIdApiCaller(bladesRetrieveData.getDesignId(), blastCode, true, true);
                         }
                     }
                     hideLoader();
@@ -2351,6 +2353,22 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             return new NorthEastCoordinateModel();
         }
+    }
+
+    private void updateDesignIdApiCaller(String designId, String id, boolean is3D, boolean isBims) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("DesignId", designId);
+        jsonObject.addProperty("Id", id);
+        jsonObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
+        jsonObject.addProperty("UserId", manger.getUserDetails().getUserid());
+        MainService.update3DDesignBIMSIdApiCaller(this, jsonObject, is3D, isBims).observe(this, new Observer<JsonElement>() {
+            @Override
+            public void onChanged(JsonElement jsonElement) {
+                /*if (!jsonObject.isJsonNull())
+                    showToast("Project Sync Successfully");*/
+                hideLoader();
+            }
+        });
     }
 
 }

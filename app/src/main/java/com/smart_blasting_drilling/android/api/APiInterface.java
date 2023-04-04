@@ -96,4 +96,16 @@ public interface APiInterface {
     @GET("get-drillaccessoriesinfo/GetShiftInfo/{user_id}/{company_id}")
     Call<JsonObject> getDrillShiftInfoApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
+    @POST("Update3DDesignBIMSId")
+    Call<JsonElement> update3DDesignBIMSIdApiCaller(@Body JsonObject map);
+
+    @POST("Update3DDesignDRIMSId")
+    Call<JsonElement> update3DDesignDRIMSIdApiCaller(@Body JsonObject map);
+
+    @POST("UpdateDesignBIMSId")
+    Call<JsonElement> updateDesignBIMSIdApiCaller(@Body JsonObject map);
+
+    @POST("UpdateDesignDRIMSId")
+    Call<JsonElement> updateDesignDRIMSIdApiCaller(@Body JsonObject map);
+
 }

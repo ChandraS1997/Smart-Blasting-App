@@ -698,4 +698,35 @@ public class MainService {
         return data;
     }
 
+    public static LiveData<JsonElement> update3DDesignBIMSIdApiCaller(final Context context, JsonObject object, boolean is3D, boolean isBims) {
+        final MutableLiveData<JsonElement> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonElement> call = null;
+
+        if (is3D) {
+            call = isBims ? testBlastSblastApiService.update3DDesignBIMSIdApiCaller(object) : testBlastSblastApiService.update3DDesignDRIMSIdApiCaller(object);
+        } else {
+            call = isBims ? testBlastSblastApiService.updateDesignBIMSIdApiCaller(object) : testBlastSblastApiService.updateDesignDRIMSIdApiCaller(object);
+        }
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+        return data;
+    }
+
 }

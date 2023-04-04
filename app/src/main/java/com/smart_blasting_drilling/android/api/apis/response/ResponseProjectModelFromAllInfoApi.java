@@ -105,6 +105,36 @@ public class ResponseProjectModelFromAllInfoApi implements Serializable {
 	@SerializedName("BlastingType")
 	private String blastingType;
 
+	@SerializedName("BIMSId")
+	private String bimsId;
+
+	@SerializedName("DRIMSId")
+	private String drimsId;
+
+	public boolean isQty() {
+		return isQty;
+	}
+
+	public void setQty(boolean qty) {
+		isQty = qty;
+	}
+
+	public String getBimsId() {
+		return bimsId;
+	}
+
+	public void setBimsId(String bimsId) {
+		this.bimsId = bimsId;
+	}
+
+	public String getDrimsId() {
+		return drimsId;
+	}
+
+	public void setDrimsId(String drimsId) {
+		this.drimsId = drimsId;
+	}
+
 	public void setPitName(String pitName){
 		this.pitName = pitName;
 	}

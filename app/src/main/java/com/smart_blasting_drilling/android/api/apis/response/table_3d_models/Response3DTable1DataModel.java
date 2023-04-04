@@ -68,7 +68,27 @@ public class Response3DTable1DataModel implements Serializable {
 
 	@SerializedName("RockName")
 	private String rockName;
+	@SerializedName("BIMSId")
+	private String bimsId;
 
+	@SerializedName("DRIMSId")
+	private String drimsId;
+
+	public String getBimsId() {
+		return bimsId;
+	}
+
+	public void setBimsId(String bimsId) {
+		this.bimsId = bimsId;
+	}
+
+	public String getDrimsId() {
+		return drimsId;
+	}
+
+	public void setDrimsId(String drimsId) {
+		this.drimsId = drimsId;
+	}
 	public boolean isIs3dBlade() {
 		return is3dBlade;
 	}
