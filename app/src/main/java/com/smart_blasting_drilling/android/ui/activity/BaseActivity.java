@@ -1368,6 +1368,9 @@ public class BaseActivity extends AppCompatActivity {
                     chargeDetailsObject.addProperty("ExpLength2", "");
                     chargeDetailsObject.addProperty("CostPerUnit2", "");
 
+                    chargeDetailsObject.addProperty("SteamLen", "");
+                    chargeDetailsObject.addProperty("DeckDepth", "");
+
                     if (!Constants.isListEmpty(tablesData.getTable2().get(i).getChargeTypeArray())) {
                         for (int j = 0; j < tablesData.getTable2().get(i).getChargeTypeArray().size(); j++) {
                             ChargeTypeArrayItem arrayItem = tablesData.getTable2().get(i).getChargeTypeArray().get(j);
@@ -1389,6 +1392,12 @@ public class BaseActivity extends AppCompatActivity {
                                 chargeDetailsObject.addProperty("ExpLength2", arrayItem.getLength());
                                 chargeDetailsObject.addProperty("CostPerUnit2", String.valueOf(arrayItem.getCost()));
                             }
+                            if (arrayItem.getType().contains("Stemming")) {
+                                chargeDetailsObject.addProperty("SteamLen", String.valueOf(arrayItem.getLength()));
+                            }
+                            if (arrayItem.getType().contains("Decking")) {
+                                chargeDetailsObject.addProperty("DeckDepth", String.valueOf(arrayItem.getLength()));
+                            }
                         }
                     }
 
@@ -1398,11 +1407,9 @@ public class BaseActivity extends AppCompatActivity {
                     chargeDetailsObject.addProperty("Delay2", String.valueOf(tablesData.getTable2().get(i).getDelay()));
                     chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
                     chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
-                    chargeDetailsObject.addProperty("DeckDepth", "");
                     chargeDetailsObject.addProperty("DeckStart", "");
-                    chargeDetailsObject.addProperty("SteamLen", String.valueOf(tablesData.getTable2().get(i).getStemLngth()));
                     chargeDetailsObject.addProperty("WaterDepth", String.valueOf(tablesData.getTable2().get(i).getWaterDepth()));
-                    chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.getTable2().get(i).getHoleDepth()));
+                    chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.getTable2().get(i).getHoleDepthDouble()));
                     chargeDetailsObject.addProperty("Subgrade", String.valueOf(tablesData.getTable2().get(i).getSubgrade() == 0 ? "" : tablesData.getTable2().get(i).getSubgrade()));
                     chargeDetailsObject.addProperty("IsHoleBlock", "");
                     chargeDetailsObject.addProperty("HoleBlockLength", "");
@@ -1810,7 +1817,7 @@ public class BaseActivity extends AppCompatActivity {
                         List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
                         for (int j = 0; j < chargeTypeArray.size(); j++) {
                             ChargeTypeArrayItem item = chargeTypeArray.get(j);
-                            if (item.getType().equals("Decking")) {
+                            if (item.getType().equals("Stemming")) {
                                 if (StringUtill.isEmpty(arrayItem.getType()))
                                     arrayItem = item;
                                 length = length + item.getLength();
@@ -2015,17 +2022,19 @@ public class BaseActivity extends AppCompatActivity {
             if (!Constants.isListEmpty(tablesData.getTable2())) {
                 for (ResponseHoleDetailData detailData : tablesData.getTable2()) {
                     JsonObject object = new JsonObject();
-                    object.addProperty("BsterId", /*detailData.getBsterId()*/"");
-                    object.addProperty("BsterLength", /*detailData.getBsterLength()*/"");
-                    object.addProperty("BsterWt",/* detailData.getBsterWt()*/ "");
-                    object.addProperty("BtmBasePrcnt", "");
-                    object.addProperty("BtmId", /*detailData.getBtmId()*/"");
-                    object.addProperty("BtmLength", /*detailData.getBtmLength()*/"");
-                    object.addProperty("BtmWt", /*detailData.getBtmWt()*/"");
+                    object.addProperty("BsterId", detailData.getBsterId());
+                    object.addProperty("BsterLength", detailData.getBsterLength());
+                    object.addProperty("BsterWt", detailData.getBsterWt());
+                    object.addProperty("BtmBasePrcnt", 0);
+                    object.addProperty("BtmId", detailData.getBtmId());
+                    object.addProperty("BtmLength", detailData.getBtmLength());
+                    object.addProperty("BtmWt", detailData.getBtmWt());
                     object.addProperty("Burden", detailData.getBurden());
-                    object.addProperty("ColId", /*detailData.getColId()*/"");
-                    object.addProperty("ColLength", /*detailData.getColLength()*/"");
-                    object.addProperty("ColWt", /*detailData.getColWt()*/"");
+                    object.addProperty("ColId", detailData.getColId());
+                    object.addProperty("ColLength", detailData.getColLength());
+                    object.addProperty("ColWt", detailData.getColWt());
+                    object.addProperty("DeckLength", 0);
+                    object.addProperty("StemLngth", 0.0);
                     if (!Constants.isListEmpty(detailData.getChargeTypeArray())) {
                         for (int j = 0; j < detailData.getChargeTypeArray().size(); j++) {
                             ChargeTypeArrayItem arrayItem = detailData.getChargeTypeArray().get(j);
@@ -2044,9 +2053,14 @@ public class BaseActivity extends AppCompatActivity {
                                 object.addProperty("BsterLength", arrayItem.getLength());
                                 object.addProperty("BsterWt", arrayItem.getWeight());
                             }
+                            if (arrayItem.getType().contains("Decking")) {
+                                object.addProperty("DeckLength", Double.valueOf(arrayItem.getLength()).intValue());
+                            }
+                            if (arrayItem.getType().contains("Stemming")) {
+                                object.addProperty("StemLngth", Double.parseDouble(String.valueOf(arrayItem.getLength())));
+                            }
                         }
                     }
-                    object.addProperty("DeckLength", 0);
                     object.addProperty("DeckLength1", detailData.getDeckLength1());
                     object.addProperty("DeckLength2", detailData.getDeckLength2());
                     object.addProperty("DeckLength3", detailData.getDeckLength3());
@@ -2072,7 +2086,6 @@ public class BaseActivity extends AppCompatActivity {
                     object.addProperty("RRDelay", detailData.getRRDelay());
                     object.addProperty("RowNo", detailData.getRowNo());
                     object.addProperty("Spacing", detailData.getSpacing());
-                    object.addProperty("StemLngth", StringUtill.isEmpty(detailData.getStemLngth()) ? 0.0 : Double.parseDouble(detailData.getStemLngth()));
                     object.addProperty("Subgrade", detailData.getSubgrade());
                     object.addProperty("TopBasePrcnt", 100);
                     object.addProperty("WaterDepth", String.valueOf(StringUtill.isEmpty(String.valueOf(detailData.getWaterDepth())) ? 0 : detailData.getWaterDepth()));

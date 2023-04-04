@@ -127,7 +127,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             binding.headerLayHole.spinnerRow.setOnItemClickListener((adapterView, view, i, l) -> {
                 rowPageVal = Integer.parseInt(rowSpinnerList[i].replace("Row ", "0"));
                 if (rowItemDetail != null)
-                    rowItemDetail.setRowOfTable(rowPageVal, allTablesData, true);
+                    rowItemDetail.setRowOfTable(rowPageVal, allTablesData, false);
             });
         } else {
             binding.headerLayHole.spinnerRow.setVisibility(View.GONE);

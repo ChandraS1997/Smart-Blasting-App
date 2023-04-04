@@ -116,7 +116,7 @@ public class MapViewFragment extends BaseFragment implements HoleDetailActivity.
                 }
             }
 
-            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * (137 + 5), RecyclerView.LayoutParams.WRAP_CONTENT);
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * (137 + 35), RecyclerView.LayoutParams.WRAP_CONTENT);
             binding.rowHolePoint.setLayoutParams(layoutParams);
         }
     }
