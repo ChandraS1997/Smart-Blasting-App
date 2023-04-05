@@ -210,9 +210,9 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                     if (BaseApplication.getInstance().isInternetConnected(mContext)) {
                         if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
                             List<Response3DTable4HoleChargingDataModel> finalAllTablesData = allTablesData;
-                            ((BaseActivity) mContext).setJsonForSyncProject3DData(bladesRetrieveData, allTablesData).observe((LifecycleOwner) mContext, new Observer<JsonPrimitive>() {
+                            ((BaseActivity) mContext).setJsonForSyncProject3DData(bladesRetrieveData, allTablesData).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
                                 @Override
-                                public void onChanged(JsonPrimitive jsonPrimitive) {
+                                public void onChanged(JsonElement jsonPrimitive) {
                                     setNavigationOnHole(finalAllTablesData);
                                 }
                             });
@@ -220,9 +220,9 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                             AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
                             if (StringUtill.isEmpty(entity.getProjectCode())) {
                                 List<Response3DTable4HoleChargingDataModel> finalAllTablesData1 = allTablesData;
-                                ((BaseActivity) mContext).setJsonForSyncProject3DData(bladesRetrieveData, allTablesData).observe((LifecycleOwner) mContext, new Observer<JsonPrimitive>() {
+                                ((BaseActivity) mContext).setJsonForSyncProject3DData(bladesRetrieveData, allTablesData).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
                                     @Override
-                                    public void onChanged(JsonPrimitive jsonPrimitive) {
+                                    public void onChanged(JsonElement jsonPrimitive) {
                                         setNavigationOnHole(finalAllTablesData1);
                                     }
                                 });
@@ -569,16 +569,31 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                     }
                     if (!Constants.isListEmpty(drillMethodDataList)) {
                         String[] drillMethodDataItem = new String[drillMethodDataList.size()];
+                        String[] rockCodeItem = new String[drillMethodDataList.size()];
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
                             drillMethodDataItem[i] = drillMethodDataList.get(i).getRockName();
+                            rockCodeItem[i] = String.valueOf(drillMethodDataList.get(i).getRockCode());
                         }
-                        binding.spinnerRock.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[0]));
                         List<ResponseRockData> finalDrillMethodDataList = drillMethodDataList;
+
+                        binding.spinnerRock.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
                         binding.spinnerRock.setOnItemClickListener((adapterView, view, i, l) -> {
                             rockCode = finalDrillMethodDataList.get(i).getRockCode();
                         });
-                        rockCode = drillMethodDataList.get(0).getRockCode();
+
+                        boolean isFound = false;
+                        for (int i = 0; i < drillMethodDataItem.length; i++) {
+                            if (StringUtill.getString(updateBladesData.getRockCode()).equals(rockCodeItem[i])) {
+                                isFound = true;
+                                binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[i]));
+                                rockCode = drillMethodDataList.get(i).getRockCode();
+                                break;
+                            }
+                        }
+                        if (!isFound) {
+                            binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[0]));
+                            rockCode = drillMethodDataList.get(0).getRockCode();
+                        }
                     }
                 }
             }

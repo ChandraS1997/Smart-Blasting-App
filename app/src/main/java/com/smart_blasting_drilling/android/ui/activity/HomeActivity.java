@@ -356,6 +356,10 @@ public class HomeActivity extends BaseActivity {
                 try {
                     allTablesData = tablesData;
                     String str = new Gson().toJson(tablesData);
+                    if (!Constants.isListEmpty(allTablesData.getTable1())) {
+                        bladesRetrieveData.setRockName(allTablesData.getTable1().get(0).getRockName());
+                        bladesRetrieveData.setRockCode(String.valueOf(allTablesData.getTable1().get(0).getRockCode()));
+                    }
                     if (!entity.isExistProject(bladesRetrieveData.getDesignId())) {
                         entity.insertProject(new ProjectHoleDetailRowColEntity(bladesRetrieveData.getDesignId(), is3D, str));
                     } else {

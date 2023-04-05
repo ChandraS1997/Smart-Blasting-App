@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
@@ -136,6 +138,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         navController = Navigation.findNavController(this, R.id.nav_host_hole);
         Constants.onHoleClickListener = this;
 
+        setNavController();
+
         StatusBarUtils.statusBarColor(this, R.color._FFA722);
 
         binding.headerLayHole.pageTitle.setText(getString(R.string.hole_detail));
@@ -177,8 +181,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 public void syncWithBims() {
                     if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
                         String blastCode = "";
-                        if (!StringUtill.isEmpty(bladesRetrieveData.get(0).getBimsId())) {
-                            blastCode = bladesRetrieveData.get(0).getBimsId();
+                        if (!StringUtill.isEmpty(String.valueOf(bladesRetrieveData.get(0).getBimsId()))) {
+                            blastCode = String.valueOf(bladesRetrieveData.get(0).getBimsId());
                         } else {
                             if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
                                 BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.get(0).getDesignId());
@@ -186,7 +190,12 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                                     blastCode = blastCodeEntity.getBlastCode();
                             }
                         }
-                        blastInsertSyncRecord3DApiCaller(bladesRetrieveData.get(0), allTablesData, getRowWiseHoleIn3dList(allTablesData).size(), 0, blastCode);
+                        blastInsertSyncRecord3DApiCaller(bladesRetrieveData.get(0), allTablesData, getRowWiseHoleIn3dList(allTablesData).size(), 0, blastCode).observe(HoleDetail3DModelActivity.this, new Observer<JsonElement>() {
+                            @Override
+                            public void onChanged(JsonElement element) {
+                                bladesRetrieveData = AppDelegate.instance.getResponse3DTable1DataModel();
+                            }
+                        });
                     } else {
                         showToast("No internet connection. Make sure Wi-Fi or Cellular data is turn on, then try again");
                     }
@@ -214,7 +223,12 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
     public void syncDataAPi() {
         AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.get(0).getDesignId()));
-        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), allTablesData, (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "").observe(this, new Observer<JsonPrimitive>() {
+        String code = "";
+        code = String.valueOf(bladesRetrieveData.get(0).getDrimsId());
+        if (StringUtill.isEmpty(code)) {
+            code = (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "";
+        }
+        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), allTablesData, code).observe(this, new Observer<JsonPrimitive>() {
             @Override
             public void onChanged(JsonPrimitive response) {
                 if (response == null) {
@@ -264,6 +278,24 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         editModelArrayList.add(new TableEditModel("InHoleDelay", "InHoleDelay"));
         editModelArrayList.add(new TableEditModel("Charging", "Charging"));
         return editModelArrayList;
+    }
+
+    private void setNavController() {
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+                if (navDestination.getId() == R.id.holeDetailsTableViewFragment) {
+                    binding.holeDetailLayoutContainer.setVisibility(View.GONE);
+                    binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
+                    binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
+                    binding.holeParaLay.setVisibility(View.GONE);
+                } else if (navDestination.getId() == R.id.mapViewFrament) {
+                    binding.headerLayHole.projectInfo.setVisibility(View.GONE);
+                    binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
+                    binding.holeParaLay.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     public interface RowItemDetail {

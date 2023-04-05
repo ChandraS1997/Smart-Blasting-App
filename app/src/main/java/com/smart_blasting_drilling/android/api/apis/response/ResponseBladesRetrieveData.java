@@ -42,6 +42,9 @@ public class ResponseBladesRetrieveData implements Serializable {
 	@SerializedName("RockName")
 	private String rockName;
 
+	@SerializedName("RockCode")
+	private String rockCode;
+
 	@SerializedName("PcntUnderSize")
 	private String pcntUnderSize;
 
@@ -293,5 +296,13 @@ public class ResponseBladesRetrieveData implements Serializable {
 
 	public String getRockName(){
 		return rockName;
+	}
+
+	public String getRockCode() {
+		return rockCode;
+	}
+
+	public void setRockCode(String rockCode) {
+		this.rockCode = rockCode;
 	}
 }

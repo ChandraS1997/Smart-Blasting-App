@@ -116,15 +116,15 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
     public void addItemInArray() {
         if (jsonArray == null)
             jsonArray = new ArrayList<>();
-        jsonArray.add(jsonObject);
-        jsonObject = new ChargeTypeArrayItem();
+//        jsonArray.add(jsonObject);
+//        jsonObject = new ChargeTypeArrayItem();
     }
 
     public List<ChargeTypeArrayItem> getJsonArray() {
         if (jsonArray.size() != chargingDataModelList.size()) {
             addItemInArray();
         }
-        return jsonArray;
+        return chargingDataModelList;
     }
 
     class ChargingDataViewHolder extends RecyclerView.ViewHolder {
@@ -166,7 +166,10 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     try {
+                        jsonObject = chargingDataModel;
+                        jsonObject.setType(typeArr[i]);
                         setExpArray(typeArr[i]);
+                        addData(jsonObject);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -198,6 +201,8 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
                             }
                         }
                         jsonObject.setCost(binding.costEt.getText().toString());
+
+                        addData(jsonObject);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -213,6 +218,7 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     jsonObject.setLength(binding.columnLengthEt.getText().toString());
+                    addData(jsonObject);
                 }
 
                 @Override
@@ -230,6 +236,7 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     jsonObject.setWeight(binding.columnWeightEt.getText().toString());
+                    addData(jsonObject);
                 }
 
                 @Override
@@ -238,6 +245,10 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
                 }
             });
 
+        }
+
+        public void addData(ChargeTypeArrayItem data) {
+            chargingDataModelList.set(getBindingAdapterPosition(), data);
         }
 
     }

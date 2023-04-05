@@ -106,10 +106,10 @@ public class ResponseProjectModelFromAllInfoApi implements Serializable {
 	private String blastingType;
 
 	@SerializedName("BIMSId")
-	private String bimsId;
+	private Object bimsId;
 
 	@SerializedName("DRIMSId")
-	private String drimsId;
+	private Object drimsId;
 
 	public boolean isQty() {
 		return isQty;
@@ -119,19 +119,23 @@ public class ResponseProjectModelFromAllInfoApi implements Serializable {
 		isQty = qty;
 	}
 
-	public String getBimsId() {
+	public Object getBimsId() {
+		if (bimsId == null)
+			return "";
 		return bimsId;
 	}
 
-	public void setBimsId(String bimsId) {
+	public void setBimsId(Object bimsId) {
 		this.bimsId = bimsId;
 	}
 
-	public String getDrimsId() {
+	public Object getDrimsId() {
+		if (drimsId == null)
+			return "";
 		return drimsId;
 	}
 
-	public void setDrimsId(String drimsId) {
+	public void setDrimsId(Object drimsId) {
 		this.drimsId = drimsId;
 	}
 

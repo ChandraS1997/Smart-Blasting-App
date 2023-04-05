@@ -6,18 +6,22 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
@@ -74,6 +78,10 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         bladesRetrieveData = AppDelegate.getInstance().getBladesRetrieveData();
         allTablesData = AppDelegate.getInstance().getAllTablesData();
         try {
+            if (!Constants.isListEmpty(allTablesData.getTable1())) {
+                bladesRetrieveData.setRockName(allTablesData.getTable1().get(0).getRockName());
+                bladesRetrieveData.setRockCode(String.valueOf(allTablesData.getTable1().get(0).getRockCode()));
+            }
             if (!allTablesData.getTable2().isEmpty()) {
                 for (int i = 0; i < allTablesData.getTable2().size(); i++) {
                     isFound = false;
@@ -94,11 +102,21 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         }
 
         if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
-            setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
+            setJsonForSyncProjectData(bladesRetrieveData, allTablesData).observe((LifecycleOwner) this, new Observer<JsonElement>() {
+                @Override
+                public void onChanged(JsonElement jsonPrimitive) {
+                    allTablesData = AppDelegate.getInstance().getAllTablesData();
+                }
+            });
         } else {
             AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
             if (StringUtill.isEmpty(entity.getProjectCode())) {
-                setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
+                setJsonForSyncProjectData(bladesRetrieveData, allTablesData).observe((LifecycleOwner) this, new Observer<JsonElement>() {
+                    @Override
+                    public void onChanged(JsonElement jsonPrimitive) {
+                        allTablesData = AppDelegate.getInstance().getAllTablesData();
+                    }
+                });
             }
         }
 
@@ -132,6 +150,8 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
         navController = Navigation.findNavController(this, R.id.nav_host_hole);
         Constants.onHoleClickListener = this;
+
+        setNavController();
 
         StatusBarUtils.statusBarColor(this, R.color._FFA722);
 
@@ -175,8 +195,8 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                     if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
                         String blastCode = "";
                         if (Constants.isListEmpty(allTablesData.getTable())) {
-                            if (!StringUtill.isEmpty(allTablesData.getTable().get(0).getBimsId())) {
-                                blastCode = allTablesData.getTable().get(0).getBimsId();
+                            if (!StringUtill.isEmpty(String.valueOf(allTablesData.getTable().get(0).getBimsId()))) {
+                                blastCode = String.valueOf(allTablesData.getTable().get(0).getBimsId());
                             } else {
                                 if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
                                     BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.getDesignId());
@@ -191,7 +211,12 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                                     blastCode = blastCodeEntity.getBlastCode();
                             }
                         }
-                        blastInsertSyncRecordApiCaller(bladesRetrieveData, allTablesData, getRowWiseHoleList(allTablesData.getTable2()).size(), 0, blastCode);
+                        blastInsertSyncRecordApiCaller(bladesRetrieveData, allTablesData, getRowWiseHoleList(allTablesData.getTable2()).size(), 0, blastCode).observe(HoleDetailActivity.this, new Observer<JsonElement>() {
+                            @Override
+                            public void onChanged(JsonElement element) {
+                                allTablesData = AppDelegate.getInstance().getAllTablesData();
+                            }
+                        });
                     } else {
                         showToast("No internet connection. Make sure Wi-Fi or Cellular data is turn on, then try again");
                     }
@@ -220,7 +245,12 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
 
     public void syncDataAPi() {
         AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.getDesignId()));
-        setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), (modelEntity != null && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "").observe(this, new Observer<JsonPrimitive>() {
+        String code = "";
+        code = String.valueOf(allTablesData.getTable().get(0).getDrimsId());
+        if (StringUtill.isEmpty(code)) {
+            code = (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "";
+        }
+        setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), code).observe(this, new Observer<JsonPrimitive>() {
             @Override
             public void onChanged(JsonPrimitive response) {
                 if (response == null) {
@@ -258,6 +288,24 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         editModelArrayList.add(new TableEditModel("Z", "Z"));
         editModelArrayList.add(new TableEditModel("Charging", "Charging"));
         return editModelArrayList;
+    }
+
+    private void setNavController() {
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+                if (navDestination.getId() == R.id.holeDetailsTableViewFragment) {
+                    binding.holeDetailLayoutContainer.setVisibility(View.GONE);
+                    binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
+                    binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
+                    binding.holeParaLay.setVisibility(View.GONE);
+                } else if (navDestination.getId() == R.id.mapViewFrament) {
+                    binding.headerLayHole.projectInfo.setVisibility(View.GONE);
+                    binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
+                    binding.holeParaLay.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
