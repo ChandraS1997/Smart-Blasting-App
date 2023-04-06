@@ -52,10 +52,12 @@ import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.helper.PreferenceManger;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
 import com.smart_blasting_drilling.android.room_database.entities.BlastCodeEntity;
 import com.smart_blasting_drilling.android.room_database.entities.BlastPerformanceEntity;
 import com.smart_blasting_drilling.android.room_database.entities.InitiatingDeviceDataEntity;
+import com.smart_blasting_drilling.android.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseBenchTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponsePitTableEntity;
 import com.smart_blasting_drilling.android.room_database.entities.ResponseZoneTableEntity;
@@ -1124,7 +1126,7 @@ public class BaseActivity extends AppCompatActivity {
         try {
             showLoader();
             JsonObject mapObject = new JsonObject();
-            mapObject.addProperty("ProjectCode", Integer.parseInt(projectCode));
+            mapObject.addProperty("ProjectCode", projectCode);
             JsonArray holeDetailArray = new JsonArray();
 
             UpdatedProjectDetailEntity projectDetailEntity = new UpdatedProjectDetailEntity();
@@ -1627,6 +1629,16 @@ public class BaseActivity extends AppCompatActivity {
                                             apiList.set(0, api);
                                             tablesData.setTable(apiList);
                                             AppDelegate.getInstance().setAllTablesData(tablesData);
+                                            ProjectHoleDetailRowColDao entity = appDatabase.projectHoleDetailRowColDao();
+                                            if (entity.isExistProject(bladesRetrieveData.getDesignId())) {
+                                                entity.updateProject(bladesRetrieveData.getDesignId(), new Gson().toJson(tablesData));
+                                            } else {
+                                                ProjectHoleDetailRowColEntity colEntity = new ProjectHoleDetailRowColEntity();
+                                                colEntity.setDesignId(bladesRetrieveData.getDesignId());
+                                                colEntity.setIs3DBlades(false);
+                                                colEntity.setProjectHole(new Gson().toJson(tablesData));
+                                                entity.insertProject(colEntity);
+                                            }
                                             data.setValue(element);
                                         }
                                     });

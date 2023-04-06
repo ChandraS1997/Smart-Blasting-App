@@ -158,7 +158,8 @@ public class Charging3dDataDialog extends BaseDialogFragment {
                 updateProjectBladesDao.updateProject(bladesEntity);
             }
 
-            JsonElement element = AppDelegate.getInstance().getHole3DDataElement();
+//            JsonElement element = AppDelegate.getInstance().getHole3DDataElement();
+            JsonElement element = new Gson().fromJson(entity.getAllBladesProject(allTablesData.getDesignId()).getProjectHole(), JsonElement.class);
             List<Response3DTable4HoleChargingDataModel> allTablesDataChild = new ArrayList<>();
             if (element != null) {
                 JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
@@ -216,6 +217,17 @@ public class Charging3dDataDialog extends BaseDialogFragment {
 
                 if (((HoleDetail3DModelActivity) mContext).mapViewDataUpdateLiveData != null)
                     ((HoleDetail3DModelActivity) mContext).mapViewDataUpdateLiveData.setValue(true);
+
+                if (Constants.holeBgListener != null)
+                    Constants.holeBgListener.setBackgroundRefresh();
+                if (Constants.hole3DBgListener != null) {
+                    Constants.hole3DBgListener.setBackgroundRefresh();
+                }
+
+                AppDelegate.getInstance().setHoleChargingDataModel(holeDetailDataList);
+                ((HoleDetail3DModelActivity) mContext).holeDetailDataList = holeDetailDataList;
+                if (((HoleDetail3DModelActivity) mContext).holeDetailCallBackListener != null)
+                    ((HoleDetail3DModelActivity) mContext).holeDetailCallBackListener.saveAndCloseHoleDetailCallBack();
 
             } catch (Exception e) {
                 e.getLocalizedMessage();

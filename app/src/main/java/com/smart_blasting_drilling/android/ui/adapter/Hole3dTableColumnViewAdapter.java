@@ -156,6 +156,10 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
                             @Override
                             public void holeStatusCallBack(String status) {
                                 binding.holeIdValTxt.setText(StringUtill.getString(status));
+                                if (StringUtill.getString(model.getTitleVal()).equals("Hole Status")) {
+                                    holeDetailData.setHoleStatus(StringUtill.getString(status));
+                                }
+                                ((HoleDetail3DModelActivity) context).updateEditedDataIntoDb(holeDetailData, true);
                             }
                         });
                         transaction.add(holeStatusDialog, HoleStatusDialog.TAG);

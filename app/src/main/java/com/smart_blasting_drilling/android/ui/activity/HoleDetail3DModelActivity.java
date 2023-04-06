@@ -558,6 +558,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         String dataStr = "";
 
         JsonElement element = AppDelegate.getInstance().getHole3DDataElement();
+//        JsonElement element = new Gson().fromJson(entity.getAllBladesProject(updateHoleDetailData.getDesignId()).getProjectHole(), JsonElement.class);
         List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
         if (element != null) {
             JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
@@ -620,8 +621,13 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
             if (Constants.holeBgListener != null)
                 Constants.holeBgListener.setBackgroundRefresh();
-            if (Constants.hole3DBgListener != null)
+            if (Constants.hole3DBgListener != null) {
                 Constants.hole3DBgListener.setBackgroundRefresh();
+            }
+            AppDelegate.getInstance().setHoleChargingDataModel(allTablesData);
+            this.holeDetailDataList = allTablesData;
+            if (holeDetailCallBackListener != null)
+                holeDetailCallBackListener.saveAndCloseHoleDetailCallBack();
             binding.holeDetailLayoutContainer.setVisibility(View.GONE);
         } catch (Exception e) {
             e.getLocalizedMessage();
