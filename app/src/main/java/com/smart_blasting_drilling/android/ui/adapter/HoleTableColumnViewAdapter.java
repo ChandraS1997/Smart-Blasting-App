@@ -1,6 +1,5 @@
 package com.smart_blasting_drilling.android.ui.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputType;
@@ -16,11 +15,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
@@ -29,11 +23,9 @@ import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.HoleTableColumnViewBinding;
 import com.smart_blasting_drilling.android.dialogs.ChangingDataDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleStatusDialog;
-import com.smart_blasting_drilling.android.room_database.AppDatabase;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetailActivity;
 import com.smart_blasting_drilling.android.ui.models.TableEditModel;
-import com.smart_blasting_drilling.android.utils.KeyboardUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.ArrayList;
@@ -45,12 +37,14 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
     List<TableEditModel> editModelArrayList;
     boolean isHeader;
     ResponseHoleDetailData holeDetailData;
+    boolean isSelected;
 
-    public HoleTableColumnViewAdapter(Context context, List<TableEditModel> editModelArrayList, boolean isHeader, ResponseHoleDetailData holeDetailData) {
+    public HoleTableColumnViewAdapter(Context context, List<TableEditModel> editModelArrayList, boolean isHeader, ResponseHoleDetailData holeDetailData, boolean isSelected) {
         this.context = context;
         this.editModelArrayList = editModelArrayList;
         this.isHeader = isHeader;
         this.holeDetailData = holeDetailData;
+        this.isSelected = isSelected;
     }
 
     @Override
@@ -117,8 +111,13 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
             if (((HoleDetailActivity) context).isTableHeaderFirstTimeLoad) {
                 setValueOfData(model);
             } else {
-                if (model.isSelected()) {
-                    setValueOfData(model);
+                if (isSelected) {
+                    if (model.isSelected()) {
+                        setValueOfData(model);
+                    } else {
+                        binding.holeIdValTxt.setVisibility(View.GONE);
+                        binding.holeIdVal.setVisibility(View.GONE);
+                    }
                 } else {
                     if (!setViewOfTitle(model.getTitleVal())){
                         binding.holeIdValTxt.setVisibility(View.VISIBLE);
@@ -130,6 +129,19 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
                         binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
                     }
                 }
+                /*if (model.isSelected()) {
+                    setValueOfData(model);
+                } else {
+                    if (!setViewOfTitle(model.getTitleVal())){
+                        binding.holeIdValTxt.setVisibility(View.VISIBLE);
+                        binding.holeIdVal.setVisibility(View.GONE);
+                        binding.holeIdValTxt.setText(StringUtill.getString(model.getCheckBox()));
+                    } else {
+                        binding.holeIdValTxt.setVisibility(View.GONE);
+                        binding.holeIdVal.setVisibility(View.VISIBLE);
+                        binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
+                    }
+                }*/
             }
 
             LinearLayout.LayoutParams layoutParams;
@@ -161,6 +173,10 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
                             @Override
                             public void holeStatusCallBack(String status) {
                                 binding.holeIdValTxt.setText(StringUtill.getString(status));
+                                if (StringUtill.getString(model.getTitleVal()).equals("Hole Status")) {
+                                    holeDetailData.setHoleStatus(StringUtill.getString(status));
+                                }
+                                ((HoleDetailActivity) context).updateEditedDataIntoDb(holeDetailData, true);
                             }
                         });
                         transaction.add(holeStatusDialog, HoleStatusDialog.TAG);

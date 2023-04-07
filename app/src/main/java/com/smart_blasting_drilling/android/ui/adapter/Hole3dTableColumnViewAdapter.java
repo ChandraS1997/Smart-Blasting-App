@@ -35,13 +35,14 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
     Context context;
     List<TableEditModel> editModelArrayList;
     Response3DTable4HoleChargingDataModel holeDetailData;
-    boolean isHeader;
+    boolean isHeader, isSelected;
 
-    public Hole3dTableColumnViewAdapter(Context context, List<TableEditModel> editModelArrayList, boolean isHeader, Response3DTable4HoleChargingDataModel holeDetailData) {
+    public Hole3dTableColumnViewAdapter(Context context, List<TableEditModel> editModelArrayList, boolean isHeader, Response3DTable4HoleChargingDataModel holeDetailData, boolean isSelected) {
         this.context = context;
         this.editModelArrayList = editModelArrayList;
         this.isHeader = isHeader;
         this.holeDetailData = holeDetailData;
+        this.isSelected = isSelected;
     }
 
     @Override
@@ -115,8 +116,13 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
             if (((HoleDetail3DModelActivity) context).isTableHeaderFirstTimeLoad) {
                 setValueOfData(model);
             } else {
-                if (model.isSelected()) {
-                    setValueOfData(model);
+                if (isSelected) {
+                    if (model.isSelected()) {
+                        setValueOfData(model);
+                    } else {
+                        binding.holeIdValTxt.setVisibility(View.GONE);
+                        binding.holeIdVal.setVisibility(View.GONE);
+                    }
                 } else {
                     if (!setViewOfTitle(model.getTitleVal())){
                         binding.holeIdValTxt.setVisibility(View.VISIBLE);
@@ -128,6 +134,19 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
                         binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
                     }
                 }
+                /*if (model.isSelected()) {
+                    setValueOfData(model);
+                } else {
+                    if (!setViewOfTitle(model.getTitleVal())){
+                        binding.holeIdValTxt.setVisibility(View.VISIBLE);
+                        binding.holeIdVal.setVisibility(View.GONE);
+                        binding.holeIdValTxt.setText(StringUtill.getString(model.getCheckBox()));
+                    } else {
+                        binding.holeIdValTxt.setVisibility(View.GONE);
+                        binding.holeIdVal.setVisibility(View.VISIBLE);
+                        binding.holeIdVal.setText(StringUtill.getString(model.getCheckBox()));
+                    }
+                }*/
             }
 
             LinearLayout.LayoutParams layoutParams;

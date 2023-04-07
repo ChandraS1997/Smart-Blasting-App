@@ -194,7 +194,7 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
                 public void syncWithBims() {
                     if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
                         String blastCode = "";
-                        if (Constants.isListEmpty(allTablesData.getTable())) {
+                        if (!Constants.isListEmpty(allTablesData.getTable())) {
                             if (!StringUtill.isEmpty(String.valueOf(allTablesData.getTable().get(0).getBimsId()))) {
                                 blastCode = String.valueOf(allTablesData.getTable().get(0).getBimsId());
                             } else {

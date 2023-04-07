@@ -193,7 +193,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                         blastInsertSyncRecord3DApiCaller(bladesRetrieveData.get(0), allTablesData, getRowWiseHoleIn3dList(allTablesData).size(), 0, blastCode).observe(HoleDetail3DModelActivity.this, new Observer<JsonElement>() {
                             @Override
                             public void onChanged(JsonElement element) {
-                                bladesRetrieveData = AppDelegate.instance.getResponse3DTable1DataModel();
+                                bladesRetrieveData = AppDelegate.getInstance().getResponse3DTable1DataModel();
                             }
                         });
                     } else {
@@ -557,8 +557,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
         String dataStr = "";
 
-        JsonElement element = AppDelegate.getInstance().getHole3DDataElement();
-//        JsonElement element = new Gson().fromJson(entity.getAllBladesProject(updateHoleDetailData.getDesignId()).getProjectHole(), JsonElement.class);
+//        JsonElement element = AppDelegate.getInstance().getHole3DDataElement();
+        JsonElement element = new Gson().fromJson(entity.getAllBladesProject(updateHoleDetailData.getDesignId()).getProjectHole(), JsonElement.class);
         List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
         if (element != null) {
             JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);

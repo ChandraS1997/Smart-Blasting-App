@@ -168,7 +168,8 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
 
     @Override
     public void editDataTable(List<TableEditModel> arrayList, boolean fromPref) {
-        List<TableEditModel> models = manger.get3dTableField();
+//        List<TableEditModel> models = manger.get3dTableField();
+        List<TableEditModel> models = arrayList;
         if (!Constants.isListEmpty(models)) {
             int selectedCount = 0;
             for (int i = 0; i < models.size(); i++) {
@@ -183,8 +184,8 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
 //                tableEditModel.setFirstTime(false);
                 tableEditModelArrayList.set(i, tableEditModel);
             }
-            setDataNotifyList(false);
             setWidthOfRv(selectedCount);
+            setDataNotifyList(false);
         }
     }
 
