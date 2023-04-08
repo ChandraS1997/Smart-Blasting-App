@@ -248,7 +248,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                 Intent i = new Intent(mContext, HoleDetail3DModelActivity.class);
                 AppDelegate.getInstance().addResponse3DTable1DataModel(bladesRetrieveData);
                 AppDelegate.getInstance().setHoleChargingDataModel(allTablesData);
-                startActivity(i);
+                mContext.startActivity(i);
             }
         }
     }

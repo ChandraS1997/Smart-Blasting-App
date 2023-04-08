@@ -639,7 +639,7 @@ public class BaseActivity extends AppCompatActivity {
                                                         List<Response3DTable1DataModel> modelList = AppDelegate.instance.getResponse3DTable1DataModel();
                                                         modelList.set(0, bladesRetrieveData);
                                                         AppDelegate.getInstance().setResponse3DTable1DataModel(modelList);
-                                                        jsonPrimitiveMutableLiveData.setValue(element);
+//                                                        jsonPrimitiveMutableLiveData.setValue(element);
                                                     }
                                                 });
                                             }
@@ -1013,7 +1013,7 @@ public class BaseActivity extends AppCompatActivity {
                                                             apiList.set(0, api);
                                                             tablesData.setTable(apiList);
                                                             AppDelegate.getInstance().setAllTablesData(tablesData);
-                                                            jsonPrimitiveMutableLiveData.setValue(response);
+//                                                            jsonPrimitiveMutableLiveData.setValue(response);
                                                         }
                                                     });
                                             }
@@ -2072,6 +2072,46 @@ public class BaseActivity extends AppCompatActivity {
                                         List<Response3DTable1DataModel> modelList = AppDelegate.getInstance().getResponse3DTable1DataModel();
                                         modelList.set(0, bladesRetrieveData);
                                         AppDelegate.getInstance().setResponse3DTable1DataModel(modelList);
+
+                                        ProjectHoleDetailRowColDao entity = appDatabase.projectHoleDetailRowColDao();
+                                        ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
+
+                                        /*if (entity.isExistProject(bladesRetrieveData.getDesignId())) {
+                                            entity.updateProject(bladesRetrieveData.getDesignId(), new Gson().toJson(tablesData));
+                                        } else {
+                                            ProjectHoleDetailRowColEntity colEntity = new ProjectHoleDetailRowColEntity();
+                                            colEntity.setDesignId(bladesRetrieveData.getDesignId());
+                                            colEntity.setIs3DBlades(true);
+                                            colEntity.setProjectHole(new Gson().toJson(tablesData));
+                                            entity.insertProject(colEntity);
+                                        }*/
+
+                                        /*
+                                        * ProjectHoleDetailRowColDao entity = appDatabase.projectHoleDetailRowColDao();
+                                        ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
+
+                                        List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
+                                        JsonArray array = new Gson().fromJson(new Gson().fromJson((new Gson().fromJson(rowColEntity.getProjectHole(), JsonObject.class)).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                                        for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
+                                            response3DTable1DataModels.add(new Gson().fromJson(e, Response3DTable1DataModel.class));
+                                        }
+
+                                        Response3DTable1DataModel infoApi = response3DTable1DataModels.get(0);
+                                        infoApi.setBimsId(blastCode);
+                                        response3DTable1DataModels.set(0, infoApi);
+
+                                        array.set(0, new Gson().fromJson(new Gson().toJson(response3DTable1DataModels), JsonElement.class));
+                                        JsonObject jsonObject = new JsonObject();
+                                        JsonPrimitive primitive = new JsonPrimitive(new Gson().toJson(array));
+                                        jsonObject.add("GetAll3DDesignInfoResult", primitive);
+
+                                        if (!entity.isExistProject(String.valueOf(bladesRetrieveData.getDesignId()))) {
+                                            entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(bladesRetrieveData.getDesignId()), true, new Gson().toJson(jsonObject)));
+                                        } else {
+                                            entity.updateProject(String.valueOf(bladesRetrieveData.getDesignId()), new Gson().toJson(jsonObject));
+                                        }
+                                        * */
+
                                         data.setValue(element);
                                     }
                                 });

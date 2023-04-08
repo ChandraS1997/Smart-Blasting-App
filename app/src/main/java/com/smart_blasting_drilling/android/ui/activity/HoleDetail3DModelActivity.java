@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
@@ -575,8 +576,36 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             if (!Constants.isListEmpty(holeDetailDataList)) {
                 for (int i = 0; i < holeDetailDataList.size(); i++) {
                     if (String.valueOf(updateHoleDetailData.getRowNo()).equals(String.valueOf(holeDetailDataList.get(i).getRowNo())) && holeDetailDataList.get(i).getHoleID().equals(updateHoleDetailData.getHoleID())) {
+                        if (!Constants.isListEmpty(holeDetailDataList.get(i).getChargeTypeArray())) {
+                            double length = 0, deckLen = 0;
+                            for (int j = 0; j < holeDetailDataList.get(i).getChargeTypeArray().size(); j++) {
+                                ChargeTypeArrayItem item = holeDetailDataList.get(i).getChargeTypeArray().get(j);
+                                if (StringUtill.getString(item.getType()).equals("Stemming")) {
+                                    length = length + item.getLength();
+                                }
+                                if (StringUtill.getString(item.getType()).equals("Decking")) {
+                                    deckLen = deckLen + item.getLength();
+                                }
+                            }
+                        }
                         holeDetailDataList.set(i, updateHoleDetailData);
                     } else {
+                        if (!Constants.isListEmpty(holeDetailDataList.get(i).getChargeTypeArray())) {
+                            double length = 0, deckLen = 0;
+                            for (int j = 0; j < holeDetailDataList.get(i).getChargeTypeArray().size(); j++) {
+                                ChargeTypeArrayItem item = holeDetailDataList.get(i).getChargeTypeArray().get(j);
+                                if (StringUtill.getString(item.getType()).equals("Stemming")) {
+                                    length = length + item.getLength();
+                                }
+                                if (StringUtill.getString(item.getType()).equals("Decking")) {
+                                    deckLen = deckLen + item.getLength();
+                                }
+                            }
+                            Response3DTable4HoleChargingDataModel model = holeDetailDataList.get(i);
+                            model.setStemmingLength(String.valueOf(length));
+                            model.setDeckLength(String.valueOf(deckLen));
+                            holeDetailDataList.set(i, model);
+                        }
                         holeDetailDataList.set(i, holeDetailDataList.get(i));
                     }
                 }

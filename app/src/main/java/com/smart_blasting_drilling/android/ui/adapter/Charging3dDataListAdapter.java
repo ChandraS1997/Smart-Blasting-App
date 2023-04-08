@@ -39,7 +39,6 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
 
     String[] stemArr, deckArr, otherDataArr;
 
-    ChargeTypeArrayItem jsonObject = new ChargeTypeArrayItem();
     List<ChargeTypeArrayItem> jsonArray = new ArrayList<>();
 
     public Charging3dDataListAdapter(Context context, List<ChargeTypeArrayItem> chargingDataModelList) {
@@ -166,10 +165,9 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     try {
-                        jsonObject = chargingDataModel;
-                        jsonObject.setType(typeArr[i]);
+                        chargingDataModel.setType(typeArr[i]);
                         setExpArray(typeArr[i]);
-                        addData(jsonObject);
+                        addData(chargingDataModel);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -182,27 +180,27 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
                     try {
                         if (binding.typeSpinner.getText().toString().equals("Stemming")) {
                             binding.costEt.setText(stemmingArr.get(i).getAsJsonObject().get("UnitCost").getAsString());
-                            jsonObject.setProdId(stemmingArr.get(i).getAsJsonObject().get("ExpCode").getAsInt());
+                            chargingDataModel.setProdId(stemmingArr.get(i).getAsJsonObject().get("ExpCode").getAsInt());
                         } else if (binding.typeSpinner.getText().toString().equals("Decking")) {
                             binding.costEt.setText(deckingArr.get(i).getAsJsonObject().get("UnitCost").getAsString());
-                            jsonObject.setProdId(deckingArr.get(i).getAsJsonObject().get("ExpCode").getAsInt());
+                            chargingDataModel.setProdId(deckingArr.get(i).getAsJsonObject().get("ExpCode").getAsInt());
                         } else {
                             binding.costEt.setText(otherArr.get(i).getAsJsonObject().get("UnitCost").getAsString());
-                            jsonObject.setProdId(otherArr.get(i).getAsJsonObject().get("ExpCode").getAsInt());
+                            chargingDataModel.setProdId(otherArr.get(i).getAsJsonObject().get("ExpCode").getAsInt());
                         }
-                        jsonObject.setType(binding.typeSpinner.getText().toString());
-                        jsonObject.setName(binding.explosiveEt.getText().toString());
-                        jsonObject.setColor(chargingDataModel.getColor());
-                        jsonObject.setPercentage(chargingDataModel.getPercentage());
+                        chargingDataModel.setType(binding.typeSpinner.getText().toString());
+                        chargingDataModel.setName(binding.explosiveEt.getText().toString());
+                        chargingDataModel.setColor(chargingDataModel.getColor());
+                        chargingDataModel.setPercentage(chargingDataModel.getPercentage());
                         for (int a = 0; a < typeArr.length; a++) {
                             if (typeArr[a].equals(binding.typeSpinner.getText().toString())) {
-                                jsonObject.setProdType(a+1);
+                                chargingDataModel.setProdType(a+1);
                                 break;
                             }
                         }
-                        jsonObject.setCost(binding.costEt.getText().toString());
+                        chargingDataModel.setCost(binding.costEt.getText().toString());
 
-                        addData(jsonObject);
+                        addData(chargingDataModel);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -217,8 +215,8 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    jsonObject.setLength(binding.columnLengthEt.getText().toString());
-                    addData(jsonObject);
+                    chargingDataModel.setLength(binding.columnLengthEt.getText().toString());
+                    addData(chargingDataModel);
                 }
 
                 @Override
@@ -235,8 +233,8 @@ public class Charging3dDataListAdapter extends BaseRecyclerAdapter {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    jsonObject.setWeight(binding.columnWeightEt.getText().toString());
-                    addData(jsonObject);
+                    chargingDataModel.setWeight(binding.columnWeightEt.getText().toString());
+                    addData(chargingDataModel);
                 }
 
                 @Override

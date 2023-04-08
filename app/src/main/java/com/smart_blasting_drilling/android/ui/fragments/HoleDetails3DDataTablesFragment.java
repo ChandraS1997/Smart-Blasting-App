@@ -25,6 +25,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailD
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.api.apis.response.TableFieldItemModel;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable3DataModel;
@@ -296,8 +297,25 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
 
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTotalCharge()), tableEditModelArrayList.get(17).getTitleVal(), tableEditModelArrayList.get(17).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getChargeLength()), tableEditModelArrayList.get(18).getTitleVal(), tableEditModelArrayList.get(18).isSelected(), update));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getStemmingLength()), tableEditModelArrayList.get(19).getTitleVal(), tableEditModelArrayList.get(19).isSelected(), update));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getDeckLength()), tableEditModelArrayList.get(20).getTitleVal(), tableEditModelArrayList.get(20).isSelected(), update));
+
+                    if (!Constants.isListEmpty(holeDetailData.getChargeTypeArray())) {
+                        double length = 0, deckLen = 0;
+                        for (int j = 0; j < holeDetailData.getChargeTypeArray().size(); j++) {
+                            ChargeTypeArrayItem item = holeDetailData.getChargeTypeArray().get(j);
+                            if (StringUtill.getString(item.getType()).equals("Stemming")) {
+                                length = length + item.getLength();
+                            }
+                            if (StringUtill.getString(item.getType()).equals("Decking")) {
+                                deckLen = deckLen + item.getLength();
+                            }
+                        }
+                        editModelArrayList.add(new TableEditModel(String.valueOf(length), tableEditModelArrayList.get(19).getTitleVal(), tableEditModelArrayList.get(19).isSelected(), update));
+                        editModelArrayList.add(new TableEditModel(String.valueOf(deckLen), tableEditModelArrayList.get(20).getTitleVal(), tableEditModelArrayList.get(20).isSelected(), update));
+                    } else {
+                        editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getStemmingLength()), tableEditModelArrayList.get(19).getTitleVal(), tableEditModelArrayList.get(19).isSelected(), update));
+                        editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getDeckLength()), tableEditModelArrayList.get(20).getTitleVal(), tableEditModelArrayList.get(20).isSelected(), update));
+                    }
+
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBlock()), tableEditModelArrayList.get(21).getTitleVal(), tableEditModelArrayList.get(21).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBlockLength()), tableEditModelArrayList.get(22).getTitleVal(), tableEditModelArrayList.get(22).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getInHoleDelay()), tableEditModelArrayList.get(23).getTitleVal(), tableEditModelArrayList.get(23).isSelected(), update));

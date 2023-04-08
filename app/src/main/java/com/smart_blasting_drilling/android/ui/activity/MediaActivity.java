@@ -131,8 +131,8 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         addMediaIntoDb();
+        super.onBackPressed();
     }
 
     private void addMediaIntoDb() {
