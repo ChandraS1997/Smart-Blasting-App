@@ -631,7 +631,7 @@ public class BaseActivity extends AppCompatActivity {
                                                     appDatabase.allProjectBladesModelDao().updateItem(bladesRetrieveData.getDesignId(), modelEntity.getProjectCode(), new Gson().toJson(bladesRetrieveData));
                                                 }
                                             }
-                                            if (StringUtill.isEmpty(String.valueOf(bladesRetrieveData.getDrimsId()))) {
+                                            /*if (StringUtill.isEmpty(String.valueOf(bladesRetrieveData.getDrimsId()))) {
                                                 updateDesignIdBimsDrimsApiCaller(bladesRetrieveData.getDesignId(), jsonObject.get("projectCode").getAsString(), false, false).observe(BaseActivity.this, new Observer<JsonElement>() {
                                                     @Override
                                                     public void onChanged(JsonElement element) {
@@ -642,7 +642,7 @@ public class BaseActivity extends AppCompatActivity {
 //                                                        jsonPrimitiveMutableLiveData.setValue(element);
                                                     }
                                                 });
-                                            }
+                                            }*/
 //                                   setInsertUpdateHoleDetailSync(bladesRetrieveData, holeDetailData, jsonObject.get("projectCode").getAsString());
                                         } catch (Exception e) {
                                             Log.e(NODATAFOUND, e.getMessage());
@@ -1002,7 +1002,7 @@ public class BaseActivity extends AppCompatActivity {
                                                     appDatabase.allProjectBladesModelDao().updateItem(bladesRetrieveData.getDesignId(), modelEntity.getProjectCode(), new Gson().toJson(bladesRetrieveData));
                                                 }
                                             }
-                                            if (!Constants.isListEmpty(tablesData.getTable())) {
+                                            /*if (!Constants.isListEmpty(tablesData.getTable())) {
                                                 if (StringUtill.isEmpty(String.valueOf(tablesData.getTable().get(0).getDrimsId())))
                                                     updateDesignIdBimsDrimsApiCaller(bladesRetrieveData.getDesignId(), jsonObject.get("projectCode").getAsString(), false, false).observe(BaseActivity.this, new Observer<JsonElement>() {
                                                         @Override
@@ -1016,7 +1016,7 @@ public class BaseActivity extends AppCompatActivity {
 //                                                            jsonPrimitiveMutableLiveData.setValue(response);
                                                         }
                                                     });
-                                            }
+                                            }*/
 //                                   setInsertUpdateHoleDetailSync(bladesRetrieveData, holeDetailData, jsonObject.get("projectCode").getAsString());
                                         } catch (Exception e) {
                                             Log.e(NODATAFOUND, e.getMessage());
@@ -1121,8 +1121,8 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public MutableLiveData<JsonPrimitive> setInsertUpdateHoleDetailMultipleSync(ResponseBladesRetrieveData bladesRetrieveData, List<ResponseHoleDetailData> holeDetailData, String projectCode) {
-        MutableLiveData<JsonPrimitive> jsonObjectMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<JsonElement> setInsertUpdateHoleDetailMultipleSync(ResponseBladesRetrieveData bladesRetrieveData, List<ResponseHoleDetailData> holeDetailData, AllTablesData allTablesData, String projectCode) {
+        MutableLiveData<JsonElement> jsonObjectMutableLiveData = new MutableLiveData<>();
         try {
             showLoader();
             JsonObject mapObject = new JsonObject();
@@ -1192,11 +1192,31 @@ public class BaseActivity extends AppCompatActivity {
 
             mapObject.add("HoleDetails", holeDetailArray);
 
-            MainService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(this, mapObject).observe(this, new Observer<JsonPrimitive>() {
+            MainService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(this, mapObject).observe(this, new Observer<JsonElement>() {
                 @Override
-                public void onChanged(JsonPrimitive response) {
+                public void onChanged(JsonElement response) {
                     jsonObjectMutableLiveData.setValue(response);
                     hideLoader();
+                    if (!StringUtill.isEmpty(projectCode)) {
+                    if (!Constants.isListEmpty(allTablesData.getTable())) {
+                        if (StringUtill.isEmpty(String.valueOf(allTablesData.getTable().get(0).getDrimsId())))
+                            updateDesignIdBimsDrimsApiCaller(bladesRetrieveData.getDesignId(), projectCode, false, false).observe(BaseActivity.this, new Observer<JsonElement>() {
+                                @Override
+                                public void onChanged(JsonElement element) {
+                                    if (element != null) {
+                                        if (!element.isJsonNull()) {
+                                            List<ResponseProjectModelFromAllInfoApi> apiList = allTablesData.getTable();
+                                            ResponseProjectModelFromAllInfoApi api = apiList.get(0);
+                                            api.setDrimsId(projectCode);
+                                            apiList.set(0, api);
+                                            allTablesData.setTable(apiList);
+                                            AppDelegate.getInstance().setAllTablesData(allTablesData);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
                 }
             });
         } catch (Exception e) {
@@ -1207,8 +1227,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
-    public MutableLiveData<JsonPrimitive> setInsertUpdateHoleDetailMultipleSync3D(Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> holeDetailData, String projectCode) {
-        MutableLiveData<JsonPrimitive> jsonObjectMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<JsonElement> setInsertUpdateHoleDetailMultipleSync3D(Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> holeDetailData, String projectCode) {
+        MutableLiveData<JsonElement> jsonObjectMutableLiveData = new MutableLiveData<>();
         try {
             showLoader();
             JsonObject mapObject = new JsonObject();
@@ -1278,11 +1298,28 @@ public class BaseActivity extends AppCompatActivity {
 
             mapObject.add("HoleDetails", holeDetailArray);
 
-            MainService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(this, mapObject).observe(this, new Observer<JsonPrimitive>() {
+            MainService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(this, mapObject).observe(this, new Observer<JsonElement>() {
                 @Override
-                public void onChanged(JsonPrimitive response) {
+                public void onChanged(JsonElement response) {
                     jsonObjectMutableLiveData.setValue(response);
                     hideLoader();
+                    if (!StringUtill.isEmpty(projectCode)) {
+                        if (StringUtill.isEmpty(String.valueOf(bladesRetrieveData.getDrimsId()))) {
+                            updateDesignIdBimsDrimsApiCaller(bladesRetrieveData.getDesignId(), projectCode, true, false).observe(BaseActivity.this, new Observer<JsonElement>() {
+                                @Override
+                                public void onChanged(JsonElement element) {
+                                    if (element != null) {
+                                        if (!element.isJsonNull()) {
+                                            bladesRetrieveData.setDrimsId(projectCode);
+                                            List<Response3DTable1DataModel> modelList = AppDelegate.instance.getResponse3DTable1DataModel();
+                                            modelList.set(0, bladesRetrieveData);
+                                            AppDelegate.getInstance().setResponse3DTable1DataModel(modelList);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
                 }
             });
         } catch (Exception e) {
@@ -2209,10 +2246,10 @@ public class BaseActivity extends AppCompatActivity {
                 }
             }
 
-            MainService.insertActualDesignChartSheetApiCaller(this, mapObjectArray).observe(this, new Observer<JsonPrimitive>() {
+            MainService.insertActualDesignChartSheetApiCaller(this, mapObjectArray).observe(this, new Observer<JsonElement>() {
                 @Override
-                public void onChanged(JsonPrimitive jsonObject) {
-                    if (jsonObject.isString()) {
+                public void onChanged(JsonElement jsonObject) {
+                    if (jsonObject.getAsJsonPrimitive().isString()) {
                         Log.e("Abd : ", jsonObject.getAsString());
                     }
                     showToast("Project Sync Successfully");

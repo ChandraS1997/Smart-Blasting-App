@@ -250,9 +250,9 @@ public class HoleDetailActivity extends BaseActivity implements View.OnClickList
         if (StringUtill.isEmpty(code)) {
             code = (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "";
         }
-        setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), code).observe(this, new Observer<JsonPrimitive>() {
+        setInsertUpdateHoleDetailMultipleSync(bladesRetrieveData, allTablesData.getTable2(), allTablesData, code).observe(this, new Observer<JsonElement>() {
             @Override
-            public void onChanged(JsonPrimitive response) {
+            public void onChanged(JsonElement response) {
                 if (response == null) {
                     Log.e(ERROR, SOMETHING_WENT_WRONG);
                 } else {

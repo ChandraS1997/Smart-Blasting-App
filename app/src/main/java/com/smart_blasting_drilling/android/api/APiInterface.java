@@ -82,13 +82,13 @@ public interface APiInterface {
     Call<JsonPrimitive> insertUpdateAppHoleDetailsSyncApiCaller(@Body JsonObject map);
 
     @POST("insertUpdateAppHoleDetailsmultipleSync")
-    Call<JsonPrimitive> insertUpdateAppHoleDetailsmultipleSyncApiCaller(@Body JsonObject map);
+    Call<JsonElement> insertUpdateAppHoleDetailsmultipleSyncApiCaller(@Body JsonObject map);
 
     @POST("v6/InsertRecord")
     Call<JsonObject> bimsInsertSyncRecordApiCaller(@Body JsonObject map);
 
     @POST("insertActualDesignChartsheet/reset")
-    Call<JsonPrimitive> insertActualDesignChartSheetApiCaller(@Body JsonArray map);
+    Call<JsonElement> insertActualDesignChartSheetApiCaller(@Body JsonArray map);
 
     @POST("InsertUpdate3DActualDesignHoleDetail/reset")
     Call<JsonElement> insertUpdate3DActualDesignHoleDetailApiCaller(@Body JsonArray map);

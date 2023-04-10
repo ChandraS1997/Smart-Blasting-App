@@ -229,9 +229,9 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         if (StringUtill.isEmpty(code)) {
             code = (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "";
         }
-        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), allTablesData, code).observe(this, new Observer<JsonPrimitive>() {
+        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), allTablesData, code).observe(this, new Observer<JsonElement>() {
             @Override
-            public void onChanged(JsonPrimitive response) {
+            public void onChanged(JsonElement response) {
                 if (response == null) {
                     Log.e(ERROR, SOMETHING_WENT_WRONG);
                 } else {
@@ -523,7 +523,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             updateHoleDetailData.setBottomY(StringUtill.isEmpty(binding.holeDetailLayout.bottomYEt.getText().toString()) ? "0" : binding.holeDetailLayout.bottomYEt.getText().toString());
             updateHoleDetailData.setBottomZ(StringUtill.isEmpty(binding.holeDetailLayout.bottomZEt.getText().toString()) ? "0" : binding.holeDetailLayout.bottomZEt.getText().toString());
 
-            updateHoleDetailData.setSubgrade(StringUtill.isEmpty(binding.holeDetailLayout.subgradeEt.getText().toString()) ? "0" : binding.holeDetailLayout.bottomYEt.getText().toString());
+            updateHoleDetailData.setSubgrade(StringUtill.isEmpty(binding.holeDetailLayout.subgradeEt.getText().toString()) ? "0" : binding.holeDetailLayout.subgradeEt.getText().toString());
             updateHoleDetailData.setWaterDepth(StringUtill.isEmpty(binding.holeDetailLayout.waterDepthEt.getText().toString()) ? "0" : binding.holeDetailLayout.waterDepthEt.getText().toString());
             updateHoleDetailData.setTotalCharge(StringUtill.isEmpty(binding.holeDetailLayout.totalChargeEt.getText().toString()) ? "0" : binding.holeDetailLayout.totalChargeEt.getText().toString());
             updateHoleDetailData.setChargeLength(StringUtill.isEmpty(binding.holeDetailLayout.chargeLengthEt.getText().toString()) ? "0" : binding.holeDetailLayout.chargeLengthEt.getText().toString());

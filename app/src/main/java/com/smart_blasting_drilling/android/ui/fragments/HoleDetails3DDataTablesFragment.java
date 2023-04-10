@@ -280,7 +280,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getRowNo()), tableEditModelArrayList.get(0).getTitleVal(), tableEditModelArrayList.get(0).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleNo()), tableEditModelArrayList.get(1).getTitleVal(), tableEditModelArrayList.get(1).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleID()), tableEditModelArrayList.get(2).getTitleVal(), tableEditModelArrayList.get(2).isSelected(), update));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(StringUtill.isEmpty(String.valueOf(holeDetailData.getHoleType())) ? "1" : holeDetailData.getHoleType()), tableEditModelArrayList.get(3).getTitleVal(), tableEditModelArrayList.get(3).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(getHoleType(String.valueOf(holeDetailData.getHoleType()))), tableEditModelArrayList.get(3).getTitleVal(), tableEditModelArrayList.get(3).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(StringUtill.isEmpty(holeDetailData.getHoleDepth()) ? "" : holeDetailData.getHoleDepth()), tableEditModelArrayList.get(4).getTitleVal(), tableEditModelArrayList.get(4).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleStatus()), tableEditModelArrayList.get(5).getTitleVal(), tableEditModelArrayList.get(5).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getVerticalDip()), tableEditModelArrayList.get(6).getTitleVal(), tableEditModelArrayList.get(6).isSelected(), update));
@@ -340,6 +340,21 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private String getHoleType(String holeType) {
+        if (!StringUtill.isEmpty(holeType)) {
+            if (holeType.equals("1")) {
+                return "Production";
+            }
+            if (holeType.equals("2")) {
+                return "Buffer";
+            }
+            if (holeType.equals("3")) {
+                return "PreSplit";
+            }
+        }
+        return "Production";
     }
 
     @Override

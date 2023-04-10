@@ -573,15 +573,15 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonPrimitive> insertUpdateAppHoleDetailsmultipleSyncApiCaller(final Context context, JsonObject map) {
-        final MutableLiveData<JsonPrimitive> data = new MutableLiveData<>();
+    public static LiveData<JsonElement> insertUpdateAppHoleDetailsmultipleSyncApiCaller(final Context context, JsonObject map) {
+        final MutableLiveData<JsonElement> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonPrimitive> call = drimzApiService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(map);
-        call.enqueue(new Callback<JsonPrimitive>() {
+        Call<JsonElement> call = drimzApiService.insertUpdateAppHoleDetailsmultipleSyncApiCaller(map);
+        call.enqueue(new Callback<JsonElement>() {
             @Override
-            public void onResponse(Call<JsonPrimitive> call, Response<JsonPrimitive> response) {
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
@@ -590,7 +590,7 @@ public class MainService {
             }
 
             @Override
-            public void onFailure(Call<JsonPrimitive> call, Throwable t) {
+            public void onFailure(Call<JsonElement> call, Throwable t) {
                 data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }
@@ -623,15 +623,15 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonPrimitive> insertActualDesignChartSheetApiCaller(final Context context, JsonArray map) {
-        final MutableLiveData<JsonPrimitive> data = new MutableLiveData<>();
+    public static LiveData<JsonElement> insertActualDesignChartSheetApiCaller(final Context context, JsonArray map) {
+        final MutableLiveData<JsonElement> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonPrimitive> call = testBlastSblastApiService.insertActualDesignChartSheetApiCaller(map);
-        call.enqueue(new Callback<JsonPrimitive>() {
+        Call<JsonElement> call = testBlastSblastApiService.insertActualDesignChartSheetApiCaller(map);
+        call.enqueue(new Callback<JsonElement>() {
             @Override
-            public void onResponse(Call<JsonPrimitive> call, Response<JsonPrimitive> response) {
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                 if (response.body() != null) {
                     data.setValue(response.body());
                 } else {
@@ -640,7 +640,7 @@ public class MainService {
             }
 
             @Override
-            public void onFailure(Call<JsonPrimitive> call, Throwable t) {
+            public void onFailure(Call<JsonElement> call, Throwable t) {
                 data.setValue(null);
                 Log.e(" API FAILED ", t.getLocalizedMessage());
             }
