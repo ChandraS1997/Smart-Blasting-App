@@ -463,7 +463,7 @@ public class HomeActivity extends BaseActivity {
     public void getAllDesignInfoApiCaller(boolean is3D) {
         showLoader();
         ResponseLoginData loginData = manger.getUserDetails();
-        MainService.getAll2D_3DDesignInfoApiCaller(this, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.getDesignId(), "dev_centralmineinfo", 0, is3D).observe((LifecycleOwner) this, new Observer<JsonElement>() {
+        MainService.getAll2D_3DDesignInfoApiCaller(this, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.getDesignId(), Constants.DB_NAME, 0, is3D).observe((LifecycleOwner) this, new Observer<JsonElement>() {
             @Override
             public void onChanged(JsonElement response) {
                 if (response == null) {
@@ -474,6 +474,7 @@ public class HomeActivity extends BaseActivity {
                             if (is3D) {
                                 try {
                                     List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
+                                    //GetAll3DDesignwithActualInfoResult for live
                                     JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
                                     for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
                                         response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));

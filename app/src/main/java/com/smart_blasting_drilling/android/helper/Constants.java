@@ -35,14 +35,27 @@ public class Constants {
     public static String API_DRIMS_BASE_URL = "drims";
     public static String BLAST_S_BLAST_BASE_URL = "blast_s_blast";
     public static String TEST_BLAST_S_BLAST_BASE_URL = "test_blast_s_blast";
-    public static final String LOGIN_BASE_URL = "https://www.mineexcellence.com/smartdrilling/";
-    public static final String BLADES_BASE_URL = "http://testblades.mineexcellence.com/";
-    public static final String IMAGE_VIDEO_BASE_URL = "http://devsblastapi.mineexcellence.com/api/sblast/";
-    public static final String UPLOAD_BASE_URL = "https://centralbims.mineexcellence.com/";
-    public static final String DRIMS_BASE_URL = "https://devdrims.mineexcellence.com/DRIMS_API/Service1.svc/";
-    public static final String BLAST_S_BLAST = "https://devsblastapi.mineexcellence.com/api/sblast/";
-    public static final String TEST_BLAST_S_BLAST = "http://testblades.mineexcellence.com/BLADES_API/Service1.svc/";
 
+    // Dev Url
+//    public static final String LOGIN_BASE_URL = "https://www.mineexcellence.com/smartdrilling/";
+//    public static final String BLADES_BASE_URL = "http://testblades.mineexcellence.com/";
+//    public static final String IMAGE_VIDEO_BASE_URL = "http://devsblastapi.mineexcellence.com/api/sblast/";
+//    public static final String UPLOAD_BASE_URL = "https://centralbims.mineexcellence.com/";
+//    public static final String DRIMS_BASE_URL = "https://devdrims.mineexcellence.com/DRIMS_API/Service1.svc/";
+//    public static final String BLAST_S_BLAST = "https://devsblastapi.mineexcellence.com/api/sblast/";
+//    public static final String TEST_BLAST_S_BLAST = "http://testblades.mineexcellence.com/BLADES_API/Service1.svc/";
+//    public static final String DB_NAME = "dev_centralmineinfo";
+
+
+    // Live Url
+    public static final String LOGIN_BASE_URL = "https://www.cil.mineexcellence.com/smartdrilling/";
+    public static final String BLADES_BASE_URL = "http://blastdesigner.cil.mineexcellence.com/";
+    public static final String IMAGE_VIDEO_BASE_URL = "http://sblastapi.cil.mineexcellence.com/api/sblast/";
+    public static final String UPLOAD_BASE_URL = "https://centralbims.cil.mineexcellence.com/";
+    public static final String DRIMS_BASE_URL = "https://drims.cil.mineexcellence.com/DRIMS_API/Service1.svc/";
+    public static final String BLAST_S_BLAST = "https://sblastapi.cil.mineexcellence.com/api/sblast/";
+    public static final String TEST_BLAST_S_BLAST = "http://blastdesigner.cil.mineexcellence.com/BLADES_API/Service1.svc/";
+    public static final String DB_NAME = "centralmineinfo";
 
     @SuppressLint("HardwareIds")
     public static String getDeviceId(Context context) {

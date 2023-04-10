@@ -34,28 +34,29 @@ public interface APiInterface {
     @POST("v1/index.php")
     Call<JsonObject> registerApiCaller(@QueryMap Map<String, Object> queryMap, @PartMap Map<String, RequestBody> map);
 
-    @GET("BLADES_API/Service1.svc/Retrieve3DDesignByDate/{start_time}/{end_time}/{user_id}/1/{company_id}/centralmineinfo")
+    @GET("BLADES_API/Service1.svc/Retrieve3DDesignByDate/{start_time}/{end_time}/{company_id}/1/{user_id}/centralmineinfo")
     Call<JsonObject> retrieve3DDegignByDateApiCaller(@Path(value = "start_time", encoded = true) String startDate, @Path(value = "end_time", encoded = true) String endDate, @Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
-    @GET("BLADES_API/Service1.svc/RetrieveByDate/{start_time}/{end_time}/{user_id}/1/{company_id}/centralmineinfo")
+    @GET("BLADES_API/Service1.svc/RetrieveByDate/{start_time}/{end_time}/{company_id}/1/{user_id}/centralmineinfo")
     Call<JsonObject> retrieveByDateApiCaller(@Path(value = "start_time", encoded = true) String startDate, @Path(value = "end_time", encoded = true) String endDate, @Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
     @GET("BLADES_API/Service1.svc//get-mine-pit-zone-bench/{user_id}/{company_id}/1")
     Call<GetAllMinePitZoneBenchResult> getMinePitZoneBenchApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
-    @GET("BLADES_API/Service1.svc/GetAllDesignInfo/{blast_id}/{user_id}/{company_id}/{db_name}/{record_status}")
+    @GET("BLADES_API/Service1.svc/GetAllDesignInfo/{blast_id}/{company_id}/{user_id}/{db_name}/{record_status}")
     Call<JsonElement> getAllDesignInfoApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "blast_id", encoded = true) String blastId, @Path(value = "db_name", encoded = true) String dbName, @Path(value = "company_id", encoded = true) String companyId, @Path(value = "record_status", encoded = true) int recordStatus);
 
-    @GET("BLADES_API/Service1.svc/GetAll3DDesignInfo/{blast_id}/{user_id}/{company_id}/{db_name}/{record_status}")
+    // GetAll3DDesignwithActualInfo
+    @GET("BLADES_API/Service1.svc/GetAll3DDesignInfo/{blast_id}/{company_id}/{user_id}/{db_name}/{record_status}")
     Call<JsonElement> getAllDesign3DInfoApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "blast_id", encoded = true) String blastId, @Path(value = "db_name", encoded = true) String dbName, @Path(value = "company_id", encoded = true) String companyId, @Path(value = "record_status", encoded = true) int recordStatus);
 
-    @GET("v5/getrecord/{user_id}/{company_id}/1")
+    @GET("v5/getrecord/{company_id}/{user_id}/1")
     Call<ResponseAllRecordData> getRecordApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
     @GET("BLADES_API/Service1.svc//get-allmineinfo/SurfaceInitiator/{user_id}/{company_id}/1")
     Call<JsonElement> getAllMineInfoSurfaceInitiatorApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
-    @GET("get-drillaccessoriesinfoalldata/{user_id}/{company_id}")
+    @GET("get-drillaccessoriesinfoalldata/{company_id}/{user_id}")
     Call<JsonElement> getDrillAccessoriesInfoAllDataApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
     @GET("getDrillMethod")

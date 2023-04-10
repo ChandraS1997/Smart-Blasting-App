@@ -192,7 +192,7 @@ public class HoleDetailsTableFragment extends BaseFragment implements OnDataEdit
     public void getAllDesignInfoApiCaller(boolean is3d) {
         showLoader();
         ResponseLoginData loginData = manger.getUserDetails();
-        MainService.getAll2D_3DDesignInfoApiCaller(mContext, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.getDesignId(), "dev_centralmineinfo", 0, is3d).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
+        MainService.getAll2D_3DDesignInfoApiCaller(mContext, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.getDesignId(), Constants.DB_NAME, 0, is3d).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
             @Override
             public void onChanged(JsonElement response) {
                 if (response == null) {

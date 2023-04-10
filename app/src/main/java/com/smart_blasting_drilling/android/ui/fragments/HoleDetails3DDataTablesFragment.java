@@ -193,7 +193,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
     public void getAllDesignInfoApiCaller(boolean is3d) {
         showLoader();
         ResponseLoginData loginData = manger.getUserDetails();
-        MainService.getAll2D_3DDesignInfoApiCaller(mContext, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.get(0).getDesignId(), "dev_centralmineinfo", 0, is3d).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
+        MainService.getAll2D_3DDesignInfoApiCaller(mContext, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.get(0).getDesignId(), Constants.DB_NAME, 0, is3d).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
             @Override
             public void onChanged(JsonElement response) {
                 if (response == null) {

@@ -1198,23 +1198,23 @@ public class BaseActivity extends AppCompatActivity {
                     jsonObjectMutableLiveData.setValue(response);
                     hideLoader();
                     if (!StringUtill.isEmpty(projectCode)) {
-                    if (!Constants.isListEmpty(allTablesData.getTable())) {
-                        if (StringUtill.isEmpty(String.valueOf(allTablesData.getTable().get(0).getDrimsId())))
-                            updateDesignIdBimsDrimsApiCaller(bladesRetrieveData.getDesignId(), projectCode, false, false).observe(BaseActivity.this, new Observer<JsonElement>() {
-                                @Override
-                                public void onChanged(JsonElement element) {
-                                    if (element != null) {
-                                        if (!element.isJsonNull()) {
-                                            List<ResponseProjectModelFromAllInfoApi> apiList = allTablesData.getTable();
-                                            ResponseProjectModelFromAllInfoApi api = apiList.get(0);
-                                            api.setDrimsId(projectCode);
-                                            apiList.set(0, api);
-                                            allTablesData.setTable(apiList);
-                                            AppDelegate.getInstance().setAllTablesData(allTablesData);
+                        if (!Constants.isListEmpty(allTablesData.getTable())) {
+                            if (StringUtill.isEmpty(String.valueOf(allTablesData.getTable().get(0).getDrimsId())))
+                                updateDesignIdBimsDrimsApiCaller(bladesRetrieveData.getDesignId(), projectCode, false, false).observe(BaseActivity.this, new Observer<JsonElement>() {
+                                    @Override
+                                    public void onChanged(JsonElement element) {
+                                        if (element != null) {
+                                            if (!element.isJsonNull()) {
+                                                List<ResponseProjectModelFromAllInfoApi> apiList = allTablesData.getTable();
+                                                ResponseProjectModelFromAllInfoApi api = apiList.get(0);
+                                                api.setDrimsId(projectCode);
+                                                apiList.set(0, api);
+                                                allTablesData.setTable(apiList);
+                                                AppDelegate.getInstance().setAllTablesData(allTablesData);
+                                            }
                                         }
                                     }
-                                }
-                            });
+                                });
                         }
                     }
                 }
@@ -1830,7 +1830,7 @@ public class BaseActivity extends AppCompatActivity {
                             }
                         }
 
-                        chargeDetailsObject.addProperty("ExpCode", isCartridge ? String.valueOf(arrayItem.getProdId()): "");
+                        chargeDetailsObject.addProperty("ExpCode", isCartridge ? String.valueOf(arrayItem.getProdId()) : "");
                         chargeDetailsObject.addProperty("Weight", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0.0);
                         chargeDetailsObject.addProperty("ExpLength", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0.0);
                         chargeDetailsObject.addProperty("CostPerUnit", isCartridge ? arrayItem.getCost() : 0);
@@ -1853,7 +1853,7 @@ public class BaseActivity extends AppCompatActivity {
                             }
                         }
 
-                        chargeDetailsObject.addProperty("ExpCode1", isCartridge ? String.valueOf(arrayItem.getProdId()): "");
+                        chargeDetailsObject.addProperty("ExpCode1", isCartridge ? String.valueOf(arrayItem.getProdId()) : "");
                         chargeDetailsObject.addProperty("Weight1", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0);
                         chargeDetailsObject.addProperty("ExpLength1", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0);
                         chargeDetailsObject.addProperty("CostPerUnit1", isCartridge ? arrayItem.getCost() : 0);
@@ -1876,7 +1876,7 @@ public class BaseActivity extends AppCompatActivity {
                             }
                         }
 
-                        chargeDetailsObject.addProperty("ExpCode2", isCartridge ? String.valueOf(arrayItem.getProdId()): "");
+                        chargeDetailsObject.addProperty("ExpCode2", isCartridge ? String.valueOf(arrayItem.getProdId()) : "");
                         chargeDetailsObject.addProperty("Weight2", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0);
                         chargeDetailsObject.addProperty("ExpLength2", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0);
                         chargeDetailsObject.addProperty("CostPerUnit2", isCartridge ? arrayItem.getCost() : 0);
