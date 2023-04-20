@@ -236,8 +236,8 @@ public class HoleTableColumnViewAdapter extends BaseRecyclerAdapter {
         private boolean setViewOfTitle(String title) {
             return StringUtill.getString(title).equals("Hole Depth")
                     || StringUtill.getString(title).equals("Hole Angle")
-                    || StringUtill.getString(title).equals("Burden")
-                    || StringUtill.getString(title).equals("Spacing");
+                    /*|| StringUtill.getString(title).equals("Burden")
+                    || StringUtill.getString(title).equals("Spacing")*/;
         }
 
         private void setChargingData(ResponseBladesRetrieveData data) {

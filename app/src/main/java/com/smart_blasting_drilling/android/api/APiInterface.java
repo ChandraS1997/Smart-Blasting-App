@@ -46,8 +46,8 @@ public interface APiInterface {
     @GET("BLADES_API/Service1.svc/GetAllDesignInfo/{blast_id}/{company_id}/{user_id}/{db_name}/{record_status}")
     Call<JsonElement> getAllDesignInfoApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "blast_id", encoded = true) String blastId, @Path(value = "db_name", encoded = true) String dbName, @Path(value = "company_id", encoded = true) String companyId, @Path(value = "record_status", encoded = true) int recordStatus);
 
-    // GetAll3DDesignwithActualInfo
-    @GET("BLADES_API/Service1.svc/GetAll3DDesignInfo/{blast_id}/{company_id}/{user_id}/{db_name}/{record_status}")
+    // GetAll3DDesignInfo for test
+    @GET("BLADES_API/Service1.svc/GetAll3DDesignwithActualInfo/{blast_id}/{company_id}/{user_id}/{db_name}/{record_status}")
     Call<JsonElement> getAllDesign3DInfoApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "blast_id", encoded = true) String blastId, @Path(value = "db_name", encoded = true) String dbName, @Path(value = "company_id", encoded = true) String companyId, @Path(value = "record_status", encoded = true) int recordStatus);
 
     @GET("v5/getrecord/{company_id}/{user_id}/1")

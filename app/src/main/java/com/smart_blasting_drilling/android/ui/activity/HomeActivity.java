@@ -323,7 +323,8 @@ public class HomeActivity extends BaseActivity {
                 AppDelegate.getInstance().setHole3DDataElement(element);
                 if (rowColEntity.getIs3DBlades()) {
                     List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
-                    JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                    // "GetAll3DDesignInfoResult" for Test
+                    JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
                     for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
                         response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
                     }
@@ -428,7 +429,8 @@ public class HomeActivity extends BaseActivity {
     private void convertList3dDataList(JsonElement response) {
         try {
             clearTable();
-            JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+            // "GetAll3DDesignInfoResult" for Test
+            JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
             for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
                 response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
             }
@@ -439,10 +441,10 @@ public class HomeActivity extends BaseActivity {
                 response3DTable3DataModels.add(new Gson().fromJson(element, Response3DTable3DataModel.class));
             }
             JsonArray jsonArray = new JsonArray();
-            if (array.get(3) instanceof JsonArray) {
-                jsonArray = new Gson().fromJson(array.get(3), JsonArray.class);
+            if (array.get(15) instanceof JsonArray) {
+                jsonArray = new Gson().fromJson(array.get(15), JsonArray.class);
             } else {
-                jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class);
+                jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(15), String.class), JsonArray.class);
             }
             for (JsonElement element : jsonArray) {
                 response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
@@ -474,8 +476,8 @@ public class HomeActivity extends BaseActivity {
                             if (is3D) {
                                 try {
                                     List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
-                                    //GetAll3DDesignwithActualInfoResult for live
-                                    JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                                    //GetAll3DDesignInfoResult for live
+                                    JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
                                     for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
                                         response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
                                     }

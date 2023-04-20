@@ -423,7 +423,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
             if (!Constants.isListEmpty(appDatabase.projectHoleDetailRowColDao().getAllBladesProjectList())) {
                 if (appDatabase.projectHoleDetailRowColDao().getAllBladesProjectList().get(0) != null) {
                     Type teamList = new TypeToken<List<Table1Item>>(){}.getType();
-                    JsonArray array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.projectHoleDetailRowColDao().getAllBladesProject(bladesRetrieveData.getDesignId()).getProjectHole(), JsonObject.class).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                    JsonArray array = new Gson().fromJson(new Gson().fromJson(new Gson().fromJson(appDatabase.projectHoleDetailRowColDao().getAllBladesProject(bladesRetrieveData.getDesignId()).getProjectHole(), JsonObject.class).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
                     List<Response3DTable2DataModel> holeDetailDataList = new ArrayList<>();
                     for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(1), String.class), JsonArray.class)) {
                         holeDetailDataList.add(new Gson().fromJson(e, Response3DTable2DataModel.class));

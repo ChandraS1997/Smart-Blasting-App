@@ -50,8 +50,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     dataBinding {
+        //noinspection DataBindingWithoutKapt
         enabled = true
     }
+    compileSdkVersion 32
 }
 
 dependencies {

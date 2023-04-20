@@ -162,13 +162,14 @@ public class Charging3dDataDialog extends BaseDialogFragment {
             JsonElement element = new Gson().fromJson(entity.getAllBladesProject(allTablesData.getDesignId()).getProjectHole(), JsonElement.class);
             List<Response3DTable4HoleChargingDataModel> allTablesDataChild = new ArrayList<>();
             if (element != null) {
-                JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                // GetAll3DDesignInfoResult for test
+                JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
                 List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
                 JsonArray jsonArray = new JsonArray();
-                if (array.get(3) instanceof JsonArray) {
-                    jsonArray = new Gson().fromJson(array.get(3), JsonArray.class);
+                if (array.get(15) instanceof JsonArray) {
+                    jsonArray = new Gson().fromJson(array.get(15), JsonArray.class);
                 } else {
-                    jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class);
+                    jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(15), String.class), JsonArray.class);
                 }
                 for (JsonElement e : jsonArray) {
                     holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
@@ -182,10 +183,10 @@ public class Charging3dDataDialog extends BaseDialogFragment {
                         }
                     }
 
-                    array.set(3, new Gson().fromJson(new Gson().toJson(holeDetailDataList), JsonElement.class));
+                    array.set(15, new Gson().fromJson(new Gson().toJson(holeDetailDataList), JsonElement.class));
                     JsonObject jsonObject = new JsonObject();
                     JsonPrimitive primitive = new JsonPrimitive(new Gson().toJson(array));
-                    jsonObject.add("GetAll3DDesignInfoResult", primitive);
+                    jsonObject.add(Constants._3D_TBALE_NAME, primitive);
 
                     if (!entity.isExistProject(String.valueOf(allTablesData.getDesignId()))) {
                         entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(allTablesData.getDesignId()), true, new Gson().toJson(jsonObject)));
@@ -200,13 +201,13 @@ public class Charging3dDataDialog extends BaseDialogFragment {
                 ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
                 ProjectHoleDetailRowColEntity colEntity = dao.getAllBladesProject(allTablesData.getDesignId());
 
-                JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) new Gson().fromJson(colEntity.getProjectHole(), JsonElement.class)).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) new Gson().fromJson(colEntity.getProjectHole(), JsonElement.class)).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
                 List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
                 JsonArray jsonArray = new JsonArray();
-                if (array.get(3) instanceof JsonArray) {
-                    jsonArray = new Gson().fromJson(array.get(3), JsonArray.class);
+                if (array.get(15) instanceof JsonArray) {
+                    jsonArray = new Gson().fromJson(array.get(15), JsonArray.class);
                 } else {
-                    jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(3), String.class), JsonArray.class);
+                    jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(15), String.class), JsonArray.class);
                 }
                 for (JsonElement e : jsonArray) {
                     holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));

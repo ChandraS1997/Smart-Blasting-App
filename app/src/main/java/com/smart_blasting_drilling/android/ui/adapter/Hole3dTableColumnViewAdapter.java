@@ -1,6 +1,7 @@
 package com.smart_blasting_drilling.android.ui.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -59,6 +60,7 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        holder.setIsRecyclable(true);
         Hole3dTableColumnViewAdapter.HoleColumnViewHolder viewHolder = (Hole3dTableColumnViewAdapter.HoleColumnViewHolder) holder;
         viewHolder.setDataBind(editModelArrayList.get(position));
     }
@@ -107,8 +109,8 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
         private boolean setViewOfTitle(String title) {
             return StringUtill.getString(title).equals("Hole Depth")
                     || StringUtill.getString(title).equals("VerticalDip")
-                    || StringUtill.getString(title).equals("Burden")
-                    || StringUtill.getString(title).equals("Spacing");
+                    /*|| StringUtill.getString(title).equals("Burden")
+                    || StringUtill.getString(title).equals("Spacing")*/;
         }
 
         void setDataBind(TableEditModel model) {
@@ -216,6 +218,8 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
                     if (StringUtill.getString(model.getTitleVal()).equals("Spacing")) {
                         holeDetailData.setSpacing(binding.holeIdVal.getText().toString());
                     }
+                    model.setCheckBox(binding.holeIdVal.getText().toString());
+                    editModelArrayList.set(getBindingAdapterPosition(), model);
                     ((HoleDetail3DModelActivity) context).updateEditedDataIntoDb(holeDetailData, true);
                 }
 
