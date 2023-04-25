@@ -400,17 +400,7 @@ public class HomeActivity extends BaseActivity {
                     }
 
                     convertList3dDataList(response);
-                    if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
-                        Intent i = new Intent(HomeActivity.this, HoleDetail3DModelActivity.class);
-                        startActivity(i);
-                    } else {
-                        FragmentManager fm = getSupportFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        ProjectDetail3DDataDialog infoDialogFragment = ProjectDetail3DDataDialog.getInstance(response3DTable1DataModels.get(0));
-                        infoDialogFragment.setFrom("Home");
-                        ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
-                        ft.commitAllowingStateLoss();
-                    }
+
                 } catch (Exception e) {
                     e.getLocalizedMessage();
                 }
@@ -425,6 +415,8 @@ public class HomeActivity extends BaseActivity {
         response3DTable4HoleChargingDataModels.clear();
         response3DTable7DesignElementDataModels.clear();
     }
+
+    boolean isActualDataNotAvailable = false;
 
     private void convertList3dDataList(JsonElement response) {
         try {
@@ -441,10 +433,23 @@ public class HomeActivity extends BaseActivity {
                 response3DTable3DataModels.add(new Gson().fromJson(element, Response3DTable3DataModel.class));
             }
             JsonArray jsonArray = new JsonArray();
-            if (array.get(15) instanceof JsonArray) {
-                jsonArray = new Gson().fromJson(array.get(15), JsonArray.class);
-            } else {
-                jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(15), String.class), JsonArray.class);
+            if (array.size() > 14) {
+                if (array.get(15).isJsonNull()) {
+                    isActualDataNotAvailable = true;
+                } else {
+                    if (array.get(15) instanceof JsonArray) {
+                        if (array.get(15).getAsJsonArray() == null || array.get(15).getAsJsonArray().size() == 0) {
+                            isActualDataNotAvailable = true;
+                        }
+                    }
+                }
+            }
+            if (!isActualDataNotAvailable) {
+                if (array.get(15) instanceof JsonArray) {
+                    jsonArray = new Gson().fromJson(array.get(15), JsonArray.class);
+                } else {
+                    jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(15), String.class), JsonArray.class);
+                }
             }
             for (JsonElement element : jsonArray) {
                 response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
@@ -457,6 +462,22 @@ public class HomeActivity extends BaseActivity {
             AppDelegate.getInstance().setResponse3DTable2DataModel(response3DTable2DataModels);
             AppDelegate.getInstance().setResponse3DTable3DataModel(response3DTable3DataModels);
             AppDelegate.getInstance().setDesignElementDataModel(response3DTable7DesignElementDataModels);
+
+            if (!isActualDataNotAvailable) {
+                if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
+                    Intent i = new Intent(HomeActivity.this, HoleDetail3DModelActivity.class);
+                    startActivity(i);
+                } else {
+                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ProjectDetail3DDataDialog infoDialogFragment = ProjectDetail3DDataDialog.getInstance(response3DTable1DataModels.get(0));
+                    infoDialogFragment.setFrom("Home");
+                    ft.add(infoDialogFragment, ProjectDetailDialog.TAG);
+                    ft.commitAllowingStateLoss();
+                }
+            } else {
+                showToast("No actual data available");
+            }
         } catch (Exception e) {
             e.getLocalizedMessage();
         }
