@@ -73,7 +73,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
         binding.headerMedia.mediaTitle.setText(getString(R.string.initiating_device));
 
         binding.headerMedia.backImg.setOnClickListener(view -> {
-            removeDuplicateItem();
+//            removeDuplicateItem();
             finish();
         });
 
@@ -148,6 +148,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("Electronic/Electric Detonator", modelList));
             showToast("Data added successfully");
             KeyboardUtils.hideSoftKeyboard(this);
+            removeDuplicateItem();
         });
 
         binding.downTheHoleSaveBtn.setOnClickListener(view -> {
@@ -155,6 +156,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("Down The Hole", modelList));
             showToast("Data added successfully");
             KeyboardUtils.hideSoftKeyboard(this);
+            removeDuplicateItem();
         });
 
         binding.tldRowToRowSaveBtn.setOnClickListener(view -> {
@@ -162,6 +164,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("TLD(Row To Row)", modelList));
             showToast("Data added successfully");
             KeyboardUtils.hideSoftKeyboard(this);
+            removeDuplicateItem();
         });
 
         binding.tlsHoleToHoleSaveBtn.setOnClickListener(view -> {
@@ -169,6 +172,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
             initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("TLD(Hole To Hole)", modelList));
             showToast("Data added successfully");
             KeyboardUtils.hideSoftKeyboard(this);
+            removeDuplicateItem();
         });
 
     }
@@ -280,7 +284,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        removeDuplicateItem();
+//        removeDuplicateItem();
         super.onDestroy();
     }
 

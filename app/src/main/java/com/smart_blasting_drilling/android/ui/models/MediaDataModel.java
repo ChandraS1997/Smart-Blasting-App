@@ -3,7 +3,7 @@ package com.smart_blasting_drilling.android.ui.models;
 public class MediaDataModel {
 
     String fileName, filePath, extension, type;
-    boolean isSelection;
+    boolean isSelection, isSynced;
 
     public MediaDataModel() {
     }
@@ -14,6 +14,15 @@ public class MediaDataModel {
         this.extension = extension;
         this.type = type;
         this.isSelection = isSelection;
+    }
+
+    public MediaDataModel(String fileName, String filePath, String extension, String type, boolean isSelection, boolean isSynced) {
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.extension = extension;
+        this.type = type;
+        this.isSelection = isSelection;
+        this.isSynced = isSynced;
     }
 
     public String getFileName() {
@@ -54,5 +63,13 @@ public class MediaDataModel {
 
     public void setSelection(boolean selection) {
         isSelection = selection;
+    }
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(boolean synced) {
+        isSynced = synced;
     }
 }

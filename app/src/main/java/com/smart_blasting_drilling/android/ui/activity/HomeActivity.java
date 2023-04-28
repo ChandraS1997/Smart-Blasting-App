@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
@@ -416,10 +417,9 @@ public class HomeActivity extends BaseActivity {
         response3DTable7DesignElementDataModels.clear();
     }
 
-    boolean isActualDataNotAvailable = false;
-
     private void convertList3dDataList(JsonElement response) {
         try {
+            boolean isActualDataNotAvailable = false;
             clearTable();
             // "GetAll3DDesignInfoResult" for Test
             JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
@@ -441,6 +441,9 @@ public class HomeActivity extends BaseActivity {
                         if (array.get(15).getAsJsonArray() == null || array.get(15).getAsJsonArray().size() == 0) {
                             isActualDataNotAvailable = true;
                         }
+                    }
+                    if (array.get(15).getAsJsonPrimitive().getAsString().equals("[]")) {
+                        isActualDataNotAvailable = true;
                     }
                 }
             }
@@ -476,7 +479,12 @@ public class HomeActivity extends BaseActivity {
                     ft.commitAllowingStateLoss();
                 }
             } else {
-                showToast("No actual data available");
+                runOnUiThread(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(HomeActivity.this, "No actual data available", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         } catch (Exception e) {
             e.getLocalizedMessage();

@@ -42,6 +42,7 @@ import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.databinding.ActivityMediaBinding;
+import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.entities.MediaUploadEntity;
 import com.smart_blasting_drilling.android.ui.adapter.MediaAdapter;
@@ -419,7 +420,12 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
             type = "image";
         }
         mediaDataModel = new MediaDataModel(fileName[0], imgPath, extension, type, false);
-        insertMediaApiCaller(contentUri, extension, designId, "5");
+        if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
+            insertMediaApiCaller(contentUri, extension, designId, "5");
+        } else {
+            mediaDataModel.setSynced(false);
+            insertImageList();
+        }
     }
 
     private void insertMediaApiCaller(Uri imgPath, String extension, String blastCode, String blastNo) {
@@ -449,13 +455,14 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
                             try {
                                 if (responsemedia.getAsJsonObject().get("Response").getAsString().equals("Success")) {
                                     Toast.makeText(this, responsemedia.getAsJsonObject().get("ReturnObject").getAsString(), Toast.LENGTH_LONG).show();
-                                    insertImageList();
+//                                    insertImageList();
                                     uploadMediaApiCaller(extension);
                                     //uploadMediaApiVideo(extension);
                                 } else {
                                     Toast.makeText(this, "Error In Insertion", Toast.LENGTH_LONG).show();
                                 }
                             } catch (Exception e) {
+                                hideLoader();
                                 Log.e(NODATAFOUND, e.getMessage());
                             }
 
@@ -508,9 +515,9 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
             fileData = MultipartBody.Part.createFormData("Media", file.getName(), requestFile);
             uploadMediaApiFun(fileData);
         } else {
-            File compressedImgFile = Compressor.getDefault(this).compressToFile(file);
+            File compressedImgFile = Compressor.getDefault(this).compressToFile(new File(imgPath));
             RequestBody requestFile = RequestBody.create(compressedImgFile, MediaType.parse(extension.equalsIgnoreCase(".mp4 ") ? "video/mp4":"image/png"));
-            fileData = MultipartBody.Part.createFormData("Media", file.getName(), requestFile);
+            fileData = MultipartBody.Part.createFormData("Media", new File(imgPath).getName(), requestFile);
             uploadMediaApiFun(fileData);
         }
     }
@@ -528,6 +535,8 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
                                 if (responseUpload.getAsJsonObject().has("Message")) {
                                     Toast.makeText(this, responseUpload.getAsJsonObject().get("Message").getAsString(), Toast.LENGTH_LONG).show();
                                 }
+                                mediaDataModel.setSynced(true);
+                                insertImageList();
                             } catch (Exception e) {
                                 Log.e(NODATAFOUND, e.getMessage());
                             }
