@@ -167,6 +167,7 @@ public class HomeActivity extends BaseActivity {
             });
         });
 
+        BaseApplication.timer.cancel();
     }
 
     private boolean isDbTableCheck() {

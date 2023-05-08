@@ -30,6 +30,8 @@ import com.smart_blasting_drilling.android.ui.models.TableEditModel;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
@@ -203,24 +205,28 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if (StringUtill.getString(model.getTitleVal()).equals("Hole Depth")) {
-                        holeDetailData.setHoleDepth(binding.holeIdVal.getText().toString());
+                    if (StringUtill.validateDoubleVal(charSequence.toString())) {
+                        if (StringUtill.getString(model.getTitleVal()).equals("Hole Depth")) {
+                            holeDetailData.setHoleDepth(binding.holeIdVal.getText().toString());
+                        }
+                        if (StringUtill.getString(model.getTitleVal()).equals("Hole Status")) {
+                            holeDetailData.setHoleStatus(binding.holeIdVal.getText().toString());
+                        }
+                        if (StringUtill.getString(model.getTitleVal()).equals("VerticalDip")) {
+                            holeDetailData.setVerticalDip(binding.holeIdVal.getText().toString());
+                        }
+                        if (StringUtill.getString(model.getTitleVal()).equals("Burden")) {
+                            holeDetailData.setBurden(binding.holeIdVal.getText().toString());
+                        }
+                        if (StringUtill.getString(model.getTitleVal()).equals("Spacing")) {
+                            holeDetailData.setSpacing(binding.holeIdVal.getText().toString());
+                        }
+                        model.setCheckBox(binding.holeIdVal.getText().toString());
+                        editModelArrayList.set(getBindingAdapterPosition(), model);
+                        ((HoleDetail3DModelActivity) context).updateEditedDataIntoDb(holeDetailData, true);
+                    } else {
+                        ((BaseActivity) context).showSnackBar(binding.getRoot(), "Please enter only number format");
                     }
-                    if (StringUtill.getString(model.getTitleVal()).equals("Hole Status")) {
-                        holeDetailData.setHoleStatus(binding.holeIdVal.getText().toString());
-                    }
-                    if (StringUtill.getString(model.getTitleVal()).equals("VerticalDip")) {
-                        holeDetailData.setVerticalDip(binding.holeIdVal.getText().toString());
-                    }
-                    if (StringUtill.getString(model.getTitleVal()).equals("Burden")) {
-                        holeDetailData.setBurden(binding.holeIdVal.getText().toString());
-                    }
-                    if (StringUtill.getString(model.getTitleVal()).equals("Spacing")) {
-                        holeDetailData.setSpacing(binding.holeIdVal.getText().toString());
-                    }
-                    model.setCheckBox(binding.holeIdVal.getText().toString());
-                    editModelArrayList.set(getBindingAdapterPosition(), model);
-                    ((HoleDetail3DModelActivity) context).updateEditedDataIntoDb(holeDetailData, true);
                 }
 
                 @Override

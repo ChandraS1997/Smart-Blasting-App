@@ -3,6 +3,7 @@ package com.smart_blasting_drilling.android.app;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,6 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
@@ -121,4 +124,26 @@ public class BaseApplication extends MultiDexApplication {
     public boolean isInternet(Context context) {
         return new CheckInternetConnection(this).isConnected();
     }
+
+    public static CountDownTimer timer;
+
+    public void timerOnScreenReplace() {
+        if (timer == null) {
+            timer = new CountDownTimer(300000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    long second = millisUntilFinished / 1000;
+                    long getTotalSecond = 300 - second;
+                    Log.e("Screen Change Timer :- ", String.valueOf(getTotalSecond) + " Second");
+                }
+
+                @Override
+                public void onFinish() {
+
+                }
+            };
+            timer.start();
+        }
+    }
+
 }

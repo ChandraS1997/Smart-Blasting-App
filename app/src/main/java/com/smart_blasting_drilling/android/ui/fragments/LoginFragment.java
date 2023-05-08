@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.smart_blasting_drilling.android.BuildConfig;
 import com.smart_blasting_drilling.android.R;
+import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.ui.activity.AuthActivity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HomeActivity;
@@ -126,6 +127,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                         showSnackBar(binding.getRoot(), StringUtill.getString(responseLogin.getAsJsonObject().get("Message").getAsString()));
                                     }
                                 } else {
+                                    BaseApplication.getInstance().timerOnScreenReplace();
                                     manger.putUserDetails(loginResponse);
                                     mContext.startActivity(new Intent(mContext, HomeActivity.class));
                                     ((AuthActivity) mContext).finishAffinity();

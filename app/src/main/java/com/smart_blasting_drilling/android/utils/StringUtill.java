@@ -1,6 +1,7 @@
 package com.smart_blasting_drilling.android.utils;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -11,6 +12,8 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -180,8 +183,8 @@ public class StringUtill {
     }
 
     public static boolean validateNumberVal(String val) {
-        Pattern numberPat = Pattern.compile("\\d+");
-        Matcher matcher = numberPat.matcher(val);
+        Pattern pattern = Pattern.compile("\\\\d+");
+        Matcher matcher = pattern.matcher(val);
         return matcher.find();
     }
 
@@ -192,6 +195,23 @@ public class StringUtill {
         Pattern numberPat = Pattern.compile("\\\\d+\\\\.\\\\d+");
         Matcher matcher = numberPat.matcher(val);
         return matcher.find();
+    }
+
+    public static boolean validateDoubleValCheck(String val) {
+        Pattern numberPat = Pattern.compile("\\\\d+\\\\.\\\\d+");
+        Matcher matcher = numberPat.matcher(val);
+        return matcher.find();
+    }
+
+    public static boolean checkStringContainsOnlyString(String charSequence) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return charSequence.chars().allMatch(Character::isLetter);
+        }*/
+        return isAlpha(charSequence);
+    }
+
+    public static boolean isAlpha(@NonNull String name) {
+        return name.matches("[a-zA-Z]+");
     }
 
 }
