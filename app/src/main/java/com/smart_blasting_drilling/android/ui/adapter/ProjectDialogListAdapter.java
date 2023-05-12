@@ -80,7 +80,7 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
             binding.projectListTitle.setText(StringUtill.getString(data.getDesignName()));
             if (data.isDownloaded()) {
                 binding.icnDownloadProject.setBackgroundColor(context.getColor(R.color.transparent));
-                binding.icnDownloadProject.setImageResource(R.drawable.ic_baseline_check_24);
+                binding.icnDownloadProject.setImageResource(R.mipmap.icn_refresh_btn);
             } else {
                 binding.icnDownloadProject.setBackgroundColor(context.getColor(R.color.black));
                 binding.icnDownloadProject.setImageResource(R.drawable.img_downlode);
@@ -91,7 +91,7 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
             }
 
             binding.icnDownloadProject.setOnClickListener(view -> {
-                if (!data.isDownloaded()) {
+//                if (!data.isDownloaded()) {
                     ((BaseActivity) context).showLoader();
                     new Timer().schedule(new TimerTask() {
                         @Override
@@ -137,9 +137,9 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
                             });
                         }
                     }, 1000);
-                } else {
+                /*} else {
                     ((BaseActivity) context).showToast("Project Already Downloaded.");
-                }
+                }*/
             });
 
         }

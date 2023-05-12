@@ -30,6 +30,7 @@ import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.app.BaseFragment;
 import com.smart_blasting_drilling.android.databinding.FragmentLoginBinding;
+import com.smart_blasting_drilling.android.ui.activity.SplashActivity;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.HashMap;
@@ -127,9 +128,10 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener 
                                         showSnackBar(binding.getRoot(), StringUtill.getString(responseLogin.getAsJsonObject().get("Message").getAsString()));
                                     }
                                 } else {
-                                    BaseApplication.getInstance().timerOnScreenReplace();
                                     manger.putUserDetails(loginResponse);
-                                    mContext.startActivity(new Intent(mContext, HomeActivity.class));
+                                    Intent intent = new Intent(mContext, HomeActivity.class);
+                                    intent.putExtra("from", "auth");
+                                    mContext.startActivity(intent);
                                     ((AuthActivity) mContext).finishAffinity();
                                 }
                             } catch (Exception e) {

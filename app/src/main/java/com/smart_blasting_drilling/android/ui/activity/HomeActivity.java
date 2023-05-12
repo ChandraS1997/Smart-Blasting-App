@@ -105,7 +105,13 @@ public class HomeActivity extends BaseActivity {
 
         baseApis = new BaseApis(this);
 
-        callBaseApis();
+        if (getIntent() != null) {
+            if (getIntent().hasExtra("from")) {
+                if (getIntent().getStringExtra("from").equals("auth")) {
+                    callBaseApis();
+                }
+            }
+        }
 
         hideKeyboard(this);
 
@@ -166,8 +172,6 @@ public class HomeActivity extends BaseActivity {
                 }
             });
         });
-
-        BaseApplication.timer.cancel();
     }
 
     private boolean isDbTableCheck() {

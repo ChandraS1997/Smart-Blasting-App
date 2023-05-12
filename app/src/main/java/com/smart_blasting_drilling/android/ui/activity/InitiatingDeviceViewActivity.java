@@ -145,36 +145,49 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
 
         binding.eleSaveBtn.setOnClickListener(view -> {
             List<InitiatingDeviceModel> modelList = electronicDetonatorAdapter.getInitiatingDeviceModelList();
-            initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("Electronic/Electric Detonator", modelList));
-            showToast("Data added successfully");
-            KeyboardUtils.hideSoftKeyboard(this);
-            removeDuplicateItem();
+            updateInitiativeList(new InitiatingDeviceAllTypeModel("Electronic/Electric Detonator", modelList));
         });
 
         binding.downTheHoleSaveBtn.setOnClickListener(view -> {
             List<InitiatingDeviceModel> modelList = downTheHoleAdapter.getInitiatingDeviceModelList();
-            initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("Down The Hole", modelList));
-            showToast("Data added successfully");
-            KeyboardUtils.hideSoftKeyboard(this);
-            removeDuplicateItem();
+            updateInitiativeList(new InitiatingDeviceAllTypeModel("Down The Hole", modelList));
         });
 
         binding.tldRowToRowSaveBtn.setOnClickListener(view -> {
             List<InitiatingDeviceModel> modelList = tldRowToRowAdapter.getInitiatingDeviceModelList();
-            initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("TLD(Row To Row)", modelList));
-            showToast("Data added successfully");
-            KeyboardUtils.hideSoftKeyboard(this);
-            removeDuplicateItem();
+            updateInitiativeList(new InitiatingDeviceAllTypeModel("TLD(Row To Row)", modelList));
         });
 
         binding.tlsHoleToHoleSaveBtn.setOnClickListener(view -> {
             List<InitiatingDeviceModel> modelList = tldHoleToHoleAdapter.getInitiatingDeviceModelList();
-            initiatingDeviceAllTypeModelList.add(new InitiatingDeviceAllTypeModel("TLD(Hole To Hole)", modelList));
-            showToast("Data added successfully");
-            KeyboardUtils.hideSoftKeyboard(this);
-            removeDuplicateItem();
+            updateInitiativeList(new InitiatingDeviceAllTypeModel("TLD(Hole To Hole)", modelList));
         });
 
+    }
+
+    private void updateInitiativeList(InitiatingDeviceAllTypeModel model) {
+        int pos = -1;
+        boolean isFound = false;
+        if (!Constants.isListEmpty(initiatingDeviceAllTypeModelList)) {
+            for (int i = 0; i < initiatingDeviceAllTypeModelList.size(); i++) {
+                if (model.getDeviceName().equals(initiatingDeviceAllTypeModelList.get(i).getDeviceName())) {
+                    pos = i;
+                    isFound = true;
+                    break;
+                }
+            }
+            if (isFound) {
+                initiatingDeviceAllTypeModelList.set(pos, model);
+            } else {
+                initiatingDeviceAllTypeModelList.add(model);
+            }
+        } else {
+            initiatingDeviceAllTypeModelList.add(model);
+        }
+
+        showToast("Data added successfully");
+        KeyboardUtils.hideSoftKeyboard(this);
+        removeDuplicateItem();
     }
 
     private void clearList() {
@@ -190,7 +203,7 @@ public class InitiatingDeviceViewActivity extends BaseActivity {
 
                 if (!Constants.isListEmpty(allTypeModelList)) {
                     dbSavedDataList.clear();
-                    dbSavedDataList = allTypeModelList;
+                    initiatingDeviceAllTypeModelList = dbSavedDataList = allTypeModelList;
                     for (int i = 0; i < allTypeModelList.size(); i++) {
                         if (allTypeModelList.get(i).getDeviceName().equals("Electronic/Electric Detonator")) {
                             electronicDetonatorModelList = allTypeModelList.get(i).getDeviceModelList();

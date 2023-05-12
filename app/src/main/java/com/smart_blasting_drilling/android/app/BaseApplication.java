@@ -125,25 +125,4 @@ public class BaseApplication extends MultiDexApplication {
         return new CheckInternetConnection(this).isConnected();
     }
 
-    public static CountDownTimer timer;
-
-    public void timerOnScreenReplace() {
-        if (timer == null) {
-            timer = new CountDownTimer(300000, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    long second = millisUntilFinished / 1000;
-                    long getTotalSecond = 300 - second;
-                    Log.e("Screen Change Timer :- ", String.valueOf(getTotalSecond) + " Second");
-                }
-
-                @Override
-                public void onFinish() {
-
-                }
-            };
-            timer.start();
-        }
-    }
-
 }
