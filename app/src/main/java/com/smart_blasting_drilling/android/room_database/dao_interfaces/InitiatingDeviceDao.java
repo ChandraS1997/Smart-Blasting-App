@@ -24,8 +24,8 @@ public interface InitiatingDeviceDao {
     @Query("SELECT * FROM InitiatingDeviceDataEntity WHERE DesignId = :designId")
     InitiatingDeviceDataEntity getSingleItemEntity(String designId);
 
-    @Query("DELETE FROM InitiatingDeviceDataEntity")
-    void deleteItemById();
+    @Query("DELETE FROM InitiatingDeviceDataEntity WHERE DesignId = :designId")
+    void deleteItemById(String designId);
 
     @Query("DELETE FROM InitiatingDeviceDataEntity")
     void deleteAllItem();

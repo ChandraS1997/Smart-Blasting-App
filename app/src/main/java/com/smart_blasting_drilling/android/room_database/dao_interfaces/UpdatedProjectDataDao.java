@@ -24,8 +24,8 @@ public interface UpdatedProjectDataDao {
     @Query("SELECT * FROM UpdatedProjectDetailEntity WHERE ProjectId = :desginId")
     UpdatedProjectDetailEntity getSingleItemEntity(String desginId);
 
-    @Query("DELETE FROM UpdatedProjectDetailEntity")
-    void deleteItemById();
+    @Query("DELETE FROM UpdatedProjectDetailEntity WHERE ProjectId = :desginId")
+    void deleteItemById(String desginId);
 
     @Query("DELETE FROM UpdatedProjectDetailEntity")
     void deleteAllItem();

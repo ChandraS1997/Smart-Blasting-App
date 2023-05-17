@@ -21,11 +21,20 @@ import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.app.BaseRecyclerAdapter;
 import com.smart_blasting_drilling.android.databinding.ProjectListViewBinding;
 import com.smart_blasting_drilling.android.room_database.AppDatabase;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.BlastCodeDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.BlastPerformanceDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.InitiatingDeviceDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.MediaUploadDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project2DBladesDao;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.Project3DBladesDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdateProjectBladesDao;
+import com.smart_blasting_drilling.android.room_database.dao_interfaces.UpdatedProjectDataDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
+import com.smart_blasting_drilling.android.room_database.entities.InitiatingDeviceDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.Project2DBladesEntity;
 import com.smart_blasting_drilling.android.room_database.entities.Project3DBladesEntity;
+import com.smart_blasting_drilling.android.room_database.entities.UpdateProjectBladesEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
@@ -91,8 +100,8 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
             }
 
             binding.icnDownloadProject.setOnClickListener(view -> {
-//                if (!data.isDownloaded()) {
-                    ((BaseActivity) context).showLoader();
+                boolean isAlreadyDownloaded = data.isDownloaded();
+                ((BaseActivity) context).showLoader();
                     new Timer().schedule(new TimerTask() {
                         @Override
                         public void run() {
@@ -133,6 +142,10 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
                                     data.setDownloaded(true);
                                     projectList.set(getBindingAdapterPosition(), data);
                                     notifyDataSetChanged();
+
+                                    if (isAlreadyDownloaded) {
+                                        deleteProjectIfAlreadyDownload(data.getDesignId());
+                                    }
                                 }
                             });
                         }
@@ -142,6 +155,38 @@ public class ProjectDialogListAdapter extends BaseRecyclerAdapter {
                 }*/
             });
 
+        }
+
+        private void deleteProjectIfAlreadyDownload(String designId) {
+            AppDatabase appDatabase = ((BaseActivity) context).appDatabase;
+            ProjectHoleDetailRowColDao projectHoleDetailRowColDao = appDatabase.projectHoleDetailRowColDao();
+            if (projectHoleDetailRowColDao.isExistProject(designId)) {
+                projectHoleDetailRowColDao.deleteProjectById(designId);
+            }
+            BlastCodeDao blastCodeDao = appDatabase.blastCodeDao();
+            if (blastCodeDao.isExistItem(designId)) {
+                blastCodeDao.deleteSingleItem(designId);
+            }
+            InitiatingDeviceDao initiatingDeviceDao = appDatabase.initiatingDeviceDao();
+            if (initiatingDeviceDao.isExistItem(designId)) {
+                initiatingDeviceDao.deleteItemById(designId);
+            }
+            BlastPerformanceDao blastPerformanceDao = appDatabase.blastPerformanceDao();
+            if (blastPerformanceDao.isExistItem(designId)) {
+                blastPerformanceDao.deleteItemById(designId);
+            }
+            MediaUploadDao mediaUploadDao = appDatabase.mediaUploadDao();
+            if (mediaUploadDao.isExistItem(designId)) {
+                mediaUploadDao.deleteItemById(designId);
+            }
+            UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
+            if (updateProjectBladesDao.isExistProject(designId)) {
+                updateProjectBladesDao.deleteProjectById(designId);
+            }
+            UpdatedProjectDataDao updatedProjectDataDao = appDatabase.updatedProjectDataDao();
+            if (updatedProjectDataDao.isExistItem(designId)) {
+                updatedProjectDataDao.deleteItemById(designId);
+            }
         }
 
     }

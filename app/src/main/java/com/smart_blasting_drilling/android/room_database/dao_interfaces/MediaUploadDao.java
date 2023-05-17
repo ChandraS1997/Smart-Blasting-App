@@ -24,8 +24,8 @@ public interface MediaUploadDao {
     @Query("SELECT * FROM MediaUploadEntity WHERE ProjectId = :desginId")
     MediaUploadEntity getSingleItemEntity(String desginId);
 
-    @Query("DELETE FROM MediaUploadEntity")
-    void deleteItemById();
+    @Query("DELETE FROM MediaUploadEntity WHERE ProjectId = :designId")
+    void deleteItemById(String designId);
 
     @Query("DELETE FROM MediaUploadEntity")
     void deleteAllItem();

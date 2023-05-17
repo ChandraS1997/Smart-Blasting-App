@@ -123,14 +123,14 @@ public class ElectronicDetonatorAdapter extends BaseRecyclerAdapter {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    getInitiatingData(binding.typeSpinner.getText().toString());
-                    if (responseInitiatingData != null)
-                        addData(responseInitiatingData);
+
                 }
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-
+                    getInitiatingData(binding.typeSpinner.getText().toString());
+                    if (responseInitiatingData != null)
+                        addData(responseInitiatingData);
                 }
             });
         }

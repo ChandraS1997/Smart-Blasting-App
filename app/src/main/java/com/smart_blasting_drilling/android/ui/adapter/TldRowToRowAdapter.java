@@ -117,15 +117,25 @@ public class TldRowToRowAdapter extends BaseRecyclerAdapter {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if (responseInitiatingData != null)
-                        addData(responseInitiatingData);
+
                 }
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-
+                    getInitiatingData(binding.typeSpinner.getText().toString());
+                    if (responseInitiatingData != null)
+                        addData(responseInitiatingData);
                 }
             });
+        }
+
+        private void getInitiatingData(String val) {
+            for (int i = 0; i < typeList.length; i++) {
+                if (typeList[i].equals(val)) {
+                    responseInitiatingData = responseInitiatingDataList.get(i);
+                    break;
+                }
+            }
         }
 
         public void addData(ResultsetItem data) {

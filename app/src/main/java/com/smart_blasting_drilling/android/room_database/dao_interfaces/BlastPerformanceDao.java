@@ -23,8 +23,8 @@ public interface BlastPerformanceDao {
     @Query("SELECT * FROM BlastPerformanceEntity WHERE DesignId = :designId")
     BlastPerformanceEntity getSingleItemEntity(String designId);
 
-    @Query("DELETE FROM BlastPerformanceEntity")
-    void deleteItemById();
+    @Query("DELETE FROM BlastPerformanceEntity WHERE DesignId = :designId")
+    void deleteItemById(String designId);
 
     @Query("DELETE FROM BlastPerformanceEntity")
     void deleteAllItem();
