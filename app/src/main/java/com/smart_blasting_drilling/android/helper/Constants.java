@@ -54,7 +54,8 @@ public class Constants {
     public static final String IMAGE_VIDEO_BASE_URL = "http://sblastapi.cil.mineexcellence.com/api/sblast/";
     public static final String UPLOAD_BASE_URL = "https://centralbims.cil.mineexcellence.com/";
     public static final String DRIMS_BASE_URL = "https://drims.cil.mineexcellence.com/DRIMS_API/Service1.svc/";
-    public static final String BLAST_S_BLAST = "https://sblastapi.cil.mineexcellence.com/api/sblast/";
+    public static final String BLAST_S_BLAST = "http://sblastapi.cil.mineexcellence.com/api/sblast/";
+//    public static final String BLAST_S_BLAST = "https://sblastapi.cil.mineexcellence.com/api/sblast/";
     public static final String TEST_BLAST_S_BLAST = "http://blastdesigner.cil.mineexcellence.com/BLADES_API/Service1.svc/";
     public static final String DB_NAME = "centralmineinfo";
     public static final String _3D_TBALE_NAME = "GetAll3DDesignwithActualInfoResult";

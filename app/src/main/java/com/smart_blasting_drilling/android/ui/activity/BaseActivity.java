@@ -1788,7 +1788,7 @@ public class BaseActivity extends AppCompatActivity {
                     if (!Constants.isListEmpty(mapHoleDataModels.get(i).getHoleDetailDataList()))
                         rowDetailsObject.addProperty("holeno", String.valueOf(mapHoleDataModels.get(i).getHoleDetailDataList().size()));
                     else rowDetailsObject.addProperty("holeno", String.valueOf(0));
-                    rowDetailsObject.addProperty("rowtype", /*String.valueOf(1)*/ "Production");
+                    rowDetailsObject.addProperty("rowtype", String.valueOf(1) /*"Production"*/);
                     rowDetailsArray.add(rowDetailsObject);
                 }
             }
