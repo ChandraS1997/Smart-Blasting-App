@@ -326,7 +326,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             case R.id.galleryBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 bundle.putString("blades_data", bladesRetrieveData.get(0).getDesignId());
-                intent = new Intent(this, MediaActivity.class);
+                intent = new Intent(this, Media3dActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
                 break;
@@ -353,7 +353,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 navController.navigate(R.id.mapViewFrament);
                 break;
             case R.id.camIcon:
-                startActivity(new Intent(this, MediaActivity.class));
+                startActivity(new Intent(this, Media3dActivity.class));
                 break;
             case R.id.initiatingDeviceContainer:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);

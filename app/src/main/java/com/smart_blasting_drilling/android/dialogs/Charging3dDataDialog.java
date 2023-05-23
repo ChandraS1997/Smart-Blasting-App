@@ -41,6 +41,7 @@ import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity
 import com.smart_blasting_drilling.android.ui.adapter.Charging3dDataListAdapter;
 import com.smart_blasting_drilling.android.ui.adapter.ChargingDataListAdapter;
 import com.smart_blasting_drilling.android.ui.models.ChargingDataModel;
+import com.smart_blasting_drilling.android.utils.StringUtill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +145,18 @@ public class Charging3dDataDialog extends BaseDialogFragment {
         binding.saveProceedBtn.setOnClickListener(view -> {
             allTablesData.setChargeTypeArray(new Gson().toJson(adapter.getJsonArray()));
 
+            double totalCharge = 0.0, chargeLen = 0.0;
+            for (int i = 0; i < adapter.getJsonArray().size(); i++) {
+                totalCharge = totalCharge + adapter.getJsonArray().get(i).getWeight();
+
+                if (StringUtill.getString(adapter.getJsonArray().get(i).getType()).equals("Bulk") || StringUtill.getString(adapter.getJsonArray().get(i).getType()).equals("Cartridge")) {
+                    chargeLen = chargeLen + adapter.getJsonArray().get(i).getLength();
+                }
+            }
+            allTablesData.setTotalCharge(String.valueOf(totalCharge));
+            allTablesData.setChargeLength(String.valueOf(chargeLen));
+
+
             UpdateProjectBladesEntity bladesEntity = new UpdateProjectBladesEntity();
             UpdateProjectBladesDao updateProjectBladesDao = appDatabase.updateProjectBladesDao();
 
@@ -234,6 +247,7 @@ public class Charging3dDataDialog extends BaseDialogFragment {
                 e.getLocalizedMessage();
             }
 
+            showToast(mContext.getString(R.string.charging_added_msg));
             dismiss();
 
         });

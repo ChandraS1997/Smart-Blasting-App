@@ -205,7 +205,7 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if (StringUtill.validateDoubleVal(charSequence.toString())) {
+//                    if (StringUtill.validateDoubleVal(charSequence.toString())) {
                         if (StringUtill.getString(model.getTitleVal()).equals("Hole Depth")) {
                             holeDetailData.setHoleDepth(binding.holeIdVal.getText().toString());
                         }
@@ -224,9 +224,9 @@ public class Hole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
                         model.setCheckBox(binding.holeIdVal.getText().toString());
                         editModelArrayList.set(getBindingAdapterPosition(), model);
                         ((HoleDetail3DModelActivity) context).updateEditedDataIntoDb(holeDetailData, true);
-                    } else {
+                    /*} else {
                         ((BaseActivity) context).showSnackBar(binding.getRoot(), "Please enter only number format");
-                    }
+                    }*/
                 }
 
                 @Override

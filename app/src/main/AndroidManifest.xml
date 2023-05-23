@@ -78,6 +78,14 @@
             tools:ignore="LockedOrientationActivity" />
 
         <activity
+            android:name=".ui.activity.Media3dActivity"
+            android:configChanges="locale|orientation"
+            android:exported="true"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
             android:name=".ui.activity.PerformanceActivity"
             android:configChanges="locale|orientation"
             android:exported="true"

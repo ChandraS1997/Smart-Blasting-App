@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
@@ -41,7 +42,6 @@ import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.helper.ConnectivityReceiver;
-import com.smart_blasting_drilling.android.interfaces.OnChangeConnectivityListener;
 import com.smart_blasting_drilling.android.room_database.dao_interfaces.ProjectHoleDetailRowColDao;
 import com.smart_blasting_drilling.android.room_database.entities.AllMineInfoSurfaceInitiatorEntity;
 import com.smart_blasting_drilling.android.room_database.entities.DrillShiftInfoEntity;
@@ -241,13 +241,14 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
-    public void set3dJsonCodeIdData(Response3DTable1DataModel infoApi, String zoneId, String benchId, String pitId, String mineId) {
+    public void set3dJsonCodeIdData(Response3DTable1DataModel infoApi, String zoneId, String benchId, String pitId, String mineId, String rockCode) {
         try {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("zoneId", Integer.parseInt(StringUtill.isEmpty(zoneId) ? "0" : zoneId));
             jsonObject.addProperty("benchId", Integer.parseInt(StringUtill.isEmpty(benchId) ? "0" : benchId));
             jsonObject.addProperty("pitId", Integer.parseInt(StringUtill.isEmpty(pitId) ? "0" : pitId));
             jsonObject.addProperty("MineId", Integer.parseInt(StringUtill.isEmpty(mineId) ? "0" : mineId));
+            jsonObject.addProperty("rockCode", Integer.parseInt(StringUtill.isEmpty(rockCode) ? "0" : rockCode));
 
             AppDelegate.getInstance().setCodeIdObject(jsonObject);
             AppDelegate.getInstance().setProject3DModelFromAllInfoApi(infoApi);
@@ -336,7 +337,7 @@ public class HomeActivity extends BaseActivity {
                     }
 
                     Response3DTable1DataModel infoApi = response3DTable1DataModels.get(0);
-                    set3dJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
+                    set3dJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId(), infoApi.getRockCode());
 
                     set3dHoleTableData(element, rowColEntity.getIs3DBlades());
                 } else {
@@ -446,9 +447,10 @@ public class HomeActivity extends BaseActivity {
                         if (array.get(15).getAsJsonArray() == null || array.get(15).getAsJsonArray().size() == 0) {
                             isActualDataNotAvailable = true;
                         }
-                    }
-                    if (array.get(15).getAsJsonPrimitive().getAsString().equals("[]")) {
-                        isActualDataNotAvailable = true;
+                    } else if (array.get(15) instanceof JsonPrimitive) {
+                        if (array.get(15).getAsJsonPrimitive().getAsString().equals("[]")) {
+                            isActualDataNotAvailable = true;
+                        }
                     }
                 }
             }
@@ -518,7 +520,7 @@ public class HomeActivity extends BaseActivity {
                                     HomeActivity.this.element = response;
                                     AppDelegate.getInstance().setHole3DDataElement(element);
                                     Response3DTable1DataModel infoApi = response3DTable1DataModels.get(0);
-                                    set3dJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId());
+                                    set3dJsonCodeIdData(infoApi, infoApi.getZoneId(), infoApi.getBenchID(), infoApi.getPitId(), infoApi.getMineId(), infoApi.getRockCode());
 
                                     set3dHoleTableData(response, is3D);
                                 } catch (Exception e) {

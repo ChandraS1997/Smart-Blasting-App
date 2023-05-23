@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -123,6 +124,7 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
     @Override
     public void setHoleDetailCallBack(Response3DTable4HoleChargingDataModel detailData) {
         ((HoleDetail3DModelActivity) mContext).binding.holeDetailLayoutContainer.setVisibility(View.VISIBLE);
+        ((HoleDetail3DModelActivity) mContext).binding.holeDetailLayout.scrollView.fullScroll(ScrollView.FOCUS_UP);
         ((HoleDetail3DModelActivity) mContext).set3dHoleDetail(((HoleDetail3DModelActivity) mContext).bladesRetrieveData.get(0), detailData);
     }
 

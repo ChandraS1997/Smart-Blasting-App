@@ -1577,13 +1577,13 @@ public class BaseActivity extends AppCompatActivity {
             mapObject.addProperty("UserId", manger.getUserDetails().getUserid());
             mapObject.addProperty("DeviceType", "Android");
             mapObject.addProperty("DeviceId", Constants.getDeviceId(this));
-            mapObject.addProperty("blastno", "NAR275201913155677");
+            mapObject.addProperty("blastno", "");
 
             mapObject.addProperty("mineCode", AppDelegate.getInstance().getCodeIdObject().get("MineId").getAsString());
             mapObject.addProperty("pitCode", AppDelegate.getInstance().getCodeIdObject().get("pitId").getAsString());
             mapObject.addProperty("zoneCode", AppDelegate.getInstance().getCodeIdObject().get("zoneId").getAsString());
             mapObject.addProperty("benchCode", AppDelegate.getInstance().getCodeIdObject().get("benchId").getAsString());
-            mapObject.addProperty("rockCode", "8");
+            mapObject.addProperty("rockCode",  AppDelegate.getInstance().getCodeIdObject().get("rockCode").getAsString());
             mapObject.addProperty("rockDensity", "2.5");
             mapObject.addProperty("blastDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
             mapObject.addProperty("blastTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
@@ -2022,13 +2022,13 @@ public class BaseActivity extends AppCompatActivity {
             mapObject.addProperty("UserId", manger.getUserDetails().getUserid());
             mapObject.addProperty("DeviceType", "Android");
             mapObject.addProperty("DeviceId", Constants.getDeviceId(this));
-            mapObject.addProperty("blastno", "NAR275201913155677");
+            mapObject.addProperty("blastno", "NAR275201913155677");/* bladesRetrieveData.getDesignCode());*/
 
             mapObject.addProperty("mineCode", AppDelegate.getInstance().getCodeIdObject().get("MineId").getAsString());
             mapObject.addProperty("pitCode", AppDelegate.getInstance().getCodeIdObject().get("pitId").getAsString());
             mapObject.addProperty("zoneCode", AppDelegate.getInstance().getCodeIdObject().get("zoneId").getAsString());
             mapObject.addProperty("benchCode", AppDelegate.getInstance().getCodeIdObject().get("benchId").getAsString());
-            mapObject.addProperty("rockCode", "8");
+            mapObject.addProperty("rockCode", AppDelegate.getInstance().getCodeIdObject().get("rockCode").getAsString());
             mapObject.addProperty("rockDensity", "2.5");
             mapObject.addProperty("blastDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
             mapObject.addProperty("blastTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
@@ -2293,7 +2293,7 @@ public class BaseActivity extends AppCompatActivity {
                     }
                 }
                 object.addProperty("ChargeTypeArray", new Gson().toJson(chargeTypeArray));
-                object.addProperty("ChargeLength", chargeTypeArray.size());
+                object.addProperty("ChargeLength", dataModel.getChargeLength());
 
                 object.addProperty("DeckLength", dataModel.getDeckLength());
                 object.addProperty("DesignId", dataModel.getDesignId());

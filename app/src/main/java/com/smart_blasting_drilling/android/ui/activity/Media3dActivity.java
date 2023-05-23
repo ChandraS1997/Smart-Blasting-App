@@ -2,10 +2,7 @@ package com.smart_blasting_drilling.android.ui.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -21,15 +18,13 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -40,7 +35,6 @@ import com.nabinbhandari.android.permissions.Permissions;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
-import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.databinding.ActivityMediaBinding;
@@ -69,7 +63,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class MediaActivity extends BaseActivity implements PickiTCallbacks, MediaAdapter.MediaDeleteListener {
+public class Media3dActivity extends BaseActivity implements PickiTCallbacks, MediaAdapter.MediaDeleteListener {
 
     private final int PICK_IMAGE_CAMERA = 1;
     private final int PICK_VIDEO_CAMERA = 2;
@@ -82,21 +76,16 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
     ActivityResultLauncher<String> activityResultLauncher;
     String filename;
     String extension;
-    ResponseBladesRetrieveData bladesRetrieveData;
     String designId = "";
     MediaViewModel viewModel;
     File mediaFile;
     private Bitmap mResultsBitmap;
-    AllTablesData allTablesData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_media);
         viewModel = new ViewModelProvider(this).get(MediaViewModel.class);
-
-        bladesRetrieveData = AppDelegate.getInstance().getBladesRetrieveData();
-        allTablesData = AppDelegate.getInstance().getAllTablesData();
 
         StatusBarUtils.statusBarColor(this, R.color._FFA722);
         binding.headerMedia.mediaTitle.setText(getString(R.string.media));
@@ -324,19 +313,11 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
                 List<Response3DTable1DataModel> response3DTable1DataModelList = AppDelegate.getInstance().getResponse3DTable1DataModel();
                 if (response3DTable1DataModelList.size() > 0) {
                     String blastCode = "";
-                    if (!Constants.isListEmpty(allTablesData.getTable())) {
-                        if (!StringUtill.isEmpty(String.valueOf(allTablesData.getTable().get(0).getBimsId()))) {
-                            blastCode = String.valueOf(allTablesData.getTable().get(0).getBimsId());
-                        } else {
-                            if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                                BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.getDesignId());
-                                if (blastCodeEntity != null)
-                                    blastCode = blastCodeEntity.getBlastCode();
-                            }
-                        }
+                    if (!StringUtill.isEmpty(String.valueOf(response3DTable1DataModelList.get(0).getBimsId()))) {
+                        blastCode = String.valueOf(response3DTable1DataModelList.get(0).getBimsId());
                     } else {
                         if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                            BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(bladesRetrieveData.getDesignId());
+                            BlastCodeEntity blastCodeEntity = appDatabase.blastCodeDao().getSingleItemEntityByDesignId(response3DTable1DataModelList.get(0).getDesignId());
                             if (blastCodeEntity != null)
                                 blastCode = blastCodeEntity.getBlastCode();
                         }
@@ -359,8 +340,8 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
         showLoader();
         Map<String, Object> map = new HashMap<>();
         map.put("BlastCode", blastCode);
-        map.put("imagename", String.format("%s_%s", "SDB", System.currentTimeMillis()));
-        map.put("imageurl", String.valueOf(imgPath));// blastgallaryimages/file_name.jpg
+        map.put("imagename", new File(String.valueOf(imgPath)).getName());//String.format("%s_%s", "SDB", System.currentTimeMillis()));
+        map.put("imageurl", String.format("%s/%s", extension.equals(".mp4") ? "blastgallaryvideo" : "blastgallaryimages", new File(String.valueOf(imgPath)).getName()));// blastgallaryimages/file_name.jpg
         map.put("Blastno", blastNo);
         map.put("imagetype", "pre");
         map.put("media_clicked_date", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
@@ -450,25 +431,23 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
             if (responseUpload == null) {
                 showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
             } else {
-                if (responseUpload != null) {
-                    try {
-                        JsonObject jsonObject = responseUpload.getAsJsonObject();
-                        if (jsonObject != null) {
-                            try {
-                                if (responseUpload.getAsJsonObject().has("Message")) {
-                                    Toast.makeText(this, responseUpload.getAsJsonObject().get("Message").getAsString(), Toast.LENGTH_LONG).show();
-                                }
-                                insertMediaApiCaller(imgPath, extension, designId, blastNo);
-                            } catch (Exception e) {
-                                Log.e(NODATAFOUND, e.getMessage());
+                try {
+                    JsonObject jsonObject = responseUpload.getAsJsonObject();
+                    if (jsonObject != null) {
+                        try {
+                            if (responseUpload.getAsJsonObject().has("Message")) {
+                                Toast.makeText(this, responseUpload.getAsJsonObject().get("Message").getAsString(), Toast.LENGTH_LONG).show();
                             }
-
-                        } else {
-                            showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                            insertMediaApiCaller(imgPath, extension, designId, blastNo);
+                        } catch (Exception e) {
+                            Log.e(NODATAFOUND, e.getMessage());
                         }
-                    } catch (Exception e) {
-                        Log.e(NODATAFOUND, e.getMessage());
+
+                    } else {
+                        showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
                     }
+                } catch (Exception e) {
+                    Log.e(NODATAFOUND, e.getMessage());
                 }
             }
             hideLoader();
@@ -480,7 +459,7 @@ public class MediaActivity extends BaseActivity implements PickiTCallbacks, Medi
         imageListBlank();
     }
 
-    private void fileDownloadCode(String docType, String url) {
+    private void fileDownloadCode(String docType, @NonNull String url) {
         String[] docSplit = url.split("/");
         String[] fileName = docSplit[docSplit.length - 1].split("\\.");
         mediaFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), getString(R.string.app_name) + File.separator + String.format("%s_%s.%s", docType, fileName[0], fileName[1]));

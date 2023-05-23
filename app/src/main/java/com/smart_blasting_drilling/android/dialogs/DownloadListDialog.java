@@ -99,7 +99,8 @@ public class DownloadListDialog extends BaseDialogFragment {
         binding.showEndDateTxt.setText(DateUtils.getDate(System.currentTimeMillis(), "yyyy/MM/dd"));
         binding.showStartDateTxt.setText(DateUtils.getLastMonthDateFromCurDate("yyyy/MM/dd"));
 
-        retrieveByDateApiCaller(startDate, endDate);
+//        retrieveByDateApiCaller(startDate, endDate);
+        api3DDesignBlade(startDate,endDate);
 
         binding.showStartDateTxt.setOnClickListener(view -> {
             calendar = Calendar.getInstance();

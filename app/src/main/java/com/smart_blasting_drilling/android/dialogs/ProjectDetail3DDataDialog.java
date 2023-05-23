@@ -79,7 +79,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
 
     int siteId, rigId, empId, drillTypeId, drillerCode, drillMethodId, drillMaterialId, shiftCode, drillPatternId, mineCode, zoneCode, rockCode, benchCode, expCode, pitCode;
     String startDate, startTime, endTime, endDate;
-
+    String rockDensity;
     public ProjectDetail3DDataDialog() {
         _self = this;
     }
@@ -167,6 +167,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                     jsonObject.addProperty("bench_id", benchCode);
                     jsonObject.addProperty("rock_name", binding.spinnerRock.getText().toString());
                     jsonObject.addProperty("rock_id", rockCode);
+                    jsonObject.addProperty("rock_density", rockDensity);
                     jsonObject.addProperty("drill_pattern", binding.spinnerDrillingPattern.getText().toString());
                     jsonObject.addProperty("drill_pattern_id", drillPatternId);
                     jsonObject.addProperty("drill_type", binding.spinnerDrillingType.getText().toString());
@@ -579,6 +580,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                         binding.spinnerRock.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
                         binding.spinnerRock.setOnItemClickListener((adapterView, view, i, l) -> {
                             rockCode = finalDrillMethodDataList.get(i).getRockCode();
+                            rockDensity = finalDrillMethodDataList.get(i).getDensity();
                         });
 
                         boolean isFound = false;
@@ -587,12 +589,14 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                                 isFound = true;
                                 binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[i]));
                                 rockCode = drillMethodDataList.get(i).getRockCode();
+                                rockDensity = drillMethodDataList.get(i).getDensity();
                                 break;
                             }
                         }
                         if (!isFound) {
                             binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[0]));
                             rockCode = drillMethodDataList.get(0).getRockCode();
+                            rockDensity = drillMethodDataList.get(0).getDensity();
                         }
                     }
                 }

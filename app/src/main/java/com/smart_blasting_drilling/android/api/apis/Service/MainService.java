@@ -467,7 +467,7 @@ public class MainService {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 AppProgressBar.hideLoaderDialog();
                 Log.e(" API FAILED ", t.getLocalizedMessage());
-
+                data.setValue(null);
             }
         });
         return data;

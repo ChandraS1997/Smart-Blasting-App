@@ -208,5 +208,6 @@
     <string name="select_driller"><font color='#CC252C'>*</font>Select Driller</string>
     <string name="drill_method"><font color='#CC252C'>*</font>Drill Method</string>
     <string name="hole_name">Hole Name</string>
+    <string name="charging_added_msg">Charging added successfully</string>
 
 </resources>
