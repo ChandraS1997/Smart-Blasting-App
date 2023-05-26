@@ -227,7 +227,7 @@ public class HomeActivity extends BaseActivity {
 
     public void setJsonCodeIdData(ResponseProjectModelFromAllInfoApi infoApi, int zoneId, int benchId, int pitId, int mineId) {
         try {
-            JsonObject jsonObject = new JsonObject();
+            JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
             jsonObject.addProperty("zoneId", zoneId);
             jsonObject.addProperty("benchId", benchId);
             jsonObject.addProperty("pitId", pitId);
@@ -243,7 +243,7 @@ public class HomeActivity extends BaseActivity {
 
     public void set3dJsonCodeIdData(Response3DTable1DataModel infoApi, String zoneId, String benchId, String pitId, String mineId, String rockCode) {
         try {
-            JsonObject jsonObject = new JsonObject();
+            JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
             jsonObject.addProperty("zoneId", Integer.parseInt(StringUtill.isEmpty(zoneId) ? "0" : zoneId));
             jsonObject.addProperty("benchId", Integer.parseInt(StringUtill.isEmpty(benchId) ? "0" : benchId));
             jsonObject.addProperty("pitId", Integer.parseInt(StringUtill.isEmpty(pitId) ? "0" : pitId));
@@ -332,7 +332,13 @@ public class HomeActivity extends BaseActivity {
                     List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
                     // "GetAll3DDesignInfoResult" for Test
                     JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) element).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
-                    for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
+                    JsonArray jsonArray = new JsonArray();
+                    if (array.get(0) instanceof JsonPrimitive) {
+                        jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class);
+                    } else {
+                        jsonArray = new Gson().fromJson(new Gson().toJson(array.get(0)), JsonArray.class);
+                    }
+                    for (JsonElement element : jsonArray) {
                         response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
                     }
 

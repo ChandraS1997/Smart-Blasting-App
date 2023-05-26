@@ -27,6 +27,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
+import com.smart_blasting_drilling.android.api.apis.response.ResponseRockData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
@@ -56,6 +57,7 @@ import com.smart_blasting_drilling.android.utils.KeyboardUtils;
 import com.smart_blasting_drilling.android.utils.StatusBarUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +88,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
     public void setDataFromBundle() {
         bladesRetrieveData = AppDelegate.getInstance().getResponse3DTable1DataModel();
+        getRockDensity();
         allTablesData = AppDelegate.getInstance().getHoleChargingDataModel();
         if (!Constants.isListEmpty(bladesRetrieveData) && !Constants.isListEmpty(allTablesData)) {
             for (int i = 0; i < allTablesData.size(); i++) {
@@ -320,6 +323,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 startActivity(intent);
                 break;
             case R.id.switchBtn:
+            case R.id.homeBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 finish();
                 break;
@@ -341,10 +345,6 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             case R.id.logoutBtn:
                 binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
                 setLogOut();
-                break;
-            case R.id.homeBtn:
-                binding.mainDrawerLayout.closeDrawer(GravityCompat.START);
-                finish();
                 break;
             case R.id.mapBtn:
                 binding.headerLayHole.projectInfo.setVisibility(View.GONE);
@@ -660,6 +660,45 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             binding.holeDetailLayoutContainer.setVisibility(View.GONE);
         } catch (Exception e) {
             e.getLocalizedMessage();
+        }
+    }
+
+    private void getRockDensity() {
+        String rockDensity = "";
+        if (!Constants.isListEmpty(appDatabase.rockDataDao().getAllBladesProject())) {
+            if (appDatabase.rockDataDao().getAllBladesProject().get(0) != null) {
+                Type teamList = new TypeToken<List<ResponseRockData>>(){}.getType();
+                List<ResponseRockData> drillMethodDataList = new ArrayList<>();
+                if (!new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), JsonElement.class).isJsonArray()) {
+                    drillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), teamList);
+                } else {
+                    drillMethodDataList = new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), teamList);
+                }
+                if (!Constants.isListEmpty(drillMethodDataList)) {
+                    String[] rockCodeItem = new String[drillMethodDataList.size()];
+                    for (int i = 0; i < drillMethodDataList.size(); i++) {
+                        rockCodeItem[i] = String.valueOf(drillMethodDataList.get(i).getRockCode());
+                    }
+
+                    boolean isFound = false;
+                    for (String s : rockCodeItem) {
+                        if (StringUtill.getString(bladesRetrieveData.get(0).getRockCode()).equals(s)) {
+                            isFound = true;
+                            rockDensity = drillMethodDataList.get(0).getDensity();
+                            JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
+                            jsonObject.addProperty("rockDensity", rockDensity);
+                            AppDelegate.getInstance().setCodeIdObject(jsonObject);
+                            break;
+                        }
+                    }
+                    if (!isFound) {
+                        rockDensity = drillMethodDataList.get(0).getDensity();
+                        JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
+                        jsonObject.addProperty("rockDensity", rockDensity);
+                        AppDelegate.getInstance().setCodeIdObject(jsonObject);
+                    }
+                }
+            }
         }
     }
 

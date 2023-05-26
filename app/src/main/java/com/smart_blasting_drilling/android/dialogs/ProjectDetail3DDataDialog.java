@@ -581,6 +581,9 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                         binding.spinnerRock.setOnItemClickListener((adapterView, view, i, l) -> {
                             rockCode = finalDrillMethodDataList.get(i).getRockCode();
                             rockDensity = finalDrillMethodDataList.get(i).getDensity();
+                            JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
+                            jsonObject.addProperty("rockDensity", rockDensity);
+                            AppDelegate.getInstance().setCodeIdObject(jsonObject);
                         });
 
                         boolean isFound = false;
@@ -590,6 +593,9 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                                 binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[i]));
                                 rockCode = drillMethodDataList.get(i).getRockCode();
                                 rockDensity = drillMethodDataList.get(i).getDensity();
+                                JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
+                                jsonObject.addProperty("rockDensity", rockDensity);
+                                AppDelegate.getInstance().setCodeIdObject(jsonObject);
                                 break;
                             }
                         }
@@ -597,6 +603,9 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                             binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[0]));
                             rockCode = drillMethodDataList.get(0).getRockCode();
                             rockDensity = drillMethodDataList.get(0).getDensity();
+                            JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
+                            jsonObject.addProperty("rockDensity", rockDensity);
+                            AppDelegate.getInstance().setCodeIdObject(jsonObject);
                         }
                     }
                 }

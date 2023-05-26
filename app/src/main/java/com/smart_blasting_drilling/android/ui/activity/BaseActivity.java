@@ -2022,14 +2022,14 @@ public class BaseActivity extends AppCompatActivity {
             mapObject.addProperty("UserId", manger.getUserDetails().getUserid());
             mapObject.addProperty("DeviceType", "Android");
             mapObject.addProperty("DeviceId", Constants.getDeviceId(this));
-            mapObject.addProperty("blastno", "NAR275201913155677");/* bladesRetrieveData.getDesignCode());*/
+            mapObject.addProperty("blastno", bladesRetrieveData.getDesignCode());/* bladesRetrieveData.getDesignCode());*/
 
             mapObject.addProperty("mineCode", AppDelegate.getInstance().getCodeIdObject().get("MineId").getAsString());
             mapObject.addProperty("pitCode", AppDelegate.getInstance().getCodeIdObject().get("pitId").getAsString());
             mapObject.addProperty("zoneCode", AppDelegate.getInstance().getCodeIdObject().get("zoneId").getAsString());
             mapObject.addProperty("benchCode", AppDelegate.getInstance().getCodeIdObject().get("benchId").getAsString());
             mapObject.addProperty("rockCode", AppDelegate.getInstance().getCodeIdObject().get("rockCode").getAsString());
-            mapObject.addProperty("rockDensity", "2.5");
+            mapObject.addProperty("rockDensity", AppDelegate.getInstance().getCodeIdObject().get("rockDensity").getAsString());
             mapObject.addProperty("blastDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
             mapObject.addProperty("blastTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
             mapObject.addProperty("BenchHeight", "10");
@@ -2123,12 +2123,8 @@ public class BaseActivity extends AppCompatActivity {
                                             entity.insertProject(colEntity);
                                         }*/
 
-                                        /*
-                                        * ProjectHoleDetailRowColDao entity = appDatabase.projectHoleDetailRowColDao();
-                                        ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
-
-                                        List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
-                                        JsonArray array = new Gson().fromJson(new Gson().fromJson((new Gson().fromJson(rowColEntity.getProjectHole(), JsonObject.class)).get("GetAll3DDesignInfoResult").getAsJsonPrimitive(), String.class), JsonArray.class);
+                                        /*List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
+                                        JsonArray array = new Gson().fromJson(new Gson().fromJson((new Gson().fromJson(rowColEntity.getProjectHole(), JsonObject.class)).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
                                         for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
                                             response3DTable1DataModels.add(new Gson().fromJson(e, Response3DTable1DataModel.class));
                                         }
@@ -2140,14 +2136,13 @@ public class BaseActivity extends AppCompatActivity {
                                         array.set(0, new Gson().fromJson(new Gson().toJson(response3DTable1DataModels), JsonElement.class));
                                         JsonObject jsonObject = new JsonObject();
                                         JsonPrimitive primitive = new JsonPrimitive(new Gson().toJson(array));
-                                        jsonObject.add("GetAll3DDesignInfoResult", primitive);
+                                        jsonObject.add(Constants._3D_TBALE_NAME, primitive);
 
                                         if (!entity.isExistProject(String.valueOf(bladesRetrieveData.getDesignId()))) {
                                             entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(bladesRetrieveData.getDesignId()), true, new Gson().toJson(jsonObject)));
                                         } else {
                                             entity.updateProject(String.valueOf(bladesRetrieveData.getDesignId()), new Gson().toJson(jsonObject));
-                                        }
-                                        * */
+                                        }*/
 
                                         data.setValue(element);
                                     }
