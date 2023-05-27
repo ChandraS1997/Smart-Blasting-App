@@ -2123,7 +2123,7 @@ public class BaseActivity extends AppCompatActivity {
                                             entity.insertProject(colEntity);
                                         }*/
 
-                                        /*List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
+                                        List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
                                         JsonArray array = new Gson().fromJson(new Gson().fromJson((new Gson().fromJson(rowColEntity.getProjectHole(), JsonObject.class)).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
                                         for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
                                             response3DTable1DataModels.add(new Gson().fromJson(e, Response3DTable1DataModel.class));
@@ -2142,8 +2142,7 @@ public class BaseActivity extends AppCompatActivity {
                                             entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(bladesRetrieveData.getDesignId()), true, new Gson().toJson(jsonObject)));
                                         } else {
                                             entity.updateProject(String.valueOf(bladesRetrieveData.getDesignId()), new Gson().toJson(jsonObject));
-                                        }*/
-
+                                        }
                                         data.setValue(element);
                                     }
                                 });

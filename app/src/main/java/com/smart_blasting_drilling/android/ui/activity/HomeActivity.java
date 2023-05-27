@@ -435,7 +435,13 @@ public class HomeActivity extends BaseActivity {
             clearTable();
             // "GetAll3DDesignInfoResult" for Test
             JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) response).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
-            for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
+            JsonArray firstArr = new JsonArray();
+            if (array.get(0) instanceof JsonPrimitive) {
+                firstArr = new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class);
+            } else {
+                firstArr = new Gson().fromJson(array.get(0), JsonArray.class);
+            }
+            for (JsonElement element : firstArr) {
                 response3DTable1DataModels.add(new Gson().fromJson(element, Response3DTable1DataModel.class));
             }
             for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(1), String.class), JsonArray.class)) {
