@@ -31,6 +31,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseRockData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.databinding.HoleDetail3dActivityBinding;
@@ -66,6 +67,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     public HoleDetail3dActivityBinding binding;
     public List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
     public List<Response3DTable1DataModel> bladesRetrieveData = new ArrayList<>();
+    public List<Response3DTable2DataModel> response3DTable2DataModelList = new ArrayList<>();
     public boolean isTableHeaderFirstTimeLoad = true;
     public JsonElement element;
 
@@ -88,6 +90,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
     public void setDataFromBundle() {
         bladesRetrieveData = AppDelegate.getInstance().getResponse3DTable1DataModel();
+        response3DTable2DataModelList = AppDelegate.getInstance().getResponse3DTable2DataModel();
         getRockDensity();
         allTablesData = AppDelegate.getInstance().getHoleChargingDataModel();
         if (!Constants.isListEmpty(bladesRetrieveData) && !Constants.isListEmpty(allTablesData)) {
@@ -194,7 +197,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                                     blastCode = blastCodeEntity.getBlastCode();
                             }
                         }
-                        blastInsertSyncRecord3DApiCaller(bladesRetrieveData.get(0), allTablesData, getRowWiseHoleIn3dList(allTablesData).size(), 0, blastCode).observe(HoleDetail3DModelActivity.this, new Observer<JsonElement>() {
+                        blastInsertSyncRecord3DApiCaller(bladesRetrieveData.get(0), allTablesData, response3DTable2DataModelList, getRowWiseHoleIn3dList(allTablesData).size(), 0, blastCode).observe(HoleDetail3DModelActivity.this, new Observer<JsonElement>() {
                             @Override
                             public void onChanged(JsonElement element) {
                                 bladesRetrieveData = AppDelegate.getInstance().getResponse3DTable1DataModel();

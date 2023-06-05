@@ -57,6 +57,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
     List<TableEditModel> tableEditModelArrayList = new ArrayList<>();
 
     List<Response3DTable1DataModel> bladesRetrieveData;
+    List<Response3DTable2DataModel> response3DTable2Data;
     List<Response3DTable4HoleChargingDataModel> allTablesData;
     public List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
     public List<Response3DTable2DataModel> response3DTable2DataModels = new ArrayList<>();
@@ -93,6 +94,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
             clearTable();
             bladesRetrieveData = ((HoleDetail3DModelActivity) mContext).bladesRetrieveData;
             allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
+            response3DTable2Data = ((HoleDetail3DModelActivity) mContext).response3DTable2DataModelList;
 
             entity = appDatabase.projectHoleDetailRowColDao();
 
@@ -296,8 +298,23 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomY().equals("0.0") ? "" : holeDetailData.getBottomY()), tableEditModelArrayList.get(15).getTitleVal(), tableEditModelArrayList.get(15).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomZ().equals("0.0") ? "" : holeDetailData.getBottomZ()), tableEditModelArrayList.get(16).getTitleVal(), tableEditModelArrayList.get(16).isSelected(), update));
 
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTotalCharge()), tableEditModelArrayList.get(17).getTitleVal(), tableEditModelArrayList.get(17).isSelected(), update));
-                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getChargeLength()), tableEditModelArrayList.get(18).getTitleVal(), tableEditModelArrayList.get(18).isSelected(), update));
+                    double totalCharge = 0.0, chargeLen = 0.0;
+                    if (!Constants.isListEmpty(holeDetailData.getChargeTypeArray())) {
+                        for (int j = 0; j < holeDetailData.getChargeTypeArray().size(); j++) {
+                            ChargeTypeArrayItem item = holeDetailData.getChargeTypeArray().get(j);
+                            totalCharge = totalCharge + item.getWeight();
+
+                            if (StringUtill.getString(item.getType()).equals("Bulk") || StringUtill.getString(item.getType()).equals("Cartridge")) {
+                                chargeLen = chargeLen + item.getLength();
+                            }
+                        }
+                    }
+
+                    /*editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTotalCharge()), tableEditModelArrayList.get(17).getTitleVal(), tableEditModelArrayList.get(17).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getChargeLength()), tableEditModelArrayList.get(18).getTitleVal(), tableEditModelArrayList.get(18).isSelected(), update));*/
+
+                    editModelArrayList.add(new TableEditModel(String.valueOf(totalCharge), tableEditModelArrayList.get(17).getTitleVal(), tableEditModelArrayList.get(17).isSelected(), update));
+                    editModelArrayList.add(new TableEditModel(String.valueOf(chargeLen), tableEditModelArrayList.get(18).getTitleVal(), tableEditModelArrayList.get(18).isSelected(), update));
 
                     if (!Constants.isListEmpty(holeDetailData.getChargeTypeArray())) {
                         double length = 0, deckLen = 0;

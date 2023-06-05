@@ -36,12 +36,12 @@ import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.Service.MainService;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
-import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectDeatilDialogData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.Table9Item;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApplication;
@@ -1692,7 +1692,7 @@ public class BaseActivity extends AppCompatActivity {
         return data;
     }
 
-    public MutableLiveData<JsonElement> blastInsertSyncRecord3DApiCaller(Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> tablesData, int rowCount, int holeCount, String blastCode) {
+    public MutableLiveData<JsonElement> blastInsertSyncRecord3DApiCaller(Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> tablesData, List<Response3DTable2DataModel> response3DTable2DataModelList, int rowCount, int holeCount, String blastCode) {
         MutableLiveData<JsonElement> data = new MutableLiveData<>();
         try {
             showLoader();
@@ -1793,6 +1793,8 @@ public class BaseActivity extends AppCompatActivity {
                 }
             }
 
+            double aveSpacing = 0.0, aveBurden = 0.0;
+
             // Charge Details Array
             JsonArray chargeDetailsArray = new JsonArray();
             if (!Constants.isListEmpty(tablesData)) {
@@ -1882,6 +1884,9 @@ public class BaseActivity extends AppCompatActivity {
                         chargeDetailsObject.addProperty("CostPerUnit2", isCartridge ? arrayItem.getCost() : 0);
 
                     }
+
+                    aveBurden = aveBurden + Double.parseDouble(StringUtill.isEmpty(tablesData.get(i).getBurden()) ? "0.0" : tablesData.get(i).getBurden());
+                    aveSpacing = aveSpacing + Double.parseDouble(StringUtill.isEmpty(tablesData.get(i).getSpacing()) ? "0.0" : tablesData.get(i).getSpacing());
 
                     chargeDetailsObject.addProperty("Burden", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getBurden()) ? "" : tablesData.get(i).getBurden()));
                     chargeDetailsObject.addProperty("Spacing", String.valueOf(tablesData.get(i).getSpacing()));
@@ -2032,11 +2037,17 @@ public class BaseActivity extends AppCompatActivity {
             mapObject.addProperty("rockDensity", AppDelegate.getInstance().getCodeIdObject().get("rockDensity").getAsString());
             mapObject.addProperty("blastDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
             mapObject.addProperty("blastTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
-            mapObject.addProperty("BenchHeight", "10");
+            if (!Constants.isListEmpty(response3DTable2DataModelList)) {
+                mapObject.addProperty("BenchHeight", response3DTable2DataModelList.get(0).getBenchHeight());
+            } else {
+                mapObject.addProperty("BenchHeight", "");
+            }
             mapObject.addProperty("FaceLength", "40");
             if (!Constants.isListEmpty(tablesData)) {
-                mapObject.addProperty("Burden", String.valueOf(StringUtill.isEmpty(tablesData.get(0).getBurden()) ? "" : tablesData.get(0).getBurden()));
-                mapObject.addProperty("Spacing", String.valueOf(tablesData.get(0).getSpacing()));
+                aveBurden = aveBurden / tablesData.size();
+                aveSpacing = aveSpacing / tablesData.size();
+                mapObject.addProperty("Burden", String.valueOf(aveBurden));
+                mapObject.addProperty("Spacing", String.valueOf(aveSpacing));
                 mapObject.addProperty("DrillPattern", "1");
             }
             mapObject.addProperty("HoleDelay", "17");
