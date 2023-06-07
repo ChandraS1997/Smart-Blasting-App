@@ -51,6 +51,7 @@ import com.smart_blasting_drilling.android.app.BaseApplication;
 import com.smart_blasting_drilling.android.databinding.ProjectInfoLayoutBinding;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.room_database.entities.AllProjectBladesModelEntity;
+import com.smart_blasting_drilling.android.room_database.entities.RockDataEntity;
 import com.smart_blasting_drilling.android.room_database.entities.UpdatedProjectDetailEntity;
 import com.smart_blasting_drilling.android.ui.activity.BaseActivity;
 import com.smart_blasting_drilling.android.ui.activity.HoleDetail3DModelActivity;
@@ -527,6 +528,8 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                 }
             }
 
+            List<ResponseRockData> responseRockDataList = new ArrayList<>();
+
             if (!Constants.isListEmpty(appDatabase.zoneTableDao().getAllBladesProject())) {
                 if (appDatabase.zoneTableDao().getAllBladesProject().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseZoneTable>>(){}.getType();
@@ -551,16 +554,57 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                             zoneCode = drillMethodDataList.get(0).getZoneCode();
                         }
 
+                        responseRockDataList.clear();
+                        responseRockDataList.addAll(getRockListByZoneCode());
+
                         binding.spinnerZone.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
                         binding.spinnerZone.setOnItemClickListener((adapterView, view, i, l) -> {
                             zoneCode = drillMethodDataList.get(i).getZoneCode();
+                            responseRockDataList.clear();
+                            responseRockDataList.addAll(getRockListByZoneCode());
                         });
                     }
                 }
             }
 
-            if (!Constants.isListEmpty(appDatabase.rockDataDao().getAllBladesProject())) {
-                if (appDatabase.rockDataDao().getAllBladesProject().get(0) != null) {
+            if (!Constants.isListEmpty(responseRockDataList)) {
+                for (int i = 0; i < responseRockDataList.size(); i++) {
+                    drillMethodDataItem[i] = responseRockDataList.get(i).getRockName();
+                    rockCodeItem[i] = String.valueOf(responseRockDataList.get(i).getRockCode());
+                }
+
+                binding.spinnerRock.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
+                binding.spinnerRock.setOnItemClickListener((adapterView, view, i, l) -> {
+                    rockCode = responseRockDataList.get(i).getRockCode();
+                    rockDensity = responseRockDataList.get(i).getDensity();
+                    JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
+                    jsonObject.addProperty("rockDensity", rockDensity);
+                    AppDelegate.getInstance().setCodeIdObject(jsonObject);
+                });
+
+                boolean isFound = false;
+                for (int i = 0; i < drillMethodDataItem.length; i++) {
+                    if (StringUtill.getString(updateBladesData.getRockCode()).equals(rockCodeItem[i])) {
+                        isFound = true;
+                        binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[i]));
+                        rockCode = responseRockDataList.get(i).getRockCode();
+                        rockDensity = responseRockDataList.get(i).getDensity();
+                        JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
+                        jsonObject.addProperty("rockDensity", rockDensity);
+                        AppDelegate.getInstance().setCodeIdObject(jsonObject);
+                        break;
+                    }
+                }
+                if (!isFound) {
+                    binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[0]));
+                    rockCode = responseRockDataList.get(0).getRockCode();
+                    rockDensity = responseRockDataList.get(0).getDensity();
+                    JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
+                    jsonObject.addProperty("rockDensity", rockDensity);
+                    AppDelegate.getInstance().setCodeIdObject(jsonObject);
+                }
+
+                /*if (appDatabase.rockDataDao().getAllBladesProject().get(0) != null) {
                     Type teamList = new TypeToken<List<ResponseRockData>>(){}.getType();
                     List<ResponseRockData> drillMethodDataList = new ArrayList<>();
                     if (!new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), JsonElement.class).isJsonArray()) {
@@ -568,47 +612,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                     } else {
                         drillMethodDataList = new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), teamList);
                     }
-                    if (!Constants.isListEmpty(drillMethodDataList)) {
-                        String[] drillMethodDataItem = new String[drillMethodDataList.size()];
-                        String[] rockCodeItem = new String[drillMethodDataList.size()];
-                        for (int i = 0; i < drillMethodDataList.size(); i++) {
-                            drillMethodDataItem[i] = drillMethodDataList.get(i).getRockName();
-                            rockCodeItem[i] = String.valueOf(drillMethodDataList.get(i).getRockCode());
-                        }
-                        List<ResponseRockData> finalDrillMethodDataList = drillMethodDataList;
-
-                        binding.spinnerRock.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerRock.setOnItemClickListener((adapterView, view, i, l) -> {
-                            rockCode = finalDrillMethodDataList.get(i).getRockCode();
-                            rockDensity = finalDrillMethodDataList.get(i).getDensity();
-                            JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
-                            jsonObject.addProperty("rockDensity", rockDensity);
-                            AppDelegate.getInstance().setCodeIdObject(jsonObject);
-                        });
-
-                        boolean isFound = false;
-                        for (int i = 0; i < drillMethodDataItem.length; i++) {
-                            if (StringUtill.getString(updateBladesData.getRockCode()).equals(rockCodeItem[i])) {
-                                isFound = true;
-                                binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[i]));
-                                rockCode = drillMethodDataList.get(i).getRockCode();
-                                rockDensity = drillMethodDataList.get(i).getDensity();
-                                JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
-                                jsonObject.addProperty("rockDensity", rockDensity);
-                                AppDelegate.getInstance().setCodeIdObject(jsonObject);
-                                break;
-                            }
-                        }
-                        if (!isFound) {
-                            binding.spinnerRock.setText(StringUtill.getString(drillMethodDataItem[0]));
-                            rockCode = drillMethodDataList.get(0).getRockCode();
-                            rockDensity = drillMethodDataList.get(0).getDensity();
-                            JsonObject jsonObject = AppDelegate.getInstance().getCodeIdObject();
-                            jsonObject.addProperty("rockDensity", rockDensity);
-                            AppDelegate.getInstance().setCodeIdObject(jsonObject);
-                        }
-                    }
-                }
+                }*/
             }
 
             if (!Constants.isListEmpty(appDatabase.benchTableDao().getAllBladesProject())) {
@@ -722,6 +726,41 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
             dismiss();
         });
 
+    }
+
+    String[] drillMethodDataItem;
+    String[] rockCodeItem;
+
+    @NonNull
+    private List<ResponseRockData> getRockListByZoneCode() {
+        List<ResponseRockData> rockDataEntityList = new ArrayList<>();
+        if (!Constants.isListEmpty(appDatabase.rockDataDao().getAllBladesProject())) {
+            if (appDatabase.rockDataDao().getAllBladesProject().get(0) != null) {
+                Type tempTeamList = new TypeToken<List<ResponseRockData>>(){}.getType();
+                List<ResponseRockData> tempDrillMethodDataList = new ArrayList<>();
+                if (!new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), JsonElement.class).isJsonArray()) {
+                    tempDrillMethodDataList = new Gson().fromJson(new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), JsonObject.class).get("data").getAsJsonPrimitive().getAsString(), tempTeamList);
+                } else {
+                    tempDrillMethodDataList = new Gson().fromJson(appDatabase.rockDataDao().getAllBladesProject().get(0).getData(), tempTeamList);
+                }
+                for (ResponseRockData entity : tempDrillMethodDataList) {
+                    if (entity.getRockZone() == zoneCode) {
+                        rockDataEntityList.add(entity);
+                    }
+                }
+            }
+        }
+
+        drillMethodDataItem = new String[rockDataEntityList.size()];
+        rockCodeItem = new String[rockDataEntityList.size()];
+        for (int i = 0; i < rockDataEntityList.size(); i++) {
+            drillMethodDataItem[i] = rockDataEntityList.get(i).getRockName();
+            rockCodeItem[i] = String.valueOf(rockDataEntityList.get(i).getRockCode());
+        }
+
+        binding.spinnerRock.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
+
+        return rockDataEntityList;
     }
 
     private ProjectDetail3DDataDialog.ProjectInfoDialogListener getListener() {

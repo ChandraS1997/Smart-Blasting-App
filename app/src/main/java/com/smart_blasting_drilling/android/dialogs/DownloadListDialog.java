@@ -104,11 +104,15 @@ public class DownloadListDialog extends BaseDialogFragment {
 
         binding.showStartDateTxt.setOnClickListener(view -> {
             calendar = Calendar.getInstance();
-            new DatePickerDialog(mContext, setDataWithDatePicker(binding.showStartDateTxt, true), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+            DatePickerDialog dialog = new DatePickerDialog(mContext, setDataWithDatePicker(binding.showStartDateTxt, true), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            dialog.show();
         });
         binding.showEndDateTxt.setOnClickListener(view -> {
             calendar = Calendar.getInstance();
-            new DatePickerDialog(mContext, setDataWithDatePicker(binding.showEndDateTxt, false), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+            DatePickerDialog dialog = new DatePickerDialog(mContext, setDataWithDatePicker(binding.showEndDateTxt, false), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+            dialog.show();
         });
 
         binding.goBtn.setOnClickListener(view -> {
