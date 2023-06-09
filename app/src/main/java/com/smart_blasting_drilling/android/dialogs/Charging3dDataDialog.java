@@ -120,6 +120,8 @@ public class Charging3dDataDialog extends BaseDialogFragment {
 
     @Override
     public void loadData() {
+
+        binding.pageTitle.setText(String.format("%s (%s)", mContext.getString(R.string.charging_param), allTablesData.getHoleID()));
         entity = appDatabase.projectHoleDetailRowColDao();
         if (Constants.isListEmpty( allTablesData.getChargeTypeArray()))
             chargingDataModelList.add(new ChargeTypeArrayItem());

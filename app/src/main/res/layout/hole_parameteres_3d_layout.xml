@@ -92,7 +92,7 @@
                         android:fontFamily="@font/inter_regular"
                         android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -153,7 +153,7 @@
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:imeOptions="flagNoExtractUi"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textSize="@dimen/_18ssp"
                         android:drawableTint="@color/black"
                         app:dropDownDrawable="@drawable/downarro"
@@ -207,7 +207,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/holeAngleEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/waterDepthEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -215,10 +215,9 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -237,7 +236,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/waterDepthEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/diameterEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -245,10 +244,9 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:imeOptions="flagNoExtractUi"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -267,7 +265,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/diameterEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/subgradeEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -275,10 +273,9 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:imeOptions="flagNoExtractUi"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -297,7 +294,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/subgradeEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/burdenEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -306,10 +303,9 @@
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
                         android:enabled="false"
-                        android:inputType="numberDecimal"
                         android:padding="@dimen/_10sdp"
-                        android:imeOptions="flagNoExtractUi"
-                        android:background="@drawable/border_edittext_bg"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -328,7 +324,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/burdenEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/spacingEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -337,10 +333,9 @@
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
                         android:enabled="false"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -359,7 +354,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/spacingEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/xEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -369,10 +364,9 @@
                         android:hint="0"
                         android:enabled="false"
                         android:editable="false"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:imeOptions="flagNoExtractUi"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -391,7 +385,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/xEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/yTxtEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -401,10 +395,9 @@
                         android:hint="0"
                         android:enabled="false"
                         android:editable="false"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -423,7 +416,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/yTxtEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/zEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -433,10 +426,9 @@
                         android:hint="0"
                         android:enabled="false"
                         android:editable="false"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -456,7 +448,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/zEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/bottomX_Et"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -466,10 +458,9 @@
                         android:hint="0"
                         android:enabled="false"
                         android:editable="false"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -488,7 +479,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/bottomX_Et" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/bottomY_Et"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -498,10 +489,9 @@
                         android:hint="0"
                         android:enabled="false"
                         android:editable="false"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -520,7 +510,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/bottomY_Et" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/bottomZ_Et"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -530,10 +520,9 @@
                         android:hint="0"
                         android:enabled="false"
                         android:editable="false"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -552,7 +541,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/bottomZ_Et" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/totalChargeEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -560,10 +549,9 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -582,7 +570,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/totalChargeEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/chargeLengthEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -591,10 +579,9 @@
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
                         android:enabled="false"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -613,7 +600,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/chargeLengthEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/stemmingLengthEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -621,10 +608,9 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -643,7 +629,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/stemmingLengthEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/deckLengthEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -651,10 +637,9 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -673,7 +658,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/deckLengthEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/blockEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -681,10 +666,9 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -703,7 +687,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/blockEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/blockLengthEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -711,10 +695,9 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -733,7 +716,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/blockLengthEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/holeDelayEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -741,10 +724,9 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -763,7 +745,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/holeDelayEt" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/inHoleDelayEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
@@ -771,10 +753,9 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:fontFamily="@font/inter_regular"
                         android:hint="0"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="numberDecimal"
+                        android:gravity="center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:background="@drawable/border_edittext_bg"
+                        android:background="@drawable/disable_bg_drawable"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintStart_toStartOf="parent"
