@@ -562,6 +562,9 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                             zoneCode = drillMethodDataList.get(i).getZoneCode();
                             responseRockDataList.clear();
                             responseRockDataList.addAll(getRockListByZoneCode());
+                            if (!Constants.isListEmpty(responseRockDataList)) {
+                                binding.spinnerRock.setText(StringUtill.getString(responseRockDataList.get(0).getRockName()));
+                            }
                         });
                     }
                 }

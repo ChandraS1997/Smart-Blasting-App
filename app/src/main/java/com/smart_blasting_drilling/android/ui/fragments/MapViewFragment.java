@@ -21,6 +21,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetri
 import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.app.BaseFragment;
+import com.smart_blasting_drilling.android.app.CoordinationHoleHelperKt;
 import com.smart_blasting_drilling.android.databinding.FragmentMapviewBinding;
 import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
 import com.smart_blasting_drilling.android.helper.Constants;
@@ -100,7 +101,7 @@ public class MapViewFragment extends BaseFragment implements HoleDetailActivity.
         ResponseBladesRetrieveData bladesRetrieveData = ((HoleDetailActivity) mContext).bladesRetrieveData;
         List<MapHoleDataModel> colHoleDetailDataList = new ArrayList<>();
 
-        ((BaseActivity) mContext).mapCoordinatesAndroid(holeDetailDataList.get(0).getX(), holeDetailDataList.get(0).getY(), holeDetailDataList);
+        CoordinationHoleHelperKt.mapCoordinatesAndroid(holeDetailDataList.get(0).getX(), holeDetailDataList.get(0).getY(), holeDetailDataList);
 
         if (!Constants.isListEmpty(holeDetailDataList)) {
             colHoleDetailDataList = ((BaseActivity) mContext).getRowWiseHoleList(holeDetailDataList);

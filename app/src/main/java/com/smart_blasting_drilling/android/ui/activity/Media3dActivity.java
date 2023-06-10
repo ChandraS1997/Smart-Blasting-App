@@ -388,8 +388,6 @@ public class Media3dActivity extends BaseActivity implements PickiTCallbacks, Me
             MediaMetadataRetriever mRetriever = new MediaMetadataRetriever();
             mRetriever.setDataSource(uri);
 
-            /*FFmpegMediaMetadataRetriever retriever = new FFmpegMediaMetadataRetriever();
-            retriever.setDataSource(uri);*/
             List<Bitmap> rev = new ArrayList<Bitmap>();
             MediaPlayer mp = MediaPlayer.create(this, videoFileUri);
             int millis = mp.getDuration();

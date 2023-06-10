@@ -100,8 +100,6 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
         List<Response3DTable4HoleChargingDataModel> holeDetailDataList = ((HoleDetail3DModelActivity) mContext).holeDetailDataList;
         List<MapHole3DDataModel> colHoleDetailDataList = new ArrayList<>();
 
-        ((BaseActivity) mContext)._3dMapCoordinatesAndroid(Double.parseDouble(holeDetailDataList.get(0).getTopX()), Double.parseDouble(holeDetailDataList.get(0).getTopY()), holeDetailDataList);
-
         if (!Constants.isListEmpty(holeDetailDataList)) {
             colHoleDetailDataList = ((BaseActivity) mContext).getRowWiseHoleIn3dList(holeDetailDataList);
 

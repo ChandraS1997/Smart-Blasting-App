@@ -34,6 +34,7 @@ import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Res
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
+import com.smart_blasting_drilling.android.app.CoordinationHoleHelperKt;
 import com.smart_blasting_drilling.android.databinding.HoleDetail3dActivityBinding;
 import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
 import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
@@ -229,13 +230,29 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     }
 
     public void syncDataAPi() {
+
+        CoordinationHoleHelperKt._3dMapCoordinatesAndroid(Double.parseDouble(holeDetailDataList.get(0).getTopX()), Double.parseDouble(holeDetailDataList.get(0).getTopY()), holeDetailDataList);
+
         AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.get(0).getDesignId()));
         String code = "";
         code = String.valueOf(bladesRetrieveData.get(0).getDrimsId());
         if (StringUtill.isEmpty(code)) {
             code = (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "";
         }
-        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), allTablesData, code).observe(this, new Observer<JsonElement>() {
+        List<Response3DTable4HoleChargingDataModel> modelList = new ArrayList<>();
+        for (int i = 0; i < allTablesData.size(); i++) {
+            Response3DTable4HoleChargingDataModel model = allTablesData.get(i);
+            String[] coordinate = StringUtill.getString(CoordinationHoleHelperKt.getCoOrdinateOfHole(model)).split(",");
+            if (coordinate.length > 0) {
+                model.setNorthing(coordinate[0]);
+                if (coordinate.length > 1) {
+                    model.setEasting(coordinate[1]);
+                }
+            }
+            modelList.add(model);
+        }
+        Log.e("modelList : ", new Gson().toJson(modelList));
+        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), modelList, code).observe(this, new Observer<JsonElement>() {
             @Override
             public void onChanged(JsonElement response) {
                 if (response == null) {

@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -54,6 +57,10 @@ android {
         enabled = true
     }
     compileSdkVersion 32
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
@@ -98,10 +105,22 @@ dependencies {
 
 
     // Room Integration
-    def room_version = "2.3.0"
+    def room_version = "2.4.3"
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
 
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
+//    // To use Kotlin Symbol Processing (KSP)
+//    ksp("androidx.room:room-compiler:$room_version")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+//    kapt "androidx.room:room-compiler:$room_version"
+
+
+
+
     // Round Corner ImageView
     implementation 'com.makeramen:roundedimageview:2.3.0'
     //Permission
@@ -116,6 +135,6 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
     // FFMPEG
-    implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-core:1.0.15'
+//    implementation 'com.github.wseemann:FFmpegMediaMetadataRetriever-core:1.0.15'
 
 }

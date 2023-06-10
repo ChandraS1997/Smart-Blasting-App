@@ -99,6 +99,24 @@ public class Response3DTable4HoleChargingDataModel implements Serializable {
 	@SerializedName("WaterDepth")
 	private String waterDepth;
 
+	private String northing, easting;
+
+	public String getNorthing() {
+		return northing;
+	}
+
+	public void setNorthing(String northing) {
+		this.northing = northing;
+	}
+
+	public String getEasting() {
+		return easting;
+	}
+
+	public void setEasting(String easting) {
+		this.easting = easting;
+	}
+
 	public void setHoleDiameter(String holeDiameter){
 		this.holeDiameter = holeDiameter;
 	}
