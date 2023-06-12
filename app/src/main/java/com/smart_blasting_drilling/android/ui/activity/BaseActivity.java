@@ -40,6 +40,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectMode
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.Table9Item;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable17DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
@@ -66,8 +67,6 @@ import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceAllTypeMode
 import com.smart_blasting_drilling.android.ui.models.InitiatingDeviceModel;
 import com.smart_blasting_drilling.android.ui.models.MapHole3DDataModel;
 import com.smart_blasting_drilling.android.ui.models.MapHoleDataModel;
-import com.smart_blasting_drilling.android.ui.models.NorthEastCoordinateModel;
-import com.smart_blasting_drilling.android.ui.models.ReferenceCoordinateModel;
 import com.smart_blasting_drilling.android.utils.DateUtils;
 import com.smart_blasting_drilling.android.utils.StringUtill;
 
@@ -1692,7 +1691,7 @@ public class BaseActivity extends AppCompatActivity {
         return data;
     }
 
-    public MutableLiveData<JsonElement> blastInsertSyncRecord3DApiCaller(Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> tablesData, List<Response3DTable2DataModel> response3DTable2DataModelList, int rowCount, int holeCount, String blastCode) {
+    public MutableLiveData<JsonElement> blastInsertSyncRecord3DApiCaller(List<Response3DTable17DataModel> response3DTable17DataModelList, Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> tablesData, List<Response3DTable2DataModel> response3DTable2DataModelList, int rowCount, String blastCode) {
         MutableLiveData<JsonElement> data = new MutableLiveData<>();
         try {
             showLoader();
@@ -1890,8 +1889,8 @@ public class BaseActivity extends AppCompatActivity {
 
                     chargeDetailsObject.addProperty("Burden", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getBurden()) ? "" : tablesData.get(i).getBurden()));
                     chargeDetailsObject.addProperty("Spacing", String.valueOf(tablesData.get(i).getSpacing()));
-                    chargeDetailsObject.addProperty("Delay1", "0");
-                    chargeDetailsObject.addProperty("Delay2", String.valueOf(tablesData.get(i).getHoleDelay()));
+                    chargeDetailsObject.addProperty("Delay1", String.valueOf(tablesData.get(i).getHoleDelay()));
+                    chargeDetailsObject.addProperty("Delay2", "0");
                     chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
                     chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
 
@@ -1934,7 +1933,20 @@ public class BaseActivity extends AppCompatActivity {
                     chargeDetailsObject.addProperty("IsHoleBlock", "");
                     chargeDetailsObject.addProperty("HoleBlockLength", "");
                     chargeDetailsObject.addProperty("HoleAngle", String.valueOf(tablesData.get(i).getVerticalDip()));
-                    chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(tablesData.get(i).getInHoleDelay()));
+                    if (!Constants.isListEmpty(response3DTable17DataModelList)) {
+                        JsonArray inHoleDelayArr = new Gson().fromJson(new Gson().fromJson(response3DTable17DataModelList.get(0).getInHoleDelayArr(), String.class), JsonArray.class);
+                        if (inHoleDelayArr != null) {
+                            if (inHoleDelayArr.size() > 0) {
+                                chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(inHoleDelayArr.get(0).getAsInt()));
+                            /*if (inHoleDelayArr.size() > 1) {
+                                int inHoleDelay = 0;
+                                for (int tmp = 1; tmp < inHoleDelayArr.size(); tmp++) {
+                                    inHoleDelay = inHoleDelay + inHoleDelayArr.get(tmp).getAsInt();
+                                }
+                            }*/
+                            }
+                        }
+                    }
                     chargeDetailsArray.add(chargeDetailsObject);
                 }
             }
@@ -2017,7 +2029,20 @@ public class BaseActivity extends AppCompatActivity {
             holepointsObject.addProperty("rltop", "");
             holepointsObject.addProperty("rlbottom", "");
             holepointsObject.addProperty("HoleName", "");
-            holepointsObject.addProperty("InHoleDelay", "");
+            if (!Constants.isListEmpty(response3DTable17DataModelList)) {
+                JsonArray inHoleDelayArr = new Gson().fromJson(new Gson().fromJson(response3DTable17DataModelList.get(0).getInHoleDelayArr(), String.class), JsonArray.class);
+                if (inHoleDelayArr != null) {
+                    if (inHoleDelayArr.size() > 0) {
+                        holepointsObject.addProperty("InHoleDelay", String.valueOf(inHoleDelayArr.get(0).getAsInt()));
+                    } else {
+                        holepointsObject.addProperty("InHoleDelay", "0");
+                    }
+                } else {
+                    holepointsObject.addProperty("InHoleDelay", "0");
+                }
+            } else {
+                holepointsObject.addProperty("InHoleDelay", "0");
+            }
             holepointsArray.add(holepointsObject);
 
             // All Map Data
@@ -2050,8 +2075,22 @@ public class BaseActivity extends AppCompatActivity {
                 mapObject.addProperty("Spacing", String.valueOf(aveSpacing));
                 mapObject.addProperty("DrillPattern", "1");
             }
-            mapObject.addProperty("HoleDelay", "17");
-            mapObject.addProperty("RowDelay", "25");
+
+            if (!Constants.isListEmpty(response3DTable17DataModelList)) {
+                if (StringUtill.isEmpty(response3DTable17DataModelList.get(0).getHoleTime())) {
+                    mapObject.addProperty("HoleDelay", "0");
+                } else {
+                    int holeDelay = Integer.parseInt(response3DTable17DataModelList.get(0).getHoleTime()) / 20;
+                    mapObject.addProperty("HoleDelay", String.valueOf(holeDelay));
+                }
+                if (StringUtill.isEmpty(response3DTable17DataModelList.get(0).getRowTime())) {
+                    mapObject.addProperty("RowDelay", "0");
+                } else {
+                    int rowDelay = Integer.parseInt(response3DTable17DataModelList.get(0).getRowTime()) / 20;
+                    mapObject.addProperty("RowDelay", String.valueOf(rowDelay));
+                }
+            }
+
             mapObject.addProperty("Rows", String.valueOf(rowCount));
             mapObject.addProperty("TotalHoles", String.valueOf(tablesData.size()));
             mapObject.addProperty("CreationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));

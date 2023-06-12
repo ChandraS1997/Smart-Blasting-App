@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable17DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable3DataModel;
@@ -37,6 +38,7 @@ public class AppDelegate {
     public List<Response3DTable2DataModel> response3DTable2DataModel = new ArrayList<>();
     public List<Response3DTable3DataModel> response3DTable3DataModel = new ArrayList<>();
     public List<Response3DTable7DesignElementDataModel> designElementDataModel = new ArrayList<>();
+    public List<Response3DTable17DataModel> response3DTable17DataModelList = new ArrayList<>();
 
     public JsonElement hole3DDataElement;
 
@@ -161,6 +163,14 @@ public class AppDelegate {
 
     public void setDesignElementDataModel(List<Response3DTable7DesignElementDataModel> designElementDataModel) {
         this.designElementDataModel = designElementDataModel;
+    }
+
+    public List<Response3DTable17DataModel> getResponse3DTable17DataModelList() {
+        return response3DTable17DataModelList;
+    }
+
+    public void setResponse3DTable17DataModelList(List<Response3DTable17DataModel> response3DTable17DataModelList) {
+        this.response3DTable17DataModelList = response3DTable17DataModelList;
     }
 
     public JsonElement getHole3DDataElement() {

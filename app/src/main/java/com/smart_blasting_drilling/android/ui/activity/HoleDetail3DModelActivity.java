@@ -26,22 +26,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
-import com.smart_blasting_drilling.android.api.apis.response.ResponseHoleDetailData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseRockData;
-import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable17DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.CoordinationHoleHelperKt;
 import com.smart_blasting_drilling.android.databinding.HoleDetail3dActivityBinding;
-import com.smart_blasting_drilling.android.databinding.HoleDetailActivityBinding;
 import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
 import com.smart_blasting_drilling.android.dialogs.Hole3dEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleDetail3dDialog;
 import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
-import com.smart_blasting_drilling.android.dialogs.HoleEditTableFieldSelectionDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.SyncProjectOptionDialog;
@@ -69,6 +66,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     public List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
     public List<Response3DTable1DataModel> bladesRetrieveData = new ArrayList<>();
     public List<Response3DTable2DataModel> response3DTable2DataModelList = new ArrayList<>();
+    public List<Response3DTable17DataModel> response3DTable17DataModelList = new ArrayList<>();
     public boolean isTableHeaderFirstTimeLoad = true;
     public JsonElement element;
 
@@ -92,6 +90,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     public void setDataFromBundle() {
         bladesRetrieveData = AppDelegate.getInstance().getResponse3DTable1DataModel();
         response3DTable2DataModelList = AppDelegate.getInstance().getResponse3DTable2DataModel();
+        response3DTable17DataModelList = AppDelegate.getInstance().getResponse3DTable17DataModelList();
         getRockDensity();
         allTablesData = AppDelegate.getInstance().getHoleChargingDataModel();
         if (!Constants.isListEmpty(bladesRetrieveData) && !Constants.isListEmpty(allTablesData)) {
@@ -198,7 +197,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                                     blastCode = blastCodeEntity.getBlastCode();
                             }
                         }
-                        blastInsertSyncRecord3DApiCaller(bladesRetrieveData.get(0), allTablesData, response3DTable2DataModelList, getRowWiseHoleIn3dList(allTablesData).size(), 0, blastCode).observe(HoleDetail3DModelActivity.this, new Observer<JsonElement>() {
+                        blastInsertSyncRecord3DApiCaller(response3DTable17DataModelList, bladesRetrieveData.get(0), allTablesData, response3DTable2DataModelList, getRowWiseHoleIn3dList(allTablesData).size(), blastCode).observe(HoleDetail3DModelActivity.this, new Observer<JsonElement>() {
                             @Override
                             public void onChanged(JsonElement element) {
                                 bladesRetrieveData = AppDelegate.getInstance().getResponse3DTable1DataModel();
@@ -439,47 +438,6 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         if (binding.holeParaLay.getVisibility() == View.VISIBLE)
             binding.holeParaLay.setVisibility(View.GONE);
         binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
-    }
-
-    public void openHoleDetailDialog(Response3DTable4HoleChargingDataModel holeDetailData) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        HoleDetail3dDialog infoDialogFragment = HoleDetail3dDialog.getInstance(holeDetailData, bladesRetrieveData.get(0));
-
-        infoDialogFragment.setUpListener((dialogFragment, designId) -> {
-            try {
-                ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
-                ProjectHoleDetailRowColEntity entity = dao.getAllBladesProject(designId);
-
-                JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) new Gson().fromJson(entity.getProjectHole(), JsonElement.class)).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
-                List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
-                JsonArray jsonArray = new JsonArray();
-                if (array.get(15) instanceof JsonArray) {
-                    jsonArray = new Gson().fromJson(array.get(15), JsonArray.class);
-                } else {
-                    jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(15), String.class), JsonArray.class);
-                }
-                for (JsonElement e : jsonArray) {
-                    holeDetailDataList.add(new Gson().fromJson(e, Response3DTable4HoleChargingDataModel.class));
-                }
-
-                allTablesData = holeDetailDataList;
-
-                if (rowItemDetail != null)
-                    rowItemDetail.setRowOfTable(rowPageVal, holeDetailDataList, true);
-
-                if (mapViewDataUpdateLiveData != null)
-                    mapViewDataUpdateLiveData.setValue(true);
-
-                dialogFragment.dismiss();
-            } catch (Exception e) {
-                e.getLocalizedMessage();
-            }
-
-        });
-
-        ft.add(infoDialogFragment, HoleDetailDialog.TAG);
-        ft.commitAllowingStateLoss();
     }
 
     public void set3dHoleDetail(Response3DTable1DataModel bladesRetrieveData, Response3DTable4HoleChargingDataModel holeDetailData) {

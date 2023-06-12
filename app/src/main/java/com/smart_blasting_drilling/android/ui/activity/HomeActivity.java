@@ -30,6 +30,7 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.GetAllMinePitZoneBenchResult;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable17DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable3DataModel;
@@ -92,6 +93,7 @@ public class HomeActivity extends BaseActivity {
     public List<Response3DTable3DataModel> response3DTable3DataModels = new ArrayList<>();
     public List<Response3DTable4HoleChargingDataModel> response3DTable4HoleChargingDataModels = new ArrayList<>();
     public List<Response3DTable7DesignElementDataModel> response3DTable7DesignElementDataModels = new ArrayList<>();
+    public List<Response3DTable17DataModel> response3DTable17DataModelList = new ArrayList<>();
 
     public static void openHomeActivity(Context context) {
         context.startActivity(new Intent(context, HomeActivity.class));
@@ -426,6 +428,7 @@ public class HomeActivity extends BaseActivity {
         response3DTable2DataModels.clear();
         response3DTable3DataModels.clear();
         response3DTable4HoleChargingDataModels.clear();
+        response3DTable17DataModelList.clear();
         response3DTable7DesignElementDataModels.clear();
     }
 
@@ -479,11 +482,17 @@ public class HomeActivity extends BaseActivity {
             for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(6), String.class), JsonArray.class)) {
                 response3DTable7DesignElementDataModels.add(new Gson().fromJson(element, Response3DTable7DesignElementDataModel.class));
             }
+            if (!array.get(17).isJsonNull()) {
+                for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(17), String.class), JsonArray.class)) {
+                    response3DTable17DataModelList.add(new Gson().fromJson(element, Response3DTable17DataModel.class));
+                }
+            }
             AppDelegate.getInstance().setHoleChargingDataModel(response3DTable4HoleChargingDataModels);
             AppDelegate.getInstance().setResponse3DTable1DataModel(response3DTable1DataModels);
             AppDelegate.getInstance().setResponse3DTable2DataModel(response3DTable2DataModels);
             AppDelegate.getInstance().setResponse3DTable3DataModel(response3DTable3DataModels);
             AppDelegate.getInstance().setDesignElementDataModel(response3DTable7DesignElementDataModels);
+            AppDelegate.getInstance().setResponse3DTable17DataModelList(response3DTable17DataModelList);
 
             if (!isActualDataNotAvailable) {
                 if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
