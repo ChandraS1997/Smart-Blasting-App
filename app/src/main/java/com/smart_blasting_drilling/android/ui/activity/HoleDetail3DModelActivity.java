@@ -473,7 +473,22 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             binding.holeDetailLayout.blockEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBlock())));
             binding.holeDetailLayout.blockLengthEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBlockLength())));
             binding.holeDetailLayout.holeDelayEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDelay())));
-            binding.holeDetailLayout.inHoleDelayEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getInHoleDelay())));
+
+            if (!Constants.isListEmpty(response3DTable17DataModelList)) {
+                JsonArray inHoleDelayArr = new Gson().fromJson(new Gson().fromJson(response3DTable17DataModelList.get(0).getInHoleDelayArr(), String.class), JsonArray.class);
+                if (inHoleDelayArr != null) {
+                    if (inHoleDelayArr.size() > 0) {
+                        binding.holeDetailLayout.inHoleDelayEt.setText(String.valueOf(inHoleDelayArr.get(0).getAsInt()));
+                    } else {
+                        binding.holeDetailLayout.inHoleDelayEt.setText("0");
+                    }
+                } else {
+                    binding.holeDetailLayout.inHoleDelayEt.setText("0");
+                }
+            } else {
+                binding.holeDetailLayout.inHoleDelayEt.setText("0");
+            }
+
             binding.holeDetailLayout.waterDepthEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getWaterDepth())));
             binding.holeDetailLayout.subgradeEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getSubgrade())));
         }

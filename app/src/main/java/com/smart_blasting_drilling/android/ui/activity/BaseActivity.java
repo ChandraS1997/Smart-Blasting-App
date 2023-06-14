@@ -2341,7 +2341,11 @@ public class BaseActivity extends AppCompatActivity {
 
                 object.addProperty("DeckLength", dataModel.getDeckLength());
                 object.addProperty("DesignId", dataModel.getDesignId());
-                object.addProperty("HoleDelay", dataModel.getHoleDelay());
+                if (StringUtill.isEmpty(dataModel.getHoleDelay())) {
+                    object.addProperty("HoleDelay", "0");
+                } else {
+                    object.addProperty("HoleDelay", dataModel.getHoleDelay());
+                }
                 object.addProperty("HoleDepth", dataModel.getHoleDepth());
                 object.addProperty("HoleDiameter", dataModel.getHoleDiameter());
                 object.addProperty("HoleID", String.format("R%sH%s", dataModel.getRowNo(), dataModel.getHoleNo()));
