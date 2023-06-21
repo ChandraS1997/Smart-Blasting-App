@@ -81,6 +81,9 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
     int siteId, rigId, empId, drillTypeId, drillerCode, drillMethodId, drillMaterialId, shiftCode, drillPatternId, mineCode, zoneCode, rockCode, benchCode, expCode, pitCode;
     String startDate, startTime, endTime, endDate;
     String rockDensity;
+
+    List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
+
     public ProjectDetail3DDataDialog() {
         _self = this;
     }
@@ -162,8 +165,13 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                     jsonObject.addProperty("zone_id", zoneCode);
                     jsonObject.addProperty("pit_name", binding.spinnerPit.getText().toString());
                     jsonObject.addProperty("pit_id", pitCode);
-                    jsonObject.addProperty("explosive_name", binding.spinnerExplosive.getText().toString());
-                    jsonObject.addProperty("explosive_id", expCode);
+                    if (!binding.spinnerExplosive.getText().toString().equals("Select Explosive")) {
+                        jsonObject.addProperty("explosive_name", binding.spinnerExplosive.getText().toString());
+                        jsonObject.addProperty("explosive_id", expCode);
+                    } else {
+                        jsonObject.addProperty("explosive_name", "");
+                        jsonObject.addProperty("explosive_id", "");
+                    }
                     jsonObject.addProperty("bench_name", binding.spinnerBench.getText().toString());
                     jsonObject.addProperty("bench_id", benchCode);
                     jsonObject.addProperty("rock_name", binding.spinnerRock.getText().toString());
@@ -188,18 +196,6 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                     jsonObject.addProperty("start_date", binding.startDate.getText().toString());
                     jsonObject.addProperty("end_date", binding.endDate.getText().toString());
                     jsonObject.addProperty("end_time", binding.endTime.getText().toString());
-
-                    List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
-
-                    if (!StringUtill.isEmpty(from)) {
-                        if (from.equals("Home")) {
-                            allTablesData = ((HomeActivity) mContext).response3DTable4HoleChargingDataModels;
-                        } else {
-                            allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
-                        }
-                    } else {
-                        allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
-                    }
 
                     if (appDatabase.updatedProjectDataDao().isExistItem(bladesRetrieveData.getDesignId())) {
                         appDatabase.updatedProjectDataDao().updateItem(bladesRetrieveData.getDesignId(), new Gson().toJson(jsonObject));
@@ -283,6 +279,34 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
     public void loadData() {
 
         try {
+
+            String explosiveName = "";
+
+            if (!StringUtill.isEmpty(from)) {
+                if (from.equals("Home")) {
+                    allTablesData = ((HomeActivity) mContext).response3DTable4HoleChargingDataModels;
+                } else {
+                    allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
+                }
+            } else {
+                allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
+            }
+
+            if (!Constants.isListEmpty(allTablesData)) {
+                for (int i = 0; i < allTablesData.size(); i++) {
+                    if (i == 0) {
+                        if (StringUtill.isEmpty(explosiveName) && !Constants.isListEmpty(allTablesData.get(0).getChargeTypeArray())) {
+                            for (int x = 0; x < allTablesData.get(0).getChargeTypeArray().size(); x++) {
+                                if (allTablesData.get(0).getChargeTypeArray().get(x).getType().equals("Bulk")) {
+                                    explosiveName = allTablesData.get(0).getChargeTypeArray().get(x).getName();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             endDate = DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd");
             startDate = DateUtils.getLastMonthDateFromCurDate("yyyy-MM-dd");
 
@@ -660,17 +684,32 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                         drillMethodDataList = new Gson().fromJson(appDatabase.explosiveDataDao().getAllBladesProject().get(0).getData(), teamList);
                     }
                     if (!Constants.isListEmpty(drillMethodDataList)) {
-                        String[] drillMethodDataItem = new String[drillMethodDataList.size()];
+                        List<String> expList = new ArrayList<>();
                         for (int i = 0; i < drillMethodDataList.size(); i++) {
-                            drillMethodDataItem[i] = drillMethodDataList.get(i).getName();
+                            expList.add(drillMethodDataList.get(i).getName());
+                            if (explosiveName.equals(drillMethodDataList.get(i).getName())) {
+                                expCode = drillMethodDataList.get(i).getExpCode();
+                            }
                         }
+                        expList.add(0, "Select Explosive");
+
+                        String[] drillMethodDataItem = new String[expList.size()];
+                        drillMethodDataItem = expList.toArray(drillMethodDataItem);
+
                         binding.spinnerExplosive.setAdapter(Constants.getAdapter(mContext, drillMethodDataItem));
-                        binding.spinnerExplosive.setText(StringUtill.getString(drillMethodDataItem[0]));
+                        if (StringUtill.isEmpty(explosiveName)) {
+                            binding.spinnerExplosive.setText("Select Explosive");
+                        } else {
+                            binding.spinnerExplosive.setText(StringUtill.getString(explosiveName));
+                        }
+                        drillMethodDataList.add(0, new ResponseExplosiveDataModel());
                         List<ResponseExplosiveDataModel> finalDrillMethodDataList = drillMethodDataList;
                         binding.spinnerExplosive.setOnItemClickListener((adapterView, view, i, l) -> {
                             expCode = finalDrillMethodDataList.get(i).getExpCode();
                         });
-                        expCode = drillMethodDataList.get(0).getExpCode();
+                        /*if (!StringUtill.isEmpty(explosiveName)) {
+                            expCode = drillMethodDataList.get(0).getExpCode();
+                        }*/
                     }
                 }
             }

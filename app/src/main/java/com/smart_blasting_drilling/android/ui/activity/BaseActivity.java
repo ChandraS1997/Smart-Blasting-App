@@ -2021,7 +2021,16 @@ public class BaseActivity extends AppCompatActivity {
             JsonObject holepointsObject = new JsonObject();
             holepointsObject.addProperty("BlastCode", blastCode);
             holepointsObject.addProperty("HoleNumber", "");
-            holepointsObject.addProperty("HoleDelay", "");
+            if (!Constants.isListEmpty(response3DTable17DataModelList)) {
+                if (StringUtill.isEmpty(response3DTable17DataModelList.get(0).getHoleTime())) {
+                    holepointsObject.addProperty("HoleDelay", "0");
+                } else {
+                    int holeDelay = Integer.parseInt(response3DTable17DataModelList.get(0).getHoleTime()) / 20;
+                    holepointsObject.addProperty("HoleDelay", String.valueOf(holeDelay));
+                }
+            } else {
+                holepointsObject.addProperty("HoleDelay", "0");
+            }
             holepointsObject.addProperty("x", "");
             holepointsObject.addProperty("y", "");
             holepointsObject.addProperty("lat", "");

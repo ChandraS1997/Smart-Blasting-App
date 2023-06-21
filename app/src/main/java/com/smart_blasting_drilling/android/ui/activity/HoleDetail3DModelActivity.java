@@ -37,8 +37,6 @@ import com.smart_blasting_drilling.android.app.CoordinationHoleHelperKt;
 import com.smart_blasting_drilling.android.databinding.HoleDetail3dActivityBinding;
 import com.smart_blasting_drilling.android.dialogs.AppAlertDialogFragment;
 import com.smart_blasting_drilling.android.dialogs.Hole3dEditTableFieldSelectionDialog;
-import com.smart_blasting_drilling.android.dialogs.HoleDetail3dDialog;
-import com.smart_blasting_drilling.android.dialogs.HoleDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetail3DDataDialog;
 import com.smart_blasting_drilling.android.dialogs.ProjectDetailDialog;
 import com.smart_blasting_drilling.android.dialogs.SyncProjectOptionDialog;
@@ -439,6 +437,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             binding.holeParaLay.setVisibility(View.GONE);
         binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
     }
+
+    String explosiveName = "";
 
     public void set3dHoleDetail(Response3DTable1DataModel bladesRetrieveData, Response3DTable4HoleChargingDataModel holeDetailData) {
 
