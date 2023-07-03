@@ -1,6 +1,7 @@
 package com.smart_blasting_drilling.android.ui.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -73,7 +74,7 @@ public class Media3dActivity extends BaseActivity implements PickiTCallbacks, Me
     String imgPath;
     MediaDataModel mediaDataModel;
     PickiT pickiT;
-    ActivityResultLauncher<String> activityResultLauncher;
+    ActivityResultLauncher<Intent> activityResultLauncher;
     String filename;
     String extension;
     String designId = "";
@@ -116,11 +117,15 @@ public class Media3dActivity extends BaseActivity implements PickiTCallbacks, Me
 
         imageListBlank();
 
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
-            if (uri != null) {
-                pickiT.getPath(uri, Build.VERSION.SDK_INT);
-            }
-        });
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Log.e("Data", result.getData().getData().toString());
+                        pickiT.getPath(Uri.parse(result.getData().getData().toString()), Build.VERSION.SDK_INT);
+                    }
+
+                });
 
         binding.addCameraFab.setOnClickListener(view -> selectImage());
 
@@ -195,7 +200,13 @@ public class Media3dActivity extends BaseActivity implements PickiTCallbacks, Me
                 Permissions.check(this, permission, null, null, new PermissionHandler() {
                     @Override
                     public void onGranted() {
-                        activityResultLauncher.launch("image/*;video/*");
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("*/*");
+                        String[] mimetypes = {"image/*", "video/*"};
+                        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+
+                        activityResultLauncher.launch(intent);
                     }
                 });
             } else if (options[item].equals(getString(R.string.cancel))) {

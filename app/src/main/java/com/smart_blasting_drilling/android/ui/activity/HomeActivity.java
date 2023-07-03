@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,12 +31,14 @@ import com.smart_blasting_drilling.android.api.apis.response.ResponseLoginData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.GetAllMinePitZoneBenchResult;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable16PilotDataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable17DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable3DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable7DesignElementDataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.pre_spilit_table.Response3DTable18PreSpilitDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.BaseApis;
 import com.smart_blasting_drilling.android.app.BaseApplication;
@@ -91,6 +94,8 @@ public class HomeActivity extends BaseActivity {
     public List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
     public List<Response3DTable2DataModel> response3DTable2DataModels = new ArrayList<>();
     public List<Response3DTable3DataModel> response3DTable3DataModels = new ArrayList<>();
+    public List<Response3DTable16PilotDataModel> response3DTable16PilotDataModelList = new ArrayList<>();
+    public List<Response3DTable18PreSpilitDataModel> response3DTable18PreSpilitDataModelList = new ArrayList<>();
     public List<Response3DTable4HoleChargingDataModel> response3DTable4HoleChargingDataModels = new ArrayList<>();
     public List<Response3DTable7DesignElementDataModel> response3DTable7DesignElementDataModels = new ArrayList<>();
     public List<Response3DTable17DataModel> response3DTable17DataModelList = new ArrayList<>();
@@ -270,7 +275,7 @@ public class HomeActivity extends BaseActivity {
         });
     }
 
-    private void setBottomUiNavigation(View view) {
+    private void setBottomUiNavigation(@NonNull View view) {
         switch (view.getId()) {
             case R.id.designBtn:
                 binding.appLayout.bottomNavigation.designBtn.setBackground(ViewUtil.setViewBg(HomeActivity.this, 0, R.color._FFA722));
@@ -428,6 +433,8 @@ public class HomeActivity extends BaseActivity {
         response3DTable2DataModels.clear();
         response3DTable3DataModels.clear();
         response3DTable4HoleChargingDataModels.clear();
+        response3DTable16PilotDataModelList.clear();
+        response3DTable18PreSpilitDataModelList.clear();
         response3DTable17DataModelList.clear();
         response3DTable7DesignElementDataModels.clear();
     }
@@ -476,9 +483,37 @@ public class HomeActivity extends BaseActivity {
                     jsonArray = new Gson().fromJson(new Gson().fromJson(array.get(15), String.class), JsonArray.class);
                 }
             }
+
+            JsonArray pilotDataJsonArray = new JsonArray();
+            if (array.get(16) instanceof JsonArray) {
+                pilotDataJsonArray = new Gson().fromJson(array.get(16), JsonArray.class);
+            } else {
+                pilotDataJsonArray = new Gson().fromJson(new Gson().fromJson(array.get(16), String.class), JsonArray.class);
+            }
+            JsonArray preSplitDataJsonArray = new JsonArray();
+            if (array.get(18) instanceof JsonArray) {
+                preSplitDataJsonArray = new Gson().fromJson(array.get(18), JsonArray.class);
+            } else {
+                preSplitDataJsonArray = new Gson().fromJson(new Gson().fromJson(array.get(18), String.class), JsonArray.class);
+            }
+
             for (JsonElement element : jsonArray) {
                 response3DTable4HoleChargingDataModels.add(new Gson().fromJson(element, Response3DTable4HoleChargingDataModel.class));
             }
+
+            for (JsonElement element : preSplitDataJsonArray) {
+                Response3DTable18PreSpilitDataModel model = new Gson().fromJson(element, Response3DTable18PreSpilitDataModel.class);
+                model.setHoleDetailStr(model.getHoleDetailStr());
+                model.setHolePointsStr(model.getHolePointsStr());
+                model.setLinePointsStr(model.getLinePointsStr());
+                response3DTable18PreSpilitDataModelList.add(model);
+            }
+            for (JsonElement element : pilotDataJsonArray) {
+                Response3DTable16PilotDataModel model = new Gson().fromJson(element, Response3DTable16PilotDataModel.class);
+                model.setChargeTypeArrayStr(model.getChargeTypeArrayStr());
+                response3DTable16PilotDataModelList.add(model);
+            }
+
             for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(6), String.class), JsonArray.class)) {
                 response3DTable7DesignElementDataModels.add(new Gson().fromJson(element, Response3DTable7DesignElementDataModel.class));
             }
@@ -488,6 +523,9 @@ public class HomeActivity extends BaseActivity {
                 }
             }
             AppDelegate.getInstance().setHoleChargingDataModel(response3DTable4HoleChargingDataModels);
+            AppDelegate.getInstance().setPreSpilitDataModelList(response3DTable18PreSpilitDataModelList);
+            AppDelegate.getInstance().setPilotDataModelList(response3DTable16PilotDataModelList);
+
             AppDelegate.getInstance().setResponse3DTable1DataModel(response3DTable1DataModels);
             AppDelegate.getInstance().setResponse3DTable2DataModel(response3DTable2DataModels);
             AppDelegate.getInstance().setResponse3DTable3DataModel(response3DTable3DataModels);

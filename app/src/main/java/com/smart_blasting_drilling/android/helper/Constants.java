@@ -60,6 +60,27 @@ public class Constants {
     public static final String DB_NAME = "centralmineinfo";
     public static final String _3D_TBALE_NAME = "GetAll3DDesignwithActualInfoResult";
 
+    public static final int NORMAL = 0;
+    public static final int PILOT = 1;
+    public static final int PRE_SPLIT = 2;
+
+    public enum TABLE_TYPE {
+        NORMAL(0),
+        PILOT(1),
+        PRE_SPLIT(2);
+
+        final int type;
+
+        TABLE_TYPE(int type) {
+            this.type = type;
+        }
+
+        public int getType() {
+            return type;
+        }
+    }
+
+
     @SuppressLint("HardwareIds")
     public static String getDeviceId(Context context) {
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);

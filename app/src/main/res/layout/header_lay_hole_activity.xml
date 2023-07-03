@@ -71,9 +71,8 @@
                 android:fontFamily="@font/inter_bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 app:layout_constraintStart_toEndOf="@id/homeBtn"
-                app:layout_constraintEnd_toEndOf="parent"
               />
 
 
@@ -106,10 +105,10 @@
                 app:dropDownDrawableSpacing="15dp"
                 app:dropDownDrawableWidth="@dimen/_14ssp"
                 app:dropDownHeight="@dimen/_150sdp"
-                app:layout_constraintEnd_toStartOf="@id/project_info"/>
+                app:layout_constraintEnd_toStartOf="@id/spinnerHoleType"/>
 
             <com.smart_blasting_drilling.android.utils.EditSpinner
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/spinnerHoleType"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

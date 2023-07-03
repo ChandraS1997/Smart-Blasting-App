@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,10 +29,12 @@ import com.google.gson.reflect.TypeToken;
 import com.smart_blasting_drilling.android.R;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseRockData;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable16PilotDataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable17DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.pre_spilit_table.Response3DTable18PreSpilitDataModel;
 import com.smart_blasting_drilling.android.app.AppDelegate;
 import com.smart_blasting_drilling.android.app.CoordinationHoleHelperKt;
 import com.smart_blasting_drilling.android.databinding.HoleDetail3dActivityBinding;
@@ -62,15 +65,19 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     public NavController navController;
     public HoleDetail3dActivityBinding binding;
     public List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
+    public List<Response3DTable18PreSpilitDataModel> preSplitTableData = new ArrayList<>();
+    public List<Response3DTable16PilotDataModel> pilotTableData = new ArrayList<>();
     public List<Response3DTable1DataModel> bladesRetrieveData = new ArrayList<>();
     public List<Response3DTable2DataModel> response3DTable2DataModelList = new ArrayList<>();
     public List<Response3DTable17DataModel> response3DTable17DataModelList = new ArrayList<>();
     public boolean isTableHeaderFirstTimeLoad = true;
     public JsonElement element;
+    public int tableTypeVal = 0;
 
     public List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
     public int rowPageVal = 1;
     public RowItemDetail rowItemDetail;
+    public TableHoleDataListCallback tableHoleDataListCallback;
     List<String> rowList = new ArrayList<>();
 
     public int updateValPos = -1, updateRowNo = -1, updateHoleNo = -1, rowPos = -1;
@@ -91,6 +98,9 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         response3DTable17DataModelList = AppDelegate.getInstance().getResponse3DTable17DataModelList();
         getRockDensity();
         allTablesData = AppDelegate.getInstance().getHoleChargingDataModel();
+        preSplitTableData = AppDelegate.getInstance().getPreSpilitDataModelList();
+        pilotTableData = AppDelegate.getInstance().getPilotDataModelList();
+
         if (!Constants.isListEmpty(bladesRetrieveData) && !Constants.isListEmpty(allTablesData)) {
             for (int i = 0; i < allTablesData.size(); i++) {
                 boolean isFound = false;
@@ -104,16 +114,12 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                     rowList.add("Row " + allTablesData.get(i).getRowNo());
             }
 
-            /*if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.get(0).getDesignId())) {
-                setJsonForSyncProjectData(bladesRetrieveData, allTablesData);
-            } else {
-                AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
-                if (StringUtill.isEmpty(entity.getProjectCode())) {
-                    setJsonForSyncProjectData(bladesRetrieveData, allTablesData.getTable2());
-                }
-            }*/
         }
 
+    }
+
+    public interface TableHoleDataListCallback {
+        void holeDataTableType(int tableType);
     }
 
     @Override
@@ -121,6 +127,28 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setDataFromBundle();
         binding = DataBindingUtil.setContentView(this, R.layout.hole_detail_3d_activity);
+
+        String[] tableType = new String[]{"Normal", "Pilot", "Pre-Split"};
+        binding.headerLayHole.spinnerHoleType.setAdapter(Constants.getAdapter(this, tableType));
+        binding.headerLayHole.spinnerHoleType.selectItem(0);
+
+        binding.headerLayHole.spinnerHoleType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                switch (tableType[i]) {
+                    case "Pilot":
+                        tableTypeVal = Constants.TABLE_TYPE.PILOT.getType();
+                        break;
+                    case "Pre-Split":
+                        tableTypeVal = Constants.TABLE_TYPE.PRE_SPLIT.getType();
+                        break;
+                    default:
+                        tableTypeVal = Constants.TABLE_TYPE.NORMAL.getType();
+                        break;
+                }
+                tableHoleDataListCallback.holeDataTableType(tableTypeVal);
+            }
+        });
 
         String[] rowSpinnerList = new String[rowList.size()];
         for (int i = 0; i < rowList.size(); i++) {
@@ -279,6 +307,65 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         editModelArrayList.add(new TableEditModel("Hole Type", "Hole Type"));
         editModelArrayList.add(new TableEditModel("Hole Depth", "Hole Depth"));
         editModelArrayList.add(new TableEditModel("Hole Status", "Hole Status"));
+        editModelArrayList.add(new TableEditModel("VerticalDip", "VerticalDip"));
+        editModelArrayList.add(new TableEditModel("Diameter", "Diameter"));
+        editModelArrayList.add(new TableEditModel("Burden", "Burden"));
+        editModelArrayList.add(new TableEditModel("Spacing", "Spacing"));
+        editModelArrayList.add(new TableEditModel("Subgrade", "Subgrade"));
+        editModelArrayList.add(new TableEditModel("TopX", "TopX"));
+        editModelArrayList.add(new TableEditModel("TopY", "TopY"));
+        editModelArrayList.add(new TableEditModel("TopZ", "TopZ"));
+        editModelArrayList.add(new TableEditModel("BottomX" ,"BottomX"));
+        editModelArrayList.add(new TableEditModel("BottomY", "BottomY"));
+        editModelArrayList.add(new TableEditModel("BottomZ", "BottomZ"));
+        editModelArrayList.add(new TableEditModel("TotalCharge", "TotalCharge"));
+        editModelArrayList.add(new TableEditModel("ChargeLength", "ChargeLength"));
+        editModelArrayList.add(new TableEditModel("StemmingLength", "StemmingLength"));
+        editModelArrayList.add(new TableEditModel("DeckLength", "DeckLength"));
+        editModelArrayList.add(new TableEditModel("Block", "Block"));
+        editModelArrayList.add(new TableEditModel("BlockLength", "BlockLength"));
+        editModelArrayList.add(new TableEditModel("InHoleDelay", "InHoleDelay"));
+        editModelArrayList.add(new TableEditModel("Charging", "Charging"));
+        return editModelArrayList;
+    }
+
+    public List<TableEditModel> getPreSplitTableModel() {
+        if (!Constants.isListEmpty(manger.get3dPreSplitTableField())) {
+            isTableHeaderFirstTimeLoad = false;
+            return manger.get3dPreSplitTableField();
+        }
+
+        List<TableEditModel> editModelArrayList = new ArrayList<>();
+        editModelArrayList.add(new TableEditModel("Hole Id", "Hole Id"));
+        editModelArrayList.add(new TableEditModel("Hole Type", "Hole Type"));
+        editModelArrayList.add(new TableEditModel("Diameter", "Diameter"));
+        editModelArrayList.add(new TableEditModel("Hole Depth", "Hole Depth"));
+        editModelArrayList.add(new TableEditModel("Top Easting", "Top Easting"));
+        editModelArrayList.add(new TableEditModel("Top Northing", "Top Northing"));
+        editModelArrayList.add(new TableEditModel("Top RL", "Top RL"));
+        editModelArrayList.add(new TableEditModel("Bottom Easting", "Bottom Easting"));
+        editModelArrayList.add(new TableEditModel("Bottom Northing", "Bottom Northing"));
+        editModelArrayList.add(new TableEditModel("Bottom RL", "Bottom RL"));
+        editModelArrayList.add(new TableEditModel("Total Charge", "Total Charge"));
+        editModelArrayList.add(new TableEditModel("Charge Length", "Charge Length"));
+        editModelArrayList.add(new TableEditModel("Decking", "Decking"));
+        editModelArrayList.add(new TableEditModel("Charging", "Charging"));
+        return editModelArrayList;
+    }
+
+    public List<TableEditModel> getPilotTableModel() {
+        if (!Constants.isListEmpty(manger.get3dPilotTableField())) {
+            isTableHeaderFirstTimeLoad = false;
+            return manger.get3dPilotTableField();
+        }
+
+        List<TableEditModel> editModelArrayList = new ArrayList<>();
+//        editModelArrayList.add(new TableEditModel("Row No", "Row No"));
+//        editModelArrayList.add(new TableEditModel("Hole No", "Hole No"));
+        editModelArrayList.add(new TableEditModel("Hole Id", "Hole Id"));
+//        editModelArrayList.add(new TableEditModel("Hole Type", "Hole Type"));
+        editModelArrayList.add(new TableEditModel("Hole Depth", "Hole Depth"));
+//        editModelArrayList.add(new TableEditModel("Hole Status", "Hole Status"));
         editModelArrayList.add(new TableEditModel("VerticalDip", "VerticalDip"));
         editModelArrayList.add(new TableEditModel("Diameter", "Diameter"));
         editModelArrayList.add(new TableEditModel("Burden", "Burden"));

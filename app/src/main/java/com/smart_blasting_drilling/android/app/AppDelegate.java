@@ -5,12 +5,14 @@ import com.google.gson.JsonObject;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseBladesRetrieveData;
 import com.smart_blasting_drilling.android.api.apis.response.ResponseProjectModelFromAllInfoApi;
 import com.smart_blasting_drilling.android.api.apis.response.hole_tables.AllTablesData;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable16PilotDataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable17DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable3DataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
 import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.Response3DTable7DesignElementDataModel;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.pre_spilit_table.Response3DTable18PreSpilitDataModel;
 import com.smart_blasting_drilling.android.helper.Constants;
 import com.smart_blasting_drilling.android.ui.models.MediaDataModel;
 
@@ -34,6 +36,8 @@ public class AppDelegate {
     public ResponseBladesRetrieveData bladesRetrieveData = new ResponseBladesRetrieveData();
 
     public List<Response3DTable4HoleChargingDataModel> holeChargingDataModel = new ArrayList<>();
+    public List<Response3DTable18PreSpilitDataModel> preSpilitDataModelList = new ArrayList<>();
+    public List<Response3DTable16PilotDataModel> pilotDataModelList = new ArrayList<>();
     public List<Response3DTable1DataModel> response3DTable1DataModel = new ArrayList<>();
     public List<Response3DTable2DataModel> response3DTable2DataModel = new ArrayList<>();
     public List<Response3DTable3DataModel> response3DTable3DataModel = new ArrayList<>();
@@ -179,5 +183,21 @@ public class AppDelegate {
 
     public void setHole3DDataElement(JsonElement hole3DDataElement) {
         this.hole3DDataElement = hole3DDataElement;
+    }
+
+    public List<Response3DTable18PreSpilitDataModel> getPreSpilitDataModelList() {
+        return preSpilitDataModelList;
+    }
+
+    public void setPreSpilitDataModelList(List<Response3DTable18PreSpilitDataModel> preSpilitDataModelList) {
+        this.preSpilitDataModelList = preSpilitDataModelList;
+    }
+
+    public List<Response3DTable16PilotDataModel> getPilotDataModelList() {
+        return pilotDataModelList;
+    }
+
+    public void setPilotDataModelList(List<Response3DTable16PilotDataModel> pilotDataModelList) {
+        this.pilotDataModelList = pilotDataModelList;
     }
 }
