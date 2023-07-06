@@ -72,7 +72,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     public List<Response3DTable17DataModel> response3DTable17DataModelList = new ArrayList<>();
     public boolean isTableHeaderFirstTimeLoad = true;
     public JsonElement element;
-    public int tableTypeVal = 0;
+    public int tableTypeVal = 0, lastTableTypeVal = 0;
 
     public List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
     public int rowPageVal = 1;
@@ -135,6 +135,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         binding.headerLayHole.spinnerHoleType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                lastTableTypeVal = tableTypeVal;
                 switch (tableType[i]) {
                     case "Pilot":
                         tableTypeVal = Constants.TABLE_TYPE.PILOT.getType();
@@ -146,7 +147,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                         tableTypeVal = Constants.TABLE_TYPE.NORMAL.getType();
                         break;
                 }
-                tableHoleDataListCallback.holeDataTableType(tableTypeVal);
+                if (lastTableTypeVal != tableTypeVal)
+                    tableHoleDataListCallback.holeDataTableType(tableTypeVal);
             }
         });
 
@@ -360,12 +362,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         }
 
         List<TableEditModel> editModelArrayList = new ArrayList<>();
-//        editModelArrayList.add(new TableEditModel("Row No", "Row No"));
-//        editModelArrayList.add(new TableEditModel("Hole No", "Hole No"));
         editModelArrayList.add(new TableEditModel("Hole Id", "Hole Id"));
-//        editModelArrayList.add(new TableEditModel("Hole Type", "Hole Type"));
         editModelArrayList.add(new TableEditModel("Hole Depth", "Hole Depth"));
-//        editModelArrayList.add(new TableEditModel("Hole Status", "Hole Status"));
         editModelArrayList.add(new TableEditModel("VerticalDip", "VerticalDip"));
         editModelArrayList.add(new TableEditModel("Diameter", "Diameter"));
         editModelArrayList.add(new TableEditModel("Burden", "Burden"));

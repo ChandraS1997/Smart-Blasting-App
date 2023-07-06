@@ -30,9 +30,8 @@ public interface APiInterface {
     @POST("v2/index.php")
     Call<JsonObject> loginApiCaller(@QueryMap Map<String, Object> queryMap, @PartMap Map<String, RequestBody> map);
 
-    @Multipart
-    @POST("v1/index.php")
-    Call<JsonObject> registerApiCaller(@QueryMap Map<String, Object> queryMap, @PartMap Map<String, RequestBody> map);
+    @POST("v2/index.php")
+    Call<JsonObject> registerApiCaller(@QueryMap Map<String, Object> queryMap/*, @PartMap Map<String, RequestBody> map*/);
 
     @GET("BLADES_API/Service1.svc/Retrieve3DDesignByDate/{start_time}/{end_time}/{company_id}/1/{user_id}/centralmineinfo")
     Call<JsonObject> retrieve3DDegignByDateApiCaller(@Path(value = "start_time", encoded = true) String startDate, @Path(value = "end_time", encoded = true) String endDate, @Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);

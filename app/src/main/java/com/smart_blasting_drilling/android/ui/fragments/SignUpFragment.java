@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -36,6 +38,12 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(binding.getRoot()).navigateUp();
+            }
+        });
     }
 
     @Nullable
@@ -44,6 +52,8 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
         if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.signup_fragment, container, false);
             binding.signupbtn.setOnClickListener(this);
+            binding.backBtn.setOnClickListener(this);
+            binding.countryEdt.setOnClickListener(this);
         }
         return binding.getRoot();
     }
@@ -51,11 +61,19 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        // Navigation.findNavController(binding.getRoot()).navigate(R.id.loginFragment);
-        if (checkValidation()) {
-            registerApiCaller();
+        switch (view.getId()) {
+            case R.id.backBtn:
+                Navigation.findNavController(binding.getRoot()).navigateUp();
+                break;
+            case R.id.signupbtn:
+                if (checkValidation()) {
+                    registerApiCaller();
+                }
+                break;
+            case R.id.countryEdt:
+                binding.countryEdt.launchCountrySelectionDialog();
+                break;
         }
-
     }
 
     private boolean checkValidation() {
@@ -97,55 +115,38 @@ public class SignUpFragment extends BaseFragment implements View.OnClickListener
     private void registerApiCaller() {
 
         showLoader();
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("sendemail_getaccess", toRequestBody(String.valueOf(true)));
-        map.put("name", toRequestBody(StringUtill.getString(binding.nameEdt.getText().toString())));
-        map.put("email", toRequestBody(StringUtill.getString(binding.emailEdt.getText().toString())));
-        map.put("phoneno", toRequestBody(StringUtill.getString(binding.phoneNumberEdt.getText().toString())));
-        map.put("country", toRequestBody(binding.countryEdt.getSelectedCountryName()));
-        map.put("company", toRequestBody(StringUtill.getString(binding.companyEdt.getText().toString())));
-        map.put("comment", toRequestBody(StringUtill.getString(binding.commentEdt.getText().toString())));
+        Map<String, Object> map = new HashMap<>();
+        map.put("sendemail_getaccess", true);
+        map.put("name", binding.nameEdt.getText().toString());
+        map.put("email", binding.emailEdt.getText().toString());
+        map.put("phoneno", binding.phoneNumberEdt.getText().toString());
+        map.put("country", binding.countryEdt.getSelectedCountryName());
+        map.put("company", binding.companyEdt.getText().toString());
+        map.put("comment", binding.commentEdt.getText().toString());
+
         MainService.RegisterApiCaller(mContext, map).observe((LifecycleOwner) mContext, responsesignup -> {
             if (responsesignup == null) {
                 showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
             } else {
-
                 if (!(responsesignup.isJsonNull())) {
-
                     try {
-
                         JsonObject jsonObject = responsesignup.getAsJsonObject();
                         if (jsonObject != null) {
-
                             try {
-
-                                ResponseLoginData signupResponse = new Gson().fromJson(responsesignup, ResponseLoginData.class);
-
                                 showSnackBar(binding.getRoot(), StringUtill.getString(responsesignup.getAsJsonObject().get("Message").getAsString()));
-                                if (responsesignup.getAsJsonObject().has("response")) {
+                                /*mContext.startActivity(new Intent(mContext, AuthActivity.class));
+                                ((AuthActivity) mContext).finishAffinity();*/
+                                Navigation.findNavController(binding.getRoot()).navigateUp();
 
-                                    if (responsesignup.getAsJsonObject().get("response").getAsString().equals("fail")) {
-                                        showSnackBar(binding.getRoot(), StringUtill.getString(responsesignup.getAsJsonObject().get("Message").getAsString()));
-                                        mContext.startActivity(new Intent(mContext, AuthActivity.class));
-                                        ((AuthActivity) mContext).finishAffinity();
-                                    }
-                                } else {
-                                   /* System.out.println("inside register api else");
-                                    manger.putUserDetails(signupResponse);
-                                    mContext.startActivity(new Intent(mContext, HomeActivity.class));
-                                    ((AuthActivity) mContext).finishAffinity();*/
-                                }
                             } catch (Exception e) {
                                 Log.e(NODATAFOUND, e.getMessage());
                             }
-
                         } else {
                             ((BaseActivity) requireActivity()).showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
                         }
                     } catch (Exception e) {
                         Log.e(NODATAFOUND, e.getMessage());
                     }
-                    hideLoader();
                 }
             }
             hideLoader();

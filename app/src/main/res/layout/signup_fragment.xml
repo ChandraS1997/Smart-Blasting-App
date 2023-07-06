@@ -12,16 +12,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/backBtn"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@mipmap/ic_back"
+                android:layout_margin="@dimen/_30sdp"
+                android:padding="@dimen/_3sdp"
+                android:background="@drawable/white_circle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="@dimen/_340sdp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/login_centre_bg"
                 android:elevation="@dimen/_2sdp"
                 android:paddingVertical="@dimen/_20sdp"
+                android:layout_marginVertical="@dimen/_20sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/backBtn">
 
                 <ImageView
                     android:id="@+id/user"
@@ -39,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:fontFamily="@font/oxygen_regular"
-                    android:text="@string/signup_here"
+                    android:text="@string/request_access"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_19sdp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -103,7 +115,7 @@
                     android:fontFamily="@font/oxygen_regular"
                     android:hint="@string/enter_phone_number"
                     android:imeOptions="flagNoExtractUi"
-                    android:inputType="number"
+                    android:inputType="phone"
                     android:paddingLeft="@dimen/_10sdp"
                     android:paddingRight="@dimen/_10sdp"
                     android:textColorHint="@color/black"
@@ -135,8 +147,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/phoneNumberEdt"
                     tools:ignore="TextFields" />
 
-
-
                 <com.hbb20.CountryCodePicker
                     android:id="@+id/countryEdt"
                     android:layout_width="0dp"
@@ -167,7 +177,6 @@
                     android:hint="@string/select_country"
                     android:textColorHint="@color/black"
                     android:imeOptions="flagNoExtractUi"/>
-
 
                 <EditText
                     android:id="@+id/commentEdt"
@@ -201,7 +210,7 @@
                     android:layout_marginRight="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:background="@drawable/login_btn_bg"
-                    android:text="Register"
+                    android:text="@string/send_request"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_17ssp"
                     app:layout_constraintEnd_toEndOf="parent"

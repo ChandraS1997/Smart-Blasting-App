@@ -2,6 +2,7 @@ package com.smart_blasting_drilling.android.api.apis.response.table_3d_models.pr
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
+import com.smart_blasting_drilling.android.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 
 public class HoleDetailItem{
 
@@ -39,7 +40,7 @@ public class HoleDetailItem{
 	private Object bottomEasting;
 
 	@SerializedName("chargingArray")
-	private List<ChargingArrayItem> chargingArray;
+	private List<ChargeTypeArrayItem> chargingArray;
 
 	@SerializedName("topRL")
 	private int topRL;
@@ -135,11 +136,11 @@ public class HoleDetailItem{
 		return bottomEasting;
 	}
 
-	public void setChargingArray(List<ChargingArrayItem> chargingArray){
+	public void setChargingArray(List<ChargeTypeArrayItem> chargingArray){
 		this.chargingArray = chargingArray;
 	}
 
-	public List<ChargingArrayItem> getChargingArray(){
+	public List<ChargeTypeArrayItem> getChargingArray(){
 		return chargingArray;
 	}
 

@@ -209,5 +209,10 @@
     <string name="drill_method"><font color='#CC252C'>*</font>Drill Method</string>
     <string name="hole_name">Hole Name</string>
     <string name="charging_added_msg">Charging added successfully</string>
+    <string name="request_access">Request Access</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="enter_company_name">Enter company name</string>
+    <string name="enter_country_name">Enter Country Name</string>
+    <string name="send_request">Send Request</string>
 
 </resources>

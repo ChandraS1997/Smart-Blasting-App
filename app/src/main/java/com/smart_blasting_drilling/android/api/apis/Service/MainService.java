@@ -110,15 +110,14 @@ public class MainService {
         return data;
     }
 
-    ////////////
-    public static LiveData<JsonObject> RegisterApiCaller(final Context context, Map<String, RequestBody> map) {
+    public static LiveData<JsonObject> RegisterApiCaller(final Context context, Map<String, Object> map) {
         final MutableLiveData<JsonObject> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("sendemail_getaccess", true);
-        Call<JsonObject> call = loginApiService.registerApiCaller(queryMap, map);
+        Call<JsonObject> call = loginApiService.registerApiCaller(/*queryMap, */map);
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
@@ -136,12 +135,12 @@ public class MainService {
             @Override
             public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
                 Log.e(" API FAILED ", t.getLocalizedMessage());
+                data.setValue(null);
             }
         });
 
         return data;
     }
-    ////////////
 
     public static LiveData<JsonObject> retrieve3DDegignByDateApiCaller(final Context context, String startDate, String endDate, String userId, String companyId) {
         final MutableLiveData<JsonObject> data = new MutableLiveData<>();
