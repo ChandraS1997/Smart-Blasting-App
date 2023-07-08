@@ -72,6 +72,8 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
     public List<Response3DTable17DataModel> response3DTable17DataModelList = new ArrayList<>();
 
     List<Response3DTable4HoleChargingDataModel> holeDetailDataList = new ArrayList<>();
+    List<Response3DTable16PilotDataModel> holePilotDetailDataList = new ArrayList<>();
+    List<Response3DTable18PreSpilitDataModel> holePreSplitDetailDataList = new ArrayList<>();
 
     ProjectHoleDetailRowColDao entity;
     int tableOfList = 0;
@@ -244,6 +246,11 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
             if (!Constants.isListEmpty(tablesData)) {
                 binding.noHoleDataAvailableMsg.setVisibility(View.GONE);
                 binding.horizontalScrollView.setVisibility(View.VISIBLE);
+
+                holePilotDetailDataList.clear();
+                holePilotDetailDataList.add(null);
+                holePilotDetailDataList.addAll(pilotDataModelListData);
+
                 if (!isFromUpdateAdapter)
                     notifyHoleDataTableType(Constants.PILOT, true);
             } else {
@@ -261,6 +268,10 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
             if (!Constants.isListEmpty(tablesData)) {
                 binding.noHoleDataAvailableMsg.setVisibility(View.GONE);
                 binding.horizontalScrollView.setVisibility(View.VISIBLE);
+
+                holePreSplitDetailDataList.clear();
+                holePreSplitDetailDataList.add(null);
+                holePreSplitDetailDataList.addAll(preSpilitDataModelListData);
 
                 if (!isFromUpdateAdapter)
                     notifyHoleDataTableType(Constants.PRE_SPLIT, true);
@@ -513,10 +524,10 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
         try {
             tableFieldItemModelList.clear();
             tableFieldItemModelList.add(0, new TableFieldItemModel(tableEditModelArrayList));
-            if (!Constants.isListEmpty(holeDetailDataList)) {
-                for (int i = 1; i < holeDetailDataList.size(); i++) {
+            if (!Constants.isListEmpty(holePilotDetailDataList)) {
+                for (int i = 1; i < holePilotDetailDataList.size(); i++) {
                     List<TableEditModel> editModelArrayList = new ArrayList<>();
-                    Response3DTable16PilotDataModel holeDetailData = pilotDataModelListData.get(i);
+                    Response3DTable16PilotDataModel holeDetailData = holePilotDetailDataList.get(i);
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleID()), tableEditModelArrayList.get(0).getTitleVal(), tableEditModelArrayList.get(0).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(StringUtill.isEmpty(holeDetailData.getHoleDepth()) ? "" : holeDetailData.getHoleDepth()), tableEditModelArrayList.get(1).getTitleVal(), tableEditModelArrayList.get(1).isSelected(), update));
                     editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getVerticalDip()), tableEditModelArrayList.get(2).getTitleVal(), tableEditModelArrayList.get(2).isSelected(), update));
@@ -598,7 +609,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                     }
                 }
             }
-            tableViewPilotAdapter = new TableViewPilotAdapter(mContext, tableFieldItemModelList, pilotDataModelListData);
+            tableViewPilotAdapter = new TableViewPilotAdapter(mContext, tableFieldItemModelList, holePilotDetailDataList);
             binding.tableRv.setAdapter(tableViewPilotAdapter);
         } catch (Exception e) {
             e.printStackTrace();
@@ -609,74 +620,78 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
         try {
             tableFieldItemModelList.clear();
             tableFieldItemModelList.add(0, new TableFieldItemModel(tableEditModelArrayList));
-            if (!Constants.isListEmpty(preSpilitDataModelListData)) {
-                if (!Constants.isListEmpty(preSpilitDataModelListData.get(0).getHoleDetail())) {
-                    for (int i = 1; i < preSpilitDataModelListData.get(0).getHoleDetail().size(); i++) {
-                        List<TableEditModel> editModelArrayList = new ArrayList<>();
-                        HoleDetailItem holeDetailData = preSpilitDataModelListData.get(0).getHoleDetail().get(i);
+            if (!Constants.isListEmpty(holePreSplitDetailDataList)) {
+                if (holePreSplitDetailDataList.size() > 1) {
+                    if (!Constants.isListEmpty(holePreSplitDetailDataList.get(1).getHoleDetail())) {
+                        for (int i = 0; i < holePreSplitDetailDataList.get(1).getHoleDetail().size(); i++) {
+                            List<TableEditModel> editModelArrayList = new ArrayList<>();
+                            HoleDetailItem holeDetailData = holePreSplitDetailDataList.get(1).getHoleDetail().get(i);
 
-                        editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleId()), tableEditModelArrayList.get(0).getTitleVal(), tableEditModelArrayList.get(0).isSelected(), update));
-                        editModelArrayList.add(new TableEditModel(String.valueOf(getHoleType(String.valueOf(holeDetailData.getHoleType()))), tableEditModelArrayList.get(1).getTitleVal(), tableEditModelArrayList.get(1).isSelected(), update));
-                        editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleDiameter()), tableEditModelArrayList.get(2).getTitleVal(), tableEditModelArrayList.get(2).isSelected(), update));
-                        editModelArrayList.add(new TableEditModel(String.valueOf(StringUtill.isEmpty(holeDetailData.getHoleDepth()) ? "" : holeDetailData.getHoleDepth()), tableEditModelArrayList.get(3).getTitleVal(), tableEditModelArrayList.get(3).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleId()), tableEditModelArrayList.get(0).getTitleVal(), tableEditModelArrayList.get(0).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(getHoleType(String.valueOf(holeDetailData.getHoleType()))), tableEditModelArrayList.get(1).getTitleVal(), tableEditModelArrayList.get(1).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleDiameter()), tableEditModelArrayList.get(2).getTitleVal(), tableEditModelArrayList.get(2).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(StringUtill.isEmpty(holeDetailData.getHoleDepth()) ? "" : holeDetailData.getHoleDepth()), tableEditModelArrayList.get(3).getTitleVal(), tableEditModelArrayList.get(3).isSelected(), update));
 
-                        editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopEasting()), tableEditModelArrayList.get(4).getTitleVal(), tableEditModelArrayList.get(4).isSelected(), update));
-                        editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopNorthing()), tableEditModelArrayList.get(5).getTitleVal(), tableEditModelArrayList.get(5).isSelected(), update));
-                        editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopRL()), tableEditModelArrayList.get(6).getTitleVal(), tableEditModelArrayList.get(6).isSelected(), update));
-                        editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomEasting()), tableEditModelArrayList.get(7).getTitleVal(), tableEditModelArrayList.get(7).isSelected(), update));
-                        editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomNorthing()), tableEditModelArrayList.get(8).getTitleVal(), tableEditModelArrayList.get(8).isSelected(), update));
-                        editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomRL() == 0.0 ? "" : holeDetailData.getBottomRL()), tableEditModelArrayList.get(9).getTitleVal(), tableEditModelArrayList.get(9).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopEasting()), tableEditModelArrayList.get(4).getTitleVal(), tableEditModelArrayList.get(4).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopNorthing()), tableEditModelArrayList.get(5).getTitleVal(), tableEditModelArrayList.get(5).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopRL()), tableEditModelArrayList.get(6).getTitleVal(), tableEditModelArrayList.get(6).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomEasting()), tableEditModelArrayList.get(7).getTitleVal(), tableEditModelArrayList.get(7).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomNorthing()), tableEditModelArrayList.get(8).getTitleVal(), tableEditModelArrayList.get(8).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomRL() == 0.0 ? "" : holeDetailData.getBottomRL()), tableEditModelArrayList.get(9).getTitleVal(), tableEditModelArrayList.get(9).isSelected(), update));
 
-                        double totalCharge = 0.0, chargeLen = 0.0;
-                        if (!Constants.isListEmpty(holeDetailData.getChargingArray())) {
-                            for (int j = 0; j < holeDetailData.getChargingArray().size(); j++) {
-                                ChargeTypeArrayItem item = holeDetailData.getChargingArray().get(j);
-                                totalCharge = totalCharge + item.getWeight();
+                            double totalCharge = 0.0, chargeLen = 0.0;
+                            if (!Constants.isListEmpty(holeDetailData.getChargingArray())) {
+                                for (int j = 0; j < holeDetailData.getChargingArray().size(); j++) {
+                                    ChargeTypeArrayItem item = holeDetailData.getChargingArray().get(j);
+                                    totalCharge = totalCharge + item.getWeight();
 
-                                if (StringUtill.getString(item.getType()).equals("Bulk") || StringUtill.getString(item.getType()).equals("Cartridge")) {
-                                    chargeLen = chargeLen + item.getLength();
+                                    if (StringUtill.getString(item.getType()).equals("Bulk") || StringUtill.getString(item.getType()).equals("Cartridge")) {
+                                        chargeLen = chargeLen + item.getLength();
+                                    }
                                 }
                             }
-                        }
 
-                        editModelArrayList.add(new TableEditModel(String.valueOf(totalCharge), tableEditModelArrayList.get(10).getTitleVal(), tableEditModelArrayList.get(10).isSelected(), update));
-                        editModelArrayList.add(new TableEditModel(String.valueOf(chargeLen), tableEditModelArrayList.get(11).getTitleVal(), tableEditModelArrayList.get(11).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(totalCharge), tableEditModelArrayList.get(10).getTitleVal(), tableEditModelArrayList.get(10).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(chargeLen), tableEditModelArrayList.get(11).getTitleVal(), tableEditModelArrayList.get(11).isSelected(), update));
 
-                        if (!Constants.isListEmpty(holeDetailData.getChargingArray())) {
-                            double length = 0, deckLen = 0;
-                            for (int j = 0; j < holeDetailData.getChargingArray().size(); j++) {
-                                ChargeTypeArrayItem item = holeDetailData.getChargingArray().get(j);
-                                if (StringUtill.getString(item.getType()).equals("Stemming")) {
-                                    length = length + item.getLength();
+                            if (!Constants.isListEmpty(holeDetailData.getChargingArray())) {
+                                double length = 0, deckLen = 0;
+                                for (int j = 0; j < holeDetailData.getChargingArray().size(); j++) {
+                                    ChargeTypeArrayItem item = holeDetailData.getChargingArray().get(j);
+                                    if (StringUtill.getString(item.getType()).equals("Stemming")) {
+                                        length = length + item.getLength();
+                                    }
+                                    if (StringUtill.getString(item.getType()).equals("Decking")) {
+                                        deckLen = deckLen + item.getLength();
+                                    }
                                 }
-                                if (StringUtill.getString(item.getType()).equals("Decking")) {
-                                    deckLen = deckLen + item.getLength();
-                                }
+                                editModelArrayList.add(new TableEditModel(String.valueOf(deckLen), tableEditModelArrayList.get(12).getTitleVal(), tableEditModelArrayList.get(12).isSelected(), update));
+                            } else {
+                                editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getDecking()), tableEditModelArrayList.get(12).getTitleVal(), tableEditModelArrayList.get(12).isSelected(), update));
                             }
-                            editModelArrayList.add(new TableEditModel(String.valueOf(deckLen), tableEditModelArrayList.get(12).getTitleVal(), tableEditModelArrayList.get(12).isSelected(), update));
-                        } else {
-                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getDecking()), tableEditModelArrayList.get(12).getTitleVal(), tableEditModelArrayList.get(12).isSelected(), update));
-                        }
 
-                        if (!Constants.isListEmpty(holeDetailData.getChargingArray()))
-                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getChargingArray().size()), tableEditModelArrayList.get(13).getTitleVal(), tableEditModelArrayList.get(13).isSelected(), update));
-                        else
-                            editModelArrayList.add(new TableEditModel(String.valueOf(0), tableEditModelArrayList.get(13).getTitleVal(), tableEditModelArrayList.get(13).isSelected(), update));
+                            if (!Constants.isListEmpty(holeDetailData.getChargingArray()))
+                                editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getChargingArray().size()), tableEditModelArrayList.get(13).getTitleVal(), tableEditModelArrayList.get(13).isSelected(), update));
+                            else
+                                editModelArrayList.add(new TableEditModel(String.valueOf(0), tableEditModelArrayList.get(13).getTitleVal(), tableEditModelArrayList.get(13).isSelected(), update));
 
-                        if (!update) {
-                            if (tableFieldItemModelList.size() > i) {
-                                tableFieldItemModelList.set(i, new TableFieldItemModel(editModelArrayList));
+                            if (!update) {
+                                if (tableFieldItemModelList.size() > i) {
+                                    tableFieldItemModelList.set(i, new TableFieldItemModel(editModelArrayList));
+                                } else {
+                                    tableFieldItemModelList.add(new TableFieldItemModel(editModelArrayList));
+                                }
                             } else {
                                 tableFieldItemModelList.add(new TableFieldItemModel(editModelArrayList));
                             }
-                        } else {
-                            tableFieldItemModelList.add(new TableFieldItemModel(editModelArrayList));
                         }
                     }
                 }
             }
-            tableViewPreSplitAdapter = new TableViewPreSplitAdapter(mContext, tableFieldItemModelList, preSpilitDataModelListData.get(0).getHoleDetail());
-            binding.tableRv.setAdapter(tableViewAdapter);
+            List<HoleDetailItem> holeDetailItemList = holePreSplitDetailDataList.get(1).getHoleDetail();
+            holeDetailItemList.add(0, null);
+            tableViewPreSplitAdapter = new TableViewPreSplitAdapter(mContext, tableFieldItemModelList, holeDetailItemList);
+            binding.tableRv.setAdapter(tableViewPreSplitAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }

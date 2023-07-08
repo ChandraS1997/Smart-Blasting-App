@@ -1,6 +1,8 @@
 package com.smart_blasting_drilling.android.api.apis.response.table_3d_models;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
 
@@ -84,11 +86,13 @@ public class Response3DTable16PilotDataModel{
 	private String waterDepth;
 
 	public List<ChargeTypeArrayItem> getChargeTypeArray() {
+		this.chargeTypeArray = new Gson().fromJson(chargeTypeArrayStr, new TypeToken<List<ChargeTypeArrayItem>>(){}.getType());
 		return chargeTypeArray;
 	}
 
 	public void setChargeTypeArray(List<ChargeTypeArrayItem> chargeTypeArray) {
 		this.chargeTypeArray = chargeTypeArray;
+		this.chargeTypeArray = new Gson().fromJson(chargeTypeArrayStr, new TypeToken<List<ChargeTypeArrayItem>>(){}.getType());
 	}
 
 	public void setHoleDiameter(String holeDiameter){

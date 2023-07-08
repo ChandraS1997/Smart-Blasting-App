@@ -136,6 +136,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 lastTableTypeVal = tableTypeVal;
+                binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
                 switch (tableType[i]) {
                     case "Pilot":
                         tableTypeVal = Constants.TABLE_TYPE.PILOT.getType();
@@ -144,6 +145,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                         tableTypeVal = Constants.TABLE_TYPE.PRE_SPLIT.getType();
                         break;
                     default:
+                        binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
                         tableTypeVal = Constants.TABLE_TYPE.NORMAL.getType();
                         break;
                 }

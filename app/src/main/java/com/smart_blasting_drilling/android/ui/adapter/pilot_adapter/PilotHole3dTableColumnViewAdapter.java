@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,23 +47,25 @@ public class PilotHole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
     @Override
     public RecyclerView.ViewHolder getViewHolder(LayoutInflater inflater, ViewGroup group) {
-        return null;
+        HoleTableColumnViewBinding binding = DataBindingUtil.inflate(inflater, R.layout.hole_table_column_view, group, false);
+        return new PilotColumnViewHolder(binding);
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        return getViewHolder(LayoutInflater.from(context), parent);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        PilotColumnViewHolder viewHolder = (PilotColumnViewHolder) holder;
+        viewHolder.setDataBind(editModelArrayList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return editModelArrayList.size();
     }
 
     class PilotColumnViewHolder extends RecyclerView.ViewHolder {
