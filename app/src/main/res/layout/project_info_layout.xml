@@ -143,7 +143,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="@id/spinnerSiteName" />
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerSiteName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -193,7 +193,7 @@
                                 android:textSize="@dimen/_15ssp"
                                 app:layout_constraintStart_toStartOf="parent" />
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerSelectTeam"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -243,7 +243,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerRig"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -290,7 +290,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerMine"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -337,7 +337,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerZone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -384,7 +384,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerRock"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -431,7 +431,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerBench"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -478,7 +478,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerExplosive"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -525,7 +525,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerPit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -573,7 +573,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerDrillingPattern"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -619,7 +619,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent"/>
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerDrillingType"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -665,7 +665,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent" />
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerMaterialDrilled"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -712,7 +712,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent" />
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerShift"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -758,7 +758,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent" />
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerDriller"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -804,7 +804,7 @@
                                 android:gravity="center_vertical"
                                 app:layout_constraintStart_toStartOf="parent" />
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerDrillMethod"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -930,7 +930,7 @@
                                 android:textSize="@dimen/_15ssp"
                                 app:layout_constraintStart_toStartOf="parent" />
 
-                            <com.smart_blasting_drilling.android.utils.EditSpinner
+                            <com.mineexcellence.sblastingapp.utils.EditSpinner
                                 android:id="@+id/spinnerProjectStatus"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"

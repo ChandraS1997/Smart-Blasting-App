@@ -140,7 +140,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/holeDepthEt" />
 
-                    <com.smart_blasting_drilling.android.utils.EditSpinner
+                    <com.mineexcellence.sblastingapp.utils.EditSpinner
                         android:id="@+id/holeStatusSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"

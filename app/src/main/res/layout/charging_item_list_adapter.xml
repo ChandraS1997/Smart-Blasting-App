@@ -28,7 +28,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.smart_blasting_drilling.android.helper.TextSpinner
+            <com.mineexcellence.sblastingapp.helper.TextSpinner
                 android:id="@+id/typeSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
@@ -77,7 +77,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.smart_blasting_drilling.android.helper.TextSpinner
+                    <com.mineexcellence.sblastingapp.helper.TextSpinner
                         android:id="@+id/explosiveEt"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_38sdp"
