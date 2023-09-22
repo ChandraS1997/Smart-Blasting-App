@@ -70,19 +70,22 @@ public class TableView3dAdapter extends BaseRecyclerAdapter {
         }
 
         void setDataBind(Response3DTable4HoleChargingDataModel holeDetailData) {
-            boolean isHeader = holeDetailData == null && getAdapterPosition() == 0;
+            try {
+                boolean isHeader = holeDetailData == null && getAdapterPosition() == 0;
 
-            boolean isSelected = false;
-            for (int i = 0; i < editModelArrayList.get(getAdapterPosition()).getTableEditModelList().size(); i++) {
-                if (editModelArrayList.get(getAdapterPosition()).getTableEditModelList().get(i).isSelected()) {
-                    isSelected = true;
-                    break;
+                boolean isSelected = false;
+                for (int i = 0; i < editModelArrayList.get(getAdapterPosition()).getTableEditModelList().size(); i++) {
+                    if (editModelArrayList.get(getAdapterPosition()).getTableEditModelList().get(i).isSelected()) {
+                        isSelected = true;
+                        break;
+                    }
                 }
+
+                Hole3dTableColumnViewAdapter columnViewAdapter = new Hole3dTableColumnViewAdapter(context, editModelArrayList.get(getAdapterPosition()).getTableEditModelList(), isHeader, holeDetailData, isSelected);
+                binding.columnList.setAdapter(columnViewAdapter);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            Hole3dTableColumnViewAdapter columnViewAdapter = new Hole3dTableColumnViewAdapter(context, editModelArrayList.get(getAdapterPosition()).getTableEditModelList(), isHeader, holeDetailData, isSelected);
-            binding.columnList.setAdapter(columnViewAdapter);
-
         }
 
     }

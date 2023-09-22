@@ -1,2 +1,2 @@
-rootProject.name = "Smart Blasting Drilling"
+rootProject.name = "Smart Blasting Drilling Pilot"
 include ':app'

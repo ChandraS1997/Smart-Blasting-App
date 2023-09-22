@@ -119,6 +119,8 @@ public class PreSplitHole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
             LinearLayout.LayoutParams layoutParams;
             if (isHeader) {
+                binding.holeIdVal.setEnabled(false);
+                binding.holeIdValTxt.setEnabled(false);
                 layoutParams = new LinearLayout.LayoutParams(300, 100);
             } else {
                 layoutParams = new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -130,6 +132,9 @@ public class PreSplitHole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
                     binding.holeIdVal.setCursorVisible(true);
                     binding.holeIdVal.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
                     binding.holeIdVal.setBackgroundResource(R.drawable.table_cell_border_white_bg);
+                } else {
+                    binding.holeIdVal.setEnabled(false);
+                    binding.holeIdVal.setCursorVisible(false);
                 }
             }
 
@@ -184,10 +189,10 @@ public class PreSplitHole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
                     }
                     if (StringUtill.getString(model.getTitleVal()).equals("Spacing")) {
                         holeDetailData.setSpacing(binding.holeIdVal.getText().toString());
-                    }
+                    }*/
                     model.setCheckBox(binding.holeIdVal.getText().toString());
                     editModelArrayList.set(getBindingAdapterPosition(), model);
-                    ((HoleDetail3DModelActivity) context).updateEditedDataIntoDb(holeDetailData, true);*/
+                    ((HoleDetail3DModelActivity) context).updateEditedDataForPreSplitIntoDb(holeDetailData, true);
                     /*} else {
                         ((BaseActivity) context).showSnackBar(binding.getRoot(), "Please enter only number format");
                     }*/

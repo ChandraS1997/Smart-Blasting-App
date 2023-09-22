@@ -48,6 +48,17 @@ public class HoleDetailItem{
 	@SerializedName("holeId")
 	private String holeId;
 
+	@SerializedName("DesignId")
+	private String designId;
+
+	public String getDesignId() {
+		return designId;
+	}
+
+	public void setDesignId(String designId) {
+		this.designId = designId;
+	}
+
 	public void setTopEasting(Object topEasting){
 		this.topEasting = topEasting;
 	}

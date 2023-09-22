@@ -20,8 +20,8 @@ public class PreferenceManger {
     private final SharedPreferences mSharedPreferences;
     private static final String TABLE_FIELD = "table_field";
     private static final String TABLE_FIELD_3D = "table_field_3d";
-    private static final String TABLE_PRE_SPLIT_FIELD_3D = "table_field_3d";
-    private static final String TABLE_PILOT_FIELD_3D = "table_field_3d";
+    private static final String TABLE_PRE_SPLIT_FIELD_3D = "table_pre_split_field_3d";
+    private static final String TABLE_PILOT_FIELD_3D = "table_pilot_field_3d";
 
     public PreferenceManger(SharedPreferences mSharedPreferences) {
         this.mSharedPreferences = mSharedPreferences;

@@ -1,5 +1,6 @@
 package com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.pre_spilit_table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -139,7 +140,12 @@ public class Response3DTable18PreSpilitDataModel{
 
 	public void setHoleDetailStr(String holeDetailStr) {
 		this.holeDetailStr = holeDetailStr;
-		holeDetail = new Gson().fromJson(holeDetailStr, new TypeToken<List<HoleDetailItem>>(){}.getType());
+		List<HoleDetailItem> holeDetailItemList = new Gson().fromJson(holeDetailStr, new TypeToken<List<HoleDetailItem>>(){}.getType());
+		holeDetail = new ArrayList<>();
+		for (HoleDetailItem item : holeDetailItemList) {
+			item.setDesignId(getDesignId());
+			holeDetail.add(item);
+		}
 	}
 
 	public String getHolePointsStr() {

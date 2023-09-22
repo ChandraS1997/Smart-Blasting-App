@@ -34,19 +34,31 @@ public class Constants {
     public static String BLAST_S_BLAST_BASE_URL = "blast_s_blast";
     public static String TEST_BLAST_S_BLAST_BASE_URL = "test_blast_s_blast";
 
-    // Dev Url
-//    public static final String LOGIN_BASE_URL = "https://www.mineexcellence.com/smartdrilling/";
-//    public static final String BLADES_BASE_URL = "http://testblades.mineexcellence.com/";
-//    public static final String IMAGE_VIDEO_BASE_URL = "http://devsblastapi.mineexcellence.com/api/sblast/";
-//    public static final String UPLOAD_BASE_URL = "https://centralbims.mineexcellence.com/";
-//    public static final String DRIMS_BASE_URL = "https://devdrims.mineexcellence.com/DRIMS_API/Service1.svc/";
-//    public static final String BLAST_S_BLAST = "https://devsblastapi.mineexcellence.com/api/sblast/";
-//    public static final String TEST_BLAST_S_BLAST = "http://testblades.mineexcellence.com/BLADES_API/Service1.svc/";
-//    public static final String DB_NAME = "dev_centralmineinfo";
-//    public static final String _3D_TBALE_NAME = "GetAll3DDesignInfoResult";
-
+    /*// Dev Url
+    public static final String LOGIN_BASE_URL = "https://www.mineexcellence.com/smartdrilling/";
+    public static final String BLADES_BASE_URL = "http://testblades.mineexcellence.com/";
+    public static final String IMAGE_VIDEO_BASE_URL = "http://devsblastapi.mineexcellence.com/api/sblast/";
+    public static final String UPLOAD_BASE_URL = "https://centralbims.mineexcellence.com/";
+    public static final String DRIMS_BASE_URL = "https://devdrims.mineexcellence.com/DRIMS_API/Service1.svc/";
+    public static final String BLAST_S_BLAST = "https://devsblastapi.mineexcellence.com/api/sblast/";
+    public static final String TEST_BLAST_S_BLAST = "http://testblades.mineexcellence.com/BLADES_API/Service1.svc/";
+    public static final String DB_NAME = "dev_centralmineinfo";
+    public static final String _3D_TBALE_NAME = "GetAll3DDesignInfoResult";*/
 
     // Live Url
+    public static final String LOGIN_BASE_URL = "https://www.mineexcellence.com/smartdrilling/";
+    public static final String BLADES_BASE_URL = "http://blastdesigner.mineexcellence.com/";
+    public static final String IMAGE_VIDEO_BASE_URL = "http://sblastapi.mineexcellence.com/api/sblast/";
+    public static final String UPLOAD_BASE_URL = "https://centralbims.mineexcellence.com/";
+    public static final String DRIMS_BASE_URL = "https://drims.mineexcellence.com/DRIMS_API/Service1.svc/";
+    public static final String BLAST_S_BLAST = "http://sblastapi.mineexcellence.com/api/sblast/";
+    //    public static final String BLAST_S_BLAST = "https://sblastapi.mineexcellence.com/api/sblast/";
+    public static final String TEST_BLAST_S_BLAST = "http://blastdesigner.mineexcellence.com/BLADES_API/Service1.svc/";
+    public static final String DB_NAME = "centralmineinfo";
+    public static final String _3D_TBALE_NAME = "GetAll3DDesignwithActualInfoResult";
+
+/*
+    // Live Cil Url
     public static final String LOGIN_BASE_URL = "https://www.cil.mineexcellence.com/smartdrilling/";
     public static final String BLADES_BASE_URL = "http://blastdesigner.cil.mineexcellence.com/";
     public static final String IMAGE_VIDEO_BASE_URL = "http://sblastapi.cil.mineexcellence.com/api/sblast/";
@@ -56,7 +68,7 @@ public class Constants {
 //    public static final String BLAST_S_BLAST = "https://sblastapi.cil.mineexcellence.com/api/sblast/";
     public static final String TEST_BLAST_S_BLAST = "http://blastdesigner.cil.mineexcellence.com/BLADES_API/Service1.svc/";
     public static final String DB_NAME = "centralmineinfo";
-    public static final String _3D_TBALE_NAME = "GetAll3DDesignwithActualInfoResult";
+    public static final String _3D_TBALE_NAME = "GetAll3DDesignwithActualInfoResult";*/
 
     public static final int NORMAL = 0;
     public static final int PILOT = 1;

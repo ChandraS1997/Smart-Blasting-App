@@ -253,7 +253,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
 
                 holePilotDetailDataList.clear();
                 holePilotDetailDataList.add(null);
-                holePilotDetailDataList.addAll(pilotDataModelListData);
+                holePilotDetailDataList.addAll(tablesData);
 
                 if (!isFromUpdateAdapter)
                     notifyHoleDataTableType(Constants.PILOT, true);
@@ -275,7 +275,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
 
                 holePreSplitDetailDataList.clear();
                 holePreSplitDetailDataList.add(null);
-                holePreSplitDetailDataList.addAll(preSpilitDataModelListData);
+                holePreSplitDetailDataList.addAll(tablesData);
 
                 if (!isFromUpdateAdapter)
                     notifyHoleDataTableType(Constants.PRE_SPLIT, true);
@@ -291,6 +291,48 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
 
     @Override
     public void editDataTable(List<TableEditModel> arrayList, boolean fromPref) {
+        List<TableEditModel> models = arrayList;
+        if (!Constants.isListEmpty(models)) {
+            int selectedCount = 0;
+            for (int i = 0; i < models.size(); i++) {
+                TableEditModel tableEditModel = models.get(i);
+                tableEditModel.setSelected(models.get(i).isSelected());
+                if (fromPref) {
+                    if (models.get(i).isSelected())
+                        selectedCount++;
+                } else {
+                    selectedCount++;
+                }
+                tableEditModelArrayList.set(i, tableEditModel);
+            }
+            setWidthOfRv(selectedCount);
+            notifyHoleDataTableType(tableOfList, false);
+        }
+    }
+
+    @Override
+    public void pilotEditDataTable(List<TableEditModel> arrayList, boolean fromPref) {
+        List<TableEditModel> models = arrayList;
+        if (!Constants.isListEmpty(models)) {
+            int selectedCount = 0;
+            for (int i = 0; i < models.size(); i++) {
+                TableEditModel tableEditModel = models.get(i);
+                tableEditModel.setSelected(models.get(i).isSelected());
+                if (fromPref) {
+                    if (models.get(i).isSelected())
+                        selectedCount++;
+                } else {
+                    selectedCount++;
+                }
+                tableEditModelArrayList.set(i, tableEditModel);
+            }
+            setWidthOfRv(selectedCount);
+            notifyHoleDataTableType(tableOfList, false);
+        }
+    }
+
+    @Override
+    public void preSplitEditDataTable(List<TableEditModel> arrayList, boolean fromPref) {
         List<TableEditModel> models = arrayList;
         if (!Constants.isListEmpty(models)) {
             int selectedCount = 0;
@@ -627,6 +669,13 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
             if (!Constants.isListEmpty(holePreSplitDetailDataList)) {
                 if (holePreSplitDetailDataList.size() > 1) {
                     if (!Constants.isListEmpty(holePreSplitDetailDataList.get(1).getHoleDetail())) {
+                        if (!Constants.isListEmpty(holePreSplitDetailDataList.get(1).getHoleDetail())) {
+                            List<HoleDetailItem> itemList = holePreSplitDetailDataList.get(1).getHoleDetail();
+                            if (itemList.get(0) == null) {
+                                itemList.remove(0);
+                            }
+                            holePreSplitDetailDataList.get(1).setHoleDetailStr(new Gson().toJson(itemList));
+                        }
                         for (int i = 0; i < holePreSplitDetailDataList.get(1).getHoleDetail().size(); i++) {
                             List<TableEditModel> editModelArrayList = new ArrayList<>();
                             HoleDetailItem holeDetailData = holePreSplitDetailDataList.get(1).getHoleDetail().get(i);
@@ -719,6 +768,16 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
     @Override
     public void setRowOfTable(int rowNo, List<Response3DTable4HoleChargingDataModel> allTablesData, boolean isFromUpdateAdapter) {
         setTableData(allTablesData, isFromUpdateAdapter);
+    }
+
+    @Override
+    public void setRowOfTableForPilot(int rowNo, List<Response3DTable16PilotDataModel> allTablesData, boolean isFromUpdateAdapter) {
+        setPilotTableData(allTablesData, isFromUpdateAdapter);
+    }
+
+    @Override
+    public void setRowOfTableForPreSplit(int rowNo, List<Response3DTable18PreSpilitDataModel> allTablesData, boolean isFromUpdateAdapter) {
+        setPreSplitTableData(allTablesData, isFromUpdateAdapter);
     }
 
     @Override

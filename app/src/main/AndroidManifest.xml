@@ -11,7 +11,7 @@
 
     <application
         android:name="com.mineexcellence.sblastingapp.app.BaseApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:largeHeap="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -26,7 +26,7 @@
 
         <activity
             android:name="com.mineexcellence.sblastingapp.ui.activity.SplashActivity"
-            android:configChanges="locale|orientation"
+            android:configChanges="locale|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity">
@@ -38,7 +38,7 @@
 
         <activity
             android:name="com.mineexcellence.sblastingapp.ui.activity.AuthActivity"
-            android:configChanges="locale|orientation"
+            android:configChanges="locale|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
@@ -55,7 +55,7 @@
 
         <activity
             android:name="com.mineexcellence.sblastingapp.ui.activity.HomeActivity"
-            android:configChanges="locale|orientation"
+            android:configChanges="locale|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize">
@@ -63,7 +63,7 @@
 
         <activity
             android:name="com.mineexcellence.sblastingapp.ui.activity.HoleDetailActivity"
-            android:configChanges="locale|orientation"
+            android:configChanges="locale|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
@@ -71,7 +71,7 @@
 
         <activity
             android:name="com.mineexcellence.sblastingapp.ui.activity.MediaActivity"
-            android:configChanges="locale|orientation"
+            android:configChanges="locale|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
@@ -79,7 +79,7 @@
 
         <activity
             android:name="com.mineexcellence.sblastingapp.ui.activity.Media3dActivity"
-            android:configChanges="locale|orientation"
+            android:configChanges="locale|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
@@ -87,27 +87,27 @@
 
         <activity
             android:name="com.mineexcellence.sblastingapp.ui.activity.PerformanceActivity"
-            android:configChanges="locale|orientation"
+            android:configChanges="locale|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name="com.mineexcellence.sblastingapp.ui.activity.InitiatingDeviceViewActivity"
-            android:configChanges="locale|orientation"
+            android:configChanges="locale|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
 
         <activity android:name="com.mineexcellence.sblastingapp.ui.activity.FullMediaViewActivity"
-            android:configChanges="locale|orientation"
+            android:configChanges="locale|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
         <activity android:name="com.mineexcellence.sblastingapp.ui.activity.HoleDetail3DModelActivity"
-            android:configChanges="locale|orientation"
+            android:configChanges="locale|orientation|screenSize|keyboardHidden"
             android:exported="true"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="adjustResize"

@@ -24,15 +24,15 @@ import com.mineexcellence.sblastingapp.ui.models.TableEditModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hole3dEditTableFieldSelectionDialog extends BaseDialogFragment {
-    public static final String TAG = "Hole3dEditTableFieldSelectionDialog";
+public class Hole3dEditFieldTableForPreSplitSelectionDialog extends BaseDialogFragment {
+    public static final String TAG = "Hole3dEditFieldTableForPreSplitSelectionDialog";
     DialogSelectionFieldLayoutBinding binding;
     Dialog dialog;
     List<TableEditModel> editModelArrayList = new ArrayList<>();
     AdapterEditTableFields adapterEditTableFields;
 
-    public static Hole3dEditTableFieldSelectionDialog getInstance() {
-        return new Hole3dEditTableFieldSelectionDialog();
+    public static Hole3dEditFieldTableForPreSplitSelectionDialog getInstance() {
+        return new Hole3dEditFieldTableForPreSplitSelectionDialog();
     }
 
     @Override
@@ -68,11 +68,11 @@ public class Hole3dEditTableFieldSelectionDialog extends BaseDialogFragment {
             }
             if (Constants.onDataEditTable != null) {
                 if (isSelected) {
-                    manger.set3dTableField(adapterEditTableFields.getSelectedData());
-                    Constants.onDataEditTable.editDataTable(manger.get3dTableField(), true);
+                    manger.set3dPreSplitTableField(adapterEditTableFields.getSelectedData());
+                    Constants.onDataEditTable.preSplitEditDataTable(manger.get3dPreSplitTableField(), true);
                 } else {
-                    manger.set3dTableField(null);
-                    Constants.onDataEditTable.editDataTable(((HoleDetail3DModelActivity) mContext).getTableModel(), false);
+                    manger.set3dPreSplitTableField(null);
+                    Constants.onDataEditTable.preSplitEditDataTable(((HoleDetail3DModelActivity) mContext).getPreSplitTableModel(), false);
                 }
             }
         });
@@ -92,7 +92,7 @@ public class Hole3dEditTableFieldSelectionDialog extends BaseDialogFragment {
         binding.headerLayHole.spinnerHoleType.setVisibility(View.GONE);
 
         editModelArrayList.clear();
-        editModelArrayList.addAll(((HoleDetail3DModelActivity) mContext).getTableModel());
+        editModelArrayList.addAll(((HoleDetail3DModelActivity) mContext).getPreSplitTableModel());
 
         adapterEditTableFields = new AdapterEditTableFields(mContext, editModelArrayList);
         binding.tableEditRecycler.setAdapter(adapterEditTableFields);

@@ -214,5 +214,11 @@
     <string name="enter_company_name">Enter company name</string>
     <string name="enter_country_name">Enter Country Name</string>
     <string name="send_request">Send Request</string>
+    <string name="change_length">Change Length</string>
+    <string name="hole_type">Hole Type</string>
+    <string name="top_easting">Top Easting</string>
+    <string name="top_northing">Top Northing</string>
+    <string name="top_rl">Top RL</string>
+    <string name="decking">Decking</string>
 
 </resources>

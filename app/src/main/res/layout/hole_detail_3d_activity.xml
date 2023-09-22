@@ -89,5 +89,31 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/holeDetailLayoutContainerForPilot"
+            android:layout_width="@dimen/_300sdp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <include android:id="@+id/pilotHoleDetailLayout"
+                layout="@layout/pilot_hole_parameters_3d_layout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
+            android:id="@+id/holeDetailLayoutContainerPreSplit"
+            android:layout_width="@dimen/_300sdp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <include android:id="@+id/preSplitHoleDetailLayout"
+                layout="@layout/pre_split_hole_parameters_3d_layout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
