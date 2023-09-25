@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mineexcellence.sblastingapp.R;
@@ -26,6 +27,7 @@ import com.mineexcellence.sblastingapp.ui.activity.BaseActivity;
 import com.mineexcellence.sblastingapp.ui.activity.HoleDetail3DModelActivity;
 import com.mineexcellence.sblastingapp.ui.adapter.MapHolePoint3dAdapter;
 import com.mineexcellence.sblastingapp.ui.adapter.pilot_adapter.MapHolePoint3dForPilotAdapter;
+import com.mineexcellence.sblastingapp.ui.adapter.pre_split_adapter.MapHolePoint3dForPreSplitAdapter;
 import com.mineexcellence.sblastingapp.ui.models.MapHole3DDataModel;
 
 import java.util.ArrayList;
@@ -68,7 +70,8 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
                         ((HoleDetail3DModelActivity) mContext).runOnUiThread(new TimerTask() {
                             @Override
                             public void run() {
-                                getMapHoleDataList();
+//                                getMapHoleDataList();
+                                holeDataTableType(((HoleDetail3DModelActivity) mContext).tableTypeVal);
                             }
                         });
                     } catch (Exception e) {
@@ -87,7 +90,8 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
     public void onResume() {
         super.onResume();
         ((HoleDetail3DModelActivity) mContext).tableHoleDataListCallback = this;
-        getMapHoleDataList();
+        holeDataTableType(((HoleDetail3DModelActivity) mContext).tableTypeVal);
+//        getMapHoleDataList();
     }
 
     void getMapHoleDataList() {
@@ -97,6 +101,7 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
         if (!Constants.isListEmpty(holeDetailDataList)) {
             colHoleDetailDataList = ((BaseActivity) mContext).getRowWiseHoleIn3dList(holeDetailDataList);
 
+            binding.rowHolePoint.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
             MapHolePoint3dAdapter adapter = new MapHolePoint3dAdapter(mContext, colHoleDetailDataList);
             binding.rowHolePoint.setAdapter(adapter);
 
@@ -118,36 +123,39 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
 
         if (!Constants.isListEmpty(holeDetailDataList)) {
 
+            binding.rowHolePoint.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
             MapHolePoint3dForPilotAdapter adapter = new MapHolePoint3dForPilotAdapter(mContext, holeDetailDataList);
             binding.rowHolePoint.setAdapter(adapter);
 
             int dp2px = holeDetailDataList.size();
 
-            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * (137 + 15), RecyclerView.LayoutParams.WRAP_CONTENT);
+//            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * (137 + 15), RecyclerView.LayoutParams.WRAP_CONTENT);
+            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
             binding.rowHolePoint.setLayoutParams(layoutParams);
         }
     }
 
     void getMapHoleForPreSplitDataList() {
-        List<Response3DTable4HoleChargingDataModel> holeDetailDataList = ((HoleDetail3DModelActivity) mContext).holeDetailDataList;
-        List<MapHole3DDataModel> colHoleDetailDataList = new ArrayList<>();
+        List<Response3DTable18PreSpilitDataModel> holeDetailDataList = ((HoleDetail3DModelActivity) mContext).preSplitTableData;
 
         if (!Constants.isListEmpty(holeDetailDataList)) {
-            colHoleDetailDataList = ((BaseActivity) mContext).getRowWiseHoleIn3dList(holeDetailDataList);
 
-            MapHolePoint3dAdapter adapter = new MapHolePoint3dAdapter(mContext, colHoleDetailDataList);
-            binding.rowHolePoint.setAdapter(adapter);
-
-            int dp2px = 0;
-
-            for (MapHole3DDataModel model : colHoleDetailDataList) {
-                if (model.getHoleDetailDataList().size() > dp2px) {
-                    dp2px = model.getHoleDetailDataList().size();
+            if (!Constants.isListEmpty(holeDetailDataList.get(0).getHoleDetail())) {
+                List<HoleDetailItem> itemList = holeDetailDataList.get(0).getHoleDetail();
+                if (itemList.get(0) == null) {
+                    itemList.remove(0);
                 }
-            }
 
-            RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * (137 + 15), RecyclerView.LayoutParams.WRAP_CONTENT);
-            binding.rowHolePoint.setLayoutParams(layoutParams);
+                binding.rowHolePoint.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+                MapHolePoint3dForPreSplitAdapter adapter = new MapHolePoint3dForPreSplitAdapter(mContext, itemList);
+                binding.rowHolePoint.setAdapter(adapter);
+
+                int dp2px = itemList.size();
+
+//                RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(dp2px * (137 + 15), RecyclerView.LayoutParams.WRAP_CONTENT);
+                RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+                binding.rowHolePoint.setLayoutParams(layoutParams);
+            }
         }
     }
 
@@ -187,7 +195,7 @@ public class MapView3dDataFragment extends BaseFragment implements HoleDetail3DM
                 getMapHoleForPilotDataList();
                 break;
             case Constants.PRE_SPLIT:
-//                setPreSplitTableData();
+                getMapHoleForPreSplitDataList();
                 break;
             case Constants.NORMAL:
             default:

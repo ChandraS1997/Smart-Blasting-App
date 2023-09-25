@@ -55,6 +55,7 @@ import com.mineexcellence.sblastingapp.room_database.entities.AllProjectBladesMo
 import com.mineexcellence.sblastingapp.room_database.entities.BlastCodeEntity;
 import com.mineexcellence.sblastingapp.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.mineexcellence.sblastingapp.room_database.entities.UpdateProjectBladesEntity;
+import com.mineexcellence.sblastingapp.ui.fragments.MapView3dDataFragment;
 import com.mineexcellence.sblastingapp.ui.models.TableEditModel;
 import com.mineexcellence.sblastingapp.utils.KeyboardUtils;
 import com.mineexcellence.sblastingapp.utils.StatusBarUtils;
@@ -165,7 +166,11 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                         tableTypeVal = Constants.TABLE_TYPE.PRE_SPLIT.getType();
                         break;
                     default:
-                        binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
+                        if (!(tableHoleDataListCallback instanceof MapView3dDataFragment)) {
+                            if (tableTypeVal == Constants.TABLE_TYPE.NORMAL.getType())
+                                binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
+                            else binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
+                        }
                         tableTypeVal = Constants.TABLE_TYPE.NORMAL.getType();
                         break;
                 }
@@ -414,8 +419,12 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
                 if (navDestination.getId() == R.id.holeDetailsTableViewFragment) {
                     binding.holeDetailLayoutContainer.setVisibility(View.GONE);
+                    binding.holeDetailLayoutContainerForPilot.setVisibility(View.GONE);
+                    binding.holeDetailLayoutContainerPreSplit.setVisibility(View.GONE);
                     binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
-                    binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
+                    if (tableTypeVal == Constants.TABLE_TYPE.NORMAL.getType())
+                        binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
+                    else binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
                     binding.holeParaLay.setVisibility(View.GONE);
                 } else if (navDestination.getId() == R.id.mapViewFrament) {
                     binding.headerLayHole.projectInfo.setVisibility(View.GONE);
@@ -490,7 +499,9 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.listBtn:
                 binding.headerLayHole.projectInfo.setVisibility(View.VISIBLE);
-                binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
+                if (tableTypeVal == Constants.TABLE_TYPE.NORMAL.getType())
+                    binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
+                else binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
                 binding.holeParaLay.setVisibility(View.GONE);
                 navController.navigate(R.id.holeDetailsTableViewFragment);
                 break;
@@ -667,7 +678,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             binding.pilotHoleDetailLayout.subgradeEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getSubgrade())));
             binding.pilotHoleDetailLayout.topXEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getTopX())));
             binding.pilotHoleDetailLayout.topYEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getTopY())));
-            binding.pilotHoleDetailLayout.topYEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getTopZ())));
+            binding.pilotHoleDetailLayout.topZEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getTopZ())));
             binding.pilotHoleDetailLayout.bottomXEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBottomX())));
             binding.pilotHoleDetailLayout.bottomYEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBottomY())));
             binding.pilotHoleDetailLayout.bottomZEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBottomZ())));
@@ -701,7 +712,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 Constants.holeBgListener.setBackgroundRefresh();
             if (Constants.hole3DBgListener != null)
                 Constants.hole3DBgListener.setBackgroundRefresh();
-            binding.holeDetailLayoutContainer.setVisibility(View.GONE);
+            binding.holeDetailLayoutContainerForPilot.setVisibility(View.GONE);
         });
 
         binding.pilotHoleDetailLayout.saveProceedBtn.setOnClickListener(view -> {
@@ -740,7 +751,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 Constants.holeBgListener.setBackgroundRefresh();
             if (Constants.hole3DBgListener != null)
                 Constants.hole3DBgListener.setBackgroundRefresh();
-            binding.holeDetailLayoutContainer.setVisibility(View.GONE);
+            binding.holeDetailLayoutContainerPreSplit.setVisibility(View.GONE);
         });
 
         binding.preSplitHoleDetailLayout.saveProceedBtn.setOnClickListener(view -> {
@@ -973,9 +984,9 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             }
             AppDelegate.getInstance().setPilotDataModelList(allTablesData);
             this.pilotTableData = allTablesData;
-            if (holeDetailCallBackListener != null)
-                holeDetailCallBackListener.saveAndCloseHoleDetailCallBack();
-            binding.holeDetailLayoutContainer.setVisibility(View.GONE);
+            if (mapPilotCallBackListener != null)
+                mapPilotCallBackListener.saveAndCloseHoleDetailForPilotCallBack();
+            binding.holeDetailLayoutContainerForPilot.setVisibility(View.GONE);
         } catch (Exception e) {
             e.getLocalizedMessage();
         }
@@ -1093,7 +1104,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
         try {
             ProjectHoleDetailRowColDao dao = appDatabase.projectHoleDetailRowColDao();
-            ProjectHoleDetailRowColEntity colEntity = dao.getAllBladesProject(updateHoleDetailData.getHoleId());
+            ProjectHoleDetailRowColEntity colEntity = dao.getAllBladesProject(updateHoleDetailData.getDesignId());
 
             JsonArray array = new Gson().fromJson(new Gson().fromJson(((JsonObject) new Gson().fromJson(colEntity.getProjectHole(), JsonElement.class)).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
             List<Response3DTable18PreSpilitDataModel> holeDetailDataList = new ArrayList<>();
@@ -1116,9 +1127,9 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             }
             AppDelegate.getInstance().setPreSpilitDataModelList(allTablesData);
             this.preSplitTableData = allTablesData;
-            if (holeDetailCallBackListener != null)
-                holeDetailCallBackListener.saveAndCloseHoleDetailCallBack();
-            binding.holeDetailLayoutContainer.setVisibility(View.GONE);
+            if (mapPreSplitCallBackListener != null)
+                mapPreSplitCallBackListener.saveAndCloseHoleDetailForPreSplitCallBack();
+            binding.holeDetailLayoutContainerPreSplit.setVisibility(View.GONE);
         } catch (Exception e) {
             e.getLocalizedMessage();
         }

@@ -102,8 +102,8 @@ public class MapHolePoint3dForPilotAdapter extends BaseRecyclerAdapter {
 
         void setDataBind(Response3DTable16PilotDataModel model) {
 
-            binding.holeStatusTxt.setGravity(Gravity.START);
-            binding.startSpaceView.setVisibility(View.GONE);
+            binding.holeStatusTxt.setGravity(Gravity.CENTER);
+            binding.startSpaceView.setVisibility(View.VISIBLE);
             binding.endSpaceView.setVisibility(View.VISIBLE);
 
             binding.holeStatusTxt.setText(StringUtill.getString(model.getHoleID()));
@@ -113,8 +113,7 @@ public class MapHolePoint3dForPilotAdapter extends BaseRecyclerAdapter {
                     ((HoleDetail3DModelActivity) context).mapPilotCallBackListener.setBgOfHoleOnPilotOnNewRowChange(model.getHoleID(), getBindingAdapterPosition());
                 selectedPos = getBindingAdapterPosition();
                 ((HoleDetail3DModelActivity) context).pilotRowPos = getBindingAdapterPosition();
-                ((HoleDetail3DModelActivity) context).updateRowNo = detailData.getRowNo();
-                ((HoleDetail3DModelActivity) context).updateHoleNo = detailData.getHoleNo();
+                ((HoleDetail3DModelActivity) context).pilotUpdateHoleId = model.getHoleID();
                 ((HoleDetail3DModelActivity) context).rowPos = getBindingAdapterPosition();
                 if (((HoleDetail3DModelActivity) context).mapPilotCallBackListener != null)
                     ((HoleDetail3DModelActivity) context).mapPilotCallBackListener.setHoleDetailForPilotCallBack(model);
@@ -132,7 +131,8 @@ public class MapHolePoint3dForPilotAdapter extends BaseRecyclerAdapter {
 
         @Override
         public void setBackgroundRefresh() {
-            notifyItemChanged(((HoleDetail3DModelActivity) context).rowPos);
+            selectedPos = -1;
+            notifyItemChanged(((HoleDetail3DModelActivity) context).pilotRowPos);
         }
 
     }

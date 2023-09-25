@@ -333,7 +333,7 @@
                         android:layout_marginStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/inter_regular"
-                        android:text="@string/sub_grade"
+                        android:text="@string/top_z"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_16ssp"
                         app:layout_constraintStart_toStartOf="parent"
