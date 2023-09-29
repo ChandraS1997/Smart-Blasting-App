@@ -11,12 +11,16 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mineexcellence.sblastingapp.R;
 import com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.pre_spilit_table.HoleDetailItem;
 import com.mineexcellence.sblastingapp.app.BaseRecyclerAdapter;
 import com.mineexcellence.sblastingapp.databinding.HoleTableColumnViewBinding;
+import com.mineexcellence.sblastingapp.dialogs.Charging3dDataForPreSplitDialog;
+import com.mineexcellence.sblastingapp.ui.activity.BaseActivity;
 import com.mineexcellence.sblastingapp.ui.activity.HoleDetail3DModelActivity;
 import com.mineexcellence.sblastingapp.ui.models.TableEditModel;
 import com.mineexcellence.sblastingapp.utils.StringUtill;
@@ -140,29 +144,13 @@ public class PreSplitHole3dTableColumnViewAdapter extends BaseRecyclerAdapter {
 
             binding.holeIdValTxt.setOnClickListener(view -> {
                 if (getBindingAdapterPosition() > 0 && !binding.holeIdValTxt.getText().toString().equals("Charging")) {
-                    /*if (model.getTitleVal().equals("Hole Status")) {
-                        FragmentManager fragmentManager = ((BaseActivity) context).getSupportFragmentManager();
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        HoleStatusDialog holeStatusDialog = HoleStatusDialog.getInstance();
-                        holeStatusDialog.setupListener(new HoleStatusDialog.HoleStatusListener() {
-                            @Override
-                            public void holeStatusCallBack(String status) {
-                                binding.holeIdValTxt.setText(StringUtill.getString(status));
-                                if (StringUtill.getString(model.getTitleVal()).equals("Hole Status")) {
-                                    holeDetailData.setHoleStatus(StringUtill.getString(status));
-                                }
-                                ((HoleDetail3DModelActivity) context).updateEditedDataIntoDb(holeDetailData, true);
-                            }
-                        });
-                        transaction.add(holeStatusDialog, HoleStatusDialog.TAG);
-                        transaction.commitAllowingStateLoss();
-                    } else if (model.getTitleVal().equals("Charging")) {
+                    if (model.getTitleVal().equals("Charging")) {
                         FragmentManager manager = ((BaseActivity) context).getSupportFragmentManager();
-                        Charging3dDataDialog dataDialog = Charging3dDataDialog.getInstance(holeDetailData);
+                        Charging3dDataForPreSplitDialog dataDialog = Charging3dDataForPreSplitDialog.getInstance(holeDetailData);
                         FragmentTransaction ft = manager.beginTransaction();
-                        ft.add(dataDialog, ChangingDataDialog.TAG);
+                        ft.add(dataDialog, Charging3dDataForPreSplitDialog.TAG);
                         ft.commitAllowingStateLoss();
-                    }*/
+                    }
                 }
             });
 

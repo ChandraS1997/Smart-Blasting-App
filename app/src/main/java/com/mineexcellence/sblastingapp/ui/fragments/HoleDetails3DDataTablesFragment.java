@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -680,7 +682,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                             List<TableEditModel> editModelArrayList = new ArrayList<>();
                             HoleDetailItem holeDetailData = holePreSplitDetailDataList.get(1).getHoleDetail().get(i);
 
-                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleId()), tableEditModelArrayList.get(0).getTitleVal(), tableEditModelArrayList.get(0).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleId().toUpperCase()), tableEditModelArrayList.get(0).getTitleVal(), tableEditModelArrayList.get(0).isSelected(), update));
                             editModelArrayList.add(new TableEditModel(String.valueOf(getHoleType(String.valueOf(holeDetailData.getHoleType()))), tableEditModelArrayList.get(1).getTitleVal(), tableEditModelArrayList.get(1).isSelected(), update));
                             editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getHoleDiameter()), tableEditModelArrayList.get(2).getTitleVal(), tableEditModelArrayList.get(2).isSelected(), update));
                             editModelArrayList.add(new TableEditModel(String.valueOf(StringUtill.isEmpty(holeDetailData.getHoleDepth()) ? "" : holeDetailData.getHoleDepth()), tableEditModelArrayList.get(3).getTitleVal(), tableEditModelArrayList.get(3).isSelected(), update));
@@ -783,6 +785,7 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
     @Override
     public void holeDataTableType(int tableType) {
         this.tableOfList = tableType;
+        binding.horizontalScrollView.fullScroll(HorizontalScrollView.FOCUS_UP);
         switch (tableType) {
             case Constants.PILOT:
                 setPilotTableData();

@@ -104,7 +104,7 @@ public class MapHolePoint3dForPreSplitAdapter extends BaseRecyclerAdapter {
             binding.startSpaceView.setVisibility(View.VISIBLE);
             binding.endSpaceView.setVisibility(View.VISIBLE);
 
-            binding.holeStatusTxt.setText(StringUtill.getString(model.getHoleId()));
+            binding.holeStatusTxt.setText(StringUtill.getString(model.getHoleId().toUpperCase()));
 
             itemView.setOnClickListener(view -> {
                 if (((HoleDetail3DModelActivity) context).mapPreSplitCallBackListener != null)

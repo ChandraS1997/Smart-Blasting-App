@@ -4,9 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Response3DTable16PilotDataModel{
+public class Response3DTable16PilotDataModel implements Serializable {
 
 	@SerializedName("HoleDiameter")
 	private String holeDiameter;

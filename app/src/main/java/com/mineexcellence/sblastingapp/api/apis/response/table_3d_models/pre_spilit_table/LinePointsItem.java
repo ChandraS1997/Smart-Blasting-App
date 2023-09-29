@@ -2,7 +2,9 @@ package com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.pre_sp
 
 import com.google.gson.annotations.SerializedName;
 
-public class LinePointsItem{
+import java.io.Serializable;
+
+public class LinePointsItem implements Serializable {
 
 	@SerializedName("x")
 	private Object x;

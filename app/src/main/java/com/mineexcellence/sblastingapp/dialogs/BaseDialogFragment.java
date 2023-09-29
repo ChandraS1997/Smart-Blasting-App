@@ -16,7 +16,7 @@ import com.mineexcellence.sblastingapp.ui.activity.BaseActivity;
 
 public abstract class BaseDialogFragment extends DialogFragment {
 
-    Context mContext;
+    public Context mContext;
     public AppDatabase appDatabase;
     public PreferenceManger manger;
 

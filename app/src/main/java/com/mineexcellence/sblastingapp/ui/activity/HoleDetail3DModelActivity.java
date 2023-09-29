@@ -166,12 +166,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                         tableTypeVal = Constants.TABLE_TYPE.PRE_SPLIT.getType();
                         break;
                     default:
-                        if (!(tableHoleDataListCallback instanceof MapView3dDataFragment)) {
-                            if (tableTypeVal == Constants.TABLE_TYPE.NORMAL.getType())
-                                binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
-                            else binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
-                        }
                         tableTypeVal = Constants.TABLE_TYPE.NORMAL.getType();
+                        setRowVisibility();
                         break;
                 }
                 if (lastTableTypeVal != tableTypeVal)
@@ -281,6 +277,16 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         });
         binding.headerLayHole.editTable.setOnClickListener(this);
         binding.headerLayHole.refreshIcn.setVisibility(View.GONE);
+    }
+
+    void setRowVisibility() {
+        if (navController.getCurrentDestination().getId() == R.id.holeDetailsTableViewFragment) {
+            if (tableTypeVal == Constants.TABLE_TYPE.NORMAL.getType())
+                binding.headerLayHole.spinnerRow.setVisibility(View.VISIBLE);
+            else binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
+        } else if (navController.getCurrentDestination().getId() == R.id.mapViewFrament) {
+            binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
+        }
     }
 
     public void syncDataAPi() {
@@ -728,7 +734,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
         if (holeDetailData != null) {
 
-            binding.preSplitHoleDetailLayout.holeIdEt.setText(String.format("%s", StringUtill.getString(String.valueOf(holeDetailData.getHoleId()))));
+            binding.preSplitHoleDetailLayout.holeIdEt.setText(String.format("%s", StringUtill.getString(String.valueOf(holeDetailData.getHoleId().toUpperCase()))));
             binding.preSplitHoleDetailLayout.holeTypeEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleType())));
             binding.preSplitHoleDetailLayout.diameterVal.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDiameter())));
             binding.preSplitHoleDetailLayout.holeDepthEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getHoleDepth())));

@@ -1,5 +1,6 @@
 package com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.pre_spilit_table;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
-public class Response3DTable18PreSpilitDataModel{
+public class Response3DTable18PreSpilitDataModel implements Serializable {
 
 	@SerializedName("LinePoints")
 	private String linePointsStr;

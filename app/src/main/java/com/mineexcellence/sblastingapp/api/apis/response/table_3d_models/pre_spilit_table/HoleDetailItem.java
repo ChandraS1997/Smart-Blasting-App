@@ -1,10 +1,11 @@
 package com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.pre_spilit_table;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 import com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 
-public class HoleDetailItem{
+public class HoleDetailItem implements Serializable {
 
 	@SerializedName("topEasting")
 	private Object topEasting;
