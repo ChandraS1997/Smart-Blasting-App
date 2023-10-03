@@ -20,7 +20,7 @@ public class HoleDetailItem implements Serializable {
 	private String holeType;
 
 	@SerializedName("bottomRL")
-	private int bottomRL;
+	private Object bottomRL;
 
 	@SerializedName("chargeLength")
 	private String chargeLength;
@@ -96,8 +96,8 @@ public class HoleDetailItem implements Serializable {
 		this.bottomRL = bottomRL;
 	}
 
-	public int getBottomRL(){
-		return bottomRL;
+	public double getBottomRL() {
+		return Double.parseDouble(bottomRL.toString());
 	}
 
 	public void setChargeLength(String chargeLength){
