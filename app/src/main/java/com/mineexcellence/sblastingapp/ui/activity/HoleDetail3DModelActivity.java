@@ -299,10 +299,26 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         if (StringUtill.isEmpty(code)) {
             code = (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "";
         }
+
+        switch (tableTypeVal) {
+            case Constants.PILOT:
+                pilotSyncApi(code);
+                break;
+            case Constants.PRE_SPLIT:
+                preSplitSyncApi(code);
+                break;
+            default:
+                drimzsSyncApi(code);
+                break;
+        }
+
+    }
+
+    private void drimzsSyncApi(String code) {
         List<Response3DTable4HoleChargingDataModel> modelList = new ArrayList<>();
         for (int i = 0; i < allTablesData.size(); i++) {
             Response3DTable4HoleChargingDataModel model = allTablesData.get(i);
-            String[] coordinate = StringUtill.getString(CoordinationHoleHelperKt.getCoOrdinateOfHole(model)).split(",");
+            String[] coordinate = StringUtill.getString(CoordinationHoleHelperKt.getCoOrdinateOfHole(model.getTopX(), model.getTopY())).split(",");
             if (coordinate.length > 0) {
                 model.setNorthing(coordinate[0]);
                 if (coordinate.length > 1) {
@@ -327,6 +343,70 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 hideLoader();
             }
         });
+    }
+
+    private void pilotSyncApi(String code) {
+        List<Response3DTable16PilotDataModel> modelList = new ArrayList<>();
+        for (int i = 0; i < pilotTableData.size(); i++) {
+            Response3DTable16PilotDataModel model = pilotTableData.get(i);
+            String[] coordinate = StringUtill.getString(CoordinationHoleHelperKt.getCoOrdinateOfHole(model.getTopX(), model.getTopY())).split(",");
+            if (coordinate.length > 0) {
+                model.setNorthing(coordinate[0]);
+                if (coordinate.length > 1) {
+                    model.setEasting(coordinate[1]);
+                }
+            }
+            modelList.add(model);
+        }
+        Log.e("modelList : ", new Gson().toJson(modelList));
+        setInsertUpdateHoleDetailMultipleForPilotSync3D(bladesRetrieveData.get(0), modelList, code).observe(this, new Observer<JsonElement>() {
+            @Override
+            public void onChanged(JsonElement response) {
+                if (response == null) {
+                    Log.e(ERROR, SOMETHING_WENT_WRONG);
+                } else {
+                    if (!(response.isJsonNull())) {
+                        showToast("Project Holes Sync Successfully");
+                    } else {
+                        showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                    }
+                }
+                hideLoader();
+            }
+        });
+    }
+
+    private void preSplitSyncApi(String code) {
+        List<HoleDetailItem> modelList = new ArrayList<>();
+        if (!Constants.isListEmpty(preSplitTableData)) {
+            for (int i = 0; i < preSplitTableData.get(0).getHoleDetail().size(); i++) {
+                HoleDetailItem model = preSplitTableData.get(0).getHoleDetail().get(i);
+                String[] coordinate = StringUtill.getString(CoordinationHoleHelperKt.getCoOrdinateOfHole(String.valueOf(model.getTopNorthing()), String.valueOf(model.getTopEasting()))).split(",");
+                if (coordinate.length > 0) {
+                    model.setNorthing(coordinate[0]);
+                    if (coordinate.length > 1) {
+                        model.setEasting(coordinate[1]);
+                    }
+                }
+                modelList.add(model);
+            }
+            Log.e("modelList : ", new Gson().toJson(modelList));
+            setInsertUpdateHoleDetailMultipleForPreSplitSync3D(bladesRetrieveData.get(0), modelList, code).observe(this, new Observer<JsonElement>() {
+                @Override
+                public void onChanged(JsonElement response) {
+                    if (response == null) {
+                        Log.e(ERROR, SOMETHING_WENT_WRONG);
+                    } else {
+                        if (!(response.isJsonNull())) {
+                            showToast("Project Holes Sync Successfully");
+                        } else {
+                            showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                        }
+                    }
+                    hideLoader();
+                }
+            });
+        }
     }
 
     public List<TableEditModel> getTableModel() {

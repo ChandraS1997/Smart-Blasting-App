@@ -213,14 +213,14 @@ fun findMinMaxEastingNorthingFor3dMapAndroid(holeDetailData: List<Response3DTabl
     }
 }
 
-fun getCoOrdinateOfHole(holeDetailData: Response3DTable4HoleChargingDataModel): String? {
-    var x = holeDetailData.topX.toDouble()
-    var y = holeDetailData.topY.toDouble()
+fun getCoOrdinateOfHole(topX: String, topY: String): String {
+    var x = topX.toDouble()
+    var y = topY.toDouble()
     try {
         val width: Long = 537
         val height: Long = 527
         val arrMinMaxEastingNorthing =
-            findSingleMinMaxEastingNorthingFor3dMapAndroid(holeDetailData)
+            findSingleMinMaxEastingNorthingFor3dMapAndroid(topX, topY)
         //for Easting- No. of pixels in meter
         val scaleFactorEasting =
             (width / (arrMinMaxEastingNorthing.maxEasting - arrMinMaxEastingNorthing.minEasting)).toFloat()
@@ -230,8 +230,8 @@ fun getCoOrdinateOfHole(holeDetailData: Response3DTable4HoleChargingDataModel): 
 
         // to find the scale that will fit the canvas get the min scale to fit height or width
         val scaleMinEastNorth = Math.min(scaleFactorEasting, scaleFactorNorthing)
-        x = (holeDetailData.topY.toDouble() - arrMinMaxEastingNorthing.minEasting) * scaleFactorEasting
-        y = (holeDetailData.topX.toDouble() - arrMinMaxEastingNorthing.minNorthing) * scaleFactorNorthing
+        x = (topY.toDouble() - arrMinMaxEastingNorthing.minEasting) * scaleFactorEasting
+        y = (topX.toDouble() - arrMinMaxEastingNorthing.minNorthing) * scaleFactorNorthing
         y = height - y
     } catch (e: Exception) {
         e.localizedMessage
@@ -239,18 +239,18 @@ fun getCoOrdinateOfHole(holeDetailData: Response3DTable4HoleChargingDataModel): 
     return String.format("%s,%s", x, y)
 }
 
-fun findSingleMinMaxEastingNorthingFor3dMapAndroid(holeDetailData: Response3DTable4HoleChargingDataModel): NorthEastCoordinateModel {
-    var minEasting: Float = holeDetailData.topY.toString().toFloat()
-    var maxEasting: Float = holeDetailData.topY.toString().toFloat()
-    var minNorthing: Float = holeDetailData.topX.toString().toFloat()
-    var maxNorthing: Float = holeDetailData.topX.toString().toFloat()
+fun findSingleMinMaxEastingNorthingFor3dMapAndroid(topX: String, topY: String): NorthEastCoordinateModel {
+    var minEasting: Float = topY.toString().toFloat()
+    var maxEasting: Float = topY.toString().toFloat()
+    var minNorthing: Float = topX.toString().toFloat()
+    var maxNorthing: Float = topX.toString().toFloat()
 
-    holeDetailData.topX = holeDetailData.topX.toString()
-    val tempNorthing: Float = holeDetailData.topX.toString().toFloat()
+//    topX = topX.toString()
+    val tempNorthing: Float = topX.toString().toFloat()
     minNorthing = tempNorthing.coerceAtMost(minNorthing)
     maxNorthing = tempNorthing.coerceAtLeast(maxNorthing)
-    holeDetailData.topY = holeDetailData.topY.toString()
-    val tempEasting: Float = holeDetailData.topY.toString().toFloat()
+//    topY = topY.toString()
+    val tempEasting: Float = topY.toString().toFloat()
     minEasting = Math.min(tempEasting, minEasting)
     maxEasting = Math.max(tempEasting, maxEasting)
     minEasting -= 10

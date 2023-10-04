@@ -360,6 +360,8 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
         MainService.getAll2D_3DDesignInfoApiCaller(mContext, loginData.getUserid(), loginData.getCompanyid(), bladesRetrieveData.get(0).getDesignId(), Constants.DB_NAME, 0, is3d).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
             @Override
             public void onChanged(JsonElement response) {
+                binding.horizontalScrollView.setVisibility(View.GONE);
+                binding.noHoleDataAvailableMsg.setVisibility(View.VISIBLE);
                 if (response == null) {
                     showSnackBar(binding.getRoot(), SOMETHING_WENT_WRONG);
                 } else {
@@ -429,6 +431,9 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                                     AppDelegate.getInstance().setPilotDataModelList(pilotDataModelListData);
                                     AppDelegate.getInstance().setPreSpilitDataModelList(preSpilitDataModelListData);
 
+                                    binding.horizontalScrollView.setVisibility(View.GONE);
+                                    binding.noHoleDataAvailableMsg.setVisibility(View.VISIBLE);
+
                                     setDataIntoDb(response);
 
                                     holeDataTableType(((HoleDetail3DModelActivity) mContext).tableTypeVal);
@@ -442,7 +447,6 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                         } catch (Exception e) {
                             Log.e(NODATAFOUND, e.getMessage());
                         }
-                        hideLoader();
                     }
                 }
                 hideLoader();

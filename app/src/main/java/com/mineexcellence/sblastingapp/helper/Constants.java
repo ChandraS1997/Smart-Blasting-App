@@ -74,6 +74,11 @@ public class Constants {
     public static final int PILOT = 1;
     public static final int PRE_SPLIT = 2;
 
+    // Hole type for API
+    public static final int PRODUCTION_HOLE = 1;
+    public static final int PILOT_HOLE = 3;
+    public static final int PRE_SPLIT_HOLE = 2;
+
     public enum TABLE_TYPE {
         NORMAL(0),
         PILOT(1),
