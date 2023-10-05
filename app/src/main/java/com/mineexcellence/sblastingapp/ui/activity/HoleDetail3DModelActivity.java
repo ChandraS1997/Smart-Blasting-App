@@ -55,7 +55,6 @@ import com.mineexcellence.sblastingapp.room_database.entities.AllProjectBladesMo
 import com.mineexcellence.sblastingapp.room_database.entities.BlastCodeEntity;
 import com.mineexcellence.sblastingapp.room_database.entities.ProjectHoleDetailRowColEntity;
 import com.mineexcellence.sblastingapp.room_database.entities.UpdateProjectBladesEntity;
-import com.mineexcellence.sblastingapp.ui.fragments.MapView3dDataFragment;
 import com.mineexcellence.sblastingapp.ui.models.TableEditModel;
 import com.mineexcellence.sblastingapp.utils.KeyboardUtils;
 import com.mineexcellence.sblastingapp.utils.StatusBarUtils;
@@ -262,7 +261,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 @Override
                 public void syncWithBlades() {
                     if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
-                        insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, bladesRetrieveData);
+                        insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, pilotTableData, preSplitTableData);
                     } else {
                         showToast("No internet connection. Make sure Wi-Fi or Cellular data is turn on, then try again");
                     }
@@ -300,17 +299,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             code = (modelEntity != null  && !StringUtill.isEmpty(modelEntity.getProjectCode())) ? modelEntity.getProjectCode() : "";
         }
 
-        switch (tableTypeVal) {
-            case Constants.PILOT:
-                pilotSyncApi(code);
-                break;
-            case Constants.PRE_SPLIT:
-                preSplitSyncApi(code);
-                break;
-            default:
-                drimzsSyncApi(code);
-                break;
-        }
+        drimzsSyncApi(code);
 
     }
 
@@ -327,26 +316,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             }
             modelList.add(model);
         }
-        Log.e("modelList : ", new Gson().toJson(modelList));
-        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), modelList, code).observe(this, new Observer<JsonElement>() {
-            @Override
-            public void onChanged(JsonElement response) {
-                if (response == null) {
-                    Log.e(ERROR, SOMETHING_WENT_WRONG);
-                } else {
-                    if (!(response.isJsonNull())) {
-                        showToast("Project Holes Sync Successfully");
-                    } else {
-                        showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
-                    }
-                }
-                hideLoader();
-            }
-        });
-    }
 
-    private void pilotSyncApi(String code) {
-        List<Response3DTable16PilotDataModel> modelList = new ArrayList<>();
+        List<Response3DTable16PilotDataModel> pilotDataModelList = new ArrayList<>();
         for (int i = 0; i < pilotTableData.size(); i++) {
             Response3DTable16PilotDataModel model = pilotTableData.get(i);
             String[] coordinate = StringUtill.getString(CoordinationHoleHelperKt.getCoOrdinateOfHole(model.getTopX(), model.getTopY())).split(",");
@@ -356,28 +327,10 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                     model.setEasting(coordinate[1]);
                 }
             }
-            modelList.add(model);
+            pilotDataModelList.add(model);
         }
-        Log.e("modelList : ", new Gson().toJson(modelList));
-        setInsertUpdateHoleDetailMultipleForPilotSync3D(bladesRetrieveData.get(0), modelList, code).observe(this, new Observer<JsonElement>() {
-            @Override
-            public void onChanged(JsonElement response) {
-                if (response == null) {
-                    Log.e(ERROR, SOMETHING_WENT_WRONG);
-                } else {
-                    if (!(response.isJsonNull())) {
-                        showToast("Project Holes Sync Successfully");
-                    } else {
-                        showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
-                    }
-                }
-                hideLoader();
-            }
-        });
-    }
 
-    private void preSplitSyncApi(String code) {
-        List<HoleDetailItem> modelList = new ArrayList<>();
+        List<HoleDetailItem> preSplitDataModelList = new ArrayList<>();
         if (!Constants.isListEmpty(preSplitTableData)) {
             for (int i = 0; i < preSplitTableData.get(0).getHoleDetail().size(); i++) {
                 HoleDetailItem model = preSplitTableData.get(0).getHoleDetail().get(i);
@@ -388,25 +341,26 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                         model.setEasting(coordinate[1]);
                     }
                 }
-                modelList.add(model);
+                preSplitDataModelList.add(model);
             }
-            Log.e("modelList : ", new Gson().toJson(modelList));
-            setInsertUpdateHoleDetailMultipleForPreSplitSync3D(bladesRetrieveData.get(0), modelList, code).observe(this, new Observer<JsonElement>() {
-                @Override
-                public void onChanged(JsonElement response) {
-                    if (response == null) {
-                        Log.e(ERROR, SOMETHING_WENT_WRONG);
-                    } else {
-                        if (!(response.isJsonNull())) {
-                            showToast("Project Holes Sync Successfully");
-                        } else {
-                            showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
-                        }
-                    }
-                    hideLoader();
-                }
-            });
         }
+
+        Log.e("modelList : ", new Gson().toJson(modelList));
+        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), modelList, pilotDataModelList, preSplitDataModelList, code).observe(this, new Observer<JsonElement>() {
+            @Override
+            public void onChanged(JsonElement response) {
+                if (response == null) {
+                    Log.e(ERROR, SOMETHING_WENT_WRONG);
+                } else {
+                    if (!(response.isJsonNull())) {
+                        showToast("Project Holes Sync Successfully");
+                    } else {
+                        showAlertDialog(ERROR, SOMETHING_WENT_WRONG, "OK", "Cancel");
+                    }
+                }
+                hideLoader();
+            }
+        });
     }
 
     public List<TableEditModel> getTableModel() {
