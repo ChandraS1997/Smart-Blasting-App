@@ -247,7 +247,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                                     blastCode = blastCodeEntity.getBlastCode();
                             }
                         }
-                        blastInsertSyncRecord3DApiCaller(response3DTable17DataModelList, bladesRetrieveData.get(0), allTablesData, response3DTable2DataModelList, getRowWiseHoleIn3dList(allTablesData).size(), blastCode).observe(HoleDetail3DModelActivity.this, new Observer<JsonElement>() {
+                        blastInsertSyncRecord3DApiCaller(response3DTable17DataModelList, bladesRetrieveData.get(0), allTablesData, response3DTable2DataModelList,
+                                pilotTableData, preSplitTableData, getRowWiseHoleIn3dList(allTablesData).size(), blastCode).observe(HoleDetail3DModelActivity.this, new Observer<JsonElement>() {
                             @Override
                             public void onChanged(JsonElement element) {
                                 bladesRetrieveData = AppDelegate.getInstance().getResponse3DTable1DataModel();

@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -1364,533 +1365,344 @@ public class BaseActivity extends AppCompatActivity {
 
     /*  For Bims Data */
 
-    public MutableLiveData<JsonElement> blastInsertSyncRecord3DApiCaller(List<Response3DTable17DataModel> response3DTable17DataModelList, Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> tablesData, List<Response3DTable2DataModel> response3DTable2DataModelList, int rowCount, String blastCode) {
-        MutableLiveData<JsonElement> data = new MutableLiveData<>();
-        try {
-            showLoader();
-            // Blast Performance Data
-            BlastPerformanceEntity blastPerformanceEntity = appDatabase.blastPerformanceDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
-            String blastPerformanceStr = "";
-            JsonObject blastPerformanceObject = new JsonObject();
-            if (blastPerformanceEntity != null) {
-                blastPerformanceStr = blastPerformanceEntity.getData();
-                blastPerformanceObject = new Gson().fromJson(blastPerformanceStr, JsonObject.class);
-            }
+    @NonNull
+    private JsonArray getChargeHoleArrayForPilot(String blastCode, List<Response3DTable17DataModel> response3DTable17DataModelList, List<Response3DTable16PilotDataModel> tablesData) {
+        JsonArray chargeDetailsArray = new JsonArray();
+        if (!Constants.isListEmpty(tablesData)) {
+            for (int i = 0; i < tablesData.size(); i++) {
+                JsonObject chargeDetailsObject = new JsonObject();
+                chargeDetailsObject.addProperty("BlastCode", blastCode);
+                chargeDetailsObject.addProperty("RowNo", String.valueOf(1));
+                chargeDetailsObject.addProperty("HoleNo", String.valueOf(1));
+                chargeDetailsObject.addProperty("HoleName", String.format("%s", tablesData.get(i).getHoleID()));
+                chargeDetailsObject.addProperty("RowType", "Pilot");
+                chargeDetailsObject.addProperty("HoleDia", String.valueOf(tablesData.get(i).getHoleDiameter()));
 
-            // Blast Performance Data
-            InitiatingDeviceDataEntity initiatingDeviceDataEntity = appDatabase.initiatingDeviceDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
-            String initiatingDeviceDataStr = "";
-            JsonArray initiatingDeviceDataObject = new JsonArray();
-            if (initiatingDeviceDataEntity != null) {
-                initiatingDeviceDataStr = initiatingDeviceDataEntity.getData();
-                initiatingDeviceDataObject = new Gson().fromJson(initiatingDeviceDataStr, JsonArray.class);
-            }
-
-
-            // ExpUsedDetails Array
-            JsonArray expUsedDetailArray = new JsonArray();
-            if (!Constants.isListEmpty(tablesData.get(0).getChargeTypeArray())) {
-                if (!Constants.isListEmpty(tablesData.get(0).getChargeTypeArray())) {
-                    double length = 0;
+                if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
+                    double length = 0, weight = 0;
+                    boolean isCartridge = false;
                     ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
-                    List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(0).getChargeTypeArray();
+                    List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
                     for (int j = 0; j < chargeTypeArray.size(); j++) {
                         ChargeTypeArrayItem item = chargeTypeArray.get(j);
                         if (item.getType().equals("Cartridge")) {
+                            isCartridge = true;
                             if (StringUtill.isEmpty(arrayItem.getType()))
                                 arrayItem = item;
                             length = length + item.getLength();
+                            weight = weight + item.getWeight();
                         }
                     }
 
-                    JsonObject expUsedDetailObject = new JsonObject();
-                    expUsedDetailObject.addProperty("expcode", String.valueOf(arrayItem.getProdId()));
-                    expUsedDetailObject.addProperty("qty", String.valueOf(decimalFormat.format(length)));
-                    expUsedDetailArray.add(expUsedDetailObject);
+                    chargeDetailsObject.addProperty("ExpCode", isCartridge ? String.valueOf(arrayItem.getProdId()) : "0");
+                    chargeDetailsObject.addProperty("Weight", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0.0);
+                    chargeDetailsObject.addProperty("ExpLength", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0.0);
+                    chargeDetailsObject.addProperty("CostPerUnit", isCartridge ? arrayItem.getCost() : 0);
 
-                    length = 0;
-                    arrayItem = new ChargeTypeArrayItem();
+                }
+
+                if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
+                    double length = 0, weight = 0;
+                    boolean isCartridge = false;
+                    ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                    List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
                     for (int j = 0; j < chargeTypeArray.size(); j++) {
                         ChargeTypeArrayItem item = chargeTypeArray.get(j);
                         if (item.getType().equals("Bulk")) {
+                            isCartridge = true;
                             if (StringUtill.isEmpty(arrayItem.getType()))
                                 arrayItem = item;
                             length = length + item.getLength();
+                            weight = weight + item.getWeight();
                         }
                     }
 
-                    expUsedDetailObject = new JsonObject();
-                    expUsedDetailObject.addProperty("expcode1", String.valueOf(arrayItem.getProdId()));
-                    expUsedDetailObject.addProperty("qty", String.valueOf(decimalFormat.format(length)));
-                    expUsedDetailArray.add(expUsedDetailObject);
+                    chargeDetailsObject.addProperty("ExpCode1", isCartridge ? String.valueOf(arrayItem.getProdId()) : "0");
+                    chargeDetailsObject.addProperty("Weight1", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0);
+                    chargeDetailsObject.addProperty("ExpLength1", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0);
+                    chargeDetailsObject.addProperty("CostPerUnit1", isCartridge ? arrayItem.getCost() : 0);
 
-                    length = 0;
-                    arrayItem = new ChargeTypeArrayItem();
+                }
+
+                if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
+                    double length = 0, weight = 0;
+                    boolean isCartridge = false;
+                    ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                    List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
                     for (int j = 0; j < chargeTypeArray.size(); j++) {
                         ChargeTypeArrayItem item = chargeTypeArray.get(j);
                         if (item.getType().equals("Booster")) {
+                            isCartridge = true;
+                            if (StringUtill.isEmpty(arrayItem.getType()))
+                                arrayItem = item;
+                            length = length + item.getLength();
+                            weight = weight + item.getWeight();
+                        }
+                    }
+
+                    chargeDetailsObject.addProperty("ExpCode2", isCartridge ? String.valueOf(arrayItem.getProdId()) : "0");
+                    chargeDetailsObject.addProperty("Weight2", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0);
+                    chargeDetailsObject.addProperty("ExpLength2", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0);
+                    chargeDetailsObject.addProperty("CostPerUnit2", isCartridge ? arrayItem.getCost() : 0);
+
+                }
+
+                chargeDetailsObject.addProperty("Burden", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getBurden()) ? "" : tablesData.get(i).getBurden()));
+                chargeDetailsObject.addProperty("Spacing", String.valueOf(tablesData.get(i).getSpacing()));
+                chargeDetailsObject.addProperty("Delay1", String.valueOf(tablesData.get(i).getHoleDelay()));
+                chargeDetailsObject.addProperty("Delay2", "0");
+                chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
+                chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
+
+                if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
+                    double length = 0;
+                    ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                    List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
+                    for (int j = 0; j < chargeTypeArray.size(); j++) {
+                        ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                        if (item.getType().equals("Decking")) {
                             if (StringUtill.isEmpty(arrayItem.getType()))
                                 arrayItem = item;
                             length = length + item.getLength();
                         }
                     }
 
-                    expUsedDetailObject = new JsonObject();
-                    expUsedDetailObject.addProperty("expcode2", String.valueOf(arrayItem.getProdId()));
-                    expUsedDetailObject.addProperty("qty", String.valueOf(decimalFormat.format(length)));
-                    expUsedDetailArray.add(expUsedDetailObject);
-
+                    chargeDetailsObject.addProperty("DeckDepth", length);
                 }
-                /*
-                for (int j = 0; j < tablesData.get(0).getChargeTypeArray().size(); j++) {
-                    JsonObject expUsedDetailObject = new JsonObject();
-                    expUsedDetailObject.addProperty("expcode" + (j == 0 ? "" : j), String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getProdId()));
-                    expUsedDetailObject.addProperty("qty" + (j == 0 ? "" : j), String.valueOf(tablesData.get(0).getChargeTypeArray().get(j).getLength()));
-                    expUsedDetailArray.add(expUsedDetailObject);
-                }*/
-            }
 
-            // RowDetails Array
-            JsonArray rowDetailsArray = new JsonArray();
-            if (!Constants.isListEmpty(tablesData)) {
-                List<MapHole3DDataModel> mapHoleDataModels = getRowWiseHoleIn3dList(tablesData);
-                for (int i = 0; i < mapHoleDataModels.size(); i++) {
-                    JsonObject rowDetailsObject = new JsonObject();
-                    rowDetailsObject.addProperty("rowno", String.valueOf(i + 1));
-                    if (!Constants.isListEmpty(mapHoleDataModels.get(i).getHoleDetailDataList()))
-                        rowDetailsObject.addProperty("holeno", String.valueOf(mapHoleDataModels.get(i).getHoleDetailDataList().size()));
-                    else rowDetailsObject.addProperty("holeno", String.valueOf(0));
-                    rowDetailsObject.addProperty("rowtype", String.valueOf(1) /*"Production"*/);
-                    rowDetailsArray.add(rowDetailsObject);
-                }
-            }
+                chargeDetailsObject.addProperty("DeckStart", "");
 
-            double aveSpacing = 0.0, aveBurden = 0.0;
-
-            // Charge Details Array
-            JsonArray chargeDetailsArray = new JsonArray();
-            if (!Constants.isListEmpty(tablesData)) {
-                for (int i = 0; i < tablesData.size(); i++) {
-                    JsonObject chargeDetailsObject = new JsonObject();
-                    chargeDetailsObject.addProperty("BlastCode", blastCode);
-                    chargeDetailsObject.addProperty("RowNo", String.valueOf(tablesData.get(i).getRowNo()));
-                    chargeDetailsObject.addProperty("HoleNo", String.valueOf(tablesData.get(i).getHoleNo()));
-                    chargeDetailsObject.addProperty("HoleName", String.format("R%sH%s", tablesData.get(i).getRowNo(), tablesData.get(i).getHoleNo()));
-                    chargeDetailsObject.addProperty("RowType", "Production");
-                    chargeDetailsObject.addProperty("HoleDia", String.valueOf(tablesData.get(i).getHoleDiameter()));
-
-                    /*if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
-                        for (int j = 0; j < tablesData.get(i).getChargeTypeArray().size(); j++) {
-                            chargeDetailsObject.addProperty("ExpCode" + (j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getProdId()));
-                            chargeDetailsObject.addProperty("Weight" + (j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getWeight()));
-                            chargeDetailsObject.addProperty("ExpLength" + (j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getLength()));
-                            chargeDetailsObject.addProperty("CostPerUnit" + (j == 0 ? "" : j), String.valueOf(tablesData.get(i).getChargeTypeArray().get(j).getCost()));
-                        }
-                    }*/
-
-                    if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
-                        double length = 0, weight = 0;
-                        boolean isCartridge = false;
-                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
-                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
-                        for (int j = 0; j < chargeTypeArray.size(); j++) {
-                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
-                            if (item.getType().equals("Cartridge")) {
-                                isCartridge = true;
-                                if (StringUtill.isEmpty(arrayItem.getType()))
-                                    arrayItem = item;
-                                length = length + item.getLength();
-                                weight = weight + item.getWeight();
-                            }
-                        }
-
-                        chargeDetailsObject.addProperty("ExpCode", isCartridge ? String.valueOf(arrayItem.getProdId()) : "0");
-                        chargeDetailsObject.addProperty("Weight", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0.0);
-                        chargeDetailsObject.addProperty("ExpLength", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0.0);
-                        chargeDetailsObject.addProperty("CostPerUnit", isCartridge ? arrayItem.getCost() : 0);
-
-                    }
-
-                    if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
-                        double length = 0, weight = 0;
-                        boolean isCartridge = false;
-                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
-                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
-                        for (int j = 0; j < chargeTypeArray.size(); j++) {
-                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
-                            if (item.getType().equals("Bulk")) {
-                                isCartridge = true;
-                                if (StringUtill.isEmpty(arrayItem.getType()))
-                                    arrayItem = item;
-                                length = length + item.getLength();
-                                weight = weight + item.getWeight();
-                            }
-                        }
-
-                        chargeDetailsObject.addProperty("ExpCode1", isCartridge ? String.valueOf(arrayItem.getProdId()) : "0");
-                        chargeDetailsObject.addProperty("Weight1", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0);
-                        chargeDetailsObject.addProperty("ExpLength1", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0);
-                        chargeDetailsObject.addProperty("CostPerUnit1", isCartridge ? arrayItem.getCost() : 0);
-
-                    }
-
-                    if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
-                        double length = 0, weight = 0;
-                        boolean isCartridge = false;
-                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
-                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
-                        for (int j = 0; j < chargeTypeArray.size(); j++) {
-                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
-                            if (item.getType().equals("Booster")) {
-                                isCartridge = true;
-                                if (StringUtill.isEmpty(arrayItem.getType()))
-                                    arrayItem = item;
-                                length = length + item.getLength();
-                                weight = weight + item.getWeight();
-                            }
-                        }
-
-                        chargeDetailsObject.addProperty("ExpCode2", isCartridge ? String.valueOf(arrayItem.getProdId()) : "0");
-                        chargeDetailsObject.addProperty("Weight2", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0);
-                        chargeDetailsObject.addProperty("ExpLength2", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0);
-                        chargeDetailsObject.addProperty("CostPerUnit2", isCartridge ? arrayItem.getCost() : 0);
-
-                    }
-
-                    aveBurden = aveBurden + Double.parseDouble(StringUtill.isEmpty(tablesData.get(i).getBurden()) ? "0.0" : tablesData.get(i).getBurden());
-                    aveSpacing = aveSpacing + Double.parseDouble(StringUtill.isEmpty(tablesData.get(i).getSpacing()) ? "0.0" : tablesData.get(i).getSpacing());
-
-                    chargeDetailsObject.addProperty("Burden", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getBurden()) ? "" : tablesData.get(i).getBurden()));
-                    chargeDetailsObject.addProperty("Spacing", String.valueOf(tablesData.get(i).getSpacing()));
-                    chargeDetailsObject.addProperty("Delay1", String.valueOf(tablesData.get(i).getHoleDelay()));
-                    chargeDetailsObject.addProperty("Delay2", "0");
-                    chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
-                    chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
-
-                    if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
-                        double length = 0;
-                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
-                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
-                        for (int j = 0; j < chargeTypeArray.size(); j++) {
-                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
-                            if (item.getType().equals("Decking")) {
-                                if (StringUtill.isEmpty(arrayItem.getType()))
-                                    arrayItem = item;
-                                length = length + item.getLength();
-                            }
-                        }
-
-                        chargeDetailsObject.addProperty("DeckDepth", length);
-                    }
-
-                    chargeDetailsObject.addProperty("DeckStart", "");
-
-                    if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
-                        double length = 0;
-                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
-                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
-                        for (int j = 0; j < chargeTypeArray.size(); j++) {
-                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
-                            if (item.getType().equals("Stemming")) {
-                                if (StringUtill.isEmpty(arrayItem.getType()))
-                                    arrayItem = item;
-                                length = length + item.getLength();
-                            }
-                        }
-
-                        chargeDetailsObject.addProperty("SteamLen", String.valueOf(length));
-                    }
-                    chargeDetailsObject.addProperty("WaterDepth", String.valueOf(tablesData.get(i).getWaterDepth()));
-                    chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.get(i).getHoleDepth()));
-                    chargeDetailsObject.addProperty("Subgrade", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getSubgrade()) ? "" : tablesData.get(i).getSubgrade()));
-                    chargeDetailsObject.addProperty("IsHoleBlock", "");
-                    chargeDetailsObject.addProperty("HoleBlockLength", "");
-                    chargeDetailsObject.addProperty("HoleAngle", String.valueOf(tablesData.get(i).getVerticalDip()));
-                    if (!Constants.isListEmpty(response3DTable17DataModelList)) {
-                        JsonArray inHoleDelayArr = new Gson().fromJson(new Gson().fromJson(response3DTable17DataModelList.get(0).getInHoleDelayArr(), String.class), JsonArray.class);
-                        if (inHoleDelayArr != null) {
-                            if (inHoleDelayArr.size() > 0) {
-                                chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(inHoleDelayArr.get(0).getAsInt()));
-                            /*if (inHoleDelayArr.size() > 1) {
-                                int inHoleDelay = 0;
-                                for (int tmp = 1; tmp < inHoleDelayArr.size(); tmp++) {
-                                    inHoleDelay = inHoleDelay + inHoleDelayArr.get(tmp).getAsInt();
-                                }
-                            }*/
-                            }
-                        }
-                    }
-                    chargeDetailsArray.add(chargeDetailsObject);
-                }
-            }
-            JsonArray edDetailsArray = new JsonArray();
-            JsonArray dthDetailsArray = new JsonArray();
-            JsonArray tldDetailsHoleToHoleArray = new JsonArray();
-            JsonArray tldDetailsRowToRowArray = new JsonArray();
-
-            if (initiatingDeviceDataObject != null) {
-                if (initiatingDeviceDataObject.size() > 0) {
-                    for (int i = 0; i < initiatingDeviceDataObject.size(); i++) {
-                        InitiatingDeviceAllTypeModel model = new Gson().fromJson(initiatingDeviceDataObject.get(i).getAsJsonObject(), InitiatingDeviceAllTypeModel.class);
-                        if (model.getDeviceName().equals("Electronic/Electric Detonator")) {
-                            // EDDetails Array
-                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
-                                JsonObject edDetailsObject = new JsonObject();
-                                edDetailsObject.addProperty("BlastCode", blastCode);
-                                edDetailsObject.addProperty("EDCode", String.valueOf(deviceModel.getPageCount()));
-                                edDetailsObject.addProperty("EDName", deviceModel.getType());
-                                edDetailsObject.addProperty("EDCost", deviceModel.getCost());
-                                edDetailsObject.addProperty("EDQty", deviceModel.getQty());
-                                edDetailsArray.add(edDetailsObject);
-                            }
-                        }
-
-                        if (model.getDeviceName().equals("Down The Hole")) {
-                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
-                                // DTHDetails Array
-                                JsonObject dthDetailsObject = new JsonObject();
-                                dthDetailsObject.addProperty("BlastCode", blastCode);
-                                dthDetailsObject.addProperty("DTHCode", String.valueOf(deviceModel.getPageCount()));
-                                dthDetailsObject.addProperty("DTHName", deviceModel.getType());
-                                dthDetailsObject.addProperty("DTHCost", deviceModel.getCost());
-                                dthDetailsObject.addProperty("DTHQty", deviceModel.getQty());
-                                dthDetailsArray.add(dthDetailsObject);
-                            }
-                        }
-
-                        if (model.getDeviceName().equals("TLD(Row To Row)")) {
-                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
-                                // TLDDetailsRowToRow Array
-                                JsonObject tldDetailsRowToRowObject = new JsonObject();
-                                tldDetailsRowToRowObject.addProperty("BlastCode", blastCode);
-                                tldDetailsRowToRowObject.addProperty("TldCode", String.valueOf(deviceModel.getPageCount()));
-                                tldDetailsRowToRowObject.addProperty("TldName", deviceModel.getType());
-                                tldDetailsRowToRowObject.addProperty("TldCost", deviceModel.getCost());
-                                tldDetailsRowToRowObject.addProperty("TldQty", deviceModel.getQty());
-                                tldDetailsRowToRowArray.add(tldDetailsRowToRowObject);
-                            }
-                        }
-
-                        if (model.getDeviceName().equals("TLD(Hole To Hole)")) {
-                            for (InitiatingDeviceModel deviceModel : model.getDeviceModelList()) {
-                                // TLDDetailsHoletoHole Array
-                                JsonObject tldDetailsHoletoHoleObject = new JsonObject();
-                                tldDetailsHoletoHoleObject.addProperty("BlastCode", blastCode);
-                                tldDetailsHoletoHoleObject.addProperty("TldCode", String.valueOf(deviceModel.getPageCount()));
-                                tldDetailsHoletoHoleObject.addProperty("TldName", deviceModel.getType());
-                                tldDetailsHoletoHoleObject.addProperty("TldCost", deviceModel.getCost());
-                                tldDetailsHoletoHoleObject.addProperty("TldQty", deviceModel.getQty());
-                                tldDetailsHoleToHoleArray.add(tldDetailsHoletoHoleObject);
-                            }
+                if (!Constants.isListEmpty(tablesData.get(i).getChargeTypeArray())) {
+                    double length = 0;
+                    ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                    List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargeTypeArray();
+                    for (int j = 0; j < chargeTypeArray.size(); j++) {
+                        ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                        if (item.getType().equals("Stemming")) {
+                            if (StringUtill.isEmpty(arrayItem.getType()))
+                                arrayItem = item;
+                            length = length + item.getLength();
                         }
                     }
 
-
+                    chargeDetailsObject.addProperty("SteamLen", String.valueOf(length));
                 }
-            }
-
-            // HolePoints Array
-            JsonArray holepointsArray = new JsonArray();
-            JsonObject holepointsObject = new JsonObject();
-            holepointsObject.addProperty("BlastCode", blastCode);
-            holepointsObject.addProperty("HoleNumber", "");
-            if (!Constants.isListEmpty(response3DTable17DataModelList)) {
-                if (StringUtill.isEmpty(response3DTable17DataModelList.get(0).getHoleTime())) {
-                    holepointsObject.addProperty("HoleDelay", "0");
-                } else {
-                    int holeDelay = Integer.parseInt(response3DTable17DataModelList.get(0).getHoleTime()) / 20;
-                    holepointsObject.addProperty("HoleDelay", String.valueOf(holeDelay));
-                }
-            } else {
-                holepointsObject.addProperty("HoleDelay", "0");
-            }
-            holepointsObject.addProperty("x", "");
-            holepointsObject.addProperty("y", "");
-            holepointsObject.addProperty("lat", "");
-            holepointsObject.addProperty("lng", "");
-            holepointsObject.addProperty("rltop", "");
-            holepointsObject.addProperty("rlbottom", "");
-            holepointsObject.addProperty("HoleName", "");
-            if (!Constants.isListEmpty(response3DTable17DataModelList)) {
-                JsonArray inHoleDelayArr = new Gson().fromJson(new Gson().fromJson(response3DTable17DataModelList.get(0).getInHoleDelayArr(), String.class), JsonArray.class);
-                if (inHoleDelayArr != null) {
-                    if (inHoleDelayArr.size() > 0) {
-                        holepointsObject.addProperty("InHoleDelay", String.valueOf(inHoleDelayArr.get(0).getAsInt()));
-                    } else {
-                        holepointsObject.addProperty("InHoleDelay", "0");
-                    }
-                } else {
-                    holepointsObject.addProperty("InHoleDelay", "0");
-                }
-            } else {
-                holepointsObject.addProperty("InHoleDelay", "0");
-            }
-            holepointsArray.add(holepointsObject);
-
-            // All Map Data
-            JsonObject mapObject = new JsonObject();
-            mapObject.addProperty("BlastCode", blastCode);
-            mapObject.addProperty("CompanyId", manger.getUserDetails().getCompanyid());
-            mapObject.addProperty("UserId", manger.getUserDetails().getUserid());
-            mapObject.addProperty("DeviceType", "Android");
-            mapObject.addProperty("DeviceId", Constants.getDeviceId(this));
-            mapObject.addProperty("blastno", bladesRetrieveData.getDesignCode());/* bladesRetrieveData.getDesignCode());*/
-
-            mapObject.addProperty("mineCode", AppDelegate.getInstance().getCodeIdObject().get("MineId").getAsString());
-            mapObject.addProperty("pitCode", AppDelegate.getInstance().getCodeIdObject().get("pitId").getAsString());
-            mapObject.addProperty("zoneCode", AppDelegate.getInstance().getCodeIdObject().get("zoneId").getAsString());
-            mapObject.addProperty("benchCode", AppDelegate.getInstance().getCodeIdObject().get("benchId").getAsString());
-            mapObject.addProperty("rockCode", AppDelegate.getInstance().getCodeIdObject().get("rockCode").getAsString());
-            mapObject.addProperty("rockDensity", AppDelegate.getInstance().getCodeIdObject().get("rockDensity").getAsString());
-            mapObject.addProperty("blastDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
-            mapObject.addProperty("blastTime", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
-            if (!Constants.isListEmpty(response3DTable2DataModelList)) {
-                mapObject.addProperty("BenchHeight", response3DTable2DataModelList.get(0).getBenchHeight());
-            } else {
-                mapObject.addProperty("BenchHeight", "");
-            }
-            mapObject.addProperty("FaceLength", "40");
-            if (!Constants.isListEmpty(tablesData)) {
-                aveBurden = aveBurden / tablesData.size();
-                aveSpacing = aveSpacing / tablesData.size();
-                mapObject.addProperty("Burden", String.valueOf(aveBurden));
-                mapObject.addProperty("Spacing", String.valueOf(aveSpacing));
-                mapObject.addProperty("DrillPattern", "1");
-            }
-
-            if (!Constants.isListEmpty(response3DTable17DataModelList)) {
-                if (StringUtill.isEmpty(response3DTable17DataModelList.get(0).getHoleTime())) {
-                    mapObject.addProperty("HoleDelay", "0");
-                } else {
-                    int holeDelay = Integer.parseInt(response3DTable17DataModelList.get(0).getHoleTime()) / 20;
-                    mapObject.addProperty("HoleDelay", String.valueOf(holeDelay));
-                }
-                if (StringUtill.isEmpty(response3DTable17DataModelList.get(0).getRowTime())) {
-                    mapObject.addProperty("RowDelay", "0");
-                } else {
-                    int rowDelay = Integer.parseInt(response3DTable17DataModelList.get(0).getRowTime()) / 20;
-                    mapObject.addProperty("RowDelay", String.valueOf(rowDelay));
-                }
-            }
-
-            mapObject.addProperty("Rows", String.valueOf(rowCount));
-            mapObject.addProperty("TotalHoles", String.valueOf(tablesData.size()));
-            mapObject.addProperty("CreationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));
-            mapObject.addProperty("ModificationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));
-            mapObject.addProperty("SyncDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
-            mapObject.addProperty("UpdatedBy", manger.getUserDetails().getUserid());
-            mapObject.addProperty("ProdVol", "140000");
-            mapObject.addProperty("Prodton", "400");
-            mapObject.addProperty("TotExp", "15000");
-            mapObject.addProperty("TotColChrge", "400");
-            mapObject.addProperty("TotBasechrge", "200");
-            mapObject.addProperty("PowderFactor", "15");
-            mapObject.addProperty("DrillFactor", "10");
-            mapObject.addProperty("TonRecover", "10");
-            mapObject.addProperty("TotCharge", "10");
-            mapObject.addProperty("TotSteam", "10");
-            mapObject.addProperty("DrillMtr", "10");
-            mapObject.addProperty("FlyRock", (blastPerformanceObject != null && blastPerformanceObject.has("FlyRock")) ? blastPerformanceObject.get("FlyRock").getAsString() : "");
-            mapObject.addProperty("Heavy", 1);
-            mapObject.addProperty("BoulderCount", (blastPerformanceObject != null && blastPerformanceObject.has("BounderCount")) ? blastPerformanceObject.get("BounderCount").getAsString() : "");
-            mapObject.addProperty("Displacement", (blastPerformanceObject != null && blastPerformanceObject.has("DisPlace")) ? blastPerformanceObject.get("DisPlace").getAsString() : "");
-            mapObject.addProperty("StemEject", 1);
-            mapObject.addProperty("Muck", 1);
-            mapObject.addProperty("BlastFumes", 1);
-            mapObject.addProperty("OverBlock", (blastPerformanceObject != null && blastPerformanceObject.has("BackBreak")) ? blastPerformanceObject.get("BackBreak").getAsString() : "");
-            mapObject.add("ExpUsedDetails", expUsedDetailArray);
-            mapObject.add("RowDetails", rowDetailsArray);
-            mapObject.add("chargedetails", chargeDetailsArray);
-            mapObject.add("EDDetails", edDetailsArray);
-            mapObject.add("DthDetails", dthDetailsArray);
-            mapObject.add("TLDDetailsHoletoHole", tldDetailsHoleToHoleArray);
-            mapObject.add("TLDDetailsRowToRow", tldDetailsRowToRowArray);
-            mapObject.addProperty("Drillcostpermeter", "0.0");
-            mapObject.addProperty("Latcord", "20");
-            mapObject.addProperty("longcord", "30");
-            mapObject.add("Holepoints", holepointsArray);
-            mapObject.addProperty("Facepoints", "");
-
-            Log.e("Record : ", new Gson().toJson(mapObject));
-            MainService.bimsInsertSyncRecordApiCaller(this, mapObject).observe(this, new Observer<JsonObject>() {
-                @Override
-                public void onChanged(JsonObject response) {
-                    if (response == null) {
-                        Log.e(ERROR, SOMETHING_WENT_WRONG);
-                    } else {
-                        if (!(response.isJsonNull())) {
-                            JsonObject jsonObject;
-                            if (response.isJsonObject()) {
-                                jsonObject = response.getAsJsonObject();
-                            } else {
-                                jsonObject = new Gson().fromJson(response, JsonObject.class);
-                            }
-                            String blastCode = jsonObject.get("ReturnObject").getAsString();
-                            if (!Constants.isListEmpty(appDatabase.blastCodeDao().getAllEntityDataList())) {
-                                appDatabase.blastCodeDao().updateItem(bladesRetrieveData.getDesignId(), blastCode);
-                            } else {
-                                BlastCodeEntity blastCodeEntity = new BlastCodeEntity(blastCode, bladesRetrieveData.getDesignId());
-                                appDatabase.blastCodeDao().insertItem(blastCodeEntity);
-                            }
-                            showToast("Project Sync Successfully");
-                            if (StringUtill.isEmpty(String.valueOf(bladesRetrieveData.getBimsId())))
-                                updateDesignIdBimsDrimsApiCaller(bladesRetrieveData.getDesignId(), blastCode, true, true).observe(BaseActivity.this, new Observer<JsonElement>() {
-                                    @Override
-                                    public void onChanged(JsonElement element) {
-                                        bladesRetrieveData.setBimsId(blastCode);
-                                        List<Response3DTable1DataModel> modelList = AppDelegate.getInstance().getResponse3DTable1DataModel();
-                                        modelList.set(0, bladesRetrieveData);
-                                        AppDelegate.getInstance().setResponse3DTable1DataModel(modelList);
-
-                                        ProjectHoleDetailRowColDao entity = appDatabase.projectHoleDetailRowColDao();
-                                        ProjectHoleDetailRowColEntity rowColEntity = entity.getAllBladesProject(bladesRetrieveData.getDesignId());
-
-                                        /*if (entity.isExistProject(bladesRetrieveData.getDesignId())) {
-                                            entity.updateProject(bladesRetrieveData.getDesignId(), new Gson().toJson(tablesData));
-                                        } else {
-                                            ProjectHoleDetailRowColEntity colEntity = new ProjectHoleDetailRowColEntity();
-                                            colEntity.setDesignId(bladesRetrieveData.getDesignId());
-                                            colEntity.setIs3DBlades(true);
-                                            colEntity.setProjectHole(new Gson().toJson(tablesData));
-                                            entity.insertProject(colEntity);
-                                        }*/
-
-                                        List<Response3DTable1DataModel> response3DTable1DataModels = new ArrayList<>();
-                                        JsonArray array = new Gson().fromJson(new Gson().fromJson((new Gson().fromJson(rowColEntity.getProjectHole(), JsonObject.class)).get(Constants._3D_TBALE_NAME).getAsJsonPrimitive(), String.class), JsonArray.class);
-                                        for (JsonElement e : new Gson().fromJson(new Gson().fromJson(array.get(0), String.class), JsonArray.class)) {
-                                            response3DTable1DataModels.add(new Gson().fromJson(e, Response3DTable1DataModel.class));
-                                        }
-
-                                        Response3DTable1DataModel infoApi = response3DTable1DataModels.get(0);
-                                        infoApi.setBimsId(blastCode);
-                                        response3DTable1DataModels.set(0, infoApi);
-
-                                        array.set(0, new Gson().fromJson(new Gson().toJson(response3DTable1DataModels), JsonElement.class));
-                                        JsonObject jsonObject = new JsonObject();
-                                        JsonPrimitive primitive = new JsonPrimitive(new Gson().toJson(array));
-                                        jsonObject.add(Constants._3D_TBALE_NAME, primitive);
-
-                                        if (!entity.isExistProject(String.valueOf(bladesRetrieveData.getDesignId()))) {
-                                            entity.insertProject(new ProjectHoleDetailRowColEntity(String.valueOf(bladesRetrieveData.getDesignId()), true, new Gson().toJson(jsonObject)));
-                                        } else {
-                                            entity.updateProject(String.valueOf(bladesRetrieveData.getDesignId()), new Gson().toJson(jsonObject));
-                                        }
-                                        data.setValue(element);
-                                    }
-                                });
+                chargeDetailsObject.addProperty("WaterDepth", String.valueOf(tablesData.get(i).getWaterDepth()));
+                chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.get(i).getHoleDepth()));
+                chargeDetailsObject.addProperty("Subgrade", String.valueOf(StringUtill.isEmpty(tablesData.get(i).getSubgrade()) ? "" : tablesData.get(i).getSubgrade()));
+                chargeDetailsObject.addProperty("IsHoleBlock", "");
+                chargeDetailsObject.addProperty("HoleBlockLength", "");
+                chargeDetailsObject.addProperty("HoleAngle", String.valueOf(tablesData.get(i).getVerticalDip()));
+                if (!Constants.isListEmpty(response3DTable17DataModelList)) {
+                    JsonArray inHoleDelayArr = new Gson().fromJson(new Gson().fromJson(response3DTable17DataModelList.get(0).getInHoleDelayArr(), String.class), JsonArray.class);
+                    if (inHoleDelayArr != null) {
+                        if (inHoleDelayArr.size() > 0) {
+                            chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(inHoleDelayArr.get(0).getAsInt()));
                         }
                     }
-                    hideLoader();
                 }
-            });
-        } catch (Exception e) {
-            hideLoader();
-            e.printStackTrace();
+                chargeDetailsArray.add(chargeDetailsObject);
+            }
         }
-        return data;
+
+        return chargeDetailsArray;
     }
 
-    public MutableLiveData<JsonElement> blastInsertSyncRecord3DPilotApiCaller(List<Response3DTable17DataModel> response3DTable17DataModelList, Response3DTable1DataModel bladesRetrieveData, List<Response3DTable4HoleChargingDataModel> tablesData, List<Response3DTable2DataModel> response3DTable2DataModelList, int rowCount, String blastCode) {
+    @NonNull
+    private JsonArray getChargeHoleArrayForPreSplit(String blastCode, List<Response3DTable17DataModel> response3DTable17DataModelList, List<Response3DTable18PreSpilitDataModel> preSpilitDataModelList) {
+        JsonArray chargeDetailsArray = new JsonArray();
+        if (!Constants.isListEmpty(preSpilitDataModelList)) {
+            List<HoleDetailItem> tablesData = preSpilitDataModelList.get(0).getHoleDetail();
+            if (!Constants.isListEmpty(tablesData)) {
+                for (int i = 0; i < tablesData.size(); i++) {
+                    JsonObject chargeDetailsObject = new JsonObject();
+                    chargeDetailsObject.addProperty("BlastCode", blastCode);
+                    chargeDetailsObject.addProperty("RowNo", String.valueOf(1));
+                    chargeDetailsObject.addProperty("HoleNo", String.valueOf(1));
+                    chargeDetailsObject.addProperty("HoleName", String.format("%s", tablesData.get(i).getHoleId()));
+                    chargeDetailsObject.addProperty("RowType", "Pre-Split");
+                    chargeDetailsObject.addProperty("HoleDia", String.valueOf(tablesData.get(i).getHoleDiameter()));
+
+                    if (!Constants.isListEmpty(tablesData.get(i).getChargingArray())) {
+                        double length = 0, weight = 0;
+                        boolean isCartridge = false;
+                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargingArray();
+                        for (int j = 0; j < chargeTypeArray.size(); j++) {
+                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                            if (item.getType().equals("Cartridge")) {
+                                isCartridge = true;
+                                if (StringUtill.isEmpty(arrayItem.getType()))
+                                    arrayItem = item;
+                                length = length + item.getLength();
+                                weight = weight + item.getWeight();
+                            }
+                        }
+
+                        chargeDetailsObject.addProperty("ExpCode", isCartridge ? String.valueOf(arrayItem.getProdId()) : "0");
+                        chargeDetailsObject.addProperty("Weight", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0.0);
+                        chargeDetailsObject.addProperty("ExpLength", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0.0);
+                        chargeDetailsObject.addProperty("CostPerUnit", isCartridge ? arrayItem.getCost() : 0);
+
+                    }
+
+                    if (!Constants.isListEmpty(tablesData.get(i).getChargingArray())) {
+                        double length = 0, weight = 0;
+                        boolean isCartridge = false;
+                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargingArray();
+                        for (int j = 0; j < chargeTypeArray.size(); j++) {
+                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                            if (item.getType().equals("Bulk")) {
+                                isCartridge = true;
+                                if (StringUtill.isEmpty(arrayItem.getType()))
+                                    arrayItem = item;
+                                length = length + item.getLength();
+                                weight = weight + item.getWeight();
+                            }
+                        }
+
+                        chargeDetailsObject.addProperty("ExpCode1", isCartridge ? String.valueOf(arrayItem.getProdId()) : "0");
+                        chargeDetailsObject.addProperty("Weight1", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0);
+                        chargeDetailsObject.addProperty("ExpLength1", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0);
+                        chargeDetailsObject.addProperty("CostPerUnit1", isCartridge ? arrayItem.getCost() : 0);
+
+                    }
+
+                    if (!Constants.isListEmpty(tablesData.get(i).getChargingArray())) {
+                        double length = 0, weight = 0;
+                        boolean isCartridge = false;
+                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargingArray();
+                        for (int j = 0; j < chargeTypeArray.size(); j++) {
+                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                            if (item.getType().equals("Booster")) {
+                                isCartridge = true;
+                                if (StringUtill.isEmpty(arrayItem.getType()))
+                                    arrayItem = item;
+                                length = length + item.getLength();
+                                weight = weight + item.getWeight();
+                            }
+                        }
+
+                        chargeDetailsObject.addProperty("ExpCode2", isCartridge ? String.valueOf(arrayItem.getProdId()) : "0");
+                        chargeDetailsObject.addProperty("Weight2", isCartridge ? Double.valueOf(decimalFormat.format(weight)).doubleValue() : 0);
+                        chargeDetailsObject.addProperty("ExpLength2", isCartridge ? Double.valueOf(decimalFormat.format(length)).doubleValue() : 0);
+                        chargeDetailsObject.addProperty("CostPerUnit2", isCartridge ? arrayItem.getCost() : 0);
+
+                    }
+
+                    chargeDetailsObject.addProperty("Burden", "0");
+                    chargeDetailsObject.addProperty("Spacing", String.valueOf(0));
+                    chargeDetailsObject.addProperty("Delay1", String.valueOf(0));
+                    chargeDetailsObject.addProperty("Delay2", "0");
+                    chargeDetailsObject.addProperty("TopBaseChargePercent", "0");
+                    chargeDetailsObject.addProperty("BottomBaseChargePercent", "100");
+
+                    if (!Constants.isListEmpty(tablesData.get(i).getChargingArray())) {
+                        double length = 0;
+                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargingArray();
+                        for (int j = 0; j < chargeTypeArray.size(); j++) {
+                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                            if (item.getType().equals("Decking")) {
+                                if (StringUtill.isEmpty(arrayItem.getType()))
+                                    arrayItem = item;
+                                length = length + item.getLength();
+                            }
+                        }
+
+                        chargeDetailsObject.addProperty("DeckDepth", length);
+                    }
+
+                    chargeDetailsObject.addProperty("DeckStart", "");
+
+                    if (!Constants.isListEmpty(tablesData.get(i).getChargingArray())) {
+                        double length = 0;
+                        ChargeTypeArrayItem arrayItem = new ChargeTypeArrayItem();
+                        List<ChargeTypeArrayItem> chargeTypeArray = tablesData.get(i).getChargingArray();
+                        for (int j = 0; j < chargeTypeArray.size(); j++) {
+                            ChargeTypeArrayItem item = chargeTypeArray.get(j);
+                            if (item.getType().equals("Stemming")) {
+                                if (StringUtill.isEmpty(arrayItem.getType()))
+                                    arrayItem = item;
+                                length = length + item.getLength();
+                            }
+                        }
+
+                        chargeDetailsObject.addProperty("SteamLen", String.valueOf(length));
+                    }
+                    chargeDetailsObject.addProperty("WaterDepth", String.valueOf(0));
+                    chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.get(i).getHoleDepth()));
+                    chargeDetailsObject.addProperty("Subgrade", String.valueOf(0));
+                    chargeDetailsObject.addProperty("IsHoleBlock", "");
+                    chargeDetailsObject.addProperty("HoleBlockLength", "");
+                    chargeDetailsObject.addProperty("HoleAngle", String.valueOf(0));
+                    if (!Constants.isListEmpty(response3DTable17DataModelList)) {
+                        JsonArray inHoleDelayArr = new Gson().fromJson(new Gson().fromJson(response3DTable17DataModelList.get(0).getInHoleDelayArr(), String.class), JsonArray.class);
+                        if (inHoleDelayArr != null) {
+                            if (inHoleDelayArr.size() > 0) {
+                                chargeDetailsObject.addProperty("InHoleDelay", String.valueOf(inHoleDelayArr.get(0).getAsInt()));
+                            }
+                        }
+                    }
+                    chargeDetailsArray.add(chargeDetailsObject);
+                }
+            }
+        }
+
+        return chargeDetailsArray;
+    }
+
+    private JsonArray getRowDetailForPilot(List<Response3DTable16PilotDataModel> tablesData) {
+        JsonArray rowDetailsArray = new JsonArray();
+        /*if (!Constants.isListEmpty(tablesData)) {
+            for (int i = 0; i < tablesData.size(); i++) {
+                JsonObject rowDetailsObject = new JsonObject();
+                rowDetailsObject.addProperty("rowno", String.valueOf(1));
+                rowDetailsObject.addProperty("holeno", String.valueOf(1));
+                rowDetailsObject.addProperty("rowtype", String.valueOf(Constants.PILOT_HOLE));
+                rowDetailsArray.add(rowDetailsObject);
+            }
+        }*/
+        JsonObject rowDetailsObject = new JsonObject();
+        rowDetailsObject.addProperty("rowno", String.valueOf(1));
+        rowDetailsObject.addProperty("holeno", String.valueOf(tablesData.size()));
+        rowDetailsObject.addProperty("rowtype", String.valueOf(Constants.PILOT_HOLE));
+        rowDetailsArray.add(rowDetailsObject);
+        return rowDetailsArray;
+    }
+
+    private JsonArray getRowDetailForPreSplit(List<Response3DTable18PreSpilitDataModel> tablesData) {
+        JsonArray rowDetailsArray = new JsonArray();
+        /*if (!Constants.isListEmpty(tablesData)) {
+            for (int i = 0; i < tablesData.size(); i++) {
+                JsonObject rowDetailsObject = new JsonObject();
+                rowDetailsObject.addProperty("rowno", String.valueOf(1));
+                rowDetailsObject.addProperty("holeno", String.valueOf(1));
+                rowDetailsObject.addProperty("rowtype", String.valueOf(Constants.PRE_SPLIT_HOLE));
+                rowDetailsArray.add(rowDetailsObject);
+            }
+        }*/
+        JsonObject rowDetailsObject = new JsonObject();
+        rowDetailsObject.addProperty("rowno", String.valueOf(1));
+        if (Constants.isListEmpty(tablesData)) {
+            rowDetailsObject.addProperty("holeno", String.valueOf(0));
+        } else {
+            rowDetailsObject.addProperty("holeno", String.valueOf(tablesData.get(0).getHoleDetail().size()));
+        }
+        rowDetailsObject.addProperty("rowtype", String.valueOf(Constants.PRE_SPLIT_HOLE));
+        rowDetailsArray.add(rowDetailsObject);
+        return rowDetailsArray;
+    }
+
+    public MutableLiveData<JsonElement> blastInsertSyncRecord3DApiCaller(List<Response3DTable17DataModel> response3DTable17DataModelList,
+                                                                         Response3DTable1DataModel bladesRetrieveData,
+                                                                         List<Response3DTable4HoleChargingDataModel> tablesData,
+                                                                         List<Response3DTable2DataModel> response3DTable2DataModelList,
+                                                                         List<Response3DTable16PilotDataModel> pilotDataModelList,
+                                                                         List<Response3DTable18PreSpilitDataModel> preSplitHoleDetailItemList,
+                                                                         int rowCount, String blastCode) {
         MutableLiveData<JsonElement> data = new MutableLiveData<>();
         try {
             showLoader();
@@ -1990,6 +1802,10 @@ public class BaseActivity extends AppCompatActivity {
                     rowDetailsArray.add(rowDetailsObject);
                 }
             }
+
+            // Pilot and Pre Split Hole Count and Type
+            rowDetailsArray.addAll(getRowDetailForPilot(pilotDataModelList));
+            rowDetailsArray.addAll(getRowDetailForPreSplit(preSplitHoleDetailItemList));
 
             double aveSpacing = 0.0, aveBurden = 0.0;
 
@@ -2149,6 +1965,11 @@ public class BaseActivity extends AppCompatActivity {
                     chargeDetailsArray.add(chargeDetailsObject);
                 }
             }
+
+            // Pilot and Pre Split Hole Detail
+            chargeDetailsArray.addAll(getChargeHoleArrayForPilot(blastCode, response3DTable17DataModelList, pilotDataModelList));
+            chargeDetailsArray.addAll(getChargeHoleArrayForPreSplit(blastCode, response3DTable17DataModelList, preSplitHoleDetailItemList));
+
             JsonArray edDetailsArray = new JsonArray();
             JsonArray dthDetailsArray = new JsonArray();
             JsonArray tldDetailsHoleToHoleArray = new JsonArray();
@@ -2300,7 +2121,8 @@ public class BaseActivity extends AppCompatActivity {
             }
 
             mapObject.addProperty("Rows", String.valueOf(rowCount));
-            mapObject.addProperty("TotalHoles", String.valueOf(tablesData.size()));
+            int totalHoles = tablesData.size() + pilotDataModelList.size() + (Constants.isListEmpty(preSplitHoleDetailItemList) ? 0 : preSplitHoleDetailItemList.get(0).getHoleDetail().size());
+            mapObject.addProperty("TotalHoles", String.valueOf(totalHoles));
             mapObject.addProperty("CreationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));
             mapObject.addProperty("ModificationDate", DateUtils.getFormattedTime(bladesRetrieveData.getDesignDateTime(), "MM/dd/yyyy hh:mm:ss a", "yyyy-MM-dd hh:mm:ss.SSS"));
             mapObject.addProperty("SyncDate", DateUtils.getDate(System.currentTimeMillis(), "yyyy-MM-dd hh:mm:ss.SSS"));
