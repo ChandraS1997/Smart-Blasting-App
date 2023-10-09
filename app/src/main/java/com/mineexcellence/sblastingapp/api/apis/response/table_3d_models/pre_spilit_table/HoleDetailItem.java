@@ -2,7 +2,10 @@ package com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.pre_sp
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 import com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.ChargeTypeArrayItem;
 
 public class HoleDetailItem implements Serializable {
@@ -41,7 +44,7 @@ public class HoleDetailItem implements Serializable {
 	private Object bottomEasting;
 
 	@SerializedName("chargingArray")
-	private List<ChargeTypeArrayItem> chargingArray;
+	private Object chargingArray;
 
 	@SerializedName("topRL")
 	private int topRL;
@@ -166,12 +169,12 @@ public class HoleDetailItem implements Serializable {
 		return bottomEasting;
 	}
 
-	public void setChargingArray(List<ChargeTypeArrayItem> chargingArray){
+	public void setChargingArray(Object chargingArray){
 		this.chargingArray = chargingArray;
 	}
 
 	public List<ChargeTypeArrayItem> getChargingArray(){
-		return chargingArray;
+		return new Gson().fromJson(String.valueOf(chargingArray), new TypeToken<List<ChargeTypeArrayItem>>(){}.getType());
 	}
 
 	public void setTopRL(int topRL){

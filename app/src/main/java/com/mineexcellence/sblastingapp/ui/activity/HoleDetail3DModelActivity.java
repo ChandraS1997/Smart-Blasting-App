@@ -262,7 +262,7 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 @Override
                 public void syncWithBlades() {
                     if (ConnectivityReceiver.getInstance().isInternetAvailable()) {
-                        insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, pilotTableData, preSplitTableData);
+                        insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, pilotTableData, preSplitTableData, Constants.PRODUCTION_HOLE);
                     } else {
                         showToast("No internet connection. Make sure Wi-Fi or Cellular data is turn on, then try again");
                     }

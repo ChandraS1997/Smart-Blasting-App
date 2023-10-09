@@ -647,12 +647,43 @@ public class MainService {
         return data;
     }
 
-    public static LiveData<JsonElement> insertUpdate3DActualDesignHoleDetailApiCaller(final Context context, JsonArray map) {
+    public static LiveData<JsonElement> insertUpdate3DActualDesignHoleDetailApiCaller(final Context context, JsonArray map, int apiHoleType) {
         final MutableLiveData<JsonElement> data = new MutableLiveData<>();
         if (!BaseApplication.getInstance().isInternetConnected(context)) {
             return data;
         }
-        Call<JsonElement> call = testBlastSblastApiService.insertUpdate3DActualDesignHoleDetailApiCaller(map);
+        Call<JsonElement> call;
+        if (apiHoleType == Constants.PILOT_HOLE) {
+            call = testBlastSblastApiService.insertUpdate3DActualDesignPilotHoleDetailApiCaller(map);
+        } else {
+            call = testBlastSblastApiService.insertUpdate3DActualDesignHoleDetailApiCaller(map);
+        }
+        call.enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                if (response.body() != null) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                data.setValue(null);
+                Log.e(" API FAILED ", t.getLocalizedMessage());
+            }
+        });
+        return data;
+    }
+
+    public static LiveData<JsonElement> insertUpdate3DActualPreSplitHoleDetailApiCaller(final Context context, JsonObject map) {
+        final MutableLiveData<JsonElement> data = new MutableLiveData<>();
+        if (!BaseApplication.getInstance().isInternetConnected(context)) {
+            return data;
+        }
+        Call<JsonElement> call = testBlastSblastApiService.insertUpdate3DActualPreSplitHoleDetailApiCaller(map);
+
         call.enqueue(new Callback<JsonElement>() {
             @Override
             public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {

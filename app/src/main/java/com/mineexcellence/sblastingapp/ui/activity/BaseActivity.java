@@ -2243,6 +2243,66 @@ public class BaseActivity extends AppCompatActivity {
 
     /*  For Blades Data */
 
+    private JsonArray getProductionForBlades(List<Response3DTable4HoleChargingDataModel> allTablesData) {
+        JsonArray mapObjectArray = new JsonArray();
+        for (Response3DTable4HoleChargingDataModel dataModel : allTablesData) {
+            JsonObject object = new JsonObject();
+            object.addProperty("Block", dataModel.getBlock());
+            object.addProperty("BlockLength", dataModel.getBlockLength());
+            object.addProperty("BottomX", dataModel.getBottomX());
+            object.addProperty("BottomY", dataModel.getBottomY());
+            object.addProperty("BottomZ", dataModel.getBottomZ());
+            object.addProperty("Burden", dataModel.getBurden());
+
+            JsonArray chargeTypeArray = new JsonArray();
+            if (!Constants.isListEmpty(dataModel.getChargeTypeArray())) {
+                for (ChargeTypeArrayItem arrayItem : dataModel.getChargeTypeArray()) {
+                    JsonObject chargeTypeObject = new JsonObject();
+                    chargeTypeObject.addProperty("type", StringUtill.isEmpty(arrayItem.getType()) ? "" : arrayItem.getType());
+                    chargeTypeObject.addProperty("name", StringUtill.isEmpty(arrayItem.getName()) ? "" : arrayItem.getName());
+                    chargeTypeObject.addProperty("cost", arrayItem.getCost());
+                    chargeTypeObject.addProperty("weight", arrayItem.getWeight());
+                    chargeTypeObject.addProperty("length", arrayItem.getLength());
+                    chargeTypeObject.addProperty("prodType", arrayItem.getProdType());
+                    chargeTypeObject.addProperty("prodId", arrayItem.getProdId());
+                    chargeTypeObject.addProperty("color", StringUtill.isEmpty(arrayItem.getColor()) ? "" : arrayItem.getColor());
+                    chargeTypeObject.addProperty("percentage", StringUtill.isEmpty(String.valueOf(arrayItem.getPercentage())) ? "" : String.valueOf(arrayItem.getPercentage()));
+                    chargeTypeArray.add(chargeTypeObject);
+                }
+            }
+            object.addProperty("ChargeTypeArray", new Gson().toJson(chargeTypeArray));
+            object.addProperty("ChargeLength", dataModel.getChargeLength());
+
+            object.addProperty("DeckLength", dataModel.getDeckLength());
+            object.addProperty("DesignId", dataModel.getDesignId());
+            if (StringUtill.isEmpty(dataModel.getHoleDelay())) {
+                object.addProperty("HoleDelay", "0");
+            } else {
+                object.addProperty("HoleDelay", dataModel.getHoleDelay());
+            }
+            object.addProperty("HoleDepth", dataModel.getHoleDepth());
+            object.addProperty("HoleDiameter", dataModel.getHoleDiameter());
+            object.addProperty("HoleID", String.format("R%sH%s", dataModel.getRowNo(), dataModel.getHoleNo()));
+            object.addProperty("HoleNo", dataModel.getHoleNo());
+            object.addProperty("HoleType", dataModel.getHoleType());
+            object.addProperty("InHoleDelay", dataModel.getInHoleDelay());
+            object.addProperty("RowNo", dataModel.getRowNo());
+            object.addProperty("Spacing", dataModel.getSpacing());
+            object.addProperty("StemmingLength", dataModel.getStemmingLength());
+            object.addProperty("Subgrade", dataModel.getSubgrade());
+            object.addProperty("TielineId", dataModel.getTielineID());
+            object.addProperty("TopX", dataModel.getTopX());
+            object.addProperty("TopY", dataModel.getTopY());
+            object.addProperty("TopZ", dataModel.getTopZ());
+            object.addProperty("TotalCharge", dataModel.getTotalCharge());
+            object.addProperty("VerticalDip", dataModel.getVerticalDip());
+            object.addProperty("WaterDepth", dataModel.getWaterDepth());
+
+            mapObjectArray.add(object);
+        }
+        return mapObjectArray;
+    }
+
     private JsonArray getPilotForBlades(List<Response3DTable16PilotDataModel> pilotDataModelList) {
         JsonArray mapObjectArray = new JsonArray();
         for (Response3DTable16PilotDataModel dataModel : pilotDataModelList) {
@@ -2308,12 +2368,6 @@ public class BaseActivity extends AppCompatActivity {
 
         for (HoleDetailItem dataModel : allTablesData) {
             JsonObject object = new JsonObject();
-            object.addProperty("Block", "0");
-            object.addProperty("BlockLength", "0");
-            object.addProperty("BottomX", String.valueOf(dataModel.getBottomNorthing() == null ? "0" : dataModel.getBottomNorthing()));
-            object.addProperty("BottomY", String.valueOf(dataModel.getBottomEasting() == null ? "0" : dataModel.getBottomEasting()));
-            object.addProperty("BottomZ", String.valueOf(dataModel.getBottomRL()));
-            object.addProperty("Burden", "0");
 
             JsonArray chargeTypeArray = new JsonArray();
             if (!Constants.isListEmpty(dataModel.getChargingArray())) {
@@ -2331,30 +2385,23 @@ public class BaseActivity extends AppCompatActivity {
                     chargeTypeArray.add(chargeTypeObject);
                 }
             }
-            object.addProperty("ChargeTypeArray", new Gson().toJson(chargeTypeArray));
-            object.addProperty("ChargeLength", dataModel.getChargeLength());
 
-            object.addProperty("DeckLength", dataModel.getDecking());
-            object.addProperty("DesignId", dataModel.getDesignId());
-            object.addProperty("HoleDelay", "0");
+            object.addProperty("holeType", "PreSplitHole");
+            object.addProperty("holeId", String.format("%s", dataModel.getHoleId()));
+            object.addProperty("holeDiameter", dataModel.getHoleDiameter());
+            object.addProperty("holeDepth", dataModel.getHoleDepth());
+            object.addProperty("holeAngle", "0.00");
+            object.addProperty("topEasting", String.valueOf(dataModel.getTopEasting() == null ? "0" : dataModel.getTopEasting()));
+            object.addProperty("topNorthing", String.valueOf(dataModel.getTopNorthing() == null ? "0" : dataModel.getTopNorthing()));
+            object.addProperty("topRL", String.valueOf(dataModel.getTopRL()));
+            object.addProperty("bottomEasting", String.valueOf(dataModel.getBottomEasting() == null ? "0" : dataModel.getBottomEasting()));
+            object.addProperty("bottomNorthing", String.valueOf(dataModel.getBottomNorthing() == null ? "0" : dataModel.getBottomNorthing()));
+            object.addProperty("bottomRL", String.valueOf(dataModel.getBottomRL()));
+            object.addProperty("totalCharge", dataModel.getTotalCharge());
+            object.addProperty("chargeLength", dataModel.getChargeLength());
+            object.addProperty("decking", dataModel.getDecking());
 
-            object.addProperty("HoleDepth", dataModel.getHoleDepth());
-            object.addProperty("HoleDiameter", dataModel.getHoleDiameter());
-            object.addProperty("HoleID", String.format("%s", dataModel.getHoleId()));
-//            object.addProperty("HoleNo", dataModel.getHoleNo());
-            object.addProperty("HoleType", String.valueOf(Constants.PRE_SPLIT_HOLE));
-            object.addProperty("InHoleDelay", "0");
-//            object.addProperty("RowNo", dataModel.getRowNo());
-            object.addProperty("Spacing", "0");
-            object.addProperty("StemmingLength", "0");
-            object.addProperty("Subgrade", "0");
-            object.addProperty("TielineId", "0");
-            object.addProperty("TopX", String.valueOf(dataModel.getTopNorthing() == null ? "0" : dataModel.getTopNorthing()));
-            object.addProperty("TopY", String.valueOf(dataModel.getTopEasting() == null ? "0" : dataModel.getTopEasting()));
-            object.addProperty("TopZ", String.valueOf(dataModel.getTopRL()));
-            object.addProperty("TotalCharge", dataModel.getTotalCharge());
-            object.addProperty("VerticalDip", "0");
-            object.addProperty("WaterDepth", "0");
+            object.addProperty("chargingArray", new Gson().toJson(chargeTypeArray));
 
             mapObjectArray.add(object);
         }
@@ -2362,77 +2409,61 @@ public class BaseActivity extends AppCompatActivity {
         return mapObjectArray;
     }
 
-    public void insertUpdate3DActualDesignHoleDetailApiCaller(List<Response3DTable4HoleChargingDataModel> allTablesData, List<Response3DTable16PilotDataModel> pilotDataModelList, List<Response3DTable18PreSpilitDataModel> preSplitDataModelList) {
+    public void insertUpdate3DActualDesignHoleDetailApiCaller(List<Response3DTable4HoleChargingDataModel> allTablesData, List<Response3DTable16PilotDataModel> pilotDataModelList, List<Response3DTable18PreSpilitDataModel> preSplitDataModelList, int holeType) {
         try {
             showLoader();
             JsonArray mapObjectArray = new JsonArray();
-            for (Response3DTable4HoleChargingDataModel dataModel : allTablesData) {
-                JsonObject object = new JsonObject();
-                object.addProperty("Block", dataModel.getBlock());
-                object.addProperty("BlockLength", dataModel.getBlockLength());
-                object.addProperty("BottomX", dataModel.getBottomX());
-                object.addProperty("BottomY", dataModel.getBottomY());
-                object.addProperty("BottomZ", dataModel.getBottomZ());
-                object.addProperty("Burden", dataModel.getBurden());
 
-                JsonArray chargeTypeArray = new JsonArray();
-                if (!Constants.isListEmpty(dataModel.getChargeTypeArray())) {
-                    for (ChargeTypeArrayItem arrayItem : dataModel.getChargeTypeArray()) {
-                        JsonObject chargeTypeObject = new JsonObject();
-                        chargeTypeObject.addProperty("type", StringUtill.isEmpty(arrayItem.getType()) ? "" : arrayItem.getType());
-                        chargeTypeObject.addProperty("name", StringUtill.isEmpty(arrayItem.getName()) ? "" : arrayItem.getName());
-                        chargeTypeObject.addProperty("cost", arrayItem.getCost());
-                        chargeTypeObject.addProperty("weight", arrayItem.getWeight());
-                        chargeTypeObject.addProperty("length", arrayItem.getLength());
-                        chargeTypeObject.addProperty("prodType", arrayItem.getProdType());
-                        chargeTypeObject.addProperty("prodId", arrayItem.getProdId());
-                        chargeTypeObject.addProperty("color", StringUtill.isEmpty(arrayItem.getColor()) ? "" : arrayItem.getColor());
-                        chargeTypeObject.addProperty("percentage", StringUtill.isEmpty(String.valueOf(arrayItem.getPercentage())) ? "" : String.valueOf(arrayItem.getPercentage()));
-                        chargeTypeArray.add(chargeTypeObject);
+
+            if (holeType == Constants.PILOT_HOLE) {
+                mapObjectArray.addAll(getPilotForBlades(pilotDataModelList));
+            } else {
+                mapObjectArray.addAll(getProductionForBlades(allTablesData));
+            }
+
+            MainService.insertUpdate3DActualDesignHoleDetailApiCaller(this, mapObjectArray, holeType).observe(this, new Observer<JsonElement>() {
+                @Override
+                public void onChanged(JsonElement jsonObject) {
+                    if (holeType == Constants.PRODUCTION_HOLE) {
+                        insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, pilotDataModelList, preSplitDataModelList, Constants.PILOT_HOLE);
+                    } else if (holeType == Constants.PILOT_HOLE) {
+                        insertUpdate3DActualPreSplitHoleDetailApiCaller(preSplitDataModelList, Constants.PRE_SPLIT_HOLE);
+                    } else {
+                        if (!jsonObject.isJsonNull())
+                            showToast("Project Sync Successfully");
+                        hideLoader();
                     }
                 }
-                object.addProperty("ChargeTypeArray", new Gson().toJson(chargeTypeArray));
-                object.addProperty("ChargeLength", dataModel.getChargeLength());
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-                object.addProperty("DeckLength", dataModel.getDeckLength());
-                object.addProperty("DesignId", dataModel.getDesignId());
-                if (StringUtill.isEmpty(dataModel.getHoleDelay())) {
-                    object.addProperty("HoleDelay", "0");
-                } else {
-                    object.addProperty("HoleDelay", dataModel.getHoleDelay());
-                }
-                object.addProperty("HoleDepth", dataModel.getHoleDepth());
-                object.addProperty("HoleDiameter", dataModel.getHoleDiameter());
-                object.addProperty("HoleID", String.format("R%sH%s", dataModel.getRowNo(), dataModel.getHoleNo()));
-                object.addProperty("HoleNo", dataModel.getHoleNo());
-                object.addProperty("HoleType", dataModel.getHoleType());
-                object.addProperty("InHoleDelay", dataModel.getInHoleDelay());
-                object.addProperty("RowNo", dataModel.getRowNo());
-                object.addProperty("Spacing", dataModel.getSpacing());
-                object.addProperty("StemmingLength", dataModel.getStemmingLength());
-                object.addProperty("Subgrade", dataModel.getSubgrade());
-                object.addProperty("TielineId", dataModel.getTielineID());
-                object.addProperty("TopX", dataModel.getTopX());
-                object.addProperty("TopY", dataModel.getTopY());
-                object.addProperty("TopZ", dataModel.getTopZ());
-                object.addProperty("TotalCharge", dataModel.getTotalCharge());
-                object.addProperty("VerticalDip", dataModel.getVerticalDip());
-                object.addProperty("WaterDepth", dataModel.getWaterDepth());
+    }
 
-                mapObjectArray.add(object);
-            }
+    public void insertUpdate3DActualPreSplitHoleDetailApiCaller(List<Response3DTable18PreSpilitDataModel> preSplitDataModelList, int holeType) {
+        try {
+            JsonObject mapObjectArray = new JsonObject();
 
-            mapObjectArray.addAll(getPilotForBlades(pilotDataModelList));
             if (!Constants.isListEmpty(preSplitDataModelList)) {
-                mapObjectArray.addAll(getPreSplitForBlades(preSplitDataModelList.get(0).getHoleDetail()));
+                mapObjectArray.addProperty("CombineBlastNo", preSplitDataModelList.get(0).getCombineBlastNo());
+                mapObjectArray.addProperty("Delay", preSplitDataModelList.get(0).getDelay());
+                mapObjectArray.addProperty("DesignId", preSplitDataModelList.get(0).getDesignId());
+                mapObjectArray.addProperty("HoleDepth", preSplitDataModelList.get(0).getHoleDepth());
+                mapObjectArray.addProperty("HoleDetail", new Gson().toJson(getPreSplitForBlades(preSplitDataModelList.get(0).getHoleDetail())));
+                mapObjectArray.addProperty("HoleDiameter", preSplitDataModelList.get(0).getHoleDiameter());
+                mapObjectArray.addProperty("HolePoints", preSplitDataModelList.get(0).getHolePointsStr());
+                mapObjectArray.addProperty("InitHoleId", preSplitDataModelList.get(0).getInitHoleId());
+                mapObjectArray.addProperty("LinePoints", preSplitDataModelList.get(0).getLinePointsStr());
+                mapObjectArray.addProperty("Spacing", preSplitDataModelList.get(0).getSpacing());
             }
 
-            MainService.insertUpdate3DActualDesignHoleDetailApiCaller(this, mapObjectArray).observe(this, new Observer<JsonElement>() {
+            MainService.insertUpdate3DActualPreSplitHoleDetailApiCaller(this, mapObjectArray).observe(this, new Observer<JsonElement>() {
                 @Override
                 public void onChanged(JsonElement jsonObject) {
                     if (!jsonObject.isJsonNull())
-                        showToast("Project Sync Successfully");
-                    hideLoader();
+                            showToast("Project Sync Successfully");
+                        hideLoader();
                 }
             });
         } catch (Exception e) {

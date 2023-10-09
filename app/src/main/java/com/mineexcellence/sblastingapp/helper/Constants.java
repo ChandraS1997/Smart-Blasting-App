@@ -53,7 +53,7 @@ public class Constants {
     public static final String DRIMS_BASE_URL = "https://drims.mineexcellence.com/DRIMS_API/Service1.svc/";
     public static final String BLAST_S_BLAST = "http://sblastapi.mineexcellence.com/api/sblast/";
     //    public static final String BLAST_S_BLAST = "https://sblastapi.mineexcellence.com/api/sblast/";
-    public static final String TEST_BLAST_S_BLAST = "http://blastdesigner.mineexcellence.com/BLADES_API/Service1.svc/";
+    public static final String TEST_BLAST_S_BLAST = "https://blastdesigner.mineexcellence.com/BLADES_API/Service1.svc/";
     public static final String DB_NAME = "centralmineinfo";
     public static final String _3D_TBALE_NAME = "GetAll3DDesignwithActualInfoResult";
 

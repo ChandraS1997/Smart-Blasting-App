@@ -83,15 +83,15 @@ public final class BaseService {
             okHttpClient.addInterceptor(HostSelectionInterceptor.getSelectionInterceptor());
             okHttpClient.addInterceptor(loggingInterceptor);
 
-            if (SslUtils.INSTANCE.getTrustAllHostsSSLSocketFactory() != null) {
+            /*if (SslUtils.INSTANCE.getTrustAllHostsSSLSocketFactory() != null) {
                 okHttpClient.sslSocketFactory(SslUtils.INSTANCE.getTrustAllHostsSSLSocketFactory(), trustManager);
-            }
+            }*/
 
-            try {
+            /*try {
                 okHttpClient.sslSocketFactory(SslUtils.INSTANCE.getSslContextForCertificateFile(BaseApplication.getInstance().getApplicationContext()).getSocketFactory(), trustManager);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
-            }
+            }*/
 
         } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();

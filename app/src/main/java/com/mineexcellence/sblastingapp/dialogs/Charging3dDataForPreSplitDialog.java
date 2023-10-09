@@ -142,7 +142,7 @@ public class Charging3dDataForPreSplitDialog extends BaseDialogFragment {
         });
 
         binding.saveProceedBtn.setOnClickListener(view -> {
-            allTablesData.setChargingArray(adapter.getJsonArray());
+            allTablesData.setChargingArray(new Gson().fromJson(new Gson().toJson(adapter.getJsonArray()), Object.class));
 
             double totalCharge = 0.0, chargeLen = 0.0;
             for (int i = 0; i < adapter.getJsonArray().size(); i++) {

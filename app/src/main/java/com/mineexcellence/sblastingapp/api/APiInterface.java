@@ -91,6 +91,12 @@ public interface APiInterface {
     @POST("InsertUpdate3DActualDesignHoleDetail/reset")
     Call<JsonElement> insertUpdate3DActualDesignHoleDetailApiCaller(@Body JsonArray map);
 
+    @POST("InsertUpdate3DActualPreSplitHoleDetail")
+    Call<JsonElement> insertUpdate3DActualPreSplitHoleDetailApiCaller(@Body JsonObject map);
+
+    @POST("InsertUpdate3DActualDesignPilotHoleDetail/reset")
+    Call<JsonElement> insertUpdate3DActualDesignPilotHoleDetailApiCaller(@Body JsonArray map);
+
     @GET("get-drillaccessoriesinfo/GetShiftInfo/{user_id}/{company_id}")
     Call<JsonObject> getDrillShiftInfoApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
