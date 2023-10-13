@@ -40,9 +40,11 @@ import com.mineexcellence.sblastingapp.api.apis.response.ResponseShiftData;
 import com.mineexcellence.sblastingapp.api.apis.response.ResponseSiteDetail;
 import com.mineexcellence.sblastingapp.api.apis.response.ResponseZoneTable;
 import com.mineexcellence.sblastingapp.api.apis.response.hole_tables.Table1Item;
+import com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.Response3DTable16PilotDataModel;
 import com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.Response3DTable1DataModel;
 import com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.Response3DTable2DataModel;
 import com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.Response3DTable4HoleChargingDataModel;
+import com.mineexcellence.sblastingapp.api.apis.response.table_3d_models.pre_spilit_table.Response3DTable18PreSpilitDataModel;
 import com.mineexcellence.sblastingapp.app.AppDelegate;
 import com.mineexcellence.sblastingapp.app.BaseApplication;
 import com.mineexcellence.sblastingapp.databinding.ProjectInfoLayoutBinding;
@@ -78,6 +80,8 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
     String rockDensity;
 
     List<Response3DTable4HoleChargingDataModel> allTablesData = new ArrayList<>();
+    List<Response3DTable16PilotDataModel> pilotDataModelList = new ArrayList<>();
+    List<Response3DTable18PreSpilitDataModel> preSpilitDataModelList = new ArrayList<>();
 
     public ProjectDetail3DDataDialog() {
         _self = this;
@@ -203,7 +207,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                     if (BaseApplication.getInstance().isInternetConnected(mContext)) {
                         if (!appDatabase.allProjectBladesModelDao().isExistItem(bladesRetrieveData.getDesignId())) {
                             List<Response3DTable4HoleChargingDataModel> finalAllTablesData = allTablesData;
-                            ((BaseActivity) mContext).setJsonForSyncProject3DData(bladesRetrieveData, allTablesData).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
+                            ((BaseActivity) mContext).setJsonForSyncProject3DData(bladesRetrieveData, allTablesData, pilotDataModelList, preSpilitDataModelList).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
                                 @Override
                                 public void onChanged(JsonElement jsonPrimitive) {
                                     setNavigationOnHole(finalAllTablesData);
@@ -213,7 +217,7 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
                             AllProjectBladesModelEntity entity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(bladesRetrieveData.getDesignId());
                             if (StringUtill.isEmpty(entity.getProjectCode())) {
                                 List<Response3DTable4HoleChargingDataModel> finalAllTablesData1 = allTablesData;
-                                ((BaseActivity) mContext).setJsonForSyncProject3DData(bladesRetrieveData, allTablesData).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
+                                ((BaseActivity) mContext).setJsonForSyncProject3DData(bladesRetrieveData, allTablesData, pilotDataModelList, preSpilitDataModelList).observe((LifecycleOwner) mContext, new Observer<JsonElement>() {
                                     @Override
                                     public void onChanged(JsonElement jsonPrimitive) {
                                         setNavigationOnHole(finalAllTablesData1);
@@ -280,11 +284,17 @@ public class ProjectDetail3DDataDialog extends BaseDialogFragment {
             if (!StringUtill.isEmpty(from)) {
                 if (from.equals("Home")) {
                     allTablesData = ((HomeActivity) mContext).response3DTable4HoleChargingDataModels;
+                    pilotDataModelList = ((HomeActivity) mContext).response3DTable16PilotDataModelList;
+                    preSpilitDataModelList = ((HomeActivity) mContext).response3DTable18PreSpilitDataModelList;
                 } else {
                     allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
+                    pilotDataModelList = ((HoleDetail3DModelActivity) mContext).pilotTableData;
+                    preSpilitDataModelList = ((HoleDetail3DModelActivity) mContext).preSplitTableData;
                 }
             } else {
                 allTablesData = ((HoleDetail3DModelActivity) mContext).allTablesData;
+                pilotDataModelList = ((HoleDetail3DModelActivity) mContext).pilotTableData;
+                preSpilitDataModelList = ((HoleDetail3DModelActivity) mContext).preSplitTableData;
             }
 
             if (!Constants.isListEmpty(allTablesData)) {

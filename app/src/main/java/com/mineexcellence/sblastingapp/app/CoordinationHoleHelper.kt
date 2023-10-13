@@ -217,8 +217,8 @@ fun getCoOrdinateOfHole(topX: String, topY: String): String {
     var x = topX.toDouble()
     var y = topY.toDouble()
     try {
-        val width: Long = 537
-        val height: Long = 527
+        val width: Long = 575
+        val height: Long = 758
         val arrMinMaxEastingNorthing =
             findSingleMinMaxEastingNorthingFor3dMapAndroid(topX, topY)
         //for Easting- No. of pixels in meter

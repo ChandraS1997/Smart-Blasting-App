@@ -53,7 +53,7 @@ public interface APiInterface {
     @GET("BLADES_API/Service1.svc//get-allmineinfo/SurfaceInitiator/{user_id}/{company_id}/1")
     Call<JsonElement> getAllMineInfoSurfaceInitiatorApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
-    @GET("get-drillaccessoriesinfoalldata/{company_id}/{user_id}")
+    @GET("get-drillaccessoriesinfoalldata/{user_id}/{company_id}")
     Call<JsonElement> getDrillAccessoriesInfoAllDataApiCaller(@Path(value = "user_id", encoded = true) String userId, @Path(value = "company_id", encoded = true) String companyId);
 
     @GET("getDrillMethod")
