@@ -293,6 +293,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
         CoordinationHoleHelperKt._3dMapCoordinatesAndroid(Double.parseDouble(holeDetailDataList.get(0).getTopX()), Double.parseDouble(holeDetailDataList.get(0).getTopY()), holeDetailDataList);
 
+        Log.e("Coordinate : ", String.valueOf(CoordinationHoleHelperKt.mapCorrdinates(this, holeDetailDataList)));
+
         AllProjectBladesModelEntity modelEntity = appDatabase.allProjectBladesModelDao().getSingleItemEntity(String.valueOf(bladesRetrieveData.get(0).getDesignId()));
         String code = "";
         code = String.valueOf(bladesRetrieveData.get(0).getDrimsId());
@@ -306,8 +308,11 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
 
     private void drimzsSyncApi(String code) {
         List<Response3DTable4HoleChargingDataModel> modelList = new ArrayList<>();
-        for (int i = 0; i < allTablesData.size(); i++) {
-            Response3DTable4HoleChargingDataModel model = allTablesData.get(i);
+        List<Response3DTable4HoleChargingDataModel> tempModelList = CoordinationHoleHelperKt.mapCorrdinates(this, allTablesData);
+        List<Response3DTable16PilotDataModel> tempPilotModelList = CoordinationHoleHelperKt.pilotMapCoordinates(this, pilotTableData);
+        List<HoleDetailItem> tempPreSplitModelList = CoordinationHoleHelperKt.preSplitMapCoordinates(this, preSplitTableData);
+        /*for (int i = 0; i < tempModelList.size(); i++) {
+            Response3DTable4HoleChargingDataModel model = tempModelList.get(i);
             String[] coordinate = StringUtill.getString(CoordinationHoleHelperKt.getCoOrdinateOfHole(model.getTopX(), model.getTopY())).split(",");
             if (coordinate.length > 0) {
                 model.setNorthing(coordinate[0]);
@@ -344,10 +349,10 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
                 }
                 preSplitDataModelList.add(model);
             }
-        }
+        }*/
 
         Log.e("modelList : ", new Gson().toJson(modelList));
-        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), modelList, pilotDataModelList, preSplitDataModelList, code).observe(this, new Observer<JsonElement>() {
+        setInsertUpdateHoleDetailMultipleSync3D(bladesRetrieveData.get(0), tempModelList, tempPilotModelList, tempPreSplitModelList, code).observe(this, new Observer<JsonElement>() {
             @Override
             public void onChanged(JsonElement response) {
                 if (response == null) {
@@ -1028,8 +1033,10 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             if (mapPilotCallBackListener != null)
                 mapPilotCallBackListener.saveAndCloseHoleDetailForPilotCallBack();
             binding.holeDetailLayoutContainerForPilot.setVisibility(View.GONE);
+            showToast("Project detail updated successfully.");
         } catch (Exception e) {
             e.getLocalizedMessage();
+            showToast(e.getLocalizedMessage());
         }
     }
 
