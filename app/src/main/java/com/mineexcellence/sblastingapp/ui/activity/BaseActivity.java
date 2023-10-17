@@ -575,8 +575,12 @@ public class BaseActivity extends AppCompatActivity {
                     }
                 }
 
-                holeDetailArray.addAll(getPilotDataForProjectSync(projectDetailJson, pilotDataModelList));
-                holeDetailArray.addAll(getPreSplitDataForProjectSync(projectDetailJson, preSplitList));
+                if (!Constants.isListEmpty(pilotDataModelList))
+                    holeDetailArray.addAll(getPilotDataForProjectSync(projectDetailJson, pilotDataModelList));
+
+                if (!Constants.isListEmpty(preSplitList))
+                    if (!StringUtill.isEmpty(preSplitList.get(0).getHoleDetailStr()))
+                        holeDetailArray.addAll(getPreSplitDataForProjectSync(projectDetailJson, preSplitList));
 
                 JsonArray basicInformationArray = new JsonArray();
                 JsonObject basicInformationObject = new JsonObject();
@@ -1375,8 +1379,10 @@ public class BaseActivity extends AppCompatActivity {
             JsonObject projectDetailJson = new Gson().fromJson(projectDetailEntity.getData(), JsonObject.class);
 
             holeDetailArray.addAll(getProductionHoleForDrimz(projectCode, projectDetailJson, holeDetailData));
-            holeDetailArray.addAll(getPilotHoleForDrimz(projectCode, projectDetailJson, pilotDataModelList));
-            holeDetailArray.addAll(getPreSplitHoleForDrimz(projectCode, projectDetailJson, preSplitHoleDetailItemList));
+            if (!Constants.isListEmpty(pilotDataModelList))
+                holeDetailArray.addAll(getPilotHoleForDrimz(projectCode, projectDetailJson, pilotDataModelList));
+            if (!Constants.isListEmpty(preSplitHoleDetailItemList))
+                holeDetailArray.addAll(getPreSplitHoleForDrimz(projectCode, projectDetailJson, preSplitHoleDetailItemList));
 
             mapObject.add("HoleDetails", holeDetailArray);
 
@@ -1854,8 +1860,11 @@ public class BaseActivity extends AppCompatActivity {
             }
 
             // Pilot and Pre Split Hole Count and Type
-            rowDetailsArray.addAll(getRowDetailForPilot(pilotDataModelList));
-            rowDetailsArray.addAll(getRowDetailForPreSplit(preSplitHoleDetailItemList));
+            if (!Constants.isListEmpty(pilotDataModelList))
+                rowDetailsArray.addAll(getRowDetailForPilot(pilotDataModelList));
+            if (!Constants.isListEmpty(preSplitHoleDetailItemList))
+                if (preSplitHoleDetailItemList.get(0).getHoleDetailStr().isEmpty())
+                    rowDetailsArray.addAll(getRowDetailForPreSplit(preSplitHoleDetailItemList));
 
             double aveSpacing = 0.0, aveBurden = 0.0;
 
@@ -2466,7 +2475,8 @@ public class BaseActivity extends AppCompatActivity {
 
 
             if (holeType == Constants.PILOT_HOLE) {
-                mapObjectArray.addAll(getPilotForBlades(pilotDataModelList));
+                if (!Constants.isListEmpty(pilotDataModelList))
+                    mapObjectArray.addAll(getPilotForBlades(pilotDataModelList));
             } else {
                 mapObjectArray.addAll(getProductionForBlades(allTablesData));
             }
@@ -2475,13 +2485,23 @@ public class BaseActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(JsonElement jsonObject) {
                     if (holeType == Constants.PRODUCTION_HOLE) {
-                        insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, pilotDataModelList, preSplitDataModelList, Constants.PILOT_HOLE);
+                        if (!Constants.isListEmpty(pilotDataModelList)) {
+                            insertUpdate3DActualDesignHoleDetailApiCaller(allTablesData, pilotDataModelList, preSplitDataModelList, Constants.PILOT_HOLE);
+                        } else {
+                            if (!Constants.isListEmpty(preSplitDataModelList)) {
+                                if (!preSplitDataModelList.get(0).getHoleDetailStr().isEmpty()) {
+                                    insertUpdate3DActualPreSplitHoleDetailApiCaller(preSplitDataModelList, Constants.PRE_SPLIT_HOLE);
+                                } else {
+                                    onSuccessfulData(jsonObject);
+                                }
+                            } else {
+                                onSuccessfulData(jsonObject);
+                            }
+                        }
                     } else if (holeType == Constants.PILOT_HOLE) {
                         insertUpdate3DActualPreSplitHoleDetailApiCaller(preSplitDataModelList, Constants.PRE_SPLIT_HOLE);
                     } else {
-                        if (!jsonObject.isJsonNull())
-                            showToast("Project Sync Successfully");
-                        hideLoader();
+                        onSuccessfulData(jsonObject);
                     }
                 }
             });
@@ -2489,6 +2509,12 @@ public class BaseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private void onSuccessfulData(JsonElement jsonElement) {
+        if (!jsonElement.isJsonNull())
+            showToast("Project Sync Successfully");
+        hideLoader();
     }
 
     public void insertUpdate3DActualPreSplitHoleDetailApiCaller(List<Response3DTable18PreSpilitDataModel> preSplitDataModelList, int holeType) {
@@ -2511,9 +2537,7 @@ public class BaseActivity extends AppCompatActivity {
             MainService.insertUpdate3DActualPreSplitHoleDetailApiCaller(this, mapObjectArray).observe(this, new Observer<JsonElement>() {
                 @Override
                 public void onChanged(JsonElement jsonObject) {
-                    if (!jsonObject.isJsonNull())
-                        showToast("Project Sync Successfully");
-                    hideLoader();
+                    onSuccessfulData(jsonObject);
                 }
             });
         } catch (Exception e) {
@@ -3083,8 +3107,7 @@ public class BaseActivity extends AppCompatActivity {
                     if (jsonObject.getAsJsonPrimitive().isString()) {
                         Log.e("Abd : ", jsonObject.getAsString());
                     }
-                    showToast("Project Sync Successfully");
-                    hideLoader();
+                    onSuccessfulData(jsonObject);
                 }
             });
         } catch (Exception e) {

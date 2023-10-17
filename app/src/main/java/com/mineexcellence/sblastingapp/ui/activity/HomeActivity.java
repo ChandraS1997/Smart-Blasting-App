@@ -503,15 +503,21 @@ public class HomeActivity extends BaseActivity {
 
             for (JsonElement element : preSplitDataJsonArray) {
                 Response3DTable18PreSpilitDataModel model = new Gson().fromJson(element, Response3DTable18PreSpilitDataModel.class);
-                model.setHoleDetailStr(model.getHoleDetailStr());
-                model.setHolePointsStr(model.getHolePointsStr());
-                model.setLinePointsStr(model.getLinePointsStr());
-                response3DTable18PreSpilitDataModelList.add(model);
+                if (!model.getHoleDetailStr().isEmpty()) {
+                    model.setHoleDetailStr(model.getHoleDetailStr());
+                    model.setHolePointsStr(!model.getHolePointsStr().isEmpty() ? model.getHolePointsStr() : "");
+                    model.setLinePointsStr(!model.getLinePointsStr().isEmpty() ? model.getLinePointsStr() : "");
+                    response3DTable18PreSpilitDataModelList.add(model);
+                    AppDelegate.getInstance().setPreSpilitDataModelList(response3DTable18PreSpilitDataModelList);
+                }
             }
-            for (JsonElement element : pilotDataJsonArray) {
-                Response3DTable16PilotDataModel model = new Gson().fromJson(element, Response3DTable16PilotDataModel.class);
-                model.setChargeTypeArrayStr(model.getChargeTypeArrayStr());
-                response3DTable16PilotDataModelList.add(model);
+            if (!pilotDataJsonArray.isEmpty()) {
+                for (JsonElement element : pilotDataJsonArray) {
+                    Response3DTable16PilotDataModel model = new Gson().fromJson(element, Response3DTable16PilotDataModel.class);
+                    model.setChargeTypeArrayStr(model.getChargeTypeArrayStr());
+                    response3DTable16PilotDataModelList.add(model);
+                }
+                AppDelegate.getInstance().setPilotDataModelList(response3DTable16PilotDataModelList);
             }
 
             for (JsonElement element : new Gson().fromJson(new Gson().fromJson(array.get(6), String.class), JsonArray.class)) {
@@ -523,8 +529,6 @@ public class HomeActivity extends BaseActivity {
                 }
             }
             AppDelegate.getInstance().setHoleChargingDataModel(response3DTable4HoleChargingDataModels);
-            AppDelegate.getInstance().setPreSpilitDataModelList(response3DTable18PreSpilitDataModelList);
-            AppDelegate.getInstance().setPilotDataModelList(response3DTable16PilotDataModelList);
 
             AppDelegate.getInstance().setResponse3DTable1DataModel(response3DTable1DataModels);
             AppDelegate.getInstance().setResponse3DTable2DataModel(response3DTable2DataModels);

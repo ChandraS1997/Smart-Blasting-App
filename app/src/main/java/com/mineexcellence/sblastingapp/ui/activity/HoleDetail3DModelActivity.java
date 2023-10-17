@@ -62,6 +62,7 @@ import com.mineexcellence.sblastingapp.utils.StringUtill;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HoleDetail3DModelActivity extends BaseActivity implements View.OnClickListener, OnHoleClickListener {
@@ -147,17 +148,31 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
         setDataFromBundle();
         binding = DataBindingUtil.setContentView(this, R.layout.hole_detail_3d_activity);
 
-        String[] tableType = new String[]{"Normal", "Pilot", "Pre-Split"};
+        String[] tableType = new String[]{};
+        List<String> spinnerList = new ArrayList<>();
+        spinnerList.add("Normal");
+        if (!Constants.isListEmpty(pilotTableData)) {
+            spinnerList.add("Pilot");
+        }
+        if (!Constants.isListEmpty(preSplitTableData)) {
+            if (!preSplitTableData.get(0).getHoleDetailStr().isEmpty()) {
+                spinnerList.add("Pre-Split");
+            }
+        }
+
+        tableType = spinnerList.toArray(tableType);
+
         binding.headerLayHole.spinnerHoleType.setAdapter(Constants.getAdapter(this, tableType));
         binding.headerLayHole.spinnerHoleType.selectItem(0);
 
+        String[] finalTableType = tableType;
         binding.headerLayHole.spinnerHoleType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 lastTableTypeVal = tableTypeVal;
                 binding.headerLayHole.spinnerRow.setVisibility(View.GONE);
                 isTableHeaderFirstTimeLoad = true;
-                switch (tableType[i]) {
+                switch (finalTableType[i]) {
                     case "Pilot":
                         tableTypeVal = Constants.TABLE_TYPE.PILOT.getType();
                         break;
@@ -309,8 +324,14 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
     private void drimzsSyncApi(String code) {
         List<Response3DTable4HoleChargingDataModel> modelList = new ArrayList<>();
         List<Response3DTable4HoleChargingDataModel> tempModelList = CoordinationHoleHelperKt.mapCorrdinates(this, allTablesData);
-        List<Response3DTable16PilotDataModel> tempPilotModelList = CoordinationHoleHelperKt.pilotMapCoordinates(this, pilotTableData);
-        List<HoleDetailItem> tempPreSplitModelList = CoordinationHoleHelperKt.preSplitMapCoordinates(this, preSplitTableData);
+        List<Response3DTable16PilotDataModel> tempPilotModelList = new ArrayList<>();
+        if (!Constants.isListEmpty(pilotTableData)) {
+            tempPilotModelList = CoordinationHoleHelperKt.pilotMapCoordinates(this, pilotTableData);
+        }
+        List<HoleDetailItem> tempPreSplitModelList = new ArrayList<>();
+        if (!Constants.isListEmpty(preSplitTableData)) {
+            tempPreSplitModelList = CoordinationHoleHelperKt.preSplitMapCoordinates(this, preSplitTableData);
+        }
         /*for (int i = 0; i < tempModelList.size(); i++) {
             Response3DTable4HoleChargingDataModel model = tempModelList.get(i);
             String[] coordinate = StringUtill.getString(CoordinationHoleHelperKt.getCoOrdinateOfHole(model.getTopX(), model.getTopY())).split(",");

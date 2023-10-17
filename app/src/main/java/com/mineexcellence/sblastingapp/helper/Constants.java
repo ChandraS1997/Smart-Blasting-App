@@ -115,6 +115,18 @@ public class Constants {
         return list == null || list.size() == 0;
     }
 
+    @SafeVarargs
+    public static <T> boolean checkMultipleListEmpty(List<T>... list) {
+        boolean isEmpty = false;
+        for (List<T> t : list) {
+            isEmpty = t == null || t.size() == 0;
+            if (!isEmpty) {
+                return false;
+            }
+        }
+        return isEmpty;
+    }
+
     public static <T> int getListSize(List<T> list) {
         int size = 0;
         if (isListEmpty(list)) {
