@@ -1689,7 +1689,7 @@ public class BaseActivity extends AppCompatActivity {
                         chargeDetailsObject.addProperty("SteamLen", String.valueOf(length));
                     }
                     chargeDetailsObject.addProperty("WaterDepth", String.valueOf(0));
-                    chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.get(i).getHoleDepth()));
+                    chargeDetailsObject.addProperty("HoleDepth", String.valueOf(tablesData.get(i).getHoleDepth().equals("NaN") ? preSpilitDataModelList.get(0).getHoleDepth() : tablesData.get(i).getHoleDepth()));
                     chargeDetailsObject.addProperty("Subgrade", String.valueOf(0));
                     chargeDetailsObject.addProperty("IsHoleBlock", "");
                     chargeDetailsObject.addProperty("HoleBlockLength", "");
@@ -1863,7 +1863,7 @@ public class BaseActivity extends AppCompatActivity {
             if (!Constants.isListEmpty(pilotDataModelList))
                 rowDetailsArray.addAll(getRowDetailForPilot(pilotDataModelList));
             if (!Constants.isListEmpty(preSplitHoleDetailItemList))
-                if (preSplitHoleDetailItemList.get(0).getHoleDetailStr().isEmpty())
+                if (!preSplitHoleDetailItemList.get(0).getHoleDetailStr().isEmpty())
                     rowDetailsArray.addAll(getRowDetailForPreSplit(preSplitHoleDetailItemList));
 
             double aveSpacing = 0.0, aveBurden = 0.0;
@@ -2455,7 +2455,7 @@ public class BaseActivity extends AppCompatActivity {
             object.addProperty("topRL", String.valueOf(dataModel.getTopRL()));
             object.addProperty("bottomEasting", String.valueOf(dataModel.getBottomEasting() == null ? "0" : dataModel.getBottomEasting()));
             object.addProperty("bottomNorthing", String.valueOf(dataModel.getBottomNorthing() == null ? "0" : dataModel.getBottomNorthing()));
-            object.addProperty("bottomRL", String.valueOf(dataModel.getBottomRL()));
+            object.addProperty("bottomRL", String.valueOf(dataModel.getBottomRL() == 0.0 ? "0" : dataModel.getBottomRL()));
             object.addProperty("totalCharge", dataModel.getTotalCharge());
             object.addProperty("chargeLength", dataModel.getChargeLength());
             object.addProperty("decking", dataModel.getDecking());

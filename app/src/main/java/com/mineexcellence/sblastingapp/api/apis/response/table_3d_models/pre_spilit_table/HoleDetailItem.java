@@ -118,6 +118,8 @@ public class HoleDetailItem implements Serializable {
 	}
 
 	public double getBottomRL() {
+		if (bottomRL == null)
+			return 0.0;
 		return Double.parseDouble(bottomRL.toString());
 	}
 

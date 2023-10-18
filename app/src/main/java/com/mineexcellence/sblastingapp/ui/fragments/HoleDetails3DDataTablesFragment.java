@@ -694,9 +694,9 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                             editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopEasting()), tableEditModelArrayList.get(4).getTitleVal(), tableEditModelArrayList.get(4).isSelected(), update));
                             editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopNorthing()), tableEditModelArrayList.get(5).getTitleVal(), tableEditModelArrayList.get(5).isSelected(), update));
                             editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getTopRL()), tableEditModelArrayList.get(6).getTitleVal(), tableEditModelArrayList.get(6).isSelected(), update));
-                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomEasting()), tableEditModelArrayList.get(7).getTitleVal(), tableEditModelArrayList.get(7).isSelected(), update));
-                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomNorthing()), tableEditModelArrayList.get(8).getTitleVal(), tableEditModelArrayList.get(8).isSelected(), update));
-                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomRL() == 0.0 ? "" : holeDetailData.getBottomRL()), tableEditModelArrayList.get(9).getTitleVal(), tableEditModelArrayList.get(9).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomEasting() == null ? "0" : holeDetailData.getBottomEasting()), tableEditModelArrayList.get(7).getTitleVal(), tableEditModelArrayList.get(7).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomNorthing() == null ? "0" : holeDetailData.getBottomNorthing()), tableEditModelArrayList.get(8).getTitleVal(), tableEditModelArrayList.get(8).isSelected(), update));
+                            editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getBottomRL() == 0.0 ? "0" : holeDetailData.getBottomRL()), tableEditModelArrayList.get(9).getTitleVal(), tableEditModelArrayList.get(9).isSelected(), update));
 
                             double totalCharge = 0.0, chargeLen = 0.0;
                             if (!Constants.isListEmpty(holeDetailData.getChargingArray())) {

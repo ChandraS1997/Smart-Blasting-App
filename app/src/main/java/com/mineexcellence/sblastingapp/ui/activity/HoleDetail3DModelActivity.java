@@ -802,8 +802,8 @@ public class HoleDetail3DModelActivity extends BaseActivity implements View.OnCl
             binding.preSplitHoleDetailLayout.topEastingEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getTopEasting())));
             binding.preSplitHoleDetailLayout.topNorthingEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getTopNorthing())));
             binding.preSplitHoleDetailLayout.topRlEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getTopRL())));
-            binding.preSplitHoleDetailLayout.bottomEastingEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBottomEasting())));
-            binding.preSplitHoleDetailLayout.bottomNorthingEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBottomNorthing())));
+            binding.preSplitHoleDetailLayout.bottomEastingEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBottomEasting() == null ? "0" : holeDetailData.getBottomNorthing())));
+            binding.preSplitHoleDetailLayout.bottomNorthingEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBottomNorthing() == null ? "0" : holeDetailData.getBottomNorthing())));
             binding.preSplitHoleDetailLayout.bottomRLEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getBottomRL())));
 
             binding.preSplitHoleDetailLayout.totalChargeEt.setText(StringUtill.getString(String.valueOf(holeDetailData.getTotalCharge())));
