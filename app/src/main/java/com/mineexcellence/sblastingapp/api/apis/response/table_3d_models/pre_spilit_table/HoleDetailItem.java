@@ -176,7 +176,7 @@ public class HoleDetailItem implements Serializable {
 	}
 
 	public List<ChargeTypeArrayItem> getChargingArray(){
-		return new Gson().fromJson(String.valueOf(chargingArray), new TypeToken<List<ChargeTypeArrayItem>>(){}.getType());
+		return new Gson().fromJson(new Gson().toJson(chargingArray), new TypeToken<List<ChargeTypeArrayItem>>(){}.getType());
 	}
 
 	public void setTopRL(int topRL){

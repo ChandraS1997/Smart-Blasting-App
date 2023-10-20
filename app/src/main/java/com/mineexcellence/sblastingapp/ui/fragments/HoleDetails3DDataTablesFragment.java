@@ -700,23 +700,22 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
 
                             double totalCharge = 0.0, chargeLen = 0.0;
                             if (!Constants.isListEmpty(holeDetailData.getChargingArray())) {
-                                for (int j = 0; j < holeDetailData.getChargingArray().size(); j++) {
-                                    ChargeTypeArrayItem item = holeDetailData.getChargingArray().get(j);
+                                List<ChargeTypeArrayItem> itemList = holeDetailData.getChargingArray();
+                                for (int j = 0; j < itemList.size(); j++) {
+                                    ChargeTypeArrayItem item = itemList.get(j);
                                     totalCharge = totalCharge + item.getWeight();
 
                                     if (StringUtill.getString(item.getType()).equals("Bulk") || StringUtill.getString(item.getType()).equals("Cartridge")) {
                                         chargeLen = chargeLen + item.getLength();
                                     }
                                 }
-                            }
 
-                            editModelArrayList.add(new TableEditModel(String.valueOf(totalCharge), tableEditModelArrayList.get(10).getTitleVal(), tableEditModelArrayList.get(10).isSelected(), update));
-                            editModelArrayList.add(new TableEditModel(String.valueOf(chargeLen), tableEditModelArrayList.get(11).getTitleVal(), tableEditModelArrayList.get(11).isSelected(), update));
+                                editModelArrayList.add(new TableEditModel(String.valueOf(totalCharge), tableEditModelArrayList.get(10).getTitleVal(), tableEditModelArrayList.get(10).isSelected(), update));
+                                editModelArrayList.add(new TableEditModel(String.valueOf(chargeLen), tableEditModelArrayList.get(11).getTitleVal(), tableEditModelArrayList.get(11).isSelected(), update));
 
-                            if (!Constants.isListEmpty(holeDetailData.getChargingArray())) {
                                 double length = 0, deckLen = 0;
-                                for (int j = 0; j < holeDetailData.getChargingArray().size(); j++) {
-                                    ChargeTypeArrayItem item = holeDetailData.getChargingArray().get(j);
+                                for (int j = 0; j < itemList.size(); j++) {
+                                    ChargeTypeArrayItem item = itemList.get(j);
                                     if (StringUtill.getString(item.getType()).equals("Stemming")) {
                                         length = length + item.getLength();
                                     }
@@ -725,14 +724,13 @@ public class HoleDetails3DDataTablesFragment extends BaseFragment implements OnD
                                     }
                                 }
                                 editModelArrayList.add(new TableEditModel(String.valueOf(deckLen), tableEditModelArrayList.get(12).getTitleVal(), tableEditModelArrayList.get(12).isSelected(), update));
+
+                                editModelArrayList.add(new TableEditModel(String.valueOf(itemList.size()), tableEditModelArrayList.get(13).getTitleVal(), tableEditModelArrayList.get(13).isSelected(), update));
+
                             } else {
                                 editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getDecking()), tableEditModelArrayList.get(12).getTitleVal(), tableEditModelArrayList.get(12).isSelected(), update));
-                            }
-
-                            if (!Constants.isListEmpty(holeDetailData.getChargingArray()))
-                                editModelArrayList.add(new TableEditModel(String.valueOf(holeDetailData.getChargingArray().size()), tableEditModelArrayList.get(13).getTitleVal(), tableEditModelArrayList.get(13).isSelected(), update));
-                            else
                                 editModelArrayList.add(new TableEditModel(String.valueOf(0), tableEditModelArrayList.get(13).getTitleVal(), tableEditModelArrayList.get(13).isSelected(), update));
+                            }
 
                             if (!update) {
                                 if (tableFieldItemModelList.size() > i) {
